@@ -86,3 +86,14 @@ h1 {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
+
+.enlace-revision {
+  margin: 1rem 0 0;
+}
+
+.enlace-revision a {
+  display: inline-block;
+  padding: 0.75rem 0;
+  color: var(--tinta);
+  font-weight: 600;
+}

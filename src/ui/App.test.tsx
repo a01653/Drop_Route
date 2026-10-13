@@ -16,6 +16,10 @@ describe('pantalla de arranque', () => {
     expect(html).toContain('<dt>Rutas II-V-I</dt><dd>16</dd>')
   })
 
+  it('enlaza con la pantalla de revisión de tarjetas e icono', () => {
+    expect(html).toContain('<a href="#/revision">Revisar tarjetas e icono</a>')
+  })
+
   it('no ofrece todavía controles de juego', () => {
     expect(html).not.toMatch(/<(button|select|input)\b/)
   })

@@ -6,7 +6,8 @@ import { spawnSync } from 'node:child_process';
 import { ROOT } from '../scripts/lib/music-validation.mjs';
 import { candidates, findPython, isSupported, missingMessage, parseVersion } from '../scripts/lib/python.mjs';
 
-const read = path => readFileSync(resolve(ROOT, path), 'utf8');
+// Se normaliza el final de línea: un checkout de Windows con core.autocrlf escribe CRLF.
+const read = path => readFileSync(resolve(ROOT, path), 'utf8').replaceAll('\r\n', '\n');
 
 // Lanzador de Python: se simula el sistema con un ejecutor inyectado.
 const runner = table => (command, args) => {

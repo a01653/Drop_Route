@@ -1,0 +1,54 @@
+/*
+  Fuentes de references/laminas-drop-original.html, sin modificar. Licencia SIL OFL 1.1:
+  ver fonts/README.md y los OFL-*.txt de esa carpeta.
+*/
+@font-face {
+  font-family: 'Gochi Hand';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/GochiHand-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Caveat Brush';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/CaveatBrush-latin.woff2') format('woff2');
+}
+
+.fretboard-card {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.card-hand {
+  font-family: 'Gochi Hand', 'Segoe Print', 'Bradley Hand', cursive;
+}
+
+.card-name {
+  font-family: 'Caveat Brush', 'Gochi Hand', 'Segoe Print', cursive;
+  font-size: 23px;
+}
+
+.card-family {
+  font-size: 11px;
+  letter-spacing: 1.1px;
+}
+
+.card-string-number {
+  font-size: 15px;
+  text-anchor: end;
+}
+
+.card-fret-number {
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.card-dot-label {
+  font-size: 13px;
+  text-anchor: middle;
+}

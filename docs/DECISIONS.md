@@ -24,6 +24,20 @@ Son decisiones de implementación tomadas al ejecutar la orden, no confirmadas t
 - `FILES_SHA256.json` y `RECOVERY_STATUS.json` se mantienen como instantáneas históricas de la base inicial. No se editan y no se presentan como estado actual.
 - Para poder regenerar el DTS: `.gitattributes` fija LF para `.tex`, y el script y la plantilla admiten Pandoc 3.12.1 y las rutas temporales cortas de Windows.
 
+## Aplicado en DR-002 (pendiente de revisión)
+
+Decisiones de implementación tomadas al ejecutar la orden, no confirmadas todavía por el usuario.
+
+- Renderizador SVG propio en `src/ui/card/`. La geometría es una función pura y la vista neutra solo recibe posiciones, de modo que no puede mostrar la solución. Las medidas y los colores salen de la plantilla y un E2E los compara con su DOM, para las 112 formas.
+- La ventana de trastes es común a las cuatro calidades de un set e inversión, como en la plantilla, y se calcula desde la posición física. Cuenta el traste de la sexta de C6 como la plantilla, sin dibujarla ni añadirla al ejercicio: las cuatro tarjetas de Drop 2+4 set 1, 3ª inversión, empiezan en el traste 12 (decisión del usuario del 13/10/2026) con las mismas notas en los trastes 13 a 15.
+- Vista neutra: fondo `#F4F6FB`, borde `#CFD5E8` y círculos `#C8CDE0` con borde `#6D7699`. La plantilla no tiene vista neutra, así que son grises elegidos aquí. Su nombre accesible lista solo las posiciones, que son la pregunta.
+- Se reutilizan Gochi Hand y Caveat Brush, que la plantilla incrusta, con sus licencias SIL OFL y 87 kB de peso. Se incluyen junto a las tarjetas. Si se prefiere una fuente de sistema, basta con cambiar `card.css`.
+- Los bemoles se dibujan como trazo vectorial porque la fuente manuscrita no tiene ♭. En texto de la interfaz se escriben con ♭.
+- Pantalla de revisión en `#/revision`, enlazada desde el arranque. No es un juego y enseña las tarjetas en el orden de la plantilla, no en el de una pregunta. El enrutado es un hash, sin librería.
+- Icono en `assets/icon/`: fondo `#0B1D2E`, mástil de cuatro cuerdas y cuatro círculos con los colores de raíz, tercera, quinta y séptima unidos como ruta. Se usa como favicon. Los tamaños de la PWA y el maskable quedan para DR-006.
+- Sin dependencias nuevas: las exportaciones PNG las genera el Chromium de Playwright y los tests decodifican el PNG sin librerías.
+- `.gitattributes` fija LF para `.svg` y `.yml`, porque se verifican por hash o por contenido y en Windows se escribían con CRLF.
+
 ## Pendiente
 
 Icono final; puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; hosting y licencia del código nuevo. Las referencias conservan su autoría.

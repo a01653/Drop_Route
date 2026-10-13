@@ -1,0 +1,117 @@
+.revision {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.revision h1 {
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+}
+
+.revision h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.revision a {
+  color: var(--tinta);
+}
+
+.revision-nota {
+  margin: 0.5rem 0 0;
+  color: var(--tinta-suave);
+}
+
+.revision-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.revision-opciones button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0.5rem 0.875rem;
+  border: 1.5px solid var(--borde);
+  border-radius: 0.625rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+  cursor: pointer;
+}
+
+.revision-opciones button small {
+  color: var(--tinta-suave);
+  font-size: 0.75rem;
+}
+
+.revision-opciones button[aria-pressed='true'] {
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: #ffffff;
+}
+
+.revision-opciones button[aria-pressed='true'] small {
+  color: #d5dcec;
+}
+
+.revision-opciones button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+
+.revision-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 264px), 1fr));
+  gap: 1rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.revision-tarjeta p {
+  margin: 0.25rem 0 0;
+  text-align: center;
+  color: var(--tinta-suave);
+  font-size: 0.875rem;
+}
+
+.revision-icono p {
+  margin: 0 0 0.75rem;
+  color: var(--tinta-suave);
+}
+
+.icono-original {
+  display: block;
+  margin-bottom: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.icono-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.5rem;
+}
+
+.icono-panel-claro {
+  background: #ffffff;
+}
+
+.icono-panel-oscuro {
+  background: #1f2430;
+}

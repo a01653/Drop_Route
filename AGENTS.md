@@ -23,7 +23,7 @@ Pruebas dirigidas del comportamiento y sus consumidores. Regresión unitaria par
 
 No ejecutar la batería completa en cada retoque. Antes de E2E o revisión visual con Vite, generar el build actual y comprobar que el preview lo sirve. No iniciar preview automáticamente.
 
-Actualmente existen npm test (node:test y Vitest), npm run audit:music, npm run data:check, npm run docs:check, npm run docs:check:final, npm run validate, npm run dev, build, preview, typecheck, lint y npm run test:e2e (Playwright).
+Actualmente existen npm test (node:test y Vitest), npm run audit:music, npm run data:check, npm run docs:check, npm run docs:check:final, npm run validate, npm run dev, build, preview, typecheck, lint, npm run icon:export y npm run test:e2e (Playwright).
 
 ## Cierre
 

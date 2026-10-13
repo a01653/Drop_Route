@@ -7,3 +7,7 @@
 *.pdf binary
 references/laminas-drop-original.html -whitespace
 *.tex text eol=lf
+*.svg text eol=lf
+*.png binary
+*.woff2 binary
+*.yml text eol=lf

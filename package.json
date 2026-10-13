@@ -18,6 +18,7 @@
     "test:e2e": "playwright test",
     "audit:music": "node scripts/audit-music.mjs",
     "data:check": "node scripts/run-python.mjs scripts/extract_reference.py --check",
+    "icon:export": "node scripts/export-icon.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "docs:check:final": "node scripts/check-docs.mjs --final",
     "docs:build": "node scripts/run-python.mjs scripts/build_dts.py",

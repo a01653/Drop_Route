@@ -6,7 +6,7 @@
 
 Lee docs/PROJECT.md, docs/DECISIONS.md y docs/DTS.md. Después abre la orden de trabajo indicada por el usuario. Para cambios musicales lee docs/MUSIC.md; para dibujos y móvil, docs/VISUAL.md.
 
-La interfaz se reduce a la pantalla de arranque de DR-001; los juegos todavía no existen. Ejecuta una sola orden de trabajo por petición. No conviertas DR-001 en la implementación completa del juego.
+La interfaz se reduce a la pantalla de arranque de DR-001 y a la de revisión de tarjetas e icono de DR-002; los juegos todavía no existen. Ejecuta una sola orden de trabajo por petición. No conviertas DR-001 en la implementación completa del juego.
 
 ## Reglas del producto
 

@@ -1,0 +1,46 @@
+{
+  "source": "assets/icon/drop-route-icon.svg",
+  "sourceSha256": "14f458d2ee44143e40d2aa729e2b83645075979e31007c61affe128b5b560842",
+  "favicon": {
+    "file": "public/favicon.svg",
+    "sha256": "14f458d2ee44143e40d2aa729e2b83645075979e31007c61affe128b5b560842"
+  },
+  "command": "npm run icon:export",
+  "files": [
+    {
+      "file": "assets/icon/exports/icon-16.png",
+      "size": 16,
+      "sha256": "21f9710e7d7bdf6fb39bc93c5ba24bf8f02d814b10cd6a37e669fe2d54ee94fa"
+    },
+    {
+      "file": "assets/icon/exports/icon-32.png",
+      "size": 32,
+      "sha256": "59cf21974fd46572e973581f26a151d41f4572932345d46d11de31a2cbcec5f1"
+    },
+    {
+      "file": "assets/icon/exports/icon-48.png",
+      "size": 48,
+      "sha256": "60e5a0571efa134a1d23519d0b7431fd1d507a2b48b62eef36698797fd40f89d"
+    },
+    {
+      "file": "assets/icon/exports/icon-64.png",
+      "size": 64,
+      "sha256": "284dc3399802739748c636a95925d919d3944f822a735b9d0150db4f91105947"
+    },
+    {
+      "file": "assets/icon/exports/icon-128.png",
+      "size": 128,
+      "sha256": "c1cde088c8cac6c9d71a4319c9ede276fb2ada86f7972c3311fdd94c401644a3"
+    },
+    {
+      "file": "assets/icon/exports/icon-256.png",
+      "size": 256,
+      "sha256": "7a96ba3dbe3647ebd9d59fc77e3c1a8d8f7f771848bdfca96dabd4af4cb4a18a"
+    },
+    {
+      "file": "assets/icon/exports/icon-512.png",
+      "size": 512,
+      "sha256": "7a87e05faa5edb8f7aa15b8793e817b48d76ad537851d018ae3001ad39957ad3"
+    }
+  ]
+}

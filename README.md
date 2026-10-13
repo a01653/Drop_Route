@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado: en desarrollo. Existe la base técnica de la aplicación (DR-001) y una pantalla de arranque; los juegos y el icono final todavía no están implementados.** Claude Code realizará la interfaz por órdenes de trabajo.
+**Estado: en desarrollo. Existen la base técnica de la aplicación (DR-001), las tarjetas SVG, el icono y una pantalla de revisión de ambos (DR-002); los juegos todavía no están implementados y el icono espera aprobación.** Claude Code realizará la interfaz por órdenes de trabajo.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -12,13 +12,15 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - [Requisitos](docs/PROJECT.md), [apariencia](docs/VISUAL.md), [contrato musical](docs/MUSIC.md) y [decisiones](docs/DECISIONS.md).
 - Plantilla HTML y dos guías PDF originales en [references](references/README.md).
 - Datos: 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
-- 44 tests con node:test (24 de la base musical, 11 del utillaje y 9 de la política documental) y auditorías de música y procedencia.
-- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 15 tests Vitest.
-- Humo E2E con Playwright sobre el build, en escritorio y móvil.
+- 51 tests con node:test (24 de la base musical, 11 del utillaje, 9 de la política documental y 7 del icono) y auditorías de música y procedencia.
+- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 50 tests Vitest.
+- Tarjetas SVG de las 112 formas, en vista neutra y de solución, con la apariencia de la plantilla ([cómo y qué difiere](docs/VISUAL.md)).
+- Icono: [original SVG editable y exportaciones](assets/icon/README.md).
+- 27 ejecuciones E2E con Playwright sobre el build: humo, tarjetas a 360, 390 y 430 px, y comparación con la plantilla original.
 - [DTS principal](docs/DTS.md), su [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX derivado.
 - [Plan de pruebas](docs/TEST_PLAN.md) y [siete órdenes de trabajo](docs/work-orders/README.md).
 
-El 13/10/2026 el usuario autorizó publicar esta base completa en a01653/Drop_Route, incluidos los tres materiales originales. El juego y el icono final siguen pendientes de implementación.
+El 13/10/2026 el usuario autorizó publicar esta base completa en a01653/Drop_Route, incluidos los tres materiales originales. El juego sigue pendiente de implementación.
 
 ## Uso del paquete
 
@@ -60,6 +62,7 @@ npm test           # node:test de la base y Vitest
 npm run test:unit  # solo Vitest
 npm run test:base  # solo node:test
 npm run test:e2e   # Playwright sobre un build recién generado
+npm run icon:export # regenera los PNG del icono desde su SVG (necesita Chromium)
 ```
 
 `npm run test:e2e` genera el build, lo sirve con vite preview durante la prueba y lo detiene al terminar. No hace falta iniciar el preview antes y no debe haber otro servidor en el puerto 4173: si lo hay, Playwright falla en lugar de probar una compilación anterior. El humo comprueba además que `dist/` se generó durante esa misma ejecución.
@@ -79,7 +82,7 @@ docs:build requiere Pandoc y LuaLaTeX completo o XeLaTeX. Genera las versiones L
 
 docs:check conserva las comprobaciones de enlaces e integridad y declara los cambios pendientes de regeneración. docs:check:final exige la sincronización completa de los derivados y se aplica en DR-007. El PDF existente corresponde a la última generación, no necesariamente al Markdown actual. La política explícita está en `docs/documentation-policy.json`.
 
-La pantalla actual solo muestra el nombre y el estado de desarrollo. No hay juegos ni tarjetas todavía.
+Con `npm run dev` o `npm run preview`, la raíz muestra el nombre y el estado de desarrollo, y `#/revision` abre la pantalla de revisión: las 112 tarjetas por set, en vista neutra o de solución, y el icono a tamaño real. No hay juegos todavía.
 
 ## Instantáneas históricas
 

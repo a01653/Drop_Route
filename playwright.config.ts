@@ -21,7 +21,8 @@ export default defineConfig({
   },
   projects: [
     { name: 'escritorio', use: { ...devices['Desktop Chrome'] } },
-    { name: 'movil', use: { ...devices['Pixel 7'] } },
+    // La comparación con la plantilla original no depende del dispositivo: se ejecuta una sola vez.
+    { name: 'movil', testIgnore: /reference\.spec\.ts$/, use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
     command: `npm run build && npm run preview -- --host 127.0.0.1 --port ${port} --strictPort`,
