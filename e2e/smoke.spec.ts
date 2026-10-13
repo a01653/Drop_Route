@@ -10,8 +10,8 @@ test('arranca desde el build con el nombre y el estado de desarrollo', async ({ 
 
   const estado = page.getByRole('region', { name: 'Estado de desarrollo' })
   await expect(estado).toContainText('En desarrollo.')
-  await expect(estado).toContainText('Todavía no hay juegos')
-  await expect(page.getByRole('button')).toHaveCount(0)
+  await expect(estado).toContainText('Ya puedes reconocer voicings')
+  await expect(page.getByRole('button', { name: 'Empezar' })).toBeEnabled()
 })
 
 test('muestra los datos reales de data/ empaquetados en el build', async ({ page }) => {

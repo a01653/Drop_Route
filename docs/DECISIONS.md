@@ -38,6 +38,22 @@ Decisiones de implementación tomadas al ejecutar la orden, no confirmadas todav
 - Sin dependencias nuevas: las exportaciones PNG las genera el Chromium de Playwright y los tests decodifican el PNG sin librerías.
 - `.gitattributes` fija LF para `.svg` y `.yml`, porque se verifican por hash o por contenido y en Windows se escribían con CRLF.
 
+## Aplicado en DR-003 y DR-004 (pendiente de revisión)
+
+Decisiones de implementación tomadas al ejecutar el bloque, no confirmadas todavía por el usuario.
+
+- Bloque autorizado por el usuario el 13/10/2026: DR-003 y DR-004 en feat/recognition-game, sin aprobación intermedia. Las reglas de bloques están en AGENTS.md.
+- La sesión es un reductor puro (`reduceSession`) con tres fases (menú, pregunta, verificada). Las semillas llegan en la acción: el azar de producción vive en la interfaz y los tests usan semillas fijas.
+- Orden de los cuatro botones de acorde: aleatorio por pregunta. Orden de los desplegables: fijo (Cmaj7, C7, Cm7, Cm7(b5); Fundamental a 3ª).
+- Siguiente solo aparece tras verificar: no se puede saltar una pregunta sin contestarla. Se sale con Salir.
+- Difícil es medio más los cuatro grados: exige acorde, inversión y los cuatro destinos para verificar.
+- Banco de grados fijo y único para todas las preguntas: 1, 3, ♭3, 5, ♭5, 7 y ♭7. No incluye el ♭♭7 de la disminuida, que no se pregunta.
+- Dos toques: ficha y destino, o destino ocupado y otro destino (mueve o intercambia). Colocar una ficha en un círculo ocupado devuelve la anterior al banco. Un botón «Devolver al banco» y arrastrar al banco devuelven una ficha. Escape cancela y Supr quita el grado de un círculo.
+- Los destinos son botones HTML colocados sobre los círculos de la tarjeta neutra. Su área es la celda completa del círculo (mayor que el círculo, menor de 48 px de alto) para no solaparse con la cuerda contigua. Las fichas, botones y desplegables sí miden 48 px o más.
+- Las fichas del banco son grises y sin color musical antes de verificar. Tras verificar el tablero se sustituye por la tarjeta de solución y la corrección lista cada círculo con su cuerda y traste.
+- Sin puntuación ni contadores de sesión: los pide una decisión pendiente.
+- El menú muestra «Rutas II-V-I: próximamente» como texto y no como botón.
+
 ## Pendiente
 
 Icono final; puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; hosting y licencia del código nuevo. Las referencias conservan su autoría.

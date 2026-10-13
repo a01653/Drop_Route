@@ -44,4 +44,6 @@ Comparar con nuestra ruta exacta. No sustituir por un optimizador ni declarar qu
 
 La fuente HTML es autoridad de las posiciones normalizadas. Los PDF son guías de imágenes de Pedro Bellora; sus 42 páginas no se han transcrito íntegramente. Para añadir rutas se exige transcripción, auditoría física y oráculos independientes.
 
+Preguntas de reconocimiento (DR-003 y DR-004): se eligen entre las 16 formas evaluables del set y la inversión esperada sale del bajo físico. El banco de grados de la dificultad difícil es fijo: 1, 3, b3, 5, b5, 7 y b7. Se comparan tal cual con el grado de cada nota: b3 no equivale a 3, ni b5 a 5, ni b7 a 7.
+
 C6 se conserva en sourceOptionalSubstitution cuando aparece en la fuente. No se transforma automáticamente en una calidad evaluable.

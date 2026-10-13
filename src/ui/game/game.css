@@ -1,0 +1,443 @@
+/* Menú y pantallas de juego. Variables de app.css; áreas táctiles de 48 px o más. */
+.menu {
+  justify-content: flex-start;
+}
+
+.menu-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.menu h2,
+.juego h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.opciones button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0.5rem 0.875rem;
+  border: 1.5px solid var(--borde);
+  border-radius: 0.625rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+  cursor: pointer;
+}
+
+.opciones button small {
+  color: var(--tinta-suave);
+  font-size: 0.75rem;
+}
+
+.opciones button[aria-pressed='true'] {
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: #ffffff;
+}
+
+.opciones button[aria-pressed='true'] small {
+  color: #d5dcec;
+}
+
+.opciones button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.menu-pronto,
+.menu-ayuda,
+.juego-pista {
+  margin: 0;
+  color: var(--tinta-suave);
+  font-size: 0.9375rem;
+}
+
+button:focus-visible,
+select:focus-visible,
+h1:focus-visible,
+h2:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+
+.boton-principal,
+.boton-secundario {
+  min-height: 48px;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.625rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boton-principal {
+  border: 1.5px solid var(--tinta);
+  background: var(--tinta);
+  color: #ffffff;
+}
+
+.boton-principal:disabled {
+  border-color: var(--borde);
+  background: #e6eaf4;
+  color: #5b6285;
+  cursor: not-allowed;
+}
+
+.boton-secundario {
+  border: 1.5px solid var(--borde);
+  background: var(--tarjeta);
+  color: var(--tinta);
+}
+
+/* Pantalla de pregunta */
+.juego {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 30rem;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 1rem 1rem 2.5rem;
+}
+
+.juego h1 {
+  font-size: 1.5rem;
+  letter-spacing: 0;
+}
+
+.juego-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.juego-cabecera p {
+  margin: 0;
+  color: var(--tinta-suave);
+  text-align: right;
+}
+
+.juego-tarjeta {
+  margin: 0;
+}
+
+.juego-pie {
+  margin: 0.25rem 0 0;
+  text-align: center;
+  color: var(--tinta-suave);
+  font-size: 0.9375rem;
+}
+
+.juego-respuesta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.juego-respuesta h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--tinta);
+}
+
+.opciones-acorde {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.opciones-acorde button {
+  align-items: center;
+  min-height: 56px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.desplegables {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.desplegables label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+.desplegables select {
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--tinta-suave);
+  border-radius: 0.625rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.desplegables select:disabled {
+  background: #eef1f8;
+  color: var(--tinta);
+  opacity: 1;
+}
+
+/* Corrección: color y también texto y símbolo */
+.opciones-acorde button.ok,
+.opciones-acorde button.ko {
+  color: #ffffff;
+}
+
+.opciones-acorde button.ok:disabled,
+.opciones-acorde button.ko:disabled {
+  opacity: 1;
+}
+
+.opciones-acorde button.ok {
+  border-color: #166534;
+  background: #166534;
+}
+
+.opciones-acorde button.ko {
+  border-color: #b91c1c;
+  background: #b91c1c;
+}
+
+.opciones-acorde button:disabled:not(.ok):not(.ko) {
+  opacity: 0.55;
+}
+
+.resultado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--tarjeta);
+}
+
+.resultado h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--tinta);
+}
+
+.correccion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.correccion li {
+  display: flex;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-left: 4px solid;
+  border-radius: 0.5rem;
+}
+
+.correccion li.ok {
+  border-color: #166534;
+  background: #e8f6ee;
+}
+
+.correccion li.ko {
+  border-color: #b91c1c;
+  background: #fdecec;
+}
+
+.correccion .marca {
+  font-weight: 800;
+}
+
+.correccion li.ok .marca {
+  color: #166534;
+}
+
+.correccion li.ko .marca {
+  color: #b91c1c;
+}
+
+/* Difícil: destinos sobre la tarjeta y banco fijo de grados */
+.tablero-grados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tablero {
+  position: relative;
+  container-type: inline-size;
+}
+
+.destino {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.destino.ocupado {
+  cursor: grab;
+  touch-action: none;
+}
+
+.destino-ficha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 1.4px dashed #6d7699;
+  border-radius: 50%;
+  color: var(--tinta);
+  font-size: 4.9cqw;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.destino.ocupado .destino-ficha {
+  border-style: solid;
+  background: #c8cde0;
+}
+
+.destino.objetivo .destino-ficha {
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.55);
+}
+
+.destino[aria-pressed='true'] .destino-ficha {
+  background: #ffffff;
+  box-shadow: 0 0 0 3px #0284c7;
+}
+
+.destino:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: -2px;
+}
+
+.banco {
+  padding: 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--tarjeta);
+}
+
+.banco h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.fichas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ficha {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0.25rem 0.75rem;
+  border: 1.5px solid #6d7699;
+  border-radius: 0.625rem;
+  background: #e6eaf4;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.ficha[aria-pressed='true'] {
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: #ffffff;
+}
+
+.ficha.colocada {
+  border-style: dashed;
+  cursor: default;
+  opacity: 0.4;
+  touch-action: auto;
+}
+
+.devolver {
+  margin-top: 0.5rem;
+}
+
+.devolver:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ficha-fantasma {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--tinta);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--tinta);
+  font-size: 1.125rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(20, 24, 58, 0.25);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.tablero-estado {
+  min-height: 3rem;
+  margin: 0;
+  color: var(--tinta-suave);
+  font-size: 0.9375rem;
+}
+
+.tablero-nota {
+  margin: 0;
+  color: var(--tinta-suave);
+  font-size: 0.8125rem;
+}
+
+.resumen {
+  margin: 0;
+  color: var(--tinta-suave);
+}

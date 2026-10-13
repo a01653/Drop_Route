@@ -4,6 +4,16 @@
 
 Lee la orden, comprueba git status --short y la rama activa. Una rama por objetivo, creada antes del primer cambio: feat/, fix/, docs/, test/ o chore/. Si el árbol está limpio, parte de main actualizado con git pull --ff-only.
 
+## Bloques de órdenes
+
+Por defecto se ejecuta una orden de trabajo por petición. El usuario puede autorizar expresamente, en su petición, un bloque de varias órdenes consecutivas. Los bloques admitidos son: DR-003 con DR-004, DR-005 por separado y DR-006 con DR-007. Sin esa autorización expresa no se enlazan órdenes, y un bloque no autoriza avanzar al siguiente.
+
+- Una rama por bloque, creada antes del primer cambio: la que nombre el usuario o, si no nombra ninguna, la de la primera orden del bloque.
+- Las órdenes se ejecutan en el orden del bloque. Entre fases se ejecutan sus pruebas dirigidas, se corrigen los fallos y se registran los resultados de cada fase en docs/validation. Se continúa con la siguiente sin pedir aprobación intermedia.
+- Hay que detenerse y consultar solo ante una contradicción importante con los contratos o una decisión que corresponda al usuario.
+- La batería final aplicable se ejecuta una vez sobre el estado exacto del bloque completo, y la revisión humana llega al terminar el bloque. Las reglas de commit, merge, tag, push y publicación no cambian: hacen falta órdenes que las nombren.
+- Si el bloque incluye DR-007, rigen sus reglas de cierre documental; si no, el calendario documental sigue aplazando LaTeX/PDF y manuales.
+
 No descartar ni incluir cambios ajenos. Si una modificación previa afecta la tarea, identifica su propósito antes de actuar. Ajustes del mismo objetivo continúan en la misma rama.
 
 El 13/10/2026 el usuario autorizó expresamente subir esta base completa a a01653/Drop_Route, incluyendo la plantilla HTML y las dos guías PDF originales, conociendo que quedarán públicas. La autorización cubre esta entrega inicial; las publicaciones posteriores siguen las reglas siguientes.

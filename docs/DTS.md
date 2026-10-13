@@ -3,7 +3,7 @@
 Repositorio: a01653/Drop_Route. Revisión: base reconstruida y base técnica de la aplicación (DR-001), 13/10/2026.
 Paquete: 0.0.0. Autor del proyecto: Jesús Quevedo Rodríguez.
 
-Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación con una pantalla de arranque y, desde DR-002, el renderizador de tarjetas SVG, el icono y una pantalla de revisión de ambos. Los juegos, el progreso y la PWA todavía no existen, y el icono sigue pendiente de aprobación. La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
+Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación con una pantalla de arranque y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil, pendiente de revisión humana. Las rutas II-V-I, el progreso y la PWA todavía no existen. La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
 ## Objetivo y alcance
 
@@ -31,10 +31,10 @@ La geometría no decide la respuesta y los componentes no duplican el catálogo.
 | --- | --- |
 | `src/data` | Tipos y acceso a `data/catalog.json` y `data/routes.json`, que siguen siendo la única definición de datos. |
 | `src/music` | Altura física (MIDI) e inversión por bajo real. Funciones puras. |
-| `src/session` | Solo la fase de arranque. Sin React. |
-| `src/ui` | Pantalla de arranque, renderizador de tarjetas SVG (`card/`) y pantalla de revisión de tarjetas e icono (`review/`). |
+| `src/session` | Menú, preguntas de reconocimiento, respuesta, corrección por campos, banco de grados y reductor de acciones, con semilla reproducible. Sin React. |
+| `src/ui` | Menú y pantallas de juego (`game/`), renderizador de tarjetas SVG (`card/`) y pantalla de revisión de tarjetas e icono (`review/`). |
 
-La dependencia permitida es ui, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music o session usen React, de modo que pueden probarse sin DOM. La persistencia no existe todavía, y tampoco el motor de preguntas ni los juegos.
+La dependencia permitida es ui, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music o session usen React, de modo que pueden probarse sin DOM. La persistencia no existe todavía, y tampoco las rutas II-V-I.
 
 ## Tecnologías y dependencias
 
@@ -91,7 +91,7 @@ Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo utiliza l
 | Rutas | Partida fija y una candidata visible. |
 | Corrección | Resultado por campos y avance explícito. |
 
-De esta tabla existe solo la Tarjeta, en vista neutra y de solución, que se ve en la pantalla de revisión `#/revision`. Configuración, respuesta, grados, rutas y corrección no existen. Las pantallas actuales son la de arranque, con el nombre, el estado de desarrollo y un resumen de los datos, y la de revisión, que no es un juego.
+De esta tabla existen la Configuración (el menú), la Tarjeta (neutra y de solución), la Respuesta (cuatro botones o dos desplegables), los Grados (cuatro destinos sobre la tarjeta, banco fijo, arrastre, dos toques y teclado) y la Corrección (resultado por campos y avance explícito). No existen las Rutas. Las pantallas actuales son el menú, la pregunta de reconocimiento y la de revisión `#/revision`, que no es un juego. El estado de la sesión vive en `App` con un reductor puro (`reduceSession`); las semillas las genera la interfaz y no el reductor.
 
 La vista neutra solo recibe las posiciones de las notas y la de solución añade nombre, calidad y grados. Son tipos distintos, de modo que la neutra no puede dibujar ni etiquetar la solución. La geometría es una función pura, probada sin navegador. Las medidas, las ventanas de trastes, los colores y las fuentes están descritos en `docs/VISUAL.md`.
 
@@ -105,7 +105,7 @@ Seleccionar no evalúa. Verificar exige respuesta completa y produce un único r
 
 La corrección no sobrescribe lo que contestó el usuario. Si falla el V de una ruta, el paso V-I debe partir del V correcto.
 
-Hoy la sesión solo tiene la fase de arranque; el modelo anterior es el diseño que llegará con los juegos. DR-006 añadirá progreso local con esquema independiente de la versión de app. Ninguna persistencia está implementada todavía.
+La sesión implementa ese modelo con tres fases: `menu`, `pregunta` y `verificada`. Seleccionar cambia la respuesta pero no verifica ni puntúa. Verificar solo actúa con la respuesta completa del nivel, calcula el resultado una sola vez y bloquea la respuesta; verificar de nuevo, cambiar campos o mover grados después no hace nada. Siguiente abre otra pregunta con la misma configuración sin repetir la forma anterior mientras haya alternativas (cada set tiene 16). Salir vuelve al menú y conserva la última configuración mientras la página siga abierta. DR-006 añadirá progreso local con esquema independiente de la versión de app. Ninguna persistencia está implementada todavía.
 
 ## Modelo musical
 
@@ -148,13 +148,15 @@ Opciones únicas y una correcta. En tests, fixture o semilla reproducible. El ba
 
 Corrección por acorde, inversión y cada destino. Acierto completo exige todos los campos del nivel. Registrar una sola respuesta por primer intento y bloquear cambios al verificar.
 
+Implementado en DR-003 y DR-004: fácil exige solo el acorde, medio acorde e inversión y difícil, además, los cuatro grados. La inversión correcta sale del bajo físico de la forma y no de su etiqueta. En difícil el banco es fijo, igual para todas las preguntas y con siete grados únicos (1, 3, ♭3, 5, ♭5, 7 y ♭7), de modo que sobran tres y no delata la solución; cada grado se compara tal cual con la nota de su círculo, así que ♭3 no es 3. Arrastre, dos toques y teclado envían las mismas acciones a la sesión. La corrección da un resultado por campo (acorde, inversión y cada círculo) con texto, símbolo y color, conserva los aciertos parciales y muestra la solución con la tarjeta de colores.
+
 ## Móvil y accesibilidad
 
 El fondo es el tramo corto de mástil de las tarjetas, no un mástil completo de doce trastes. En rutas, partida arriba, candidata debajo y selector 1/2/3/4; no cuatro candidatas pequeñas simultáneas.
 
 Pregunta con círculos grises y fondo común. No revelar solución mediante nombre, título, tooltip o nombre accesible de las opciones. Al corregir, recuperar colores musicales y usar texto/símbolos además de rojo/verde.
 
-Arrastre con tolerancia, alternativa de tocar ficha y destino y operación por teclado. Áreas táctiles mayores que los círculos visibles. Las tarjetas ya se miden en un E2E a 360, 390 y 430 px, y los controles de la pantalla de revisión superan los 48 px; los juegos, el arrastre y las rutas se probarán a esos anchos cuando existan.
+Arrastre con tolerancia, alternativa de tocar ficha y destino y operación por teclado. Áreas táctiles mayores que los círculos visibles. Las tarjetas ya se miden en un E2E a 360, 390 y 430 px, y los controles de la pantalla de revisión superan los 48 px; el juego de reconocimiento, con su arrastre, se mide a esos anchos en E2E (sin desplazamiento horizontal, tarjeta completa, fichas, botones y desplegables de 48 px o más y destinos mayores que el círculo y sin solaparse); las rutas se probarán cuando existan.
 
 ## Offline e instalación
 
@@ -190,6 +192,8 @@ DR-001 añade 15 tests Vitest en cinco ficheros y 10 ejecuciones E2E (cinco esce
 
 DR-002 eleva Vitest a 50 tests en ocho ficheros y los E2E a 27 ejecuciones, sin omitidos. Vitest comprueba, para las 112 formas, que cada círculo queda centrado entre dos trastes y sobre su cuerda, que cabe dentro del mástil y del lienzo, que no se solapa, que hay dos cuerdas marcadas con ×, que la numeración y el cejuelo son los esperados y que las cuatro calidades de un set e inversión comparten ventana, incluida la de Drop 2+4 set 1, 3ª inversión, que empieza en el traste 12 como la plantilla sin añadir C6. Verifica también tres oráculos leídos del DOM de la plantilla. La vista neutra se comprueba en las 112 formas: solo usa sus grises, solo contiene números como texto, no lleva identificadores ni títulos y su nombre accesible lista únicamente posiciones. Una prueba demuestra que depende solo de las posiciones. La solución se comprueba contra el color y la etiqueta de cada círculo. En los E2E, las tarjetas se miden sobre el DOM renderizado a 360, 390 y 430 px, en neutra y solución, en los siete sets y en los dos proyectos. Otro E2E abre la plantilla original en el navegador y compara sus 112 tarjetas con las de la aplicación en ventana (sin excepciones), posición de cada círculo, cejuelo, marcas, nombre, familia, colores y etiquetas. Los tests del icono decodifican su PNG de 32 px y miden color, contraste y separación de los cuatro círculos.
 
+DR-003 y DR-004 elevan Vitest a 123 tests en trece ficheros y los E2E a 79 ejecuciones, sin omitidos. Vitest comprueba con semilla y fixtures: opciones únicas y permutación de las cuatro calidades evaluables, ausencia de repetición inmediata en los siete sets, repetición admitida solo con una forma disponible, respuesta completa por nivel, corrección por campos con la inversión sacada del bajo físico (fixture con la etiqueta mal declarada y las notas desordenadas), las 112 formas corregidas como correctas, el banco fijo de siete grados sin duplicados, las acciones de colocar, mover, intercambiar, devolver, cancelar y quitar con 200 secuencias aleatorias que conservan sus invariantes, la comparación de b3, b5 y b7 con 3, 5 y 7, y las pantallas con sus estados y sin pistas. Los E2E recorren el juego en el build: fácil correcto e incorrecto, medio con inversión fallida, difícil por dos toques, arrastre con ratón, arrastre táctil con eventos reales de Chromium, pointercancel, soltar fuera, cambio, devolución, cancelación, teclado, aciertos parciales, Siguiente, Salir, los siete sets y 360, 390 y 430 px. La respuesta correcta se deduce en el E2E de las posiciones visibles y de `data/catalog.json`, sin semilla de pruebas ni atajos en la aplicación.
+
 Los controles principales se probaron con mutaciones deliberadas: círculos desplazados 3 px, un dígito de color cambiado y círculos del icono encogidos. Cada una hizo fallar el test correspondiente.
 
 El lint y las reglas de capas se probaron con importaciones prohibidas deliberadas, y las exclusiones de Vitest con tests que fallarían si se ejecutaran. Esas pruebas fueron manuales y no forman parte de la suite. Los resultados concretos están en el registro de validación de DR-001 del repositorio. No son cobertura del juego, que todavía no existe.
@@ -223,8 +227,10 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 
 ## Limitaciones actuales
 
-- La interfaz se reduce a la pantalla de arranque y a la de revisión de tarjetas e icono: no hay juegos, progreso, PWA ni revisión funcional móvil de los juegos. Las pruebas móviles usan emulación de Chromium, no un dispositivo real.
-- El icono está pendiente de aprobación visual y no incluye aún los tamaños de la PWA ni la variante maskable.
+- Solo existe el juego de reconocimiento: no hay rutas II-V-I, progreso ni PWA. Las pruebas móviles usan emulación de Chromium, también el arrastre táctil, que se probó con eventos táctiles de Chromium y no con un dedo real ni con Safari.
+- En difícil, el área táctil de cada destino es la celda del círculo (un traste por la separación de cuerdas, unos 55 por 25 px a 360 px): mayor que el círculo visible, pero menor que 48 px de alto porque las cuerdas están a 20 unidades y áreas mayores se solaparían. Las fichas, botones y desplegables sí superan los 48 px.
+- No hay puntuación ni recuento de aciertos de la sesión; la puntuación detallada sigue pendiente de decisión.
+- El icono está aprobado y no incluye aún los tamaños de la PWA ni la variante maskable.
 - Las tarjetas no dibujan la sustitución C6 de la plantilla ni la añaden a los ejercicios, pero su ventana cuenta el traste de la sexta como la plantilla. Por eso las cuatro tarjetas de Drop 2+4 set 1, 3ª inversión, empiezan en el traste 12 y no en el 13, con las mismas notas.
 - Las fuentes manuscritas pesan 87 kB y se descargan al mostrar tarjetas; hasta entonces el texto usa una fuente de respaldo.
 - El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.

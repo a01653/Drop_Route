@@ -6,7 +6,7 @@
 
 Lee docs/PROJECT.md, docs/DECISIONS.md y docs/DTS.md. Después abre la orden de trabajo indicada por el usuario. Para cambios musicales lee docs/MUSIC.md; para dibujos y móvil, docs/VISUAL.md.
 
-La interfaz se reduce a la pantalla de arranque de DR-001 y a la de revisión de tarjetas e icono de DR-002; los juegos todavía no existen. Ejecuta una sola orden de trabajo por petición. No conviertas DR-001 en la implementación completa del juego.
+La interfaz tiene el menú, el juego de reconocimiento en sus tres dificultades (DR-003 y DR-004) y la pantalla de revisión de tarjetas e icono (DR-002); las rutas II-V-I, el progreso y la PWA todavía no existen. Ejecuta una sola orden de trabajo por petición, salvo que el usuario autorice expresamente un bloque (DR-003 con DR-004, DR-005 por separado o DR-006 con DR-007): véase «Bloques de órdenes» en AGENTS.md. No conviertas DR-001 en la implementación completa del juego.
 
 ## Reglas del producto
 
@@ -32,7 +32,7 @@ Cdim7 se conserva como referencia y no se ofrece en preguntas. C6 es una sustitu
 
 ## Verificación y documentación
 
-Los tests de la base usan node:test y verifican los datos; Vitest cubre las capas de src y Playwright el humo del build. No hay pruebas de juego aún. Consulta docs/TEST_PLAN.md. No inventes resultados o comandos.
+Los tests de la base usan node:test y verifican los datos; Vitest cubre las capas de src y Playwright el humo del build, las tarjetas y el juego de reconocimiento. Aún no hay pruebas de rutas ni de persistencia. Consulta docs/TEST_PLAN.md. No inventes resultados o comandos.
 
 Distingue siempre lo existente de lo planificado. Actualiza los requisitos y el DTS en Markdown en la misma rama si cambia su comportamiento documentado.
 

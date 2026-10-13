@@ -4,15 +4,17 @@
 
 51 pruebas con node:test (`npm run test:base`). Las 24 de la base musical validan 124 posiciones y 16 rutas, integridad SHA-256 y extracción reproducible. Las 11 de `tests/tooling.test.mjs` cubren el lanzador de Python (versiones, orden de candidatos, error claro cuando falta) y que el workflow y Playwright conservan sus pasos. Las 9 de `tests/documentation-policy.test.mjs` cubren la política documental y las 7 de `tests/icon.test.mjs`, el icono: hashes, tamaños reales de los PNG y legibilidad a 32 px medida sobre sus píxeles.
 
-50 tests Vitest (`npm run test:unit`) en ocho ficheros: las capas de datos, música y sesión, la configuración, las pantallas de arranque y de revisión, y las tarjetas (geometría de las 112 formas, vista neutra sin pistas y vista de solución). `npm test` ejecuta primero node:test y después Vitest.
+123 tests Vitest (`npm run test:unit`) en trece ficheros: las capas de datos, música y sesión (menú, preguntas, corrección por campos, banco y acciones de grados, reductor), la configuración, las pantallas de menú, pregunta y revisión, y las tarjetas (geometría de las 112 formas, vista neutra sin pistas y vista de solución). `npm test` ejecuta primero node:test y después Vitest.
 
-27 ejecuciones E2E (`npm run test:e2e`) sobre el build servido por vite preview: cinco escenarios de humo y ocho de tarjetas en un proyecto de escritorio y otro móvil, más la comparación con la plantilla original, que se ejecuta una vez. Las de tarjetas miden el DOM a 360, 390 y 430 px en los siete sets y en neutra y solución.
+79 ejecuciones E2E (`npm run test:e2e`) sobre el build servido por vite preview: cinco escenarios de humo, ocho de tarjetas, trece de reconocimiento fácil y medio y trece de difícil, en un proyecto de escritorio y otro móvil, más la comparación con la plantilla original, que se ejecuta una vez. Las de tarjetas miden el DOM a 360, 390 y 430 px en los siete sets y en neutra y solución.
 
-Lint (`npm run lint`) y comprobación de tipos (`npm run typecheck`, incluida en `npm run build`). No hay todavía pruebas de juego, rutas ni persistencia. No crear tests omitidos que simulen cobertura.
+Lint (`npm run lint`) y comprobación de tipos (`npm run typecheck`, incluida en `npm run build`). Hay pruebas del juego de reconocimiento; no hay todavía pruebas de rutas ni de persistencia. No crear tests omitidos que simulen cobertura.
 
 La política documental tiene regresiones con fixtures temporales en `tests/documentation-policy.test.mjs`: fuentes pendientes admitidas durante desarrollo, rechazo en modo final/required, cierre con hashes sincronizados, derivados ausentes o alterados y política/manifiesto inválidos. Aplazar la generación no desactiva estos controles.
 
-## Matriz futura
+## Matriz
+
+Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil de los juegos de reconocimiento y pistas en las opciones de respuesta. Siguen pendientes rutas, persistencia y PWA.
 
 | Área | Comportamiento a probar |
 | --- | --- |

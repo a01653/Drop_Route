@@ -60,4 +60,6 @@ El renderizador está en `src/ui/card/`. La pantalla de revisión `#/revision` m
 
 **Bemoles.** Se dibujan como trazo vectorial dentro del círculo, porque Gochi Hand no tiene el glifo ♭ y los símbolos del sistema varían de un dispositivo a otro. En texto de la interfaz se escriben con ♭.
 
+**Pantallas de juego (DR-003 y DR-004).** El menú (Drop, set con sus cuerdas, dificultad y Empezar) y la pregunta usan las mismas tarjetas aprobadas. Antes de verificar la tarjeta es la vista neutra; al verificar pasa a la de solución. En fácil, cuatro botones de acorde en dos columnas, en orden variable; en medio, dos desplegables nativos, Acorde e Inversión; en difícil, además, el banco de siete grados grises bajo la tarjeta y cuatro destinos sobre sus círculos (línea de puntos si están vacíos, círculo gris con el grado si están ocupados, anillo azul al sostener una ficha). La corrección marca cada campo con ✓ o ✗, la palabra «correcto» o «incorrecto» y un color verde o rojo, y el botón elegido en fácil queda marcado. Los controles miden 48 px o más; los destinos de difícil son la celda del círculo. Máximo de 30 rem de ancho, centrado.
+
 **Fuentes.** Gochi Hand y Caveat Brush, extraídas sin modificar de la plantilla, con sus licencias SIL OFL en `src/ui/card/fonts/`. Suman 87 kB y el navegador las descarga al mostrar tarjetas.

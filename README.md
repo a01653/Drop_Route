@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado: en desarrollo. Existen la base técnica de la aplicación (DR-001), las tarjetas SVG, el icono y una pantalla de revisión de ambos (DR-002); los juegos todavía no están implementados y el icono espera aprobación.** Claude Code realizará la interfaz por órdenes de trabajo.
+**Estado: en desarrollo. Existen la base técnica de la aplicación (DR-001), las tarjetas SVG, el icono (aprobado) y su pantalla de revisión (DR-002) y el juego de reconocimiento de voicings en sus tres dificultades (DR-003 y DR-004, pendientes de revisión humana). Las rutas II-V-I, el progreso local y la PWA todavía no existen.** Claude Code realizará la interfaz por órdenes de trabajo.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -13,10 +13,10 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - Plantilla HTML y dos guías PDF originales en [references](references/README.md).
 - Datos: 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
 - 51 tests con node:test (24 de la base musical, 11 del utillaje, 9 de la política documental y 7 del icono) y auditorías de música y procedencia.
-- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 50 tests Vitest.
+- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 123 tests Vitest.
 - Tarjetas SVG de las 112 formas, en vista neutra y de solución, con la apariencia de la plantilla ([cómo y qué difiere](docs/VISUAL.md)).
 - Icono: [original SVG editable y exportaciones](assets/icon/README.md).
-- 27 ejecuciones E2E con Playwright sobre el build: humo, tarjetas a 360, 390 y 430 px, y comparación con la plantilla original.
+- 79 ejecuciones E2E con Playwright sobre el build: humo, tarjetas a 360, 390 y 430 px, comparación con la plantilla original y el juego de reconocimiento (fácil, medio y difícil con arrastre, dos toques y teclado).
 - [DTS principal](docs/DTS.md), su [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX derivado.
 - [Plan de pruebas](docs/TEST_PLAN.md) y [siete órdenes de trabajo](docs/work-orders/README.md).
 
@@ -82,7 +82,7 @@ docs:build requiere Pandoc y LuaLaTeX completo o XeLaTeX. Genera las versiones L
 
 docs:check conserva las comprobaciones de enlaces e integridad y declara los cambios pendientes de regeneración. docs:check:final exige la sincronización completa de los derivados y se aplica en DR-007. El PDF existente corresponde a la última generación, no necesariamente al Markdown actual. La política explícita está en `docs/documentation-policy.json`.
 
-Con `npm run dev` o `npm run preview`, la raíz muestra el nombre y el estado de desarrollo, y `#/revision` abre la pantalla de revisión: las 112 tarjetas por set, en vista neutra o de solución, y el icono a tamaño real. No hay juegos todavía.
+Con `npm run dev` o `npm run preview`, la raíz es el menú: eliges Drop, set (con sus cuerdas) y dificultad y empiezas a reconocer voicings. Fácil usa cuatro botones de acorde, medio añade la inversión con dos desplegables y difícil añade colocar los grados sobre los cuatro círculos, por arrastre, dos toques o teclado. `#/revision` abre la pantalla de revisión: las 112 tarjetas por set, en vista neutra o de solución, y el icono a tamaño real. Las rutas II-V-I todavía no se pueden jugar.
 
 ## Instantáneas históricas
 
