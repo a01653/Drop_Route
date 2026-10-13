@@ -1,0 +1,1642 @@
+{
+  "schemaVersion": 1,
+  "source": "references/laminas-drop-original.html",
+  "sourceSha256": "b1786e2b19faae8741c22b62f47b59d69f72686f60c9180d5dd3a6cdcf24bcfa",
+  "sourceDocumentVersion": "1.0",
+  "routes": [
+    {
+      "id": "d2s1-major-i0",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 0,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 14,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "b3"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 2,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 0,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "7"
+            },
+            {
+              "string": 1,
+              "fret": 12,
+              "degree": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s1-major-i1",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 1,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 5,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 3,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 1,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 2,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "7"
+            },
+            {
+              "string": 2,
+              "fret": 1,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s1-major-i2",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 2,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 7,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 0,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 7,
+              "degree": "3"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 2,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 5,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 7,
+              "degree": "7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s1-major-i3",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 3,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 1,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 3,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "7"
+            },
+            {
+              "string": 3,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            }
+          ],
+          "sourceOptionalSubstitution": "C6"
+        }
+      ]
+    },
+    {
+      "id": "d2s1-minor-i0",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 0,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 13,
+              "degree": "b5"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "b3"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 2,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 0,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 11,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 11,
+              "degree": "b3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s1-minor-i1",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 1,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 4,
+              "degree": "b5"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 3,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 1,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 1,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 3,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 1,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s1-minor-i2",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 2,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 6,
+              "degree": "b5"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 0,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 7,
+              "degree": "3"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 2,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 4,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 6,
+              "degree": "b7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s1-minor-i3",
+      "setId": "D2S1",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 3,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 9,
+              "degree": "b5"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 1,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 3,
+          "setId": "D2S1",
+          "notes": [
+            {
+              "string": 4,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-major-i0",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_SET2_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 0,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 7,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b3"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 2,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 0,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "7"
+            },
+            {
+              "string": 2,
+              "fret": 5,
+              "degree": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-major-i1",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_SET2_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 1,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 10,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 3,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 1,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 7,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-major-i2",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_SET2_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 2,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 0,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "3"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 2,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-major-i3",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "major",
+      "sourceConstant": "IIVI_SET2_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7",
+          "inversion": 3,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 15,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 14,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 1,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 14,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cmaj7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "maj7",
+          "inversion": 3,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 14,
+              "degree": "7"
+            },
+            {
+              "string": 4,
+              "fret": 14,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            }
+          ],
+          "sourceOptionalSubstitution": "C6"
+        }
+      ]
+    },
+    {
+      "id": "d2s2-minor-i0",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_SET2_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 0,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 6,
+              "degree": "b5"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b3"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 2,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 0,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 3,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 4,
+              "degree": "b3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-minor-i1",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_SET2_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 1,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 9,
+              "degree": "b5"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 3,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 1,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-minor-i2",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_SET2_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 2,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 11,
+              "degree": "b5"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 0,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "3"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 2,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 11,
+              "degree": "b7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2s2-minor-i3",
+      "setId": "D2S2",
+      "tonic": "C",
+      "mode": "minor",
+      "sourceConstant": "IIVI_SET2_MINOR_CYCLES",
+      "steps": [
+        {
+          "function": "ii",
+          "name": "Dm7(b5)",
+          "root": "D",
+          "rootPc": 2,
+          "quality": "m7b5",
+          "inversion": 3,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 15,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 13,
+              "degree": "b5"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "1"
+            }
+          ]
+        },
+        {
+          "function": "V",
+          "name": "G7",
+          "root": "G",
+          "rootPc": 7,
+          "quality": "7",
+          "inversion": 1,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 14,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "function": "I",
+          "name": "Cm7",
+          "root": "C",
+          "rootPc": 0,
+          "quality": "m7",
+          "inversion": 3,
+          "setId": "D2S2",
+          "notes": [
+            {
+              "string": 5,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 13,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

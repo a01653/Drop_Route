@@ -1,0 +1,27 @@
+{
+  "source": "docs/DTS.md",
+  "command": "python3 scripts/build_dts.py",
+  "engine": "xelatex",
+  "files": [
+    {
+      "path": "docs/DTS.md",
+      "sha256": "7773a799071b3e1b5d9bddf93d59cba48bcdef018cd698cdd190ea90a44e8d79"
+    },
+    {
+      "path": "docs/latex/DTS_Drop_Route.tex",
+      "sha256": "60b8409ade5db36af7618a321d117037d7f225f109f2d1608b208a21b01faca5"
+    },
+    {
+      "path": "docs/latex/DTS_Drop_Route.pdf",
+      "sha256": "d067acc9d7ea6440bc2c39c5add92ca4c970327d70cfab19db38a53a1d1bd3a0"
+    },
+    {
+      "path": "docs/latex/dts-template.tex",
+      "sha256": "baf9ecb51d1484fffc87ebe30f8a0c6b46fbc6c39f6c10f422c4a889a1d68ee3"
+    },
+    {
+      "path": "scripts/build_dts.py",
+      "sha256": "11a4744588b00ac3e330265c20fabe750310755cf29d813778d3820968b6e2ef"
+    }
+  ]
+}

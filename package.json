@@ -1,0 +1,17 @@
+{
+  "name": "drop-route",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "audit:music": "node scripts/audit-music.mjs",
+    "data:check": "python3 scripts/extract_reference.py --check",
+    "docs:check": "node scripts/check-docs.mjs",
+    "docs:build": "python3 scripts/build_dts.py",
+    "validate": "npm run data:check && npm run audit:music && npm test && npm run docs:check"
+  }
+}

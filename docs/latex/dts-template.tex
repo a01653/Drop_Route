@@ -1,0 +1,74 @@
+% !TeX program = lualatex
+\documentclass[a4paper,11pt]{article}
+\usepackage{fontspec}
+\IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
+\IfFontExistsTF{TeX Gyre Heros}{\setsansfont{TeX Gyre Heros}}{\setsansfont{Nimbus Sans}}
+\IfFontExistsTF{TeX Gyre Cursor}{\setmonofont{TeX Gyre Cursor}[Scale=0.88]}{\setmonofont{Nimbus Mono PS}[Scale=0.88]}
+\usepackage{babel}
+\babelprovide[import,main]{spanish}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.6cm,headheight=23pt,headsep=10pt,footskip=1.1cm]{geometry}
+\raggedbottom
+\setlength{\emergencystretch}{3em}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\clubpenalty=10000
+\widowpenalty=10000
+\usepackage{xcolor}
+\definecolor{navybg}{HTML}{0B1D2E}
+\definecolor{navydeep}{HTML}{123049}
+\definecolor{lightblue}{HTML}{8FD3FE}
+\definecolor{amber}{HTML}{F5A623}
+\definecolor{softgray}{HTML}{5B6570}
+\usepackage{titlesec,needspace}
+\titleformat{\section}{\sffamily\Large\bfseries\color{navydeep}\raggedright}{\thesection}{10pt}{}
+\titleformat{\subsection}{\sffamily\large\bfseries\color{navydeep}\raggedright}{\thesubsection}{8pt}{}
+\titlespacing*{\section}{0pt}{20pt}{9pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\small\sffamily\color{softgray}Drop Route --- Diseño Técnico del Software}
+\fancyfoot[L]{\small\sffamily\color{softgray}Base reconstruida · 13/10/2026}
+\fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\usepackage{array,longtable,booktabs,calc}
+\renewcommand{\arraystretch}{1.15}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=5pt}
+\usepackage{fancyvrb,framed,seqsplit}
+\let\originaltexttt\texttt
+\renewcommand{\texttt}[1]{\originaltexttt{\seqsplit{#1}}}
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+\usepackage{graphicx,tikz,xurl}
+\usepackage[colorlinks=true,linkcolor=navydeep,urlcolor=navydeep,bookmarksnumbered=true,pdftitle={DTS - Drop Route},pdfauthor={Jesús Quevedo Rodríguez}]{hyperref}
+\usepackage{bookmark}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\begin{document}
+\begin{titlepage}
+\newgeometry{margin=0cm}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\fill[navybg] (current page.south west) rectangle (current page.north east);
+\node[anchor=north,text width=16cm,align=center] at ([yshift=-3.3cm]current page.north) {\sffamily\bfseries\fontsize{16}{19}\selectfont\color{amber}DROP ROUTE};
+\node[anchor=north,text width=16cm,align=center] at ([yshift=-5cm]current page.north) {\sffamily\bfseries\fontsize{30}{38}\selectfont\color{white}Documento de Diseño\\Técnico del Software};
+\node[anchor=north,text width=14cm,align=center] at ([yshift=-9.2cm]current page.north) {\sffamily\fontsize{14}{20}\selectfont\color{lightblue}Voicings de guitarra y rutas II--V--I\\Base de desarrollo para Claude Code};
+\begin{scope}[shift={([xshift=2.4cm,yshift=7.7cm]current page.south west)}]
+\foreach \y in {0,0.5,1,1.5,2,2.5} {\draw[white,opacity=0.28,line width=0.7pt] (0,\y)--(16,\y);}
+\foreach \x in {0,2.5,5,7.5,10,12.5,15} {\draw[lightblue,opacity=0.25] (\x,0)--(\x,2.5);}
+\fill[amber] (3.75,1) circle (0.2);
+\fill[lightblue] (8.75,1.5) circle (0.2);
+\fill[white] (8.75,2) circle (0.2);
+\fill[lightblue] (8.75,2.5) circle (0.2);
+\end{scope}
+\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión:} base reconstruida · 13/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} juego pendiente de implementación};
+\end{tikzpicture}
+\end{titlepage}
+\restoregeometry
+\tableofcontents
+\newpage
+$body$
+\end{document}

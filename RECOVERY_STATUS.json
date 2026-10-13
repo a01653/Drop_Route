@@ -1,0 +1,26 @@
+{
+  "rebuiltAt": "2026-10-13",
+  "scope": "project-foundation",
+  "musicalAudit": "passed",
+  "dataExtractionCheck": "passed",
+  "tests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0
+  },
+  "documentationCheck": "passed",
+  "dts": {
+    "pages": 8,
+    "format": "A4",
+    "visualReview": "all pages reviewed",
+    "overfullHbox": 0
+  },
+  "applicationImplemented": false,
+  "iconImplemented": false,
+  "gitPublished": null,
+  "originalsPublicPublicationAuthorized": true,
+  "recovery": "reconstructed from confirmed requirements and original references, not a byte-for-byte recovery of the lost commit",
+  "publicationStatus": "authorized_candidate_before_initial_push",
+  "authorizationDate": "2026-10-13",
+  "publicationResultLocation": "Git history and GitHub Actions"
+}

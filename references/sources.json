@@ -1,0 +1,23 @@
+{
+  "importedAt": "2026-10-13",
+  "files": [
+    {
+      "file": "references/laminas-drop-original.html",
+      "originalName": "Laminas_Drop_2_Drop_3_Drop_2-4.html",
+      "sha256": "b1786e2b19faae8741c22b62f47b59d69f72686f60c9180d5dd3a6cdcf24bcfa",
+      "sizeBytes": 988521
+    },
+    {
+      "file": "references/ii-v-i-mayor-original.pdf",
+      "originalName": "drops guia completa - 2do-5to a 1ero mayor.pdf",
+      "sha256": "fbd50e69ca270c71fb7e82cc026fe7f4980f11533b725434faa12fd0646054fc",
+      "sizeBytes": 816854
+    },
+    {
+      "file": "references/ii-v-i-menor-original.pdf",
+      "originalName": "drops guia completa - 2do-5to a 1ero menor.pdf",
+      "sha256": "31ea2b51ddc19c9af2d2152f1a638fcee3f3654561bbfdfae0a3843367d0cc4d",
+      "sizeBytes": 720515
+    }
+  ]
+}
