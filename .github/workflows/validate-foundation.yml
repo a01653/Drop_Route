@@ -5,8 +5,30 @@ on:
 permissions:
   contents: read
 jobs:
+  # Datos, auditorías musicales, tests de la base y documentación. Necesita Python 3.10.
   foundation:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.10'
+      - run: npm ci --ignore-scripts
+      - run: npm run data:check
+      - run: npm run audit:music
+      - run: npm run test:base
+      - run: npm run docs:check
+  # Aplicación: tipos, lint, Vitest, build y E2E con Chromium sobre el build recién generado.
+  app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
         with:
@@ -16,4 +38,9 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
       - run: npm ci --ignore-scripts
-      - run: npm run validate
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

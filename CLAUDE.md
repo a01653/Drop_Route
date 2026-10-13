@@ -6,7 +6,7 @@
 
 Lee docs/PROJECT.md, docs/DECISIONS.md y docs/DTS.md. Después abre la orden de trabajo indicada por el usuario. Para cambios musicales lee docs/MUSIC.md; para dibujos y móvil, docs/VISUAL.md.
 
-La interfaz todavía no existe. Ejecuta una sola orden de trabajo por petición. No conviertas DR-001 en la implementación completa del juego.
+La interfaz se reduce a la pantalla de arranque de DR-001; los juegos todavía no existen. Ejecuta una sola orden de trabajo por petición. No conviertas DR-001 en la implementación completa del juego.
 
 ## Reglas del producto
 
@@ -32,8 +32,10 @@ Cdim7 se conserva como referencia y no se ofrece en preguntas. C6 es una sustitu
 
 ## Verificación y documentación
 
-Los tests actuales usan node:test y verifican los datos; no hay pruebas de interfaz aún. Consulta docs/TEST_PLAN.md. No inventes resultados o comandos.
+Los tests de la base usan node:test y verifican los datos; Vitest cubre las capas de src y Playwright el humo del build. No hay pruebas de juego aún. Consulta docs/TEST_PLAN.md. No inventes resultados o comandos.
 
-Distingue siempre lo existente de lo planificado. Actualiza los requisitos y el DTS en la misma rama si cambia su comportamiento documentado.
+Distingue siempre lo existente de lo planificado. Actualiza los requisitos y el DTS en Markdown en la misma rama si cambia su comportamiento documentado.
+
+Durante DR-001 a DR-006 no regeneres LaTeX/PDF ni prepares los manuales completos o sus capturas. Se concentran en DR-007 por decisión del usuario. Ejecuta docs:check en cada fase; en DR-007 aplica también docs:check:final y la revisión visual completa indicada en AGENTS.md. Los tests del código no se aplazan.
 
 Referencia de instrucciones persistentes: https://code.claude.com/docs/en/memory

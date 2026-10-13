@@ -6,3 +6,4 @@
 *.html text eol=lf
 *.pdf binary
 references/laminas-drop-original.html -whitespace
+*.tex text eol=lf

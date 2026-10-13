@@ -44,12 +44,12 @@ def main():
             cols = "".join(r">{\raggedright\arraybackslash}p{\dimexpr"+f"{f:.6f}"+r"\linewidth-"+f"{padding:.6f}"+r"\tabcolsep\relax}" for f in fractions)
             return r"\begin{longtable}[]{@{}"+cols+r"@{}}"
         latex = re.sub(r"\\begin\{longtable\}\[\]\{@\{\}([lcr]+)@\{\}\}",columns,latex)
-        latex = re.sub(r"(\\hypertarget\{[^\n]+\}\{%\s*\\section)",r"\\Needspace{4cm}\n\1",latex)
+        latex = re.sub(r"^(\\hypertarget\{[^\n]+\}\{%\s*\\section|\\section)",r"\\Needspace{4cm}\n\1",latex,flags=re.M)
         latex = latex.replace("% !TeX program = lualatex","% !TeX program = "+args.engine)
-        tex.write_text("% Source-SHA256: "+source_hash+"\n"+latex,encoding="utf-8")
+        tex.write_text("% Source-SHA256: "+source_hash+"\n"+latex,encoding="utf-8",newline="\n")
         for _ in range(3):
             result = subprocess.run([args.engine,"-interaction=nonstopmode","-halt-on-error",
-                                     "-output-directory="+str(temp),str(tex)],
+                                     "-output-directory=.",tex.name],
                                     cwd=temp,capture_output=True,text=True)
             if result.returncode:
                 print(result.stdout[-6000:])
@@ -63,9 +63,9 @@ def main():
         for ext in [".tex",".pdf"]:
             shutil.copyfile(temp/(NAME+ext),DEST/(NAME+ext))
     files = [MD,DEST/(NAME+".tex"),DEST/(NAME+".pdf"),TEMPLATE,Path(__file__).resolve()]
-    manifest = {"source":"docs/DTS.md","command":"python3 scripts/build_dts.py","engine":args.engine,
-                "files":[{"path":str(p.relative_to(ROOT)),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
-    (DEST/(NAME+".build.json")).write_text(json.dumps(manifest,indent=2)+"\n")
+    manifest = {"source":"docs/DTS.md","command":"npm run docs:build","engine":args.engine,
+                "files":[{"path":p.relative_to(ROOT).as_posix(),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
+    (DEST/(NAME+".build.json")).write_text(json.dumps(manifest,indent=2)+"\n",newline="\n")
     print("DTS generado; sin Overfull hbox")
 
 

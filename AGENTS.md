@@ -23,7 +23,7 @@ Pruebas dirigidas del comportamiento y sus consumidores. Regresión unitaria par
 
 No ejecutar la batería completa en cada retoque. Antes de E2E o revisión visual con Vite, generar el build actual y comprobar que el preview lo sirve. No iniciar preview automáticamente.
 
-Actualmente existen npm test, npm run audit:music, npm run data:check, npm run docs:check y npm run validate. Vitest, Playwright, lint y build se incorporan en DR-001.
+Actualmente existen npm test (node:test y Vitest), npm run audit:music, npm run data:check, npm run docs:check, npm run docs:check:final, npm run validate, npm run dev, build, preview, typecheck, lint y npm run test:e2e (Playwright).
 
 ## Cierre
 
@@ -33,10 +33,14 @@ Una aprobación funcional no autoriza commit, merge, tag, push o publicación. H
 
 Una versión por entrega. No incrementarla por ajustes, previews o cambios documentales. No hacer force push, borrar ramas remotas o cambiar visibilidad por iniciativa propia.
 
-## DTS
+## DTS y manuales
 
 docs/DTS.md es la fuente principal. docs/latex/DTS_Drop_Route.tex y su PDF son derivados.
 
-Actualizar cuando cambien arquitectura, modelo musical, estado/persistencia, navegación, flujos, dependencias, estrategia de pruebas, build/despliegue o limitaciones. Una errata o retoque cosmético no exige regeneración.
+Durante DR-001 a DR-006, actualizar docs/DTS.md cuando cambien arquitectura, modelo musical, estado/persistencia, navegación, flujos, dependencias, estrategia de pruebas, build/despliegue o limitaciones. Mantener también README, instrucciones y registro de validación correctos. No copiar cifras de tests de Mástil.
 
-Ejecutar npm run docs:build, renderizar y revisar todas las páginas y resolver desbordes o referencias pendientes. Mantener Markdown, LaTeX y PDF en la misma entrega. No copiar cifras de tests de Mástil.
+El usuario ha decidido el 13/10/2026 aplazar la generación de LaTeX/PDF, los manuales completos, las capturas y la revisión visual documental a DR-007. No ejecutar docs:build ni repetir esa revisión al cerrar cada fase intermedia, salvo petición expresa. Conservar los derivados existentes como la última edición generada; no presentarlos como documentación actualizada.
+
+docs/documentation-policy.json declara si los derivados están aplazados o son obligatorios. npm run docs:check comprueba enlaces, documentos e integridad de los derivados existentes; en modo deferred informa de los cambios pendientes sin exigir recompilación. Esta excepción no permite archivos ausentes, manifiestos inválidos o derivados alterados.
+
+En DR-007, terminar el DTS Markdown y los manuales de uso e instalación según el funcionamiento real. Ejecutar npm run docs:build, renderizar y revisar todas las páginas, resolver desbordes y referencias pendientes, cambiar dtsDerivatives a required y ejecutar npm run docs:check:final. Entregar entonces Markdown, LaTeX, PDF y manuales coherentes. Las pruebas de código y las auditorías siguen siendo obligatorias en cada fase.

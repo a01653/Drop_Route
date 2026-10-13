@@ -4,14 +4,43 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.node.json",
+    "lint": "eslint .",
+    "test": "npm run test:base && npm run test:unit",
+    "test:base": "node --test tests/*.test.mjs",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
     "audit:music": "node scripts/audit-music.mjs",
-    "data:check": "python3 scripts/extract_reference.py --check",
+    "data:check": "node scripts/run-python.mjs scripts/extract_reference.py --check",
     "docs:check": "node scripts/check-docs.mjs",
-    "docs:build": "python3 scripts/build_dts.py",
+    "docs:check:final": "node scripts/check-docs.mjs --final",
+    "docs:build": "node scripts/run-python.mjs scripts/build_dts.py",
     "validate": "npm run data:check && npm run audit:music && npm test && npm run docs:check"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
   }
 }

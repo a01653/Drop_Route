@@ -1,15 +1,17 @@
 # Documento de Diseño Técnico del Software - Drop Route
 
-Repositorio: a01653/Drop_Route. Revisión: base reconstruida el 13/10/2026.
+Repositorio: a01653/Drop_Route. Revisión: base reconstruida y base técnica de la aplicación (DR-001), 13/10/2026.
 Paquete: 0.0.0. Autor del proyecto: Jesús Quevedo Rodríguez.
 
-Este DTS distingue preparación ejecutada y diseño previsto. Los datos, scripts, tests y documentos existen; el juego y sus pantallas todavía no. La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
+Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación con una pantalla de arranque. Los juegos, las tarjetas, el icono final, el progreso y la PWA todavía no existen. La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
 ## Objetivo y alcance
 
 Drop Route servirá para memorizar voicings, inversiones y grados y practicar rutas II-V-I concretas. Ordenador y móvil. Primera etapa en C, con la apariencia de nuestras tarjetas.
 
 Se preparan fuentes e instrucciones para que Claude Code implemente cada etapa mediante órdenes de trabajo. No necesita acceder al historial de esta conversación ni recibir las plantillas de nuevo.
+
+El 13/10/2026 el usuario decidió mantener este Markdown actualizado durante DR-001 a DR-006 y concentrar la generación LaTeX/PDF, los manuales completos, las capturas y la revisión visual documental en DR-007. Los derivados existentes son la última edición generada y pueden quedar pendientes respecto a este Markdown.
 
 ## Arquitectura general
 
@@ -23,13 +25,36 @@ Diseño previsto de aplicación cliente, sin backend.
 | Presentación | Tarjeta SVG, selectores, fichas y resultados. |
 | Persistencia | Configuración y progreso local con versión de esquema. |
 
-La geometría no decide la respuesta y los componentes no duplican el catálogo. Actualmente están implementados la extracción y el núcleo de auditoría de esta base, no el motor del juego.
+La geometría no decide la respuesta y los componentes no duplican el catálogo. Actualmente están implementados la extracción y el núcleo de auditoría de la base y, en `src/`, un esqueleto de cuatro capas:
+
+| Capa | Contenido actual |
+| --- | --- |
+| `src/data` | Tipos y acceso a `data/catalog.json` y `data/routes.json`, que siguen siendo la única definición de datos. |
+| `src/music` | Altura física (MIDI) e inversión por bajo real. Funciones puras. |
+| `src/session` | Solo la fase de arranque. Sin React. |
+| `src/ui` | Pantalla de arranque con el estado de desarrollo. |
+
+La dependencia permitida es ui, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music o session usen React, de modo que pueden probarse sin DOM. La persistencia no existe todavía, y tampoco el motor de preguntas ni los juegos.
 
 ## Tecnologías y dependencias
 
-Node.js 22 o superior ejecuta tests y auditorías. Python 3.10 o superior extrae las constantes literales. La base no necesita dependencias npm externas.
+Node.js 22.13 o superior (campo engines; la CI usa Node 24 según .nvmrc) ejecuta tests, auditorías y herramientas. Python 3.10 o superior extrae las constantes literales y genera el DTS. Lo localiza el lanzador `scripts/run-python.mjs`: prueba la variable PYTHON y después py&nbsp;-3, python y python3 en Windows, o python3 y python en otros sistemas. Si no hay una versión válida, el error lista lo probado y explica cómo resolverlo. Los tests y auditorías de la base con node:test no dependen de paquetes externos.
 
-DR-001 propone React, TypeScript y Vite; ESLint, Vitest y Playwright. Elegir y fijar versiones compatibles al ejecutar esa tarea. No copiar dependencias innecesarias de Mástil.
+DR-001 fijó estas versiones en el lockfile de npm. Instalación: `npm ci --ignore-scripts`. No se copiaron dependencias innecesarias de Mástil.
+
+| Paquete | Versión | Nota |
+| --- | --- | --- |
+| react, react-dom | 19.3.0 | Única dependencia de ejecución. |
+| typescript | 6.0.3 | Se fija la serie 6.0 porque typescript-eslint 8.71.2 exige una versión inferior a 6.1. La 7.0.2 es posterior y no es compatible. |
+| vite, @vitejs/plugin-react | 8.3.4, 6.1.2 | Build y servidor de desarrollo. |
+| vitest | 5.0.4 | Tests unitarios y de capas, sin DOM. |
+| eslint, @eslint/js | 10.12.0, 10.0.1 | Lint y límites entre capas. |
+| typescript-eslint | 8.71.2 | Reglas para TypeScript. |
+| eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals | 7.1.1, 0.5.7, 17.13.0 | Reglas de React y entornos. |
+| @playwright/test | 1.64.0 | E2E con Chromium. |
+| @types/node, @types/react, @types/react-dom | 24.19.2, 19.3.0, 19.3.0 | Tipos. |
+
+Vite 8 y Vitest 5 exigen Node 22.12 y ESLint 10, 22.13; de ahí el mínimo de engines. Playwright necesita descargar el navegador con `npx playwright install chromium`; ese paso queda fuera de npm ci.
 
 Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo utiliza la paleta azul oscuro y familias tipográficas de la documentación de Mástil, con equivalentes si faltan TeX Gyre. Idioma español y sin partición de palabras al final de línea.
 
@@ -41,13 +66,17 @@ Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo utiliza l
 | `data/catalog.json` | Sets, fórmulas, afinación y 124 formas. |
 | `data/routes.json` | Dieciséis rutas II-V-I completas. |
 | references/ | Tres fuentes originales y sus hashes. |
-| scripts/ | Extracción, auditoría y generación documental. |
-| tests/ | Pruebas ejecutables de la base. |
-| e2e/ | Nota de alcance; aún no hay specs ejecutables. |
+| scripts/ | Extracción, auditoría, generación documental y lanzador de Python. |
+| tests/ | Pruebas con node:test, conservadas aparte: las de la base musical y las del utillaje. |
+| `src/` | Capas `data`, `music`, `session` y `ui`, `main.tsx` y los tests Vitest junto a cada capa. |
+| `e2e/` | Humo de Playwright sobre el build, en escritorio y móvil. |
+| `index.html` y configuración | Vite, Vitest, Playwright, ESLint y dos `tsconfig` (aplicación y herramientas). |
 | docs/ | Requisitos, decisiones, tareas, validación y DTS. |
-| .github/workflows/ | Validación de la base preparada para GitHub. |
+| `FILES_SHA256.json` | Instantánea histórica de los hashes de la base inicial del 13/10/2026, previa a DR-001. No es el estado actual ni se actualiza. |
+| `RECOVERY_STATUS.json` | Instantánea histórica del estado de la reconstrucción, con sus cifras de entonces. No se actualiza. |
+| .github/workflows/ | Validación de la base y trabajo de aplicación, preparados para GitHub. |
 
-No hay src o build web en esta revisión. La estructura de interfaz se establece en DR-001.
+`npm run build` genera `dist/`, que Git ignora. El build solo incluye lo que importa `src/`: ni las referencias ni la plantilla HTML. No hay despliegue.
 
 ## Componentes previstos
 
@@ -60,6 +89,8 @@ No hay src o build web en esta revisión. La estructura de interfaz se establece
 | Rutas | Partida fija y una candidata visible. |
 | Corrección | Resultado por campos y avance explícito. |
 
+Ninguno de estos componentes existe todavía: la única pantalla actual es la de arranque, con el nombre, el estado de desarrollo y un resumen de los datos cargados. Su aspecto no anticipa el icono ni las tarjetas.
+
 Compartir el renderizador conserva proporciones entre juegos. El icono final sigue pendiente; el brief está en `docs/VISUAL.md`.
 
 ## Estado y persistencia
@@ -70,7 +101,7 @@ Seleccionar no evalúa. Verificar exige respuesta completa y produce un único r
 
 La corrección no sobrescribe lo que contestó el usuario. Si falla el V de una ruta, el paso V-I debe partir del V correcto.
 
-DR-006 añadirá progreso local con esquema independiente de la versión de app. Ninguna persistencia está implementada todavía.
+Hoy la sesión solo tiene la fase de arranque; el modelo anterior es el diseño que llegará con los juegos. DR-006 añadirá progreso local con esquema independiente de la versión de app. Ninguna persistencia está implementada todavía.
 
 ## Modelo musical
 
@@ -131,7 +162,7 @@ Progreso por dispositivo, sin sincronización, cuentas, backend o notificaciones
 
 `CLAUDE.md` importa `AGENTS.md` y dirige al contrato y a la orden solicitada. Las reglas permanentes están versionadas. Las tareas concretas se describen en DR-001 a DR-007 y se ejecutan por separado.
 
-Se adapta el flujo de Mástil Escalas: rama por objetivo, pruebas dirigidas durante ajustes, revisión funcional y batería final aplicable. Un cambio material de diseño actualiza el DTS principal y sus derivados en la misma rama.
+Se adapta el flujo de Mástil Escalas: rama por objetivo, pruebas dirigidas durante ajustes, revisión funcional y batería final aplicable. Un cambio material de diseño actualiza el DTS principal en Markdown durante cada fase. Los derivados y manuales completos se generan y revisan en DR-007; esta planificación no aplaza pruebas ni auditorías.
 
 La preparación se conserva como paquete duradero. El 13/10/2026 el usuario autorizó la publicación de la base completa en el repositorio público, incluidos los originales.
 
@@ -141,29 +172,52 @@ Previsto: configuración selecciona registros; generador crea pregunta estable; 
 
 En rutas, pregunta identifica ruta y paso. Cambiar candidata no cambia la partida. El estado de selección no altera los datos musicales.
 
-La futura sesión y el núcleo musical deben poder probarse sin DOM; los componentes consumen el catálogo sin duplicar posiciones.
+La sesión y el núcleo musical se prueban sin DOM; los componentes consumen el catálogo sin duplicar posiciones. ESLint hace cumplir esta separación y Vitest se ejecuta en el entorno `node`, sin DOM.
 
 ## Pruebas y resultados reales
 
-La reconstrucción ha ejecutado 24 tests con node:test: todos pasan, sin omitidos. Verifican catálogo completo, rutas, hashes de fuentes y rechazo de errores deliberados.
+La reconstrucción ejecutó 24 tests con node:test: todos pasan, sin omitidos. Verifican catálogo completo, rutas, hashes de fuentes y rechazo de errores deliberados. DR-001 los conserva sin cambios en `tests/music-catalog.test.mjs` y añade en `tests/tooling.test.mjs` 11 tests de utillaje: el lanzador de Python y que el workflow y la configuración de Playwright conservan sus pasos. El calendario documental añade además 9 tests de política documental en `tests/documentation-policy.test.mjs`. En total node:test ejecuta 44. `npm test` ejecuta primero node:test y después Vitest, de modo que ninguno queda fuera. Las dos instantáneas históricas de la base inicial, descritas en la estructura del proyecto, conservan sus cifras de entonces y ningún test las comprueba.
 
 La auditoría pasa con 124 posiciones (112 evaluables y doce de referencia) y 16 rutas. Hay oráculos independientes para D2S1 mayor primera inversión y D2S2 menor fundamental.
 
 Se prueba también una forma G7 válida en otra inversión que no cumple la ruta. Los tests no se limitan a comparar las tablas consigo mismas.
 
-Vitest, lint, build web y Playwright se incorporarán en DR-001. Estos resultados no se presentan como cobertura del juego, que todavía no existe.
+DR-001 añade 15 tests Vitest en cinco ficheros y 10 ejecuciones E2E (cinco escenarios en dos proyectos). Vitest comprueba las capas sin DOM: las 124 posiciones y los 48 pasos de ruta del catálogo devuelven por bajo real la inversión que declaran, el bajo desplazado un semitono se detecta y el orden del array no influye. También comprueba el resumen de datos y la pantalla de arranque, y que la configuración amplía las exclusiones predeterminadas con e2e, tests y los worktrees. Playwright prueba el build servido por vite preview en un proyecto de escritorio y otro móvil: título, estado, datos empaquetados, que dist/ se generó durante esa ejecución y que el preview sirve exactamente su index.html, ausencia de errores de consola y de red, y falta de desplazamiento horizontal a 360 px.
+
+El lint y las reglas de capas se probaron con importaciones prohibidas deliberadas, y las exclusiones de Vitest con tests que fallarían si se ejecutaran. Esas pruebas fueron manuales y no forman parte de la suite. Los resultados concretos están en el registro de validación de DR-001 del repositorio. No son cobertura del juego, que todavía no existe.
 
 ## Construcción y publicación
 
 npm run docs:build regenera LaTeX/PDF desde el Markdown. Guarda hashes del Markdown, derivados, plantilla y generador para detectar desactualizaciones.
 
-La CI preparada ejecuta npm ci y npm run validate. Esta revisión del DTS es previa a la publicación inicial; su ejecución remota se comprobará después del push. El código en Git tampoco equivale a tener el juego desplegado.
+docs/documentation-policy.json mantiene dtsDerivatives en deferred durante DR-001 a DR-006. npm run docs:check valida enlaces, órdenes, política, manifiesto y archivos existentes. Los cambios del Markdown, plantilla o generador se declaran pendientes sin obligar a recompilar. La ausencia o alteración de los derivados conservados sigue siendo un error.
+
+npm run docs:check:final exige que todos los hashes coincidan, con independencia de esa política. DR-007 genera y revisa las páginas, termina los manuales y cambia dtsDerivatives a required, de modo que la comprobación ordinaria también exige sincronización. La CI de cierre incorpora el comando estricto.
+
+La CI preparada tiene dos trabajos con `npm ci --ignore-scripts`. El de la base usa Node 24 y Python 3.10, el mínimo admitido, y ejecuta data:check, audit:music, test:base y docs:check. El de la aplicación ejecuta typecheck, lint, test:unit, build, la descarga de Chromium con sus dependencias del sistema y test:e2e. Un test de node:test comprueba que el workflow conserva esos pasos. Al preparar el commit de DR-001 no se habían ejecutado en GitHub; su resultado se consulta en Actions. El código en Git tampoco equivale a tener el juego desplegado.
+
+| Comando | Función |
+| --- | --- |
+| `npm run dev` | Servidor de desarrollo de Vite. |
+| `npm run build` | Comprueba tipos y genera `dist/`. |
+| `npm run preview` | Sirve `dist/`. |
+| `npm run typecheck` | `tsc` sobre aplicación y herramientas. |
+| `npm run lint` | ESLint, con los límites entre capas. |
+| `npm test` | node:test de la base y después Vitest. |
+| `npm run test:e2e` | Playwright sobre un build recién generado. |
+
+Playwright genera el build y lo sirve con vite preview al ejecutar los E2E. Nunca reutiliza un servidor existente: con el puerto 4173 ocupado, la ejecución falla antes de probar nada. El humo comprueba además que dist/index.html es posterior al inicio de la ejecución y que el preview sirve ese mismo fichero, de modo que no se prueba una compilación anterior ni el servidor de desarrollo. Ningún preview queda iniciado. Los scripts `test:unit` y `test:base` ejecutan cada corredor por separado.
+
+El comando docs:build funciona con Pandoc 3.12.1 y LuaLaTeX. El script y la plantilla se adaptaron en DR-001. LaTeX falla con las rutas temporales cortas de Windows, que contienen una tilde. Pandoc 3.12 envuelve las tablas con un contador none que la plantilla no definía, y ya no emite hypertarget en los títulos. Además, `.gitattributes` fija ahora LF para los `.tex`, porque en Windows la copia con CRLF cambiaba los hashes del registro.
 
 El primer push fue bloqueado por revisión automática debido al repositorio público y los materiales originales. El 13/10/2026 se obtuvo autorización explícita del usuario para publicar la base completa. Las futuras publicaciones siguen requiriendo una orden que las cubra.
 
 ## Limitaciones actuales
 
-- No existe aún interfaz, icono final, progreso, PWA o revisión funcional móvil.
+- La interfaz se reduce a la pantalla de arranque: no hay juegos, tarjetas, icono final, progreso, PWA ni revisión funcional móvil de los juegos. El humo móvil usa emulación de Chromium, no un dispositivo real.
+- El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.
+- Playwright solo prueba Chromium; Firefox y WebKit no están configurados.
+- Python se ejecutó en esta revisión solo con la versión 3.13.7. El mínimo 3.10 se comprobó por gramática y por las API usadas, y lo ejercita la CI, que usa esa versión.
 - Solo se normalizaron las rutas Drop 2 sets 1 y 2 del HTML.
 - Los PDF tienen 21 páginas de imágenes cada uno; no se han transcrito íntegramente.
 - Cdim7 y C6 no son calidades evaluables de la primera etapa.
@@ -173,7 +227,7 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 
 ## Evolución
 
-DR-001 configura herramientas; DR-002 crea tarjetas e icono; DR-003 y DR-004, reconocimiento; DR-005, rutas; DR-006, progreso/PWA; DR-007, cierre documental y pruebas.
+DR-001 configuró las herramientas y queda entregada para revisión, sin fusionar; DR-002 crea tarjetas e icono; DR-003 y DR-004, reconocimiento; DR-005, rutas; DR-006, progreso/PWA; DR-007, cierre documental y pruebas.
 
 Convertir lo planificado en descripción de implementación solo después de inspeccionar y probar el código. No extender una tarea a mejoras no pedidas.
 
@@ -181,4 +235,4 @@ Convertir lo planificado en descripción de implementación solo después de ins
 
 Verificados: mismas tres referencias, SHA-256, extracción, notas físicas, fórmulas, grados, inversiones, rutas y 24 tests ejecutados nuevamente. Documentación reconstruida desde las decisiones visibles de la conversación.
 
-No se ha ejecutado Claude Code en el equipo del usuario ni implementado el juego. Esta revisión documenta el candidato anterior a la publicación inicial autorizada. La compilación del DTS, revisión visual y validación documental se registran en `docs/validation/2026-10-13-foundation.md`.
+El juego no está implementado. Las comprobaciones de DR-001 se registran en el directorio de validación del repositorio, junto con la compilación del DTS anterior, su revisión visual y la validación documental de la base.

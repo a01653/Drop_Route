@@ -1,5 +1,5 @@
-% Source-SHA256: 7773a799071b3e1b5d9bddf93d59cba48bcdef018cd698cdd190ea90a44e8d79
-% !TeX program = xelatex
+% Source-SHA256: 0eaf6831a9b04221749833d064f067136c8783d87a1251a3859f6a6dd91a3c11
+% !TeX program = lualatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
 \IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
@@ -29,10 +29,11 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[C]{\small\sffamily\color{softgray}Drop Route --- Diseño Técnico del Software}
-\fancyfoot[L]{\small\sffamily\color{softgray}Base reconstruida · 13/10/2026}
+\fancyfoot[L]{\small\sffamily\color{softgray}Base reconstruida y DR-001 · 13/10/2026}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
+\newcounter{none} % Pandoc 3.12 usa \LTcaptype{none} en tablas sin título
 \renewcommand{\arraystretch}{1.15}
 \usepackage{enumitem}
 \setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=5pt}
@@ -62,15 +63,14 @@
 \fill[white] (8.75,2) circle (0.2);
 \fill[lightblue] (8.75,2.5) circle (0.2);
 \end{scope}
-\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión:} base reconstruida · 13/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} juego pendiente de implementación};
+\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión:} base reconstruida y DR-001 · 13/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} juego pendiente de implementación};
 \end{tikzpicture}
 \end{titlepage}
 \restoregeometry
 \tableofcontents
 \newpage
 \Needspace{4cm}
-\hypertarget{objetivo-y-alcance}{%
-\section{Objetivo y alcance}\label{objetivo-y-alcance}}
+\section{Objetivo y alcance}\label{objetivo-y-alcance}
 
 Drop Route servirá para memorizar voicings, inversiones y grados y
 practicar rutas II-V-I concretas. Ordenador y móvil. Primera etapa en C,
@@ -81,11 +81,11 @@ etapa mediante órdenes de trabajo. No necesita acceder al historial de
 esta conversación ni recibir las plantillas de nuevo.
 
 \Needspace{4cm}
-\hypertarget{arquitectura-general}{%
-\section{Arquitectura general}\label{arquitectura-general}}
+\section{Arquitectura general}\label{arquitectura-general}
 
 Diseño previsto de aplicación cliente, sin backend.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Capa & Responsabilidad prevista \\
@@ -100,23 +100,81 @@ Sesión & Pregunta, selección, evaluación y transición. \\
 Presentación & Tarjeta SVG, selectores, fichas y resultados. \\
 Persistencia & Configuración y progreso local con versión de esquema. \\
 \end{longtable}
+}
 
 La geometría no decide la respuesta y los componentes no duplican el
 catálogo. Actualmente están implementados la extracción y el núcleo de
-auditoría de esta base, no el motor del juego.
+auditoría de la base y, en \texttt{src/}, un esqueleto de cuatro capas:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
+\toprule\noalign{}
+Capa & Contenido actual \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{src/data} & Tipos y acceso a \texttt{data/catalog.json} y
+\texttt{data/routes.json}, que siguen siendo la única definición de
+datos. \\
+\texttt{src/music} & Altura física (MIDI) e inversión por bajo real.
+Funciones puras. \\
+\texttt{src/session} & Solo la fase de arranque. Sin React. \\
+\texttt{src/ui} & Pantalla de arranque con el estado de desarrollo. \\
+\end{longtable}
+}
+
+La dependencia permitida es ui, session, music, data. ESLint rechaza que
+una capa importe otra superior y que data, music o session usen React,
+de modo que pueden probarse sin DOM. La persistencia no existe todavía,
+y tampoco el motor de preguntas ni los juegos.
 
 \Needspace{4cm}
-\hypertarget{tecnologuxedas-y-dependencias}{%
 \section{Tecnologías y
-dependencias}\label{tecnologuxedas-y-dependencias}}
+dependencias}\label{tecnologuxedas-y-dependencias}
 
-Node.js 22 o superior ejecuta tests y auditorías. Python 3.10 o superior
-extrae las constantes literales. La base no necesita dependencias npm
-externas.
+Node.js 22.13 o superior (campo engines; la CI usa Node 24 según .nvmrc)
+ejecuta tests, auditorías y herramientas. Python 3.10 o superior extrae
+las constantes literales y genera el DTS. Lo localiza el lanzador
+\texttt{scripts/run-python.mjs}: prueba la variable PYTHON y después
+py~-3, python y python3 en Windows, o python3 y python en otros
+sistemas. Si no hay una versión válida, el error lista lo probado y
+explica cómo resolverlo. Los tests y auditorías de la base con node:test
+no dependen de paquetes externos.
 
-DR-001 propone React, TypeScript y Vite; ESLint, Vitest y Playwright.
-Elegir y fijar versiones compatibles al ejecutar esa tarea. No copiar
-dependencias innecesarias de Mástil.
+DR-001 fijó estas versiones en el lockfile de npm. Instalación:
+\texttt{npm\ ci\ -\/-ignore-scripts}. No se copiaron dependencias
+innecesarias de Mástil.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}@{}}
+\toprule\noalign{}
+Paquete & Versión & Nota \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+react, react-dom & 19.3.0 & Única dependencia de ejecución. \\
+typescript & 6.0.3 & Se fija la serie 6.0 porque typescript-eslint
+8.71.2 exige una versión inferior a 6.1. La 7.0.2 es posterior y no es
+compatible. \\
+vite, @vitejs/plugin-react & 8.3.4, 6.1.2 & Build y servidor de
+desarrollo. \\
+vitest & 5.0.4 & Tests unitarios y de capas, sin DOM. \\
+eslint, @eslint/js & 10.12.0, 10.0.1 & Lint y límites entre capas. \\
+typescript-eslint & 8.71.2 & Reglas para TypeScript. \\
+eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals & 7.1.1,
+0.5.7, 17.13.0 & Reglas de React y entornos. \\
+@playwright/test & 1.64.0 & E2E con Chromium. \\
+@types/node, @types/react, @types/react-dom & 24.19.2, 19.3.0, 19.3.0 &
+Tipos. \\
+\end{longtable}
+}
+
+Vite 8 y Vitest 5 exigen Node 22.12 y ESLint 10, 22.13; de ahí el mínimo
+de engines. Playwright necesita descargar el navegador con
+\texttt{npx\ playwright\ install\ chromium}; ese paso queda fuera de npm
+ci.
 
 Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo
 utiliza la paleta azul oscuro y familias tipográficas de la
@@ -124,9 +182,9 @@ documentación de Mástil, con equivalentes si faltan TeX Gyre. Idioma
 español y sin partición de palabras al final de línea.
 
 \Needspace{4cm}
-\hypertarget{estructura-actual}{%
-\section{Estructura actual}\label{estructura-actual}}
+\section{Estructura actual}\label{estructura-actual}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Ruta & Contenido \\
@@ -139,20 +197,35 @@ trabajo. \\
 \texttt{data/catalog.json} & Sets, fórmulas, afinación y 124 formas. \\
 \texttt{data/routes.json} & Dieciséis rutas II-V-I completas. \\
 references/ & Tres fuentes originales y sus hashes. \\
-scripts/ & Extracción, auditoría y generación documental. \\
-tests/ & Pruebas ejecutables de la base. \\
-e2e/ & Nota de alcance; aún no hay specs ejecutables. \\
+scripts/ & Extracción, auditoría, generación documental y lanzador de
+Python. \\
+tests/ & Pruebas con node:test, conservadas aparte: las de la base
+musical y las del utillaje. \\
+\texttt{src/} & Capas \texttt{data}, \texttt{music}, \texttt{session} y
+\texttt{ui}, \texttt{main.tsx} y los tests Vitest junto a cada capa. \\
+\texttt{e2e/} & Humo de Playwright sobre el build, en escritorio y
+móvil. \\
+\texttt{index.html} y configuración & Vite, Vitest, Playwright, ESLint y
+dos \texttt{tsconfig} (aplicación y herramientas). \\
 docs/ & Requisitos, decisiones, tareas, validación y DTS. \\
-.github/workflows/ & Validación de la base preparada para GitHub. \\
+\texttt{FILES\_SHA256.json} & Instantánea histórica de los hashes de la
+base inicial del 13/10/2026, previa a DR-001. No es el estado actual ni
+se actualiza. \\
+\texttt{RECOVERY\_STATUS.json} & Instantánea histórica del estado de la
+reconstrucción, con sus cifras de entonces. No se actualiza. \\
+.github/workflows/ & Validación de la base y trabajo de aplicación,
+preparados para GitHub. \\
 \end{longtable}
+}
 
-No hay src o build web en esta revisión. La estructura de interfaz se
-establece en DR-001.
+\texttt{npm\ run\ build} genera \texttt{dist/}, que Git ignora. El build
+solo incluye lo que importa \texttt{src/}: ni las referencias ni la
+plantilla HTML. No hay despliegue.
 
 \Needspace{4cm}
-\hypertarget{componentes-previstos}{%
-\section{Componentes previstos}\label{componentes-previstos}}
+\section{Componentes previstos}\label{componentes-previstos}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Componente & Responsabilidad \\
@@ -167,13 +240,17 @@ Grados & Cuatro destinos, arrastre, dos toques y teclado. \\
 Rutas & Partida fija y una candidata visible. \\
 Corrección & Resultado por campos y avance explícito. \\
 \end{longtable}
+}
+
+Ninguno de estos componentes existe todavía: la única pantalla actual es
+la de arranque, con el nombre, el estado de desarrollo y un resumen de
+los datos cargados. Su aspecto no anticipa el icono ni las tarjetas.
 
 Compartir el renderizador conserva proporciones entre juegos. El icono
 final sigue pendiente; el brief está en \texttt{docs/VISUAL.md}.
 
 \Needspace{4cm}
-\hypertarget{estado-y-persistencia}{%
-\section{Estado y persistencia}\label{estado-y-persistencia}}
+\section{Estado y persistencia}\label{estado-y-persistencia}
 
 Modelo previsto: configuración, pregunta, pregunta verificada y regreso
 al menú. Cada pregunta identifica datos y guarda sus opciones y orden.
@@ -185,12 +262,13 @@ pregunta y Salir vuelve al menú.
 La corrección no sobrescribe lo que contestó el usuario. Si falla el V
 de una ruta, el paso V-I debe partir del V correcto.
 
-DR-006 añadirá progreso local con esquema independiente de la versión de
-app. Ninguna persistencia está implementada todavía.
+Hoy la sesión solo tiene la fase de arranque; el modelo anterior es el
+diseño que llegará con los juegos. DR-006 añadirá progreso local con
+esquema independiente de la versión de app. Ninguna persistencia está
+implementada todavía.
 
 \Needspace{4cm}
-\hypertarget{modelo-musical}{%
-\section{Modelo musical}\label{modelo-musical}}
+\section{Modelo musical}\label{modelo-musical}
 
 Afinación estándar EADGBE. MIDI al aire, cuerdas 6 a 1:
 40,45,50,55,59,64. Altura real igual a MIDI al aire más traste.
@@ -206,9 +284,8 @@ séptima como °7. El acorde es simétrico y no se evalúa sin fijar raíz y
 contexto.
 
 \Needspace{4cm}
-\hypertarget{catuxe1logo-y-construcciuxf3n-de-voicings}{%
 \section{Catálogo y construcción de
-voicings}\label{catuxe1logo-y-construcciuxf3n-de-voicings}}
+voicings}\label{catuxe1logo-y-construcciuxf3n-de-voicings}
 
 No se generan posiciones nuevas. Drop 2 tiene tres sets; Drop 3 y Drop
 2+4, dos cada uno. Cuatro calidades y cuatro inversiones dan 112
@@ -223,13 +300,13 @@ Mantener ventana corta de las tarjetas. Algunas formas abarcan cinco
 trastes: no recortar para imponer una ventana de tres.
 
 \Needspace{4cm}
-\hypertarget{rutas-y-conducciuxf3n-de-voces}{%
 \section{Rutas y conducción de
-voces}\label{rutas-y-conducciuxf3n-de-voces}}
+voces}\label{rutas-y-conducciuxf3n-de-voces}
 
 Normalizadas solo Drop 2 sets 1 y 2, mayor y menor, cuatro inversiones
 iniciales: dieciséis rutas.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}@{}}
 \toprule\noalign{}
 II & V & I \\
@@ -242,6 +319,7 @@ Fundamental & 2ª & Fundamental \\
 2ª & Fundamental & 2ª \\
 3ª & 1ª & 3ª \\
 \end{longtable}
+}
 
 Mayor Dm7-G7-Cmaj7. Menor Dm7(b5)-G7-Cm7. Comparar con la ruta exacta
 del material. Otra inversión de G7 puede ser musicalmente válida y no
@@ -252,8 +330,7 @@ universal. C6 aparece como sustitución opcional en ciertos pasos de la
 fuente; no se convierte automáticamente en otro acorde evaluable.
 
 \Needspace{4cm}
-\hypertarget{preguntas-y-correcciuxf3n}{%
-\section{Preguntas y corrección}\label{preguntas-y-correcciuxf3n}}
+\section{Preguntas y corrección}\label{preguntas-y-correcciuxf3n}
 
 Diseño acordado: fácil elige nombre con cuatro botones; medio añade
 inversión en un segundo desplegable; difícil añade colocar grados sobre
@@ -268,8 +345,7 @@ todos los campos del nivel. Registrar una sola respuesta por primer
 intento y bloquear cambios al verificar.
 
 \Needspace{4cm}
-\hypertarget{muxf3vil-y-accesibilidad}{%
-\section{Móvil y accesibilidad}\label{muxf3vil-y-accesibilidad}}
+\section{Móvil y accesibilidad}\label{muxf3vil-y-accesibilidad}
 
 El fondo es el tramo corto de mástil de las tarjetas, no un mástil
 completo de doce trastes. En rutas, partida arriba, candidata debajo y
@@ -284,8 +360,7 @@ operación por teclado. Áreas táctiles mayores que los círculos visibles.
 Se prevén E2E a 360,390 y 430 px; aún no ejecutables.
 
 \Needspace{4cm}
-\hypertarget{offline-e-instalaciuxf3n}{%
-\section{Offline e instalación}\label{offline-e-instalaciuxf3n}}
+\section{Offline e instalación}\label{offline-e-instalaciuxf3n}
 
 DR-006 prevé PWA instalable, caché de recursos propios y recarga sin
 conexión tras una primera carga completa.
@@ -296,8 +371,7 @@ migración. No hay manifest PWA, service worker o instalación comprobada
 todavía.
 
 \Needspace{4cm}
-\hypertarget{documentaciuxf3n-y-claude}{%
-\section{Documentación y Claude}\label{documentaciuxf3n-y-claude}}
+\section{Documentación y Claude}\label{documentaciuxf3n-y-claude}
 
 \texttt{CLAUDE.md} importa \texttt{AGENTS.md} y dirige al contrato y a
 la orden solicitada. Las reglas permanentes están versionadas. Las
@@ -314,8 +388,7 @@ usuario autorizó la publicación de la base completa en el repositorio
 público, incluidos los originales.
 
 \Needspace{4cm}
-\hypertarget{flujo-de-datos}{%
-\section{Flujo de datos}\label{flujo-de-datos}}
+\section{Flujo de datos}\label{flujo-de-datos}
 
 Previsto: configuración selecciona registros; generador crea pregunta
 estable; tarjeta dibuja geometría; el usuario compone respuesta;
@@ -324,17 +397,24 @@ evaluador calcula resultado según contrato.
 En rutas, pregunta identifica ruta y paso. Cambiar candidata no cambia
 la partida. El estado de selección no altera los datos musicales.
 
-La futura sesión y el núcleo musical deben poder probarse sin DOM; los
-componentes consumen el catálogo sin duplicar posiciones.
+La sesión y el núcleo musical se prueban sin DOM; los componentes
+consumen el catálogo sin duplicar posiciones. ESLint hace cumplir esta
+separación y Vitest se ejecuta en el entorno \texttt{node}, sin DOM.
 
 \Needspace{4cm}
-\hypertarget{pruebas-y-resultados-reales}{%
-\section{Pruebas y resultados
-reales}\label{pruebas-y-resultados-reales}}
+\section{Pruebas y resultados reales}\label{pruebas-y-resultados-reales}
 
-La reconstrucción ha ejecutado 24 tests con node:test: todos pasan, sin
+La reconstrucción ejecutó 24 tests con node:test: todos pasan, sin
 omitidos. Verifican catálogo completo, rutas, hashes de fuentes y
-rechazo de errores deliberados.
+rechazo de errores deliberados. DR-001 los conserva sin cambios en
+\texttt{tests/music-catalog.test.mjs} y añade en
+\texttt{tests/tooling.test.mjs} 11 tests de utillaje: el lanzador de
+Python y que el workflow y la configuración de Playwright conservan sus
+pasos. Con ellos node:test ejecuta 35. \texttt{npm\ test} ejecuta
+primero node:test y después Vitest, de modo que ninguno queda fuera. Las
+dos instantáneas históricas de la base inicial, descritas en la
+estructura del proyecto, conservan sus cifras de entonces y ningún test
+las comprueba.
 
 La auditoría pasa con 124 posiciones (112 evaluables y doce de
 referencia) y 16 rutas. Hay oráculos independientes para D2S1 mayor
@@ -343,23 +423,78 @@ primera inversión y D2S2 menor fundamental.
 Se prueba también una forma G7 válida en otra inversión que no cumple la
 ruta. Los tests no se limitan a comparar las tablas consigo mismas.
 
-Vitest, lint, build web y Playwright se incorporarán en DR-001. Estos
-resultados no se presentan como cobertura del juego, que todavía no
-existe.
+DR-001 añade 15 tests Vitest en cinco ficheros y 10 ejecuciones E2E
+(cinco escenarios en dos proyectos). Vitest comprueba las capas sin DOM:
+las 124 posiciones y los 48 pasos de ruta del catálogo devuelven por
+bajo real la inversión que declaran, el bajo desplazado un semitono se
+detecta y el orden del array no influye. También comprueba el resumen de
+datos y la pantalla de arranque, y que la configuración amplía las
+exclusiones predeterminadas con e2e, tests y los worktrees. Playwright
+prueba el build servido por vite preview en un proyecto de escritorio y
+otro móvil: título, estado, datos empaquetados, que dist/ se generó
+durante esa ejecución y que el preview sirve exactamente su index.html,
+ausencia de errores de consola y de red, y falta de desplazamiento
+horizontal a 360 px.
+
+El lint y las reglas de capas se probaron con importaciones prohibidas
+deliberadas, y las exclusiones de Vitest con tests que fallarían si se
+ejecutaran. Esas pruebas fueron manuales y no forman parte de la suite.
+Los resultados concretos están en el registro de validación de DR-001
+del repositorio. No son cobertura del juego, que todavía no existe.
 
 \Needspace{4cm}
-\hypertarget{construcciuxf3n-y-publicaciuxf3n}{%
 \section{Construcción y
-publicación}\label{construcciuxf3n-y-publicaciuxf3n}}
+publicación}\label{construcciuxf3n-y-publicaciuxf3n}
 
 npm run docs:build regenera LaTeX/PDF desde el Markdown. Guarda hashes
 del Markdown, derivados, plantilla y generador para detectar
 desactualizaciones.
 
-La CI preparada ejecuta npm ci y npm run validate. Esta revisión del DTS
-es previa a la publicación inicial; su ejecución remota se comprobará
-después del push. El código en Git tampoco equivale a tener el juego
-desplegado.
+La CI preparada tiene dos trabajos con
+\texttt{npm\ ci\ -\/-ignore-scripts}. El de la base usa Node 24 y Python
+3.10, el mínimo admitido, y ejecuta data:check, audit:music, test:base y
+docs:check. El de la aplicación ejecuta typecheck, lint, test:unit,
+build, la descarga de Chromium con sus dependencias del sistema y
+test:e2e. Un test de node:test comprueba que el workflow conserva esos
+pasos. Ninguno se ha ejecutado en GitHub: esta rama no se ha subido. El
+código en Git tampoco equivale a tener el juego desplegado.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
+\toprule\noalign{}
+Comando & Función \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{npm\ run\ dev} & Servidor de desarrollo de Vite. \\
+\texttt{npm\ run\ build} & Comprueba tipos y genera \texttt{dist/}. \\
+\texttt{npm\ run\ preview} & Sirve \texttt{dist/}. \\
+\texttt{npm\ run\ typecheck} & \texttt{tsc} sobre aplicación y
+herramientas. \\
+\texttt{npm\ run\ lint} & ESLint, con los límites entre capas. \\
+\texttt{npm\ test} & node:test de la base y después Vitest. \\
+\texttt{npm\ run\ test:e2e} & Playwright sobre un build recién
+generado. \\
+\end{longtable}
+}
+
+Playwright genera el build y lo sirve con vite preview al ejecutar los
+E2E. Nunca reutiliza un servidor existente: con el puerto 4173 ocupado,
+la ejecución falla antes de probar nada. El humo comprueba además que
+dist/index.html es posterior al inicio de la ejecución y que el preview
+sirve ese mismo fichero, de modo que no se prueba una compilación
+anterior ni el servidor de desarrollo. Ningún preview queda iniciado.
+Los scripts \texttt{test:unit} y \texttt{test:base} ejecutan cada
+corredor por separado.
+
+El comando docs:build funciona con Pandoc 3.12.1 y LuaLaTeX. El script y
+la plantilla se adaptaron en DR-001. LaTeX falla con las rutas
+temporales cortas de Windows, que contienen una tilde. Pandoc 3.12
+envuelve las tablas con un contador none que la plantilla no definía, y
+ya no emite hypertarget en los títulos. Además, \texttt{.gitattributes}
+fija ahora LF para los \texttt{.tex}, porque en Windows la copia con
+CRLF cambiaba los hashes del registro.
 
 El primer push fue bloqueado por revisión automática debido al
 repositorio público y los materiales originales. El 13/10/2026 se obtuvo
@@ -367,14 +502,22 @@ autorización explícita del usuario para publicar la base completa. Las
 futuras publicaciones siguen requiriendo una orden que las cubra.
 
 \Needspace{4cm}
-\hypertarget{limitaciones-actuales}{%
-\section{Limitaciones actuales}\label{limitaciones-actuales}}
+\section{Limitaciones actuales}\label{limitaciones-actuales}
 
 \begin{itemize}
 \tightlist
 \item
-  No existe aún interfaz, icono final, progreso, PWA o revisión
-  funcional móvil.
+  La interfaz se reduce a la pantalla de arranque: no hay juegos,
+  tarjetas, icono final, progreso, PWA ni revisión funcional móvil de
+  los juegos. El humo móvil usa emulación de Chromium, no un dispositivo
+  real.
+\item
+  Playwright solo prueba Chromium; Firefox y WebKit no están
+  configurados.
+\item
+  Python se ejecutó en esta revisión solo con la versión 3.13.7. El
+  mínimo 3.10 se comprobó por gramática y por las API usadas, y se
+  ejercitará en la CI al publicar.
 \item
   Solo se normalizaron las rutas Drop 2 sets 1 y 2 del HTML.
 \item
@@ -393,30 +536,28 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
 \end{itemize}
 
 \Needspace{4cm}
-\hypertarget{evoluciuxf3n}{%
-\section{Evolución}\label{evoluciuxf3n}}
+\section{Evolución}\label{evoluciuxf3n}
 
-DR-001 configura herramientas; DR-002 crea tarjetas e icono; DR-003 y
-DR-004, reconocimiento; DR-005, rutas; DR-006, progreso/PWA; DR-007,
-cierre documental y pruebas.
+DR-001 configuró las herramientas y queda entregada para revisión, sin
+fusionar; DR-002 crea tarjetas e icono; DR-003 y DR-004, reconocimiento;
+DR-005, rutas; DR-006, progreso/PWA; DR-007, cierre documental y
+pruebas.
 
 Convertir lo planificado en descripción de implementación solo después
 de inspeccionar y probar el código. No extender una tarea a mejoras no
 pedidas.
 
 \Needspace{4cm}
-\hypertarget{apuxe9ndice-evidencia-y-luxedmites}{%
 \section{Apéndice: evidencia y
-límites}\label{apuxe9ndice-evidencia-y-luxedmites}}
+límites}\label{apuxe9ndice-evidencia-y-luxedmites}
 
 Verificados: mismas tres referencias, SHA-256, extracción, notas
 físicas, fórmulas, grados, inversiones, rutas y 24 tests ejecutados
 nuevamente. Documentación reconstruida desde las decisiones visibles de
 la conversación.
 
-No se ha ejecutado Claude Code en el equipo del usuario ni implementado
-el juego. Esta revisión documenta el candidato anterior a la publicación
-inicial autorizada. La compilación del DTS, revisión visual y validación
-documental se registran en
-\texttt{docs/validation/2026-10-13-foundation.md}.
+El juego no está implementado. Las comprobaciones de DR-001 se registran
+en el directorio de validación del repositorio, junto con la compilación
+del DTS anterior, su revisión visual y la validación documental de la
+base.
 \end{document}

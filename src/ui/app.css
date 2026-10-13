@@ -1,0 +1,88 @@
+:root {
+  --tinta: #14183a;
+  --tinta-suave: #4a4f73;
+  --fondo: #f3f6fb;
+  --tarjeta: #ffffff;
+  --borde: #d5dcec;
+  color-scheme: light;
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+}
+
+.arranque {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 100dvh;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  justify-content: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 10vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.lema {
+  margin: 0.5rem 0 0;
+  color: var(--tinta-suave);
+  font-size: 1.125rem;
+}
+
+.estado {
+  padding: 1.25rem 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--tarjeta);
+}
+
+.estado h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.estado p {
+  margin: 0 0 0.75rem;
+}
+
+.estado dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.estado dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--borde);
+}
+
+.estado dt {
+  color: var(--tinta-suave);
+}
+
+.estado dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
