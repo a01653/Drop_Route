@@ -135,3 +135,67 @@ describe('verificación (R07, R08)', () => {
     expect(html.match(/<button[^>]*disabled=""/g)!.length).toBeGreaterThanOrEqual(4)
   })
 })
+
+describe('fácil: marcas tras verificar (ajuste de revisión)', () => {
+  const buttonOf = (html: string, name: string) =>
+    new RegExp(`<button[^>]*>${name.replace(/[()]/g, '\\$&')}(?:<span[^>]*>[^<]*</span>)?</button>`).exec(html)![0]
+  const wrongAnswer = () => {
+    const state = open('easy')
+    const voicing = truth(state)
+    const wrong = state.question.qualityOrder.find((quality) => quality !== voicing.quality)!
+    return { done: answered(state, wrong), voicing, wrong }
+  }
+
+  it('tras un error marca el elegido en rojo con ✗ y el correcto en verde con ✓', () => {
+    const { done, voicing, wrong } = wrongAnswer()
+    const html = render(done)
+    const chosen = buttonOf(html, catalog.qualities[wrong].name)
+    const correct = buttonOf(html, voicing.name)
+    expect(chosen).toContain('class="ko"')
+    expect(chosen).toContain('✗')
+    expect(correct).toContain('class="ok"')
+    expect(correct).toContain('✓')
+  })
+
+  it('solo el elegido conserva aria-pressed y los cuatro botones quedan bloqueados', () => {
+    const { done, wrong } = wrongAnswer()
+    const html = render(done)
+    expect(html.match(/aria-pressed="true"/g)).toHaveLength(1)
+    expect(buttonOf(html, catalog.qualities[wrong].name)).toContain('aria-pressed="true"')
+    const group = /<div class="opciones opciones-acorde"[^>]*>([^]*?)<\/div>/.exec(html)![1]!
+    expect(group.match(/<button/g)).toHaveLength(4)
+    expect(group.match(/disabled=""/g)).toHaveLength(4)
+    expect(group.match(/class="(ok|ko)"/g)).toHaveLength(2)
+  })
+
+  it('tras un acierto solo se marca el elegido, en verde, y ningún otro botón', () => {
+    const state = open('easy')
+    const voicing = truth(state)
+    const html = render(answered(state, voicing.quality))
+    expect(html.match(/class="ok"[^>]*aria-pressed="true"/g)).toHaveLength(1)
+    expect(html.match(/✓/g)!.length).toBeGreaterThanOrEqual(1)
+    expect(html).not.toContain('class="ko"')
+    expect(html.match(/aria-pressed="true"/g)).toHaveLength(1)
+  })
+
+  it('el botón correcto lleva una descripción accesible, no un cambio de nombre', () => {
+    const { done, voicing } = wrongAnswer()
+    const html = render(done)
+    expect(buttonOf(html, voicing.name)).toMatch(/aria-describedby="[^"]+"/)
+    expect(html).toContain('Respuesta correcta')
+    expect(html).toContain('Tu respuesta, incorrecta')
+  })
+
+  it('antes de verificar no hay ninguna marca ni descripción que dé pistas', () => {
+    for (const seed of [1, 2, 3, 4, 5, 6]) {
+      const state = open('easy', 'D3S1', seed)
+      const chosen = choose(state, { quality: state.question.qualityOrder[0]! }) as QuestionState
+      for (const html of [render(state), render(chosen)]) {
+        const group = /<div class="opciones opciones-acorde"[^>]*>([^]*?)<\/div>/.exec(html)![1]!
+        expect(group).not.toMatch(/class="(ok|ko)"/)
+        expect(group).not.toMatch(/✓|✗|aria-describedby|disabled/)
+        expect(html).not.toContain('Respuesta correcta')
+      }
+    }
+  })
+})

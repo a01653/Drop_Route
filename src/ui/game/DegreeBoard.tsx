@@ -11,6 +11,13 @@ import type { CardPosition } from '../card/model'
 /** Distancia en píxeles a partir de la cual un gesto deja de ser un toque y pasa a ser un arrastre. */
 const DRAG_THRESHOLD = 6
 
+/**
+ * Con el dedo la ficha que se ve va por encima del punto de contacto, para que el dedo no la tape. El destino
+ * se sigue calculando con las coordenadas reales del dedo, no con las de la ficha dibujada.
+ */
+const TOUCH_GHOST_OFFSET = 64
+const GHOST_MIN_TOP = 28
+
 interface DegreeBoardProps {
   position: CardPosition
   slots: Slots
@@ -44,6 +51,7 @@ function guidance(held: Held | null, slots: Slots): string {
 export function DegreeBoard({ position, slots, held, onAction }: DegreeBoardProps) {
   const layout = layoutCard(position.notes, position.strings, position.window)
   const titleId = useId()
+  const placeId = useId()
   const drag = useRef<{ source: Held; x: number; y: number; active: boolean } | null>(null)
   const suppressClick = useRef(false)
   const [ghost, setGhost] = useState<Ghost | null>(null)
@@ -64,7 +72,10 @@ export function DegreeBoard({ position, slots, held, onAction }: DegreeBoardProp
         onAction({ type: 'cancel' })
         onAction(source.from === 'bank' ? { type: 'pick-bank', degree: source.degree } : { type: 'pick-slot', slot: source.slot })
       }
-      if (current.active) setGhost({ x: event.clientX, y: event.clientY, label })
+      if (current.active) {
+        const lift = event.pointerType === 'touch' ? TOUCH_GHOST_OFFSET : 0
+        setGhost({ x: event.clientX, y: Math.max(GHOST_MIN_TOP, event.clientY - lift), label })
+      }
     },
     onPointerUp: (event: PointerEvent<HTMLElement>) => {
       const current = drag.current
@@ -104,6 +115,12 @@ export function DegreeBoard({ position, slots, held, onAction }: DegreeBoardProp
     }
   }
 
+  /** Tocar un círculo (o su botón compacto): con una ficha en la mano la suelta; sin ella, coge la del círculo. */
+  const tapSlot = (index: number) => {
+    if (swallowClick()) return
+    onAction(held ? { type: 'drop-slot', slot: index } : { type: 'pick-slot', slot: index })
+  }
+
   const remaining = bankRemaining(slots)
   const message = guidance(held, slots)
 
@@ -128,10 +145,7 @@ export function DegreeBoard({ position, slots, held, onAction }: DegreeBoardProp
                 width: percent(FRET_WIDTH, layout.width),
                 height: percent(STRING_GAP, layout.height),
               }}
-              onClick={() => {
-                if (swallowClick()) return
-                onAction(held ? { type: 'drop-slot', slot: index } : { type: 'pick-slot', slot: index })
-              }}
+              onClick={() => tapSlot(index)}
               {...(degree ? dragging({ from: 'slot', slot: index }, displayDegree(degree)) : {})}
             >
               <span
@@ -186,6 +200,35 @@ export function DegreeBoard({ position, slots, held, onAction }: DegreeBoardProp
         >
           Devolver al banco
         </button>
+      </section>
+
+      <section className="colocar" aria-labelledby={placeId}>
+        <h3 id={placeId}>Colocar sin arrastrar</h3>
+        <p className="colocar-ayuda">
+          Coge un grado del banco y toca la cuerda y el traste donde colocarlo. Con uno colocado en la mano, toca otro
+          destino para moverlo o intercambiarlo.
+        </p>
+        <div className="colocar-destinos" role="group" aria-labelledby={placeId}>
+          {layout.dots.map((dot, index) => {
+            const degree = slots[index] ?? null
+            return (
+              <button
+                key={dot.string}
+                type="button"
+                className={`colocar-boton${degree ? ' ocupado' : ''}`}
+                data-colocar={index}
+                aria-pressed={held?.from === 'slot' && held.slot === index}
+                aria-label={`Colocar en cuerda ${dot.string}, traste ${dot.fret}: ${degree ? `grado ${spokenDegree(degree)}` : 'vacío'}`}
+                onClick={() => tapSlot(index)}
+              >
+                <span aria-hidden="true">
+                  Cuerda {dot.string} · traste {dot.fret}
+                </span>
+                <strong aria-hidden="true">{degree ? displayDegree(degree) : '—'}</strong>
+              </button>
+            )
+          })}
+        </div>
       </section>
 
       <p className="tablero-estado" role="status" aria-live="polite">

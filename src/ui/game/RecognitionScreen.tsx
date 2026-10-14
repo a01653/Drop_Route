@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react'
+import { Fragment, useEffect, useId, useRef } from 'react'
 import { catalog } from '../../data'
 import type { Degree, Inversion, QualityKey } from '../../data'
 import { DIFFICULTIES, DROP_LABELS, answerQualities, isAnswerComplete, voicingOf } from '../../session'
@@ -116,19 +116,38 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
           <div className="opciones opciones-acorde" role="group" aria-labelledby="respuesta-titulo">
             {question.qualityOrder.map((quality) => {
               const chosen = answer.quality === quality
-              const mark = verified && chosen ? (qualityResult?.correct ? 'ok' : 'ko') : undefined
+              // Tras verificar: el elegido en verde o rojo y, si falló, también el correcto en verde.
+              const isExpected = verified && qualityResult?.expected === quality
+              const mark = verified ? (chosen ? (qualityResult?.correct ? 'ok' : 'ko') : isExpected ? 'ok' : undefined) : undefined
+              const note = !verified
+                ? undefined
+                : isExpected
+                  ? chosen
+                    ? 'Tu respuesta, correcta'
+                    : 'Respuesta correcta'
+                  : chosen
+                    ? 'Tu respuesta, incorrecta'
+                    : undefined
+              const noteId = note ? `${hintId}-${quality}` : undefined
               return (
-                <button
-                  key={quality}
-                  type="button"
-                  className={mark}
-                  aria-pressed={chosen}
-                  disabled={verified}
-                  onClick={() => dispatch({ type: 'choose', change: { quality } })}
-                >
-                  {catalog.qualities[quality].name}
-                  {mark && <span aria-hidden="true"> {mark === 'ok' ? '✓' : '✗'}</span>}
-                </button>
+                <Fragment key={quality}>
+                  <button
+                    type="button"
+                    className={mark}
+                    aria-pressed={chosen}
+                    aria-describedby={noteId}
+                    disabled={verified}
+                    onClick={() => dispatch({ type: 'choose', change: { quality } })}
+                  >
+                    {catalog.qualities[quality].name}
+                    {mark && <span aria-hidden="true"> {mark === 'ok' ? '✓' : '✗'}</span>}
+                  </button>
+                  {note && (
+                    <span className="solo-lectores" id={noteId}>
+                      {note}
+                    </span>
+                  )}
+                </Fragment>
               )
             })}
           </div>

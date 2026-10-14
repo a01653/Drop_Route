@@ -366,3 +366,109 @@ for (const width of [360, 390, 430]) {
     expect(finalScroll[0]).toBeLessThanOrEqual(finalScroll[1]!)
   })
 }
+
+const compact = (page: Page, slot: number) => page.locator(`[data-colocar="${slot}"]`)
+
+test('la ficha del arrastre táctil va por encima del dedo y el destino se detecta con el dedo', async ({ page, context }) => {
+  const answer = await startHard(page)
+  const degree = degreesOf(answer)[0]!
+  const touch = test.info().project.name === 'movil'
+  const from = await centre(ficha(page, degree))
+  const target = await centre(destino(page, 0))
+  if (!touch) {
+    // Con ratón la ficha sigue al puntero sin desplazarse.
+    await page.mouse.move(from.x, from.y)
+    await page.mouse.down()
+    await page.mouse.move(target.x, target.y, { steps: 6 })
+    const centreOfGhost = async () => {
+      const box = (await page.locator('.ficha-fantasma').boundingBox())!
+      return [box.x + box.width / 2, box.y + box.height / 2]
+    }
+    await expect.poll(async () => Math.abs((await centreOfGhost())[0]! - target.x)).toBeLessThanOrEqual(2)
+    await expect.poll(async () => Math.abs((await centreOfGhost())[1]! - target.y)).toBeLessThanOrEqual(2)
+    await page.mouse.up()
+  } else {
+    const cdp = await context.newCDPSession(page)
+    const point = (x: number, y: number) => [{ x, y, id: 1 }]
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: point(from.x, from.y) })
+    for (let step = 1; step <= 10; step += 1) {
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: point(from.x + ((target.x - from.x) * step) / 10, from.y + ((target.y - from.y) * step) / 10),
+      })
+    }
+    // Se espera a que la ficha pinte el último movimiento del dedo antes de medirla.
+    const ghostBox = async () => (await page.locator('.ficha-fantasma').boundingBox())!
+    await expect.poll(async () => Math.abs((await ghostBox()).x + (await ghostBox()).width / 2 - target.x)).toBeLessThanOrEqual(2)
+    const ghost = await ghostBox()
+    // El dedo está sobre el destino: la ficha dibujada queda claramente por encima y no lo cubre.
+    expect(ghost.y + ghost.height, 'la ficha no cubre el punto del dedo').toBeLessThan(target.y)
+    expect(target.y - (ghost.y + ghost.height / 2)).toBeGreaterThanOrEqual(40)
+    expect(ghost.y).toBeGreaterThanOrEqual(0)
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+  }
+  // El destino se calculó con el dedo, no con la ficha dibujada: queda en el círculo 1.
+  await expect(destino(page, 0)).toHaveAttribute('aria-label', new RegExp(`grado ${SPOKEN[degree]}$`))
+  for (const slot of [1, 2, 3]) await expect(destino(page, slot)).toHaveAttribute('aria-label', /vacío$/)
+})
+
+for (const width of [360, 390, 430]) {
+  test(`«Colocar sin arrastrar» a ${width} px: cuatro botones de 48 px que colocan, mueven e intercambian`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 })
+    const answer = await startHard(page)
+    const degrees = degreesOf(answer)
+
+    // Identificados por cuerda y traste, de 48×48 como mínimo, y sin pista antes de colocar nada.
+    await expect(page.locator('[data-colocar]')).toHaveCount(4)
+    for (const [slot, note] of answer.notes.entries()) {
+      await expect(compact(page, slot)).toHaveAttribute('aria-label', `Colocar en cuerda ${note.string}, traste ${note.fret}: vacío`)
+      const box = (await compact(page, slot).boundingBox())!
+      expect(box.width, `ancho del botón ${slot + 1}`).toBeGreaterThanOrEqual(48)
+      expect(box.height, `alto del botón ${slot + 1}`).toBeGreaterThanOrEqual(48)
+    }
+    const section = await page.locator('.colocar').innerText()
+    expect(section).not.toMatch(/maj7|m7|inversi|Fundamental/i)
+    const fits = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)
+    expect(fits).toBe(true)
+
+    // Colocar: ficha y botón compacto. El tablero y el botón reflejan lo mismo.
+    await ficha(page, degrees[0]!).click()
+    await compact(page, 0).click()
+    await expect(compact(page, 0)).toHaveAttribute('aria-label', new RegExp(`grado ${SPOKEN[degrees[0]!]}$`))
+    await expect(destino(page, 0)).toHaveAttribute('aria-label', new RegExp(`grado ${SPOKEN[degrees[0]!]}$`))
+    await expect(ficha(page, degrees[0]!)).toBeDisabled()
+
+    // Mover a un círculo vacío.
+    await compact(page, 0).click()
+    await expect(compact(page, 0)).toHaveAttribute('aria-pressed', 'true')
+    await expect(destino(page, 0)).toHaveAttribute('aria-pressed', 'true')
+    await compact(page, 2).click()
+    await expect(compact(page, 0)).toHaveAttribute('aria-label', /vacío$/)
+    await expect(destino(page, 2)).toHaveAttribute('aria-label', new RegExp(`grado ${SPOKEN[degrees[0]!]}$`))
+
+    // Intercambiar dos ocupados, mezclando botón compacto y círculo del tablero.
+    await ficha(page, degrees[1]!).click()
+    await compact(page, 3).click()
+    await compact(page, 2).click()
+    await destino(page, 3).click()
+    await expect(compact(page, 2)).toHaveAttribute('aria-label', new RegExp(`grado ${SPOKEN[degrees[1]!]}$`))
+    await expect(compact(page, 3)).toHaveAttribute('aria-label', new RegExp(`grado ${SPOKEN[degrees[0]!]}$`))
+
+    // Cancelar con Escape y completar la respuesta solo con los botones compactos.
+    await compact(page, 2).click()
+    await page.keyboard.press('Escape')
+    await expect(compact(page, 2)).toHaveAttribute('aria-pressed', 'false')
+    for (const slot of [2, 3]) {
+      await compact(page, slot).click()
+      await page.getByRole('button', { name: 'Devolver al banco' }).click()
+    }
+    for (const [slot, degree] of degrees.entries()) {
+      await ficha(page, degree).click()
+      await compact(page, slot).click()
+    }
+    await answerSelects(page, answer)
+    await page.getByRole('button', { name: 'Verificar' }).click()
+    await expect(page.getByRole('heading', { name: 'Acierto completo' })).toBeVisible()
+    await expect(page.locator('.colocar')).toHaveCount(0)
+  })
+}

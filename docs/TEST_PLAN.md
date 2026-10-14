@@ -4,9 +4,9 @@
 
 51 pruebas con node:test (`npm run test:base`). Las 24 de la base musical validan 124 posiciones y 16 rutas, integridad SHA-256 y extracción reproducible. Las 11 de `tests/tooling.test.mjs` cubren el lanzador de Python (versiones, orden de candidatos, error claro cuando falta) y que el workflow y Playwright conservan sus pasos. Las 9 de `tests/documentation-policy.test.mjs` cubren la política documental y las 7 de `tests/icon.test.mjs`, el icono: hashes, tamaños reales de los PNG y legibilidad a 32 px medida sobre sus píxeles.
 
-123 tests Vitest (`npm run test:unit`) en trece ficheros: las capas de datos, música y sesión (menú, preguntas, corrección por campos, banco y acciones de grados, reductor), la configuración, las pantallas de menú, pregunta y revisión, y las tarjetas (geometría de las 112 formas, vista neutra sin pistas y vista de solución). `npm test` ejecuta primero node:test y después Vitest.
+131 tests Vitest (`npm run test:unit`) en trece ficheros: las capas de datos, música y sesión (menú, preguntas, corrección por campos, banco y acciones de grados, reductor), la configuración, las pantallas de menú, pregunta y revisión, y las tarjetas (geometría de las 112 formas, vista neutra sin pistas y vista de solución). `npm test` ejecuta primero node:test y después Vitest.
 
-79 ejecuciones E2E (`npm run test:e2e`) sobre el build servido por vite preview: cinco escenarios de humo, ocho de tarjetas, trece de reconocimiento fácil y medio y trece de difícil, en un proyecto de escritorio y otro móvil, más la comparación con la plantilla original, que se ejecuta una vez. Las de tarjetas miden el DOM a 360, 390 y 430 px en los siete sets y en neutra y solución.
+93 ejecuciones E2E (`npm run test:e2e`) sobre el build servido por vite preview: cinco escenarios de humo, ocho de tarjetas, dieciséis de reconocimiento fácil y medio y diecisiete de difícil, en un proyecto de escritorio y otro móvil, más la comparación con la plantilla original, que se ejecuta una vez. Las de tarjetas miden el DOM a 360, 390 y 430 px en los siete sets y en neutra y solución.
 
 Lint (`npm run lint`) y comprobación de tipos (`npm run typecheck`, incluida en `npm run build`). Hay pruebas del juego de reconocimiento; no hay todavía pruebas de rutas ni de persistencia. No crear tests omitidos que simulen cobertura.
 

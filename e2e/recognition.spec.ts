@@ -206,3 +206,47 @@ for (const width of [360, 390, 430]) {
     })
   }
 }
+
+for (const width of [360, 390, 430]) {
+  test(`fácil a ${width} px: tras el error el elegido sale en rojo con ✗, el correcto en verde con ✓ y todo bloqueado`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 780 })
+    await begin(page, FIRST, 'Fácil')
+    const answer = await truth(page, FIRST.id)
+    const wrong = otherChord(answer.name)
+
+    // Antes de verificar no hay ninguna pista: ni marcas, ni clases, ni descripciones.
+    const group = page.locator('.opciones-acorde')
+    await expect(group.locator('button.ok, button.ko')).toHaveCount(0)
+    await expect(group.locator('[aria-describedby]')).toHaveCount(0)
+    await expect(group).not.toContainText(/[✓✗]/)
+    await chordButton(page, wrong).click()
+    await expect(group.locator('button.ok, button.ko')).toHaveCount(0)
+    await expect(group).not.toContainText(/[✓✗]/)
+
+    await page.getByRole('button', { name: 'Verificar' }).click()
+    await expect(page.getByRole('heading', { name: 'Incorrecto' })).toBeVisible()
+    await expect(chordButton(page, wrong)).toHaveClass(/ko/)
+    await expect(chordButton(page, wrong)).toContainText('✗')
+    await expect(chordButton(page, answer.name)).toHaveClass(/ok/)
+    await expect(chordButton(page, answer.name)).toContainText('✓')
+    // aria-pressed solo en el elegido; los cuatro botones bloqueados; el resto sin marcas.
+    await expect(group.locator('[aria-pressed="true"]')).toHaveCount(1)
+    await expect(chordButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
+    await expect(chordButton(page, answer.name)).toHaveAttribute('aria-pressed', 'false')
+    for (const chord of CHORDS) await expect(chordButton(page, chord)).toBeDisabled()
+    await expect(group.locator('button.ok, button.ko')).toHaveCount(2)
+    // Colores reales de los dos botones: rojo y verde, no solo clases.
+    const colours = await page.evaluate(() =>
+      [...document.querySelectorAll('.opciones-acorde button')].map((button) => [button.textContent, getComputedStyle(button).backgroundColor]),
+    )
+    // El texto del botón es el nombre, más « ✓» o « ✗» si está marcado: coincidencia exacta, porque Cm7 es prefijo de Cm7(b5).
+    const colourOf = (name: string) => colours.find(([text]) => text!.replace(/ [✓✗]$/, '') === name)![1]
+    expect(colourOf(wrong)).toBe('rgb(185, 28, 28)')
+    expect(colourOf(answer.name)).toBe('rgb(22, 101, 52)')
+    // Descripción accesible, sin cambiar el nombre accesible.
+    await expect(chordButton(page, answer.name)).toHaveAccessibleDescription('Respuesta correcta')
+    await expect(chordButton(page, wrong)).toHaveAccessibleDescription('Tu respuesta, incorrecta')
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)
+    expect(overflow).toBe(true)
+  })
+}

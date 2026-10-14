@@ -441,3 +441,79 @@ h2:focus-visible {
   margin: 0;
   color: var(--tinta-suave);
 }
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Alternativa compacta sin arrastre */
+.colocar {
+  padding: 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--tarjeta);
+}
+
+.colocar h3 {
+  margin: 0 0 0.25rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.colocar-ayuda {
+  margin: 0 0 0.5rem;
+  color: var(--tinta-suave);
+  font-size: 0.875rem;
+}
+
+.colocar-destinos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.colocar-boton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 56px;
+  padding: 0.25rem 0.5rem;
+  border: 1.5px dashed #6d7699;
+  border-radius: 0.625rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.colocar-boton strong {
+  font-size: 1.125rem;
+}
+
+.colocar-boton.ocupado {
+  border-style: solid;
+  background: #c8cde0;
+}
+
+.colocar-boton[aria-pressed='true'] {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px #0284c7;
+  background: #ffffff;
+}
+
+.colocar-boton:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}

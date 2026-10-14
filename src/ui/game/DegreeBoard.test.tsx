@@ -122,3 +122,39 @@ describe('corrección difícil (R07, R08)', () => {
     expect(done.result.fields.filter((item) => item.field === 'degree' && !item.correct)).toHaveLength(flats)
   })
 })
+
+describe('«Colocar sin arrastrar» (ajuste de revisión)', () => {
+  it('ofrece cuatro botones identificados por cuerda y traste, sin revelar la solución', () => {
+    for (const setId of catalog.sets.map((set) => set.id)) {
+      const state = hard(setId, 6)
+      const page = render(state)
+      const voicing = voicingOf(catalog, state.question)
+      expect(page).toContain('Colocar sin arrastrar')
+      const labels = [...page.matchAll(/data-colocar="\d"[^>]*aria-label="([^"]*)"/g)].map((match) => match[1]!)
+      expect(labels, setId).toHaveLength(4)
+      voicing.notes.forEach((note, slot) => {
+        expect(labels[slot]).toBe(`Colocar en cuerda ${note.string}, traste ${note.fret}: vacío`)
+      })
+      expect(page).not.toContain(voicing.id)
+      expect(page).not.toMatch(/data-colocar="\d"[^>]*aria-label="[^"]*(maj7|Cm|C7|inversi|grado)/)
+    }
+  })
+
+  it('muestra el grado colocado y marca el botón del círculo que se sostiene', () => {
+    let state: SessionState = place(hard(), 'b5', 2)
+    state = moveDegree(state, { type: 'pick-slot', slot: 2 })
+    const page = render(state as QuestionState)
+    expect(page).toMatch(/data-colocar="2"[^>]*aria-pressed="true"[^>]*aria-label="Colocar en cuerda \d, traste \d+: grado bemol 5"/)
+    expect(page.match(/data-colocar="\d"[^>]*aria-pressed="true"/g)).toHaveLength(1)
+  })
+
+  it('desaparece al verificar, como el resto del tablero', () => {
+    const state = hard()
+    const voicing = voicingOf(catalog, state.question)
+    let current: SessionState = choose(choose(state, { quality: voicing.quality }), { inversion: voicing.inversion })
+    voicing.notes.forEach((note, slot) => {
+      current = place(current, note.degree, slot)
+    })
+    expect(render(verify(catalog, current) as VerifiedState)).not.toContain('Colocar sin arrastrar')
+  })
+})
