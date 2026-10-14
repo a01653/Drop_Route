@@ -282,9 +282,103 @@ test('teclado: las flechas cambian de candidata, Intro verifica y el foco acompa
   const heading = page.getByRole('heading', { name: /nuestra ruta/ })
   await expect(heading).toBeVisible()
   await expect(heading).toBeFocused()
-  // Verificar de nuevo es imposible: el selector ya no existe.
+  // Verificar de nuevo es imposible: ya no hay botón y el selector sigue visible pero bloqueado.
   await expect(page.getByRole('button', { name: 'Verificar' })).toHaveCount(0)
-  await expect(page.getByRole('button', { name: /^Candidata \d$/ })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: /^Candidata \d$/ })).toHaveCount(4)
+  for (let index = 0; index < 4; index += 1) await expect(selectorButton(page, index)).toBeDisabled()
+})
+
+const RED = 'rgb(185, 28, 28)'
+const GREEN = 'rgb(22, 101, 52)'
+
+test('tras un fallo el selector sigue visible y bloqueado: elegida en rojo con ✗, la de nuestra ruta en verde con ✓', async ({ page }) => {
+  const { setId, mode } = await begin(page, { set: SETS[1]! })
+  const route = await routeOfStart(page, setId, mode, 'II')
+  const seen = await browseCandidates(page)
+  const expected = signature(route.steps[1]!.notes)
+  const right = seen.indexOf(expected)
+  const wrong = (right + 2) % 4  const others = [0, 1, 2, 3].filter((index) => index !== right && index !== wrong)
+
+  // Antes de verificar: sin marcas, sin descripciones y sin botones bloqueados.
+  await selectorButton(page, wrong).click()
+  for (let index = 0; index < 4; index += 1) {
+    const button = selectorButton(page, index)
+    await expect(button).toBeEnabled()
+    await expect(button).toHaveText(String(index + 1))
+    await expect(button).not.toHaveClass(/\b(ok|ko)\b/)
+    await expect(button).toHaveAccessibleDescription('')
+  }
+  await verifyButton(page).click()
+  await expect(page.getByRole('heading', { name: 'No es la de nuestra ruta' })).toBeVisible()
+
+  for (let index = 0; index < 4; index += 1) await expect(selectorButton(page, index)).toBeDisabled()
+  await expect(page.locator('.selector button[aria-pressed="true"]')).toHaveCount(1)
+  await expect(selectorButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
+  await expect(selectorButton(page, wrong)).toHaveClass(/\bko\b/)
+  await expect(selectorButton(page, wrong)).toHaveText(`${wrong + 1} ✗`)
+  await expect(selectorButton(page, wrong)).toHaveCSS('background-color', RED)
+  await expect(selectorButton(page, wrong)).toHaveAccessibleDescription('Tu respuesta, no es la de nuestra ruta')
+  await expect(selectorButton(page, right)).toHaveAttribute('aria-pressed', 'false')
+  await expect(selectorButton(page, right)).toHaveClass(/\bok\b/)
+  await expect(selectorButton(page, right)).toHaveText(`${right + 1} ✓`)
+  await expect(selectorButton(page, right)).toHaveCSS('background-color', GREEN)
+  await expect(selectorButton(page, right)).toHaveAccessibleDescription('La de nuestra ruta')
+  for (const index of others) {
+    await expect(selectorButton(page, index)).not.toHaveClass(/\b(ok|ko)\b/)
+    await expect(selectorButton(page, index)).toHaveText(String(index + 1))
+    await expect(selectorButton(page, index)).toHaveAccessibleDescription('')
+  }
+  // El rojo es «no coincide con la ruta», no invalidez musical.
+  await expect(page.locator('.veredicto.ko')).toContainText('Es otra posición válida de G7')
+  await expect(page.locator('main')).not.toContainText(/incorrect|equivocad|error|inválid/i)
+
+  // Ver Tu respuesta o la Solución no cambia la respuesta ni las marcas, y se ve un solo diagrama de comparación.
+  await page.getByRole('button', { name: 'Tu respuesta', exact: true }).click()
+  await expect(page.locator('main svg')).toHaveCount(2)
+  await expect(selectorButton(page, wrong)).toHaveClass(/\bko\b/)
+  await expect(selectorButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
+  await page.getByRole('button', { name: 'Solución', exact: true }).click()
+  await expect(page.locator('main svg')).toHaveCount(2)
+  await expect(selectorButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
+  await expect(selectorButton(page, right)).toHaveClass(/\bok\b/)
+
+  // Las posiciones y colores musicales de los diagramas siguen siendo los de la solución.
+  const solution = await page.locator('.comparacion .card-dot').evaluateAll((circles) => circles.map((circle) => getComputedStyle(circle).fill))
+  expect(new Set(solution).size).toBeGreaterThan(1)
+})
+
+test('acierto: solo la elegida, en verde con ✓, y ninguna roja; Siguiente deja el selector libre y sin marcas', async ({ page }) => {
+  const { setId, mode } = await begin(page)
+  const route = await routeOfStart(page, setId, mode, 'II')
+  const seen = await browseCandidates(page)
+  const right = seen.indexOf(signature(route.steps[1]!.notes))
+  await selectorButton(page, right).click()
+  await verifyButton(page).click()
+  await expect(page.getByRole('heading', { name: 'Es la de nuestra ruta' })).toBeVisible()
+  await expect(page.locator('.selector button.ok')).toHaveCount(1)
+  await expect(page.locator('.selector button.ko')).toHaveCount(0)
+  await expect(selectorButton(page, right)).toHaveText(`${right + 1} ✓`)
+  await expect(selectorButton(page, right)).toHaveAttribute('aria-pressed', 'true')
+  await expect(selectorButton(page, right)).toHaveAccessibleDescription('Tu respuesta, la de nuestra ruta')
+  for (let index = 0; index < 4; index += 1) await expect(selectorButton(page, index)).toBeDisabled()
+
+  await page.getByRole('button', { name: 'Siguiente' }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 2' })).toBeVisible()
+  await expect(page.locator('.candidata-tarjeta svg')).toHaveCount(1)
+  await expect(page.locator('.selector button.ok, .selector button.ko')).toHaveCount(0)
+  await expect(page.locator('.selector .solo-lectores')).toHaveCount(0)
+  for (let index = 0; index < 4; index += 1) {
+    await expect(selectorButton(page, index)).toBeEnabled()
+    await expect(selectorButton(page, index)).toHaveText(String(index + 1))
+  }
+  await expect(page.locator('.selector button[aria-pressed="true"]')).toHaveCount(1)
+  await expect(verifyButton(page)).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Tu respuesta', exact: true })).toHaveCount(0)
+  const html = await page.locator('.candidata-tarjeta').innerHTML()
+  expect(html.toUpperCase()).not.toMatch(/#E11D48|#0284C7|#059669|#EDBC07/)
+  // Y se puede volver a elegir.
+  await selectorButton(page, 3).click()
+  await expect(selectorButton(page, 3)).toHaveAttribute('aria-pressed', 'true')
 })
 
 for (const width of [360, 390, 430]) {
@@ -323,6 +417,7 @@ for (const width of [360, 390, 430]) {
       }
       await verifyButton(page).click()
       await expect(page.getByRole('heading', { name: /nuestra ruta/ })).toBeVisible()
+      await expect(page.getByRole('button', { name: /^Candidata \d$/ })).toHaveCount(4)
       await check('corrección', 2)
       await page.getByRole('button', { name: 'Tu respuesta', exact: true }).click()
       await check('tu respuesta', 2)

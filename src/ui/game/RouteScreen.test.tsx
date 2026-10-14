@@ -148,6 +148,88 @@ describe('verificación de ruta (R13)', () => {
     expect(html.match(/<svg/g)).toHaveLength(2)
   })
 
+  describe('selector tras verificar', () => {
+    const selectorHtml = (html: string) => /<div class="selector"[^>]*>([^]*?)<\/div>/.exec(html)![1]!
+    const buttons = (html: string) => [...selectorHtml(html).matchAll(/<button[^>]*>[^]*?<\/button>/g)].map((match) => match[0])
+    const noteOf = (html: string, button: string) => {
+      const id = /aria-describedby="([^"]+)"/.exec(button)?.[1]
+      return id ? new RegExp(`<span class="solo-lectores" id="${id}">([^<]*)</span>`).exec(selectorHtml(html))?.[1] : undefined
+    }
+
+    it('antes de verificar: cuatro botones sin marcas, sin descripciones y solo la elegida con aria-pressed', () => {
+      const state = begin('D2S1', 'major', 'ii-v')
+      for (const html of [render(state), render(selectCandidate(state, 2) as RouteQuestionState)]) {
+        const group = buttons(html)
+        expect(group).toHaveLength(4)
+        for (const button of group) expect(button).not.toMatch(/class="|✓|✗|aria-describedby|disabled/)
+        expect(group.filter((button) => button.includes('aria-pressed="true"'))).toHaveLength(1)
+        expect(selectorHtml(html)).not.toContain('solo-lectores')
+      }
+    })
+
+    it('fallo: la elegida en rojo con ✗ y la de nuestra ruta en verde con ✓, cuatro botones bloqueados', () => {
+      const state = begin('D2S1', 'major', 'ii-v')
+      const right = rightIndex(state)
+      const wrong = (right + 1) % 4
+      const html = render(finish(state, wrong))
+      const group = buttons(html)
+      expect(group).toHaveLength(4)
+      expect(group.filter((button) => button.includes('disabled=""'))).toHaveLength(4)
+      expect(group.filter((button) => button.includes('aria-pressed="true"'))).toHaveLength(1)
+      expect(group[wrong]).toMatch(/class="ko"[^>]*aria-pressed="true"/)
+      expect(group[wrong]).toContain('✗')
+      expect(group[right]).toMatch(/class="ok"[^>]*aria-pressed="false"/)
+      expect(group[right]).toContain('✓')
+      group.forEach((button, index) => {
+        if (index !== right && index !== wrong) expect(button).not.toMatch(/class="|✓|✗|aria-describedby/)
+        expect(button).toContain(`aria-label="Candidata ${index + 1}"`)
+      })
+      expect(noteOf(html, group[wrong]!)).toBe('Tu respuesta, no es la de nuestra ruta')
+      expect(noteOf(html, group[right]!)).toBe('La de nuestra ruta')
+      expect(html.match(/class="ko"/g)).toHaveLength(1)
+    })
+
+    it('acierto: solo la elegida, en verde con ✓ y descrita como la de nuestra ruta; ninguna roja', () => {
+      const state = begin('D2S2', 'minor', 'v-i', 3)
+      const right = rightIndex(state)
+      const html = render(finish(state, right))
+      const group = buttons(html)
+      expect(group[right]).toMatch(/class="ok"[^>]*aria-pressed="true"/)
+      expect(group[right]).toContain('✓')
+      expect(noteOf(html, group[right]!)).toBe('Tu respuesta, la de nuestra ruta')
+      expect(group.filter((button) => button.includes('class='))).toHaveLength(1)
+      expect(group.filter((button) => button.includes('disabled=""'))).toHaveLength(4)
+      expect(html).not.toContain('class="ko"')
+      expect(html).not.toContain('✗')
+    })
+
+    it('el rojo no se describe como error musical: el texto habla de nuestra ruta', () => {
+      const state = begin('D2S1', 'minor', 'ii-v', 4)
+      const html = render(finish(state, (rightIndex(state) + 3) % 4))
+      expect(selectorHtml(html)).not.toMatch(/incorrect|error|mal\b|equivocad|fallo|inválid/i)
+      expect(html).toContain('Es otra posición válida de G7')
+    })
+
+    it('la tarjeta de la candidata neutra desaparece y los diagramas siguen siendo dos con los colores musicales', () => {
+      const state = begin('D2S1', 'major', 'ii-v')
+      const html = render(finish(state, (rightIndex(state) + 1) % 4))
+      expect(html.match(/<svg/g)).toHaveLength(2)
+      expect(html).not.toContain('class="candidata"')
+      expect(html).toMatch(/#E11D48/i)
+    })
+
+    it('Siguiente devuelve una pregunta neutra con el selector desbloqueado y sin marcas', () => {
+      const state = begin('D2S1', 'major', 'ii-v')
+      const chained = next(catalog, finish(state, (rightIndex(state) + 1) % 4), 8) as SessionState as RouteQuestionState
+      expect(chained.phase).toBe('ruta')
+      const html = render(chained)
+      for (const button of buttons(html)) expect(button).not.toMatch(/class="|✓|✗|aria-describedby|disabled/)
+      expect(selectorHtml(html)).not.toContain('solo-lectores')
+      expect(html).toContain('>Verificar<')
+      expect(section(html, 'candidata')).not.toMatch(/#E11D48|#0284C7|#059669|#EDBC07/i)
+    })
+  })
+
   it('el comparador muestra la solución de nuestra ruta por defecto', () => {
     const state = begin('D2S2', 'major', 'ii-v', 11)
     const html = render(finish(state, (rightIndex(state) + 2) % 4))

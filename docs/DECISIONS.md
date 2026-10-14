@@ -67,6 +67,7 @@ Decisiones de implementación tomadas al ejecutar la orden, no confirmadas todav
 - Tras verificar, «Tu respuesta» y «Solución» se alternan con dos botones y se ve un solo diagrama además de la partida; por defecto, la solución.
 - Las tarjetas de ruta usan la ventana de trastes por posición física y no la ventana común de la ruta de la plantilla, porque esa ventana delata la candidata correcta. Otras diferencias con las láminas de ruta: no se dibuja C6.
 - Deslizamiento opcional con un umbral de 48 px y predominio horizontal; en los extremos no da la vuelta. Flechas del teclado sobre el selector.
+- Ajuste de la revisión (14/10/2026; validación aprobada: build, lint, npm test completo y Vitest dirigido con control negativo; E2E y CI pendientes): tras verificar el selector 1 a 4 no desaparece, queda bloqueado y marcado como los botones de acorde de fácil. Si la elegida no coincide con nuestra ruta va en rojo con ✗ y la de nuestra ruta en verde con ✓; si coincide, la elegida en verde con ✓. `aria-pressed` solo en la elegida y estado en la descripción accesible, sin cambiar el nombre «Candidata n». El rojo del botón significa «no es la de nuestra ruta»; el texto conserva «otra posición válida». El veredicto sigue en ámbar para no presentar la alternativa como error. Tu respuesta/Solución no cambia la elegida y Siguiente deja el selector libre y sin marcas.
 
 ## Pendiente
 

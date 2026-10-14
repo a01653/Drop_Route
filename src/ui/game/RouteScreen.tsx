@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { catalog, routesDocument } from '../../data'
 import type { Inversion } from '../../data'
@@ -49,6 +49,72 @@ function Comparison({ state }: { state: RouteVerifiedState }) {
   )
 }
 
+interface CandidateSelectorProps {
+  selected: number
+  /** Tras verificar: el selector sigue visible, bloqueado y con la corrección marcada. */
+  result?: { expectedIndex: number }
+  dispatchSelect: (index: number) => void
+}
+
+/**
+ * Botones 1 a 4. Antes de verificar solo marcan la elegida (aria-pressed) y no dan pistas. Tras verificar quedan
+ * bloqueados: la elegida va en rojo con ✗ si no es la de nuestra ruta (el rojo no dice que sea musicalmente inválida)
+ * o en verde con ✓ si lo es, y la de nuestra ruta en verde con ✓. El nombre accesible no cambia: el estado va en la
+ * descripción.
+ */
+function CandidateSelector({ selected, result, dispatchSelect }: CandidateSelectorProps) {
+  const noteBase = useId()
+  const onKeys = (event: KeyboardEvent<HTMLElement>) => {
+    if (result) return
+    const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0
+    if (!step) return
+    event.preventDefault()
+    const index = Math.min(CANDIDATE_COUNT - 1, Math.max(0, selected + step))
+    dispatchSelect(index)
+    event.currentTarget.querySelectorAll<HTMLButtonElement>('button')[index]?.focus()
+  }
+  return (
+    <div className="selector" role="group" aria-label="Candidata" onKeyDown={onKeys}>
+      {Array.from({ length: CANDIDATE_COUNT }, (_, index) => {
+        const chosen = index === selected
+        const isExpected = result?.expectedIndex === index
+        const mark = result ? (isExpected ? 'ok' : chosen ? 'ko' : undefined) : undefined
+        const note = !result
+          ? undefined
+          : isExpected
+            ? chosen
+              ? 'Tu respuesta, la de nuestra ruta'
+              : 'La de nuestra ruta'
+            : chosen
+              ? 'Tu respuesta, no es la de nuestra ruta'
+              : undefined
+        const noteId = note ? `${noteBase}-${index}` : undefined
+        return (
+          <Fragment key={index}>
+            <button
+              type="button"
+              className={mark}
+              aria-pressed={chosen}
+              aria-label={`Candidata ${index + 1}`}
+              aria-describedby={noteId}
+              disabled={result !== undefined}
+              onClick={() => dispatchSelect(index)}
+            >
+              {index + 1}
+              {mark && <span aria-hidden="true"> {mark === 'ok' ? '✓' : '✗'}</span>}
+            </button>
+            {note && (
+              <span className="solo-lectores" id={noteId}>
+                {note}
+              </span>
+            )}
+          </Fragment>
+        )
+      })}
+    </div>
+  )
+}
+
 /**
  * Pantalla de una pregunta de ruta (R11 a R16): la partida siempre visible arriba, una sola candidata debajo, un
  * selector 1 a 4 (también por deslizamiento y teclado) y, tras verificar, Tu respuesta o Solución de una en una.
@@ -82,15 +148,6 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
     const dx = event.clientX - origin.x
     const dy = event.clientY - origin.y
     if (Math.abs(dx) >= SWIPE_DISTANCE && Math.abs(dx) > Math.abs(dy) * 1.5) select(state.selected + (dx < 0 ? 1 : -1))
-  }
-
-  const onSelectorKeys = (event: KeyboardEvent<HTMLElement>) => {
-    const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0
-    if (!step) return
-    event.preventDefault()
-    const index = Math.min(CANDIDATE_COUNT - 1, Math.max(0, state.selected + step))
-    select(index)
-    event.currentTarget.querySelectorAll<HTMLButtonElement>('button')[index]?.focus()
   }
 
   return (
@@ -134,19 +191,7 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
           <p className="juego-pie" aria-live="polite">
             Candidata {state.selected + 1} de {CANDIDATE_COUNT}. Desliza la tarjeta o usa los botones.
           </p>
-          <div className="selector" role="group" aria-label="Candidata" onKeyDown={onSelectorKeys}>
-            {Array.from({ length: CANDIDATE_COUNT }, (_, index) => (
-              <button
-                key={index}
-                type="button"
-                aria-pressed={index === state.selected}
-                aria-label={`Candidata ${index + 1}`}
-                onClick={() => select(index)}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
+          <CandidateSelector selected={state.selected} dispatchSelect={select} />
           <button className="boton-principal" type="button" onClick={() => dispatch({ type: 'verify' })}>
             Verificar
           </button>
@@ -170,6 +215,14 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
             <button className="boton-principal" type="button" onClick={() => dispatch({ type: 'next', seed: newSeed() })}>
               {config.stretch === 'both' && question.target === 'V' ? 'Siguiente: V → I' : 'Siguiente'}
             </button>
+          </section>
+          <section className="seleccion" aria-labelledby="seleccion-titulo">
+            <h2 id="seleccion-titulo">Candidatas</h2>
+            <CandidateSelector
+              selected={state.selected}
+              result={{ expectedIndex: question.candidateRouteIds.indexOf(question.routeId) }}
+              dispatchSelect={select}
+            />
           </section>
           <Comparison state={state} />
         </>
