@@ -55,6 +55,19 @@ Decisiones de implementación tomadas al ejecutar el bloque, no confirmadas toda
 - Sin puntuación ni contadores de sesión: los pide una decisión pendiente.
 - El menú muestra «Rutas II-V-I: próximamente» como texto y no como botón.
 
+## Aplicado en DR-005 (pendiente de revisión)
+
+Decisiones de implementación tomadas al ejecutar la orden, no confirmadas todavía por el usuario.
+
+- Menú: el juego de rutas pide Drop 2 (sets 1 y 2, los que tienen rutas), modo (mayor o menor) y tramo; no tiene dificultad. Reconocimiento conserva todas las familias.
+- Tramos: «II → V», «V → I» y «II → V → I». El tercero es el encadenado que pide el DTS («si falla el V, el V-I parte del V correcto de esa ruta»): el V-I sigue al II-V de la misma ruta y después se elige otra.
+- Las cuatro candidatas de una pregunta son el mismo paso de las cuatro rutas del set y modo (una por inversión). No se inventa ninguna posición: salen de data/routes.json.
+- La candidata que se ve es la respuesta, empezando por la 1; no hay un estado «sin elegir». Verificar está siempre habilitado y no hay verificación automática al cambiar de candidata.
+- Redacción: «Es la de nuestra ruta» y «No es la de nuestra ruta … Es otra posición válida de G7»; nunca «incorrecto». Verde con ✓ y ámbar con ✗, siempre con texto.
+- Tras verificar, «Tu respuesta» y «Solución» se alternan con dos botones y se ve un solo diagrama además de la partida; por defecto, la solución.
+- Las tarjetas de ruta usan la ventana de trastes por posición física y no la ventana común de la ruta de la plantilla, porque esa ventana delata la candidata correcta. Otras diferencias con las láminas de ruta: no se dibuja C6.
+- Deslizamiento opcional con un umbral de 48 px y predominio horizontal; en los extremos no da la vuelta. Flechas del teclado sobre el selector.
+
 ## Pendiente
 
 Icono final; puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; hosting y licencia del código nuevo. Las referencias conservan su autoría.

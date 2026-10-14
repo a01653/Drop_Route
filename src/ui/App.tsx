@@ -6,6 +6,7 @@ import './app.css'
 import './game/game.css'
 import { MenuScreen } from './game/MenuScreen'
 import { RecognitionScreen } from './game/RecognitionScreen'
+import { RouteScreen } from './game/RouteScreen'
 import { ReviewScreen } from './review/ReviewScreen'
 import { useHashRoute } from './useHashRoute'
 
@@ -19,9 +20,9 @@ export function App() {
   const [state, dispatch] = useReducer<SessionState, [SessionAction]>(reducer, createSession(catalog))
 
   if (route === '#/revision') return <ReviewScreen />
-  return state.phase === 'menu' ? (
-    <MenuScreen state={state} dispatch={dispatch} newSeed={newSeed} />
-  ) : (
-    <RecognitionScreen state={state} dispatch={dispatch} newSeed={newSeed} />
-  )
+  if (state.phase === 'menu') return <MenuScreen state={state} dispatch={dispatch} newSeed={newSeed} />
+  if (state.phase === 'ruta' || state.phase === 'ruta-verificada') {
+    return <RouteScreen state={state} dispatch={dispatch} newSeed={newSeed} />
+  }
+  return <RecognitionScreen state={state} dispatch={dispatch} newSeed={newSeed} />
 }

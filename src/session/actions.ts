@@ -1,5 +1,6 @@
-import type { Catalog } from '../data/types'
-import { choose, configure, exit, moveDegree, next, start, verify } from '.'
+import { routesDocument } from '../data'
+import type { Catalog, RoutesDocument } from '../data/types'
+import { choose, configure, exit, moveDegree, next, selectCandidate, start, verify } from '.'
 import type { SessionState } from '.'
 import type { DegreeAction } from './degrees'
 
@@ -15,24 +16,32 @@ export type SessionAction =
   | { type: 'start'; seed: number }
   | { type: 'choose'; change: ChooseChange }
   | { type: 'degree'; action: DegreeAction }
+  | { type: 'candidate'; index: number }
   | { type: 'verify' }
   | { type: 'next'; seed: number }
   | { type: 'exit' }
 
-export function reduceSession(catalog: Catalog, state: SessionState, action: SessionAction): SessionState {
+export function reduceSession(
+  catalog: Catalog,
+  state: SessionState,
+  action: SessionAction,
+  routes: RoutesDocument = routesDocument,
+): SessionState {
   switch (action.type) {
     case 'configure':
-      return configure(catalog, state, action.change)
+      return configure(catalog, state, action.change, routes)
     case 'start':
-      return start(catalog, state, action.seed)
+      return start(catalog, state, action.seed, routes)
     case 'choose':
       return choose(state, action.change)
     case 'degree':
       return moveDegree(state, action.action)
+    case 'candidate':
+      return selectCandidate(state, action.index)
     case 'verify':
-      return verify(catalog, state)
+      return verify(catalog, state, routes)
     case 'next':
-      return next(catalog, state, action.seed)
+      return next(catalog, state, action.seed, routes)
     case 'exit':
       return exit(state)
   }

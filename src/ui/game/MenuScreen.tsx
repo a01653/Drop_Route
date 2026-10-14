@@ -1,5 +1,5 @@
 import { catalog, routesDocument, summarizeData } from '../../data'
-import { DIFFICULTIES, DROP_LABELS, dropFamilies, setsOfDrop } from '../../session'
+import { DIFFICULTIES, DROP_LABELS, GAMES, ROUTE_MODES, ROUTE_STRETCHES, dropFamilies, setsOfDrop } from '../../session'
 import type { Difficulty, MenuState, SessionAction } from '../../session'
 import { OptionGroup } from './OptionGroup'
 
@@ -11,6 +11,9 @@ const DIFFICULTY_HELP: Record<Difficulty, string> = {
   hard: 'Además colocas los grados sobre los cuatro círculos.',
 }
 
+const ROUTES_HELP =
+  'Partes de un acorde de nuestra ruta y eliges, entre cuatro candidatas, la posición que la continúa. Solo Drop 2, sets 1 y 2.'
+
 interface MenuScreenProps {
   state: MenuState
   dispatch: (action: SessionAction) => void
@@ -18,10 +21,11 @@ interface MenuScreenProps {
   newSeed: () => number
 }
 
-/** Menú de arranque (R01): juego, Drop, set con sus cuerdas y dificultad. */
+/** Menú de arranque (R01): juego, Drop, set con sus cuerdas y dificultad o, en rutas, modo y tramo. */
 export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
   const { config } = state
-  const sets = setsOfDrop(catalog, config.drop)
+  const routes = config.game === 'routes'
+  const sets = setsOfDrop(catalog, config.drop, config.game)
 
   return (
     <main className="arranque menu" data-phase={state.phase}>
@@ -40,16 +44,15 @@ export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
         <OptionGroup
           legend="Juego"
           value={config.game}
-          onChange={() => undefined}
-          options={[{ id: 'recognition', label: 'Reconocer voicings', detail: 'Tarjeta de un mástil corto' }]}
+          onChange={(game) => dispatch({ type: 'configure', change: { game } })}
+          options={GAMES.map(({ id, label }) => ({ id, label }))}
         />
-        <p className="menu-pronto">Rutas II-V-I: próximamente.</p>
 
         <OptionGroup
           legend="Drop"
           value={config.drop}
           onChange={(drop) => dispatch({ type: 'configure', change: { drop } })}
-          options={dropFamilies(catalog).map((drop) => ({ id: drop, label: DROP_LABELS[drop] }))}
+          options={dropFamilies(catalog, config.game).map((drop) => ({ id: drop, label: DROP_LABELS[drop] }))}
         />
 
         <OptionGroup
@@ -63,15 +66,33 @@ export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
           }))}
         />
 
-        <OptionGroup
-          legend="Dificultad"
-          value={config.difficulty}
-          onChange={(difficulty) => dispatch({ type: 'configure', change: { difficulty } })}
-          options={DIFFICULTIES.map(({ id, label }) => ({ id, label }))}
-        />
-        <p className="menu-ayuda">
-          {DIFFICULTY_HELP[config.difficulty]}
-        </p>
+        {routes ? (
+          <>
+            <OptionGroup
+              legend="Modo"
+              value={config.routeMode}
+              onChange={(routeMode) => dispatch({ type: 'configure', change: { routeMode } })}
+              options={ROUTE_MODES.map(({ id, label, detail }) => ({ id, label, detail }))}
+            />
+            <OptionGroup
+              legend="Tramo"
+              value={config.stretch}
+              onChange={(stretch) => dispatch({ type: 'configure', change: { stretch } })}
+              options={ROUTE_STRETCHES.map(({ id, label, detail }) => ({ id, label, detail }))}
+            />
+            <p className="menu-ayuda">{ROUTES_HELP}</p>
+          </>
+        ) : (
+          <>
+            <OptionGroup
+              legend="Dificultad"
+              value={config.difficulty}
+              onChange={(difficulty) => dispatch({ type: 'configure', change: { difficulty } })}
+              options={DIFFICULTIES.map(({ id, label }) => ({ id, label }))}
+            />
+            <p className="menu-ayuda">{DIFFICULTY_HELP[config.difficulty]}</p>
+          </>
+        )}
 
         <button className="boton-principal" type="submit">
           Empezar
@@ -81,8 +102,8 @@ export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
       <section className="estado" aria-labelledby="estado-titulo">
         <h2 id="estado-titulo">Estado de desarrollo</h2>
         <p>
-          <strong>En desarrollo.</strong> Ya puedes reconocer voicings en fácil, medio y difícil; las rutas
-          II-V-I llegarán después.
+          <strong>En desarrollo.</strong> Ya puedes reconocer voicings en fácil, medio y difícil y continuar rutas
+          II-V-I en Drop 2; el progreso local y la instalación llegarán después.
         </p>
         <p>Datos cargados desde la plantilla original:</p>
         <dl>

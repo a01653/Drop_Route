@@ -25,7 +25,14 @@ const correctChange = (state: QuestionState) => {
 describe('menú (R01)', () => {
   it('empieza en el menú con una configuración válida', () => {
     expect(menu.phase).toBe('menu')
-    expect(menu.config).toEqual({ game: 'recognition', drop: 'drop2', setId: 'D2S1', difficulty: 'easy' })
+    expect(menu.config).toEqual({
+      game: 'recognition',
+      drop: 'drop2',
+      setId: 'D2S1',
+      difficulty: 'easy',
+      routeMode: 'major',
+      stretch: 'ii-v',
+    })
   })
 
   it('lista las tres familias Drop y los sets de cada una con sus cuerdas', () => {

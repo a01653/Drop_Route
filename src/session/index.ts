@@ -1,13 +1,16 @@
-// Capa de sesión: menú, pregunta, verificación y regreso al menú. Funciones puras sobre un estado
+// Capa de sesión: menú, preguntas, verificación y regreso al menú. Funciones puras sobre un estado
 // inmutable, sin React ni DOM, para probarlas con fixtures y semillas.
-import type { Catalog, Inversion, QualityKey } from '../data/types'
+import { routesDocument } from '../data'
+import type { Catalog, Inversion, QualityKey, RoutesDocument } from '../data/types'
 import { defaultConfig, updateConfig } from './config'
-import type { GameConfig } from './config'
-import { createQuestion, emptyAnswer, evaluate, isAnswerComplete } from './recognition'
-import type { RecognitionAnswer, RecognitionQuestion, RecognitionResult } from './recognition'
+import type { ConfigChange, GameConfig } from './config'
 import { applyDegreeAction } from './degrees'
 import type { DegreeAction, Held } from './degrees'
+import { createQuestion, emptyAnswer, evaluate, isAnswerComplete } from './recognition'
+import type { RecognitionAnswer, RecognitionQuestion, RecognitionResult } from './recognition'
 import { createRng } from './rng'
+import { createRouteQuestion, evaluateRoute } from './routes'
+import type { RouteQuestion, RouteResult } from './routes'
 
 export interface MenuState {
   readonly phase: 'menu'
@@ -33,7 +36,24 @@ export interface VerifiedState {
   readonly result: RecognitionResult
 }
 
-export type SessionState = MenuState | QuestionState | VerifiedState
+/** Pregunta de ruta abierta. La candidata que se ve es la respuesta: el índice va de 0 a 3. */
+export interface RouteQuestionState {
+  readonly phase: 'ruta'
+  readonly config: GameConfig
+  readonly question: RouteQuestion
+  readonly selected: number
+}
+
+/** Pregunta de ruta verificada: la candidata queda bloqueada y se compara con la ruta exacta. */
+export interface RouteVerifiedState {
+  readonly phase: 'ruta-verificada'
+  readonly config: GameConfig
+  readonly question: RouteQuestion
+  readonly selected: number
+  readonly result: RouteResult
+}
+
+export type SessionState = MenuState | QuestionState | VerifiedState | RouteQuestionState | RouteVerifiedState
 export type SessionPhase = SessionState['phase']
 
 export function createSession(catalog: Catalog): MenuState {
@@ -44,15 +64,25 @@ export function createSession(catalog: Catalog): MenuState {
 export function configure(
   catalog: Catalog,
   state: SessionState,
-  change: Parameters<typeof updateConfig>[2],
+  change: ConfigChange,
+  routes: RoutesDocument = routesDocument,
 ): SessionState {
-  return state.phase === 'menu' ? { phase: 'menu', config: updateConfig(catalog, state.config, change) } : state
+  return state.phase === 'menu' ? { phase: 'menu', config: updateConfig(catalog, state.config, change, routes) } : state
 }
 
-/** Empieza una partida desde el menú con la primera pregunta. */
-export function start(catalog: Catalog, state: SessionState, seed: number): SessionState {
+/** Empieza una partida desde el menú con la primera pregunta del juego elegido. */
+export function start(
+  catalog: Catalog,
+  state: SessionState,
+  seed: number,
+  routes: RoutesDocument = routesDocument,
+): SessionState {
   if (state.phase !== 'menu') return state
-  const question = createQuestion(catalog, state.config, createRng(seed))
+  const rng = createRng(seed)
+  if (state.config.game === 'routes') {
+    return { phase: 'ruta', config: state.config, question: createRouteQuestion(state.config, rng, routes), selected: 0 }
+  }
+  const question = createQuestion(catalog, state.config, rng)
   return { phase: 'pregunta', config: state.config, question, answer: emptyAnswer(), held: null }
 }
 
@@ -73,8 +103,25 @@ export function moveDegree(state: SessionState, action: DegreeAction): SessionSt
   return { ...state, answer: { ...state.answer, degrees: board.slots }, held: board.held }
 }
 
+/** Elige la candidata de ruta que se ve (0 a 3). Cambiar de candidata no cambia la partida ni verifica. */
+export function selectCandidate(state: SessionState, index: number): SessionState {
+  if (state.phase !== 'ruta' || !Number.isInteger(index) || index < 0 || index >= state.question.candidateRouteIds.length) {
+    return state
+  }
+  return index === state.selected ? state : { ...state, selected: index }
+}
+
 /** Verifica una respuesta completa. Incompleta, o ya verificada, no cambia nada. */
-export function verify(catalog: Catalog, state: SessionState): SessionState {
+export function verify(catalog: Catalog, state: SessionState, routes: RoutesDocument = routesDocument): SessionState {
+  if (state.phase === 'ruta') {
+    return {
+      phase: 'ruta-verificada',
+      config: state.config,
+      question: state.question,
+      selected: state.selected,
+      result: evaluateRoute(catalog, routes, state.question, state.selected),
+    }
+  }
   if (state.phase !== 'pregunta' || !isAnswerComplete(state.question.difficulty, state.answer)) return state
   return {
     phase: 'verificada',
@@ -85,8 +132,17 @@ export function verify(catalog: Catalog, state: SessionState): SessionState {
   }
 }
 
-/** Siguiente pregunta tras verificar, con la misma configuración y sin repetir la forma anterior. */
-export function next(catalog: Catalog, state: SessionState, seed: number): SessionState {
+/** Siguiente pregunta tras verificar, con la misma configuración y sin repetir la anterior. */
+export function next(
+  catalog: Catalog,
+  state: SessionState,
+  seed: number,
+  routes: RoutesDocument = routesDocument,
+): SessionState {
+  if (state.phase === 'ruta-verificada') {
+    const question = createRouteQuestion(state.config, createRng(seed), routes, state.question)
+    return { phase: 'ruta', config: state.config, question, selected: 0 }
+  }
   if (state.phase !== 'verificada') return state
   const question = createQuestion(catalog, state.config, createRng(seed), state.question)
   return { phase: 'pregunta', config: state.config, question, answer: emptyAnswer(), held: null }
@@ -102,3 +158,4 @@ export * from './config'
 export * from './degrees'
 export * from './recognition'
 export * from './rng'
+export * from './routes'

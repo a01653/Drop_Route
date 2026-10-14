@@ -40,7 +40,7 @@ Mayor Dm7-G7-Cmaj7. Menor Dm7(b5)-G7-Cm7. No sustituir el I menor por Cm(maj7) o
 Oráculo D2S1 mayor primera inversión (4-3-2-1): Dm7 3,5,3,5; G7 3,4,3,3; Cmaj7 2,4,1,3.
 Oráculo D2S2 menor fundamental (5-4-3-2): Dm7(b5) 5,6,5,6; G7 5,5,4,6; Cm7 3,5,3,4.
 
-Comparar con nuestra ruta exacta. No sustituir por un optimizador ni declarar que sea el mínimo universal. Otras soluciones pueden ser musicalmente válidas.
+Comparar con nuestra ruta exacta. En el juego, las cuatro candidatas de una pregunta son el mismo paso de las cuatro rutas del set y modo, y solo una es la de nuestra ruta: las otras son posiciones válidas de la misma calidad que esta ruta no usa, y no se describen como musicalmente incorrectas. No sustituir por un optimizador ni declarar que sea el mínimo universal. Otras soluciones pueden ser musicalmente válidas.
 
 La fuente HTML es autoridad de las posiciones normalizadas. Los PDF son guías de imágenes de Pedro Bellora; sus 42 páginas no se han transcrito íntegramente. Para añadir rutas se exige transcripción, auditoría física y oráculos independientes.
 
