@@ -297,7 +297,8 @@ test('tras un fallo el selector sigue visible y bloqueado: elegida en rojo con â
   const seen = await browseCandidates(page)
   const expected = signature(route.steps[1]!.notes)
   const right = seen.indexOf(expected)
-  const wrong = (right + 2) % 4  const others = [0, 1, 2, 3].filter((index) => index !== right && index !== wrong)
+  const wrong = (right + 2) % 4
+  const others = [0, 1, 2, 3].filter((index) => index !== right && index !== wrong)
 
   // Antes de verificar: sin marcas, sin descripciones y sin botones bloqueados.
   await selectorButton(page, wrong).click()
