@@ -81,6 +81,33 @@ describe('registro del service worker', () => {
     expect(reload).not.toHaveBeenCalled()
   })
 
+  it('si el registro se resuelve sin objeto (Playwright con serviceWorkers: block) devuelve null sin listeners, avisos ni recargas', async () => {
+    const container = Object.assign(new EventTarget(), {
+      controller: {} as object | null,
+      register: vi.fn(async (): Promise<undefined> => undefined),
+    })
+    const addContainerListener = vi.spyOn(container, 'addEventListener')
+    const visibility = Object.assign(new EventTarget(), { visibilityState: 'visible' as DocumentVisibilityState })
+    const addVisibilityListener = vi.spyOn(visibility, 'addEventListener')
+    const announce = vi.fn()
+    const reload = vi.fn()
+    const result = await registerServiceWorker({
+      scriptUrl: '/Drop_Route/sw.js',
+      scope: '/Drop_Route/',
+      container: container as unknown as ServiceWorkerContainer,
+      announce,
+      reload,
+      visibility: visibility as unknown as Document,
+    })
+    expect(result).toBeNull()
+    expect(container.register).toHaveBeenCalledWith('/Drop_Route/sw.js', { scope: '/Drop_Route/' })
+    expect(addContainerListener).not.toHaveBeenCalled()
+    expect(addVisibilityListener).not.toHaveBeenCalled()
+    container.dispatchEvent(new Event('controllerchange'))
+    expect(announce).not.toHaveBeenCalled()
+    expect(reload).not.toHaveBeenCalled()
+  })
+
   it('la primera instalación no es una actualización: sin worker previo no se avisa', async () => {
     const { registration, container, announced, run } = setup({ controller: false })
     await run()

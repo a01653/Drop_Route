@@ -19,16 +19,19 @@ export interface RegisterOptions {
  * página sigue con el código y la caché con los que arrancó hasta que la persona pide actualizar. Solo entonces se
  * le pide a la versión en espera que tome el control y, cuando lo hace, se recarga una vez. Así una pregunta abierta
  * no se pierde ni se mezclan los bundles de dos versiones. Si el registro falla (sin conexión en la primera visita,
- * navegador restringido) la aplicación sigue funcionando sin service worker.
+ * navegador restringido) la aplicación sigue funcionando sin service worker. Lo mismo si el registro se resuelve
+ * sin objeto, como hace Playwright con serviceWorkers: 'block': no hay nada que vigilar y no se añade ningún listener.
  */
 export async function registerServiceWorker(options: RegisterOptions): Promise<ServiceWorkerRegistration | null> {
   const { scriptUrl, scope, container, announce, reload, visibility } = options
-  let registration: ServiceWorkerRegistration
+  let result: ServiceWorkerRegistration | undefined
   try {
-    registration = await container.register(scriptUrl, { scope })
+    result = await container.register(scriptUrl, { scope })
   } catch {
     return null
   }
+  if (!result) return null
+  const registration: ServiceWorkerRegistration = result
 
   let applying = false
   let reloaded = false

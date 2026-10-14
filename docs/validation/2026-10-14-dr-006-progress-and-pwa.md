@@ -57,17 +57,31 @@ Los PNG de la PWA los exportó el supervisor con CairoSVG 2.9.1 a partir de los 
 
 ## No ejecutado
 
-- **Playwright.** Se ha comprobado solo el descubrimiento: 38 ejecuciones nuevas en 3 ficheros (`progress.spec.ts`: 14 por 2 proyectos; `offline.spec.ts`: 3 por 2 proyectos; `pwa-update.spec.ts`: 4, solo escritorio). **Ninguna se ha ejecutado**, de modo que el progreso en el navegador, el juego sin conexión y la actualización de la PWA siguen sin verificar en Chromium.
+- **Playwright en local.** Antes de la CI solo se había comprobado el descubrimiento: 38 ejecuciones nuevas en 3 ficheros (`progress.spec.ts`: 14 por 2 proyectos; `offline.spec.ts`: 3 por 2 proyectos; `pwa-update.spec.ts`: 4, solo escritorio). Su ejecución real es la de la CI de la sección siguiente.
 - La batería final (`validate`, `test`, `test:e2e`, `docs:check`) sobre el estado definitivo.
-- La CI de GitHub con estos cambios: pendiente.
+- La CI de GitHub con la corrección de `register.ts`: pendiente.
 - Navegadores distintos de Chromium, dispositivos reales y la instalación de la PWA en un móvil.
+
+## CI observada y corrección posterior
+
+CI del commit `0e6cb68473ef426f667b1171c0e1a560a29a1eac`, run `38583950978`:
+
+- Foundation correcta: 82 tests de `node:test`, sin fallos ni omitidos; Python 3.10.22; datos, auditorías y documentación correctos.
+- Tipos, lint, Vitest y build de la app correctos.
+- E2E: 149 correctos, 16 fallidos, 0 omitidos. Pasaron los 6 de modo sin conexión y los 4 de actualización real, incluidos `/Drop_Route/`, la cuota nativa y la pérdida avisada.
+- Los 16 fallos son los 8 casos de `progress.spec.ts` en los dos proyectos, que registran `pageerror`. Todos recibieron dos veces `Cannot read properties of undefined (reading 'waiting')`. Los contadores y la interfaz funcionaron, pero hubo esas excepciones.
+
+Causa (probable, por validar): `test.use({ serviceWorkers: 'block' })` de Playwright hace que `navigator.serviceWorker.register` se resuelva con `undefined` en lugar de rechazarse. `registerServiceWorker` asumía un registro válido y `check()` leía `registration.waiting`. No es un fallo del navegador nativo: es una incompatibilidad del registro con la API tal como la deja Playwright.
+
+Corrección, **por validar**: en `src/ui/pwa/register.ts`, si el registro se resuelve sin objeto se devuelve `null` sin añadir listeners, avisos ni recargas. El comportamiento con registros válidos y con rechazo no cambia. Regresión unitaria dirigida en `src/ui/pwa/register.test.ts`, que reproduce el registro vacío. Los E2E con workers bloqueados no se han tocado, y no se ocultan ni se filtran los `pageerror`, para detectar que ya no se lanza. Ni el test unitario ni la nueva CI se han ejecutado todavía.
 
 ## Defectos detectados en la validación
 
-Ninguno era del producto:
+Los dos primeros eran defectos del test, no del producto; el tercero es de compatibilidad del registro con la API bloqueada por Playwright y se detectó en la CI:
 
 - Un error de tipos de tupla en `offline.spec.ts`, detectado por el supervisor y corregido.
 - Un defecto de planteamiento del E2E de cuota llena, también detectado por el supervisor. Guardaba reconocimiento, llenaba la cuota y después configuraba rutas esperando un fallo inmediato, pero esa configuración serializa 7 caracteres menos que la de reconocimiento y se guarda aun con la cuota llena. El test esperaba por eso un `write-failed` que no se produce y tomaba una instantánea inválida. Corrección: configurar rutas antes de llenar y de tomar la instantánea; después, llenar la cuota real, abrir una pregunta y verificar, lo que añade un contador nuevo, el documento crece y la escritura falla. Tras actualizar, lo guardado es el contador de reconocimiento 1/1 y la configuración de rutas (Drop 2 set 1, mayor, II → V); el contador de rutas 1/1 solo estaba en memoria y se pierde. La corrección está escrita y **no se ha ejecutado**. La producción no cambió.
+- `registerServiceWorker` no toleraba un registro resuelto sin objeto (`serviceWorkers: 'block'` de Playwright): excepción `reading 'waiting'` en los 8 casos de `progress.spec.ts` por proyecto. Corregido en `register.ts`, por validar (véase la sección anterior).
 
 ## Revisar
 
