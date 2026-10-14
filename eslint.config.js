@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-// Dependencias permitidas entre capas: ui -> session -> music -> data.
+// Dependencias permitidas entre capas: ui -> progress -> session -> music -> data.
 // La capa inferior no importa nada de las superiores y solo ui conoce React.
 const forbid = (...groups) => ({
   'no-restricted-imports': [
@@ -47,15 +47,20 @@ export default defineConfig([
   },
   {
     files: ['src/data/**/*.{ts,tsx}'],
-    rules: forbid(upward('data', ['music', 'session', 'ui']), noReact),
+    rules: forbid(upward('data', ['music', 'session', 'progress', 'ui']), noReact),
   },
   {
     files: ['src/music/**/*.{ts,tsx}'],
-    rules: forbid(upward('music', ['session', 'ui']), noReact),
+    rules: forbid(upward('music', ['session', 'progress', 'ui']), noReact),
   },
   {
     files: ['src/session/**/*.{ts,tsx}'],
-    rules: forbid(upward('session', ['ui']), noReact),
+    rules: forbid(upward('session', ['progress', 'ui']), noReact),
+  },
+  {
+    // Progreso y persistencia: lógica pura con el almacenamiento inyectado. Sin React y sin interfaz.
+    files: ['src/progress/**/*.{ts,tsx}'],
+    rules: forbid(upward('progress', ['ui']), noReact),
   },
   {
     files: ['eslint.config.js'],

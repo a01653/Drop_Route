@@ -48,6 +48,8 @@ export function decodePng(buffer) {
     ...header,
     channels,
     pixel: (x, y) => [0, 1, 2].map(c => pixels[y * stride + x * channels + c]),
+    // 255 en los PNG sin canal alfa.
+    alpha: (x, y) => (channels === 4 ? pixels[y * stride + x * channels + 3] : 255),
   };
 }
 

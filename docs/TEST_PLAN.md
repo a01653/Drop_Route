@@ -2,19 +2,23 @@
 
 ## Actual
 
-51 pruebas con node:test (`npm run test:base`). Las 24 de la base musical validan 124 posiciones y 16 rutas, integridad SHA-256 y extracción reproducible. Las 11 de `tests/tooling.test.mjs` cubren el lanzador de Python (versiones, orden de candidatos, error claro cuando falta) y que el workflow y Playwright conservan sus pasos. Las 9 de `tests/documentation-policy.test.mjs` cubren la política documental y las 7 de `tests/icon.test.mjs`, el icono: hashes, tamaños reales de los PNG y legibilidad a 32 px medida sobre sus píxeles.
+Las cifras exactas de cada fase están en los [registros de validación](validation/); aquí se describe qué cubre cada suite y no se copian totales que se desfasan. `npm test` da el recuento actual de node:test y Vitest.
 
-163 tests Vitest (`npm run test:unit`) en trece ficheros: las capas de datos, música y sesión (menú, preguntas, corrección por campos, banco y acciones de grados, reductor), la configuración, las pantallas de menú, pregunta y revisión, y las tarjetas (geometría de las 112 formas, vista neutra sin pistas y vista de solución). `npm test` ejecuta primero node:test y después Vitest.
+**node:test** (`npm run test:base`), sin dependencias externas: la base musical (124 posiciones, 16 rutas, integridad SHA-256 y extracción reproducible), el utillaje (`tests/tooling.test.mjs`: lanzador de Python y que el workflow y Playwright conservan sus pasos), la política documental, el icono (`tests/icon.test.mjs`: hashes, tamaños reales, legibilidad a 32 px medida sobre sus píxeles y, desde DR-006, la variante maskable, el PNG de 192 y que `public/icons/` es copia idéntica), el generador del service worker y el build de la PWA (`tests/pwa-build.test.mjs`: base de publicación, qué se precachea, versión por contenido y por plantilla del worker, nombre de caché y `npm run build` real con base `/` y `/Drop_Route/`) y el propio worker (`tests/service-worker.test.mjs`, con un arnés que simula la Cache API y la red: precacheo exacto, instalación fallida sin caché a medias, versión nueva en espera, borrado solo de cachés propias de su ámbito, GET del mismo origen y que no toca el almacenamiento del progreso).
 
-123 ejecuciones E2E (`npm run test:e2e`) sobre el build servido por vite preview: cinco escenarios de humo, ocho de tarjetas, dieciséis de reconocimiento fácil y medio, diecisiete de difícil y quince de rutas, en un proyecto de escritorio y otro móvil, más la comparación con la plantilla original, que se ejecuta una vez. Las de tarjetas miden el DOM a 360, 390 y 430 px en los siete sets y en neutra y solución.
+**Vitest** (`npm run test:unit`): las capas de datos, música y sesión (menú, preguntas, corrección por campos, banco y acciones de grados, reductor), la configuración, las pantallas de menú, pregunta, ruta y revisión, las tarjetas y, desde DR-006, el progreso (`src/progress`: esquema, migración desde el fixture 0, reparación, conteo por transición, almacén con almacenamiento simulado y límites de capas), el registro del service worker (`src/ui/pwa`), el adaptador del navegador y el panel y los avisos. `npm test` ejecuta primero node:test y después Vitest.
 
-Lint (`npm run lint`) y comprobación de tipos (`npm run typecheck`, incluida en `npm run build`). Hay pruebas de los juegos de reconocimiento y de rutas; no hay todavía pruebas de persistencia. No crear tests omitidos que simulen cobertura.
+**E2E** (`npm run test:e2e`), sobre el build servido por vite preview, en un proyecto de escritorio y otro móvil: humo, tarjetas, reconocimiento fácil, medio y difícil, rutas, la comparación con la plantilla original (una vez) y, desde DR-006, `progress.spec.ts` y `offline.spec.ts`. `pwa-update.spec.ts` solo corre en escritorio y levanta su propio servidor con dos builds. Las de tarjetas miden el DOM a 360, 390 y 430 px en los siete sets y en neutra y solución.
+
+Lint (`npm run lint`) y comprobación de tipos (`npm run typecheck`, incluida en `npm run build`). No crear tests omitidos que simulen cobertura.
+
+**Estado de DR-006.** Los resultados de DR-006 solo cuentan cuando figuran en su [registro](validation/2026-10-14-dr-006-progress-and-pwa.md) con evidencia observada. Los E2E nuevos están escritos y su ejecución está pendiente en ese registro; no se da por pasada ninguna comprobación que no conste allí.
 
 La política documental tiene regresiones con fixtures temporales en `tests/documentation-policy.test.mjs`: fuentes pendientes admitidas durante desarrollo, rechazo en modo final/required, cierre con hashes sincronizados, derivados ausentes o alterados y política/manifiesto inválidos. Aplazar la generación no desactiva estos controles.
 
 ## Matriz
 
-Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil de los juegos de reconocimiento y pistas en las opciones de respuesta. Cubiertas en DR-005: rutas (cuatro candidatas de la misma calidad, solución exacta, partida estable y transición desde el V correcto) y su móvil a 360, 390 y 430 px. Siguen pendientes persistencia y PWA.
+Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil de los juegos de reconocimiento y pistas en las opciones de respuesta. Cubiertas en DR-005: rutas (cuatro candidatas de la misma calidad, solución exacta, partida estable y transición desde el V correcto) y su móvil a 360, 390 y 430 px. Con pruebas escritas en DR-006: persistencia y PWA, a falta de la evidencia de los E2E y de la CI de esa fase (véase su registro).
 
 | Área | Comportamiento a probar |
 | --- | --- |
@@ -23,10 +27,10 @@ Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil 
 | Corrección | Por campos; una sola puntuación por primer intento; respuesta bloqueada tras verificar. |
 | Rutas | Cuatro candidatas de misma calidad, solución exacta, partida estable y transición desde V correcto. |
 | Grados | Alteraciones, dos toques, arrastre, devolución, sustitución, teclado y pointercancel. |
-| Móvil | Anchos 360/390/430 px, controles táctiles, una candidata visible y sin recortes. Tarjetas y pantalla de revisión cubiertas en DR-002; juegos y rutas pendientes. |
-| Pistas | Fondo y círculos neutros; sin solución en títulos, tooltips o nombres accesibles. Cubierto para las tarjetas en DR-002; falta comprobarlo en las opciones de respuesta de los juegos. |
-| Persistencia | Almacenamiento bloqueado o dañado, recarga y migración de esquema. |
-| PWA | Recarga offline tras primera carga e instalación técnica real. |
+| Móvil | Anchos 360/390/430 px, controles táctiles, una candidata visible y sin recortes. Cubierto en tarjetas, revisión y los dos juegos; en DR-006 también avisos y panel de progreso. |
+| Pistas | Fondo y círculos neutros; sin solución en títulos, tooltips o nombres accesibles. Cubierto en las tarjetas y en las opciones de respuesta de los juegos. |
+| Persistencia | Contador por juego, set, dificultad o modo y tramo; cada verificación cuenta una vez y ver la corrección no cuenta; recarga y vuelta al menú. Almacenamiento bloqueado, lleno, dañado, reparado y de versión futura; migración del fixture 0 con copia previa; si la copia falla, no se sobrescribe; documentos futuros intactos. |
+| PWA | Precacheo exacto de los recursos propios; versión por contenido y por plantilla; instalación fallida sin caché a medias; versión nueva en espera y activación explícita desde el menú con una sola recarga; solo se borran cachés propias de su ámbito; base `/` y `/Drop_Route/`; recarga y juego sin conexión tras la primera carga; aviso de pérdida si lo no guardado solo está en memoria; actualizar no borra el progreso. |
 
 ## E2E
 
@@ -40,7 +44,7 @@ Pruebas dirigidas durante ajustes y batería completa al cierre. DR-001 añadió
 
 Los E2E generan el build antes de servirlo y no reutilizan un servidor existente: con el puerto ocupado fallan sin probar nada. Un test del humo comprueba que dist/index.html es posterior al inicio de la ejecución y que el preview devuelve ese mismo fichero. Para añadir un escenario móvil basta ampliar el humo o añadir un spec: el proyecto móvil ya existe.
 
-La batería final aplicable: `npm run validate`, `npm run lint`, `npm run build` y `npm run test:e2e`. El workflow de GitHub ejecuta los mismos pasos por separado (`data:check`, `audit:music`, `test:base`, `docs:check`, `typecheck`, `lint`, `test:unit`, `build` y `test:e2e`) y se ejecuta en GitHub Actions al publicar la rama; no se había ejecutado al preparar el commit de DR-001.
+La batería final aplicable: `npm run validate`, `npm run lint`, `npm run build` y `npm run test:e2e`. El workflow de GitHub ejecuta los mismos pasos por separado (`data:check`, `audit:music`, `test:base`, `docs:check`, `typecheck`, `lint`, `test:unit`, `build` y `test:e2e`) y se ejecuta en GitHub Actions al publicar la rama. Con DR-006 todavía no hay una ejecución registrada.
 
 Registrar resultados reales en docs/validation. Los resultados de Mástil no son resultados de Drop Route.
 

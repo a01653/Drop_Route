@@ -1,9 +1,9 @@
 # Documento de Diseño Técnico del Software - Drop Route
 
-Repositorio: a01653/Drop_Route. Revisión: base reconstruida y base técnica de la aplicación (DR-001), 13/10/2026.
+Repositorio: a01653/Drop_Route. Revisión: progreso local y PWA (DR-006), 14/10/2026.
 Paquete: 0.0.0. Autor del proyecto: Jesús Quevedo Rodríguez.
 
-Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación con una pantalla de arranque y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil, integrado en main, y desde DR-005 el juego de rutas II-V-I de Drop 2, pendiente de revisión humana. El progreso y la PWA todavía no existen. La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
+Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil y desde DR-005 el juego de rutas II-V-I de Drop 2; todo ello está integrado en main. DR-006 añade el progreso local y la PWA en la rama feat/progress-and-pwa, pendiente de revisión y sin integrar; sus pruebas E2E y la CI de esa fase no tienen todavía resultado registrado. Falta el cierre documental (DR-007). La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
 ## Objetivo y alcance
 
@@ -15,26 +15,27 @@ El 13/10/2026 el usuario decidió mantener este Markdown actualizado durante DR-
 
 ## Arquitectura general
 
-Diseño previsto de aplicación cliente, sin backend.
+Aplicación cliente, sin backend.
 
-| Capa | Responsabilidad prevista |
+| Capa | Responsabilidad |
 | --- | --- |
 | Datos | Posiciones y rutas procedentes de la plantilla. |
 | Núcleo musical | Alturas físicas, grados, inversiones y solución de ruta. |
 | Sesión | Pregunta, selección, evaluación y transición. |
-| Presentación | Tarjeta SVG, selectores, fichas y resultados. |
-| Persistencia | Configuración y progreso local con versión de esquema. |
+| Progreso | Contadores, configuración guardada, esquema versionado, migración y reparación. |
+| Presentación | Tarjeta SVG, selectores, fichas, resultados, avisos y registro del service worker. |
 
-La geometría no decide la respuesta y los componentes no duplican el catálogo. Actualmente están implementados la extracción y el núcleo de auditoría de la base y, en `src/`, un esqueleto de cuatro capas:
+La geometría no decide la respuesta y los componentes no duplican el catálogo. Están implementados la extracción y el núcleo de auditoría de la base y, en `src/`, cinco capas:
 
-| Capa | Contenido actual |
+| Capa | Contenido |
 | --- | --- |
 | `src/data` | Tipos y acceso a `data/catalog.json` y `data/routes.json`, que siguen siendo la única definición de datos. |
 | `src/music` | Altura física (MIDI) e inversión por bajo real. Funciones puras. |
-| `src/session` | Menú, preguntas de reconocimiento, respuesta, corrección por campos, banco de grados y reductor de acciones, con semilla reproducible. Sin React. |
-| `src/ui` | Menú y pantallas de juego (`game/`), renderizador de tarjetas SVG (`card/`) y pantalla de revisión de tarjetas e icono (`review/`). |
+| `src/session` | Menú, preguntas de reconocimiento y de ruta, respuesta, corrección por campos, banco de grados y reductor de acciones, con semilla reproducible. Sin React. |
+| `src/progress` | Contadores por juego, set y dificultad o modo y tramo; reductor de la aplicación que cuenta un intento por transición; esquema guardado, migración, reparación y copia; almacén (`createAppStore`) sobre un `KeyValueStore` mínimo; resumen. Sin React ni acceso directo a `localStorage`. |
+| `src/ui` | Menú y pantallas de juego (`game/`, con el panel de progreso), renderizador de tarjetas SVG (`card/`), pantalla de revisión (`review/`), avisos (`Notices.tsx`), adaptador de `localStorage` (`browserStorage.ts`) y registro del service worker (`pwa/`). |
 
-La dependencia permitida es ui, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music o session usen React, de modo que pueden probarse sin DOM. La persistencia no existe todavía.
+La dependencia permitida es ui, progress, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music, session o progress usen React, de modo que pueden probarse sin DOM. Un test de capas de `src/progress` lo comprueba. Solo `src/ui/browserStorage.ts` toca `localStorage`.
 
 ## Tecnologías y dependencias
 
@@ -68,17 +69,18 @@ Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo utiliza l
 | references/ | Tres fuentes originales y sus hashes. |
 | scripts/ | Extracción, auditoría, generación documental y lanzador de Python. |
 | tests/ | Pruebas con node:test, conservadas aparte: las de la base musical, el utillaje, la política documental y el icono. |
-| `src/` | Capas `data`, `music`, `session` y `ui`, `main.tsx` y los tests Vitest junto a cada capa. |
-| `e2e/` | Playwright sobre el build: humo, tarjetas a 360, 390 y 430 px y comparación con la plantilla original. |
-| `assets/icon/` | Icono: original SVG editable, exportaciones PNG y su manifiesto con hashes. |
-| `public/` | Favicon, copia idéntica del original del icono. |
+| `src/` | Capas `data`, `music`, `session`, `progress` y `ui`, `main.tsx` y los tests Vitest junto a cada capa. |
+| `e2e/` | Playwright: humo, tarjetas, juegos, comparación con la plantilla, progreso, sin conexión y actualización de la PWA. |
+| `assets/icon/` | Icono: original SVG editable, variante maskable, exportaciones PNG y su manifiesto con hashes. |
+| `public/` | Favicon (copia idéntica del original del icono), `manifest.webmanifest` e `icons/` con los PNG de la PWA. |
+| `scripts/pwa/`, `scripts/lib/pwa-build.mjs`, `scripts/pwa-plugin.mjs` | Plantilla del service worker, generador de su lista de recursos y versión, y plugin de Vite que lo ejecuta al terminar el build. |
 | `index.html` y configuración | Vite, Vitest, Playwright, ESLint y dos `tsconfig` (aplicación y herramientas). |
 | docs/ | Requisitos, decisiones, tareas, validación y DTS. |
 | `FILES_SHA256.json` | Instantánea histórica de los hashes de la base inicial del 13/10/2026, previa a DR-001. No es el estado actual ni se actualiza. |
 | `RECOVERY_STATUS.json` | Instantánea histórica del estado de la reconstrucción, con sus cifras de entonces. No se actualiza. |
 | .github/workflows/ | Validación de la base y trabajo de aplicación, preparados para GitHub. |
 
-`npm run build` genera `dist/`, que Git ignora. El build solo incluye lo que importa `src/`: ni las referencias ni la plantilla HTML. No hay despliegue.
+`npm run build` genera `dist/`, que Git ignora. El build solo incluye lo que importa `src/` y lo de `public/`: ni las referencias ni la plantilla HTML. Al terminar, el plugin escribe `dist/sw.js`. No hay flujo de despliegue ni alojamiento elegido; para publicar bajo una subruta, véase «Construcción y publicación».
 
 ## Componentes previstos
 
@@ -91,21 +93,46 @@ Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo utiliza l
 | Rutas | Partida fija y una candidata visible. |
 | Corrección | Resultado por campos y avance explícito. |
 
-De esta tabla existen la Configuración (el menú), la Tarjeta (neutra y de solución), la Respuesta (cuatro botones o dos desplegables), los Grados (cuatro destinos sobre la tarjeta, banco fijo, arrastre, dos toques y teclado) y la Corrección (resultado por campos y avance explícito). Las Rutas existen desde DR-005 (partida fija, una candidata visible, selector 1 a 4, verificación exacta y comparación). Las pantallas actuales son el menú, la pregunta de reconocimiento, la de ruta y la de revisión `#/revision`, que no es un juego. El estado de la sesión vive en `App` con un reductor puro (`reduceSession`); las semillas las genera la interfaz y no el reductor.
+De esta tabla existen la Configuración (el menú), la Tarjeta (neutra y de solución), la Respuesta (cuatro botones o dos desplegables), los Grados (cuatro destinos sobre la tarjeta, banco fijo, arrastre, dos toques y teclado) y la Corrección (resultado por campos y avance explícito). Las Rutas existen desde DR-005 (partida fija, una candidata visible, selector 1 a 4, verificación exacta y comparación). Las pantallas actuales son el menú, la pregunta de reconocimiento, la de ruta y la de revisión `#/revision`, que no es un juego. El estado de la sesión vive en un almacén (`createAppStore`, `src/progress`) que `App` consume con `useSyncExternalStore`; el almacén aplica el reductor puro de la sesión (`reduceSession`) a través de `reduceApp`, que además cuenta el progreso. Las semillas las genera la interfaz y no el reductor. El menú muestra el panel «Tu progreso» y, si procede, los avisos de almacenamiento y de actualización.
 
 La vista neutra solo recibe las posiciones de las notas y la de solución añade nombre, calidad y grados. Son tipos distintos, de modo que la neutra no puede dibujar ni etiquetar la solución. La geometría es una función pura, probada sin navegador. Las medidas, las ventanas de trastes, los colores y las fuentes están descritos en `docs/VISUAL.md`.
 
-Compartir el renderizador conserva proporciones entre juegos. El icono se creó en DR-002 y sigue pendiente de aprobación.
+Compartir el renderizador conserva proporciones entre juegos. El icono se creó en DR-002 y está aprobado.
 
 ## Estado y persistencia
 
-Modelo previsto: configuración, pregunta, pregunta verificada y regreso al menú. Cada pregunta identifica datos y guarda sus opciones y orden.
+Modelo: configuración, pregunta, pregunta verificada y regreso al menú. Cada pregunta identifica datos y guarda sus opciones y orden.
 
 Seleccionar no evalúa. Verificar exige respuesta completa y produce un único resultado. Después se bloquea la respuesta. Siguiente genera otra pregunta y Salir vuelve al menú.
 
 La corrección no sobrescribe lo que contestó el usuario. Si falla el V de una ruta, el paso V-I debe partir del V correcto.
 
-La sesión implementa ese modelo con tres fases: `menu`, `pregunta` y `verificada`. Seleccionar cambia la respuesta pero no verifica ni puntúa. Verificar solo actúa con la respuesta completa del nivel, calcula el resultado una sola vez y bloquea la respuesta; verificar de nuevo, cambiar campos o mover grados después no hace nada. Siguiente abre otra pregunta con la misma configuración sin repetir la forma anterior mientras haya alternativas (cada set tiene 16). Salir vuelve al menú y conserva la última configuración mientras la página siga abierta. DR-006 añadirá progreso local con esquema independiente de la versión de app. Ninguna persistencia está implementada todavía.
+La sesión implementa ese modelo con tres fases: `menu`, `pregunta` y `verificada`. Seleccionar cambia la respuesta pero no verifica ni puntúa. Verificar solo actúa con la respuesta completa del nivel, calcula el resultado una sola vez y bloquea la respuesta; verificar de nuevo, cambiar campos o mover grados después no hace nada. Siguiente abre otra pregunta con la misma configuración sin repetir la forma anterior mientras haya alternativas (cada set tiene 16). Salir vuelve al menú y conserva la última configuración. Esa sesión es la misma de DR-003 a DR-005: DR-006 no la modifica, la envuelve con el progreso.
+
+### Progreso local (DR-006)
+
+`reduceApp` (`src/progress/counting.ts`) llama al reductor de la sesión y, si el estado cambia, decide en la misma transición pura si cuenta un intento. Solo cuenta el paso de pregunta abierta a verificada, que la sesión permite una única vez: verificar de nuevo, seleccionar, cambiar de vista, Siguiente, Salir y renderizar dos veces no cuentan. Es acierto el acierto completo del nivel (todos los campos: acorde en fácil, acorde e inversión en medio y, en difícil, también los cuatro grados) o, en rutas, la candidata exacta de nuestra ruta.
+
+Cada contador cuenta por separado: reconocimiento por set y dificultad (`recognition:<set>:<dificultad>`) y rutas por set, modo y tramo (`routes:<set>:<modo>:ii-v` o `v-i`). «II → V → I» no es un tramo: cada mitad suma en la suya. Los contadores posibles son solo los que existen en los datos: los siete sets del catálogo en tres dificultades y los sets con rutas, en sus modos y tramos. Un contador ausente equivale a cero intentos.
+
+El documento guardado es un único texto JSON en `localStorage` bajo `drop-route:state`: `schemaVersion`, la configuración del menú (juego, Drop, set, dificultad, modo y tramo) y los contadores `{ attempts, correct }`. El orden es fijo, de modo que dos estados iguales dan el mismo texto y no se vuelve a escribir si no hay nada nuevo. `createAppStore` lee una sola vez al abrir y escribe el documento completo tras cada acción que cambie la configuración o los contadores. Al abrir se vuelve siempre al menú: una pregunta abierta no se reanuda, solo se conserva la configuración.
+
+El esquema vigente es el 1. Es independiente de la versión del paquete (0.0.0): cambiar la versión de la aplicación no cambia el esquema, y cambiar el formato exige subir el esquema y añadir una migración. La cadena de migraciones (`MIGRATIONS`) convierte cada versión n en la n + 1. El esquema 0 es un fixture de prueba (`src/progress/fixtures/schema-0.json`): un formato inventado, con `counters` y pares `[intentos, aciertos]`, que no corresponde a ninguna versión pública, porque Drop Route no había publicado ningún guardado. Existe para ejercitar la cadena con un caso real antes de que haga falta una migración verdadera.
+
+| Situación al abrir | Qué hace | Aviso |
+| --- | --- | --- |
+| Sin nada guardado | Empieza de cero y escribe con el primer cambio. | Ninguno. |
+| Documento válido del esquema vigente | Lo usa tal cual. | Ninguno. |
+| Esquema anterior | Lo migra en memoria, guarda antes una copia del original en `drop-route:state:v<n>` y solo entonces escribe el documento actual. Si la copia falla, no lo reescribe y esa sesión no escribe. | Ninguno si todo va bien; «formato anterior» sin copia. |
+| Contadores o configuración inválidos | Descarta lo inválido contador a contador y conserva el resto. Guarda una copia del original en `drop-route:state:damaged` antes de reescribir; sin copia, no reescribe y esa sesión no escribe. | «Reparado», con o sin copia. |
+| Texto ilegible o sin versión de esquema válida | Empieza de cero tras guardar una copia en `drop-route:state:damaged`; si la copia falla, deja el dato dañado donde está y esa sesión no escribe. | «Dañado», con o sin copia. |
+| Esquema posterior al vigente | No lo interpreta ni lo toca: esa sesión no escribe. | «Versión más reciente». |
+| Almacenamiento bloqueado o no disponible | Juega en memoria. | «No deja guardar datos». |
+| Escritura que falla (cuota llena o bloqueo posterior) | Sigue en memoria y reintenta con el siguiente cambio; si vuelve a escribir, el aviso desaparece. | «No se ha podido guardar». |
+
+Las dos copias son un único hueco cada una: una copia posterior sustituye a la anterior. La interfaz no permite recuperarlas; quedan en el almacenamiento del navegador. Un aviso es «solo en memoria» cuando lo que hay en la página no está guardado: no disponible, escritura fallida y las sesiones que no escriben para proteger un dato anterior. En ese caso recargar lo pierde, y la interfaz lo dice.
+
+El panel «Tu progreso» del menú resume los contadores (totales por juego, los de la configuración elegida y el detalle plegado). No hay puntuación, rachas ni clasificaciones.
 
 ## Modelo musical
 
@@ -164,9 +191,26 @@ Arrastre con tolerancia, alternativa de tocar ficha y destino y operación por t
 
 ## Offline e instalación
 
-DR-006 prevé PWA instalable, caché de recursos propios y recarga sin conexión tras una primera carga completa.
+DR-006 añade una PWA instalable con caché de recursos propios y recarga sin conexión tras una primera carga completa. No añade dependencias: el service worker, el generador y el plugin son código propio sin paquetes.
 
-Progreso por dispositivo, sin sincronización, cuentas, backend o notificaciones. Probar almacenamiento bloqueado, datos dañados y migración. No hay manifest PWA, service worker o instalación comprobada todavía.
+**Manifest.** `public/manifest.webmanifest`: nombre y nombre corto «Drop Route», idioma `es`, `display: standalone`, colores de fondo y tema `#0B1D2E`, e `id`, `start_url` y `scope` relativos (`./`) para que valga igual en la raíz y en una subruta. Iconos: 192 y 512 «any» y 512 maskable, en `icons/`. `index.html` lo enlaza y declara el color del tema.
+
+**Service worker.** `scripts/pwa/sw.template.js` es una plantilla; al terminar el build, `scripts/lib/pwa-build.mjs` (llamado por `scripts/pwa-plugin.mjs`) lista los ficheros del build, calcula la versión y escribe `dist/sw.js`.
+
+- Precachea solo extensiones de recursos propios (html, js, css, woff2, png, svg, webmanifest y json) y excluye `references/`, los PDF, los mapas de código y el propio `sw.js`. Las guías PDF y la plantilla original no están en el build.
+- La versión es un hash de 16 caracteres del contenido de cada recurso y del texto de la plantilla del worker. Mismo contenido y mismo worker dan la misma versión; cambiar un recurso o solo la lógica del worker da otra. No depende de fechas.
+- La caché se llama `drop-route-precache:<ámbito>:<versión>`. El ámbito es la ruta de la base, de modo que las instalaciones en `/` y en `/Drop_Route/` de un mismo origen no se borran las cachés. Un test comprueba que el generador y el worker usan la misma fórmula.
+- Instalar descarga cada recurso saltándose la caché HTTP. Si uno falla, borra su caché y la instalación falla: no deja una caché a medias ni toca la del worker activo.
+- Una versión nueva se instala y espera. Solo la activa un mensaje `SKIP_WAITING`. Al activarse borra únicamente las cachés propias de otras versiones en su ámbito y toma el control.
+- Responde solo a GET del mismo origen y dentro de su ámbito. La navegación a la raíz recibe el HTML precacheado; lo demás, su recurso precacheado o la red. Lo no precacheado no se guarda y, sin red, falla en lugar de inventar una respuesta. No usa `localStorage`: actualizar no toca el progreso.
+
+**Registro y actualización.** `startPwa` (`src/ui/pwa/register.ts`) registra el worker solo en el build (no con `npm run dev`) y si el navegador lo admite; si el registro falla, la aplicación sigue sin worker. Hay versión nueva cuando una espera y ya hay otra controlando la página; la primera instalación no cuenta. La página no activa nada por su cuenta. La persona pide actualizar desde el aviso del menú: se envía `SKIP_WAITING`, y cuando el nuevo worker toma el control la página se recarga una sola vez. Con una pregunta abierta el aviso no se muestra, aunque la versión ya esté lista; vuelve a aparecer al salir al menú. Al volver la aplicación a primer plano se comprueba si hay versión nueva.
+
+**Aviso de pérdida.** Si lo que hay en la página solo está en memoria (véase la tabla de estados de almacenamiento), el aviso de actualización lo dice y el botón pasa a «Actualizar y perder lo no guardado». Con el progreso guardado, actualizar conserva configuración y contadores.
+
+**Alcance del progreso.** Por dispositivo y navegador, sin sincronización, cuentas, backend o notificaciones.
+
+**Lo que no está comprobado.** La instalación como app en un dispositivo real (Android, iOS) y otros navegadores distintos de Chromium. Las pruebas usan Chromium de Playwright, y una de ellas sirve dos builds con un servidor propio para comprobar la actualización.
 
 ## Documentación y Claude
 
@@ -186,7 +230,7 @@ La sesión y el núcleo musical se prueban sin DOM; los componentes consumen el 
 
 ## Pruebas y resultados reales
 
-La reconstrucción ejecutó 24 tests con node:test: todos pasan, sin omitidos. Verifican catálogo completo, rutas, hashes de fuentes y rechazo de errores deliberados. DR-001 los conserva sin cambios en `tests/music-catalog.test.mjs` y añade en `tests/tooling.test.mjs` 11 tests de utillaje: el lanzador de Python y que el workflow y la configuración de Playwright conservan sus pasos. El calendario documental añade además 9 tests de política documental en `tests/documentation-policy.test.mjs`. DR-002 añade 7 tests del icono en `tests/icon.test.mjs`. En total node:test ejecuta 51. `npm test` ejecuta primero node:test y después Vitest, de modo que ninguno queda fuera. Las dos instantáneas históricas de la base inicial, descritas en la estructura del proyecto, conservan sus cifras de entonces y ningún test las comprueba.
+La reconstrucción ejecutó 24 tests con node:test: todos pasan, sin omitidos. Verifican catálogo completo, rutas, hashes de fuentes y rechazo de errores deliberados. DR-001 los conserva sin cambios en `tests/music-catalog.test.mjs` y añade en `tests/tooling.test.mjs` 11 tests de utillaje: el lanzador de Python y que el workflow y la configuración de Playwright conservan sus pasos. El calendario documental añade además 9 tests de política documental en `tests/documentation-policy.test.mjs`. DR-002 añade 7 tests del icono en `tests/icon.test.mjs`; con ellos, node:test sumaba 51 al terminar DR-002. Las fases posteriores amplían estas cifras, que se conservan solo como historia: el recuento de cada fase está en su registro de validación. `npm test` ejecuta primero node:test y después Vitest, de modo que ninguno queda fuera. Las dos instantáneas históricas de la base inicial, descritas en la estructura del proyecto, conservan sus cifras de entonces y ningún test las comprueba.
 
 La auditoría pasa con 124 posiciones (112 evaluables y doce de referencia) y 16 rutas. Hay oráculos independientes para D2S1 mayor primera inversión y D2S2 menor fundamental.
 
@@ -200,9 +244,17 @@ DR-003 y DR-004 elevan Vitest a 131 tests en trece ficheros y los E2E a 93 ejecu
 
 DR-005 añade a Vitest, con semilla y con el documento real de rutas más un fixture: dieciséis rutas y cuatro por set y modo; solo Drop 2 sets 1 y 2 en rutas; cuatro candidatas únicas, de la misma calidad, con posiciones físicas e inversiones distintas, para los dos sets, los dos modos y los tres tramos; el I menor siempre Cm7; la respuesta contra una tabla independiente de inversiones (V: 2ª, 3ª, fundamental y 1ª; I: la inicial); no repetir ruta y que salgan las 16; partida estable al cambiar de candidata; verificación única con bloqueo; el encadenado II → V → I partiendo del V correcto tras fallar; y las pantallas, con su neutralidad y la redacción sin «incorrecto». Los E2E deducen la candidata correcta de las posiciones de la partida y de `data/routes.json`, y cubren los dos modos, los tres tramos, el deslizamiento con ratón y con eventos táctiles, el teclado y los anchos de 360, 390 y 430 px, con un máximo de dos diagramas visibles.
 
-Los controles principales se probaron con mutaciones deliberadas: círculos desplazados 3 px, un dígito de color cambiado y círculos del icono encogidos. Cada una hizo fallar el test correspondiente.
+DR-006 añade pruebas en tres niveles; las cifras observadas están en [su registro](validation/2026-10-14-dr-006-progress-and-pwa.md).
 
-El lint y las reglas de capas se probaron con importaciones prohibidas deliberadas, y las exclusiones de Vitest con tests que fallarían si se ejecutaran. Esas pruebas fueron manuales y no forman parte de la suite. Los resultados concretos están en el registro de validación de DR-001 del repositorio. No son cobertura del juego, que todavía no existe.
+- Vitest, con almacenamiento simulado: el conteo por transición (cada verificación una vez, acierto completo, rutas por tramo, «II → V → I» por mitades, ver la corrección sin contar), el esquema y la migración desde el fixture 0, la reparación contador a contador, los casos de la tabla de estados (dañado, reparado, futuro, bloqueado, lleno y copia fallida, con el original intacto), el resumen, los límites de capas, el registro del service worker, el adaptador del navegador y las pantallas del panel y los avisos.
+- node:test sin navegador: el generador (base de publicación, qué se precachea, versión por contenido y por plantilla, nombre de caché), el worker con un arnés que simula Cache API y red, un `npm run build` real con base `/` y `/Drop_Route/`, y los iconos de la PWA (maskable opaco con el dibujo dentro de la zona segura, 192 con los cuatro círculos y `public/icons/` idéntico a las exportaciones).
+- Playwright, con Chromium real y sin mocks de service worker ni caché: `progress.spec.ts` (contadores, recarga y los casos de almacenamiento, incluidos copia fallida y migración), `offline.spec.ts` (primera carga, recarga y juego sin conexión, tarjetas, fuentes, manifest e iconos desde el worker) y `pwa-update.spec.ts` (dos builds A y B en un servidor propio: B en espera con una pregunta abierta, oferta solo en el menú, una única recarga, progreso conservado, cachés ajenas y de otra base intactas, almacenamiento lleno y bloqueado).
+
+Controles negativos de DR-006 observados por el supervisor: eliminar el hash de la plantilla del worker del cálculo de la versión hizo fallar 1 test, y eliminar el ámbito del nombre de la caché hizo fallar 2; los ficheros se restauraron byte a byte. Los E2E nuevos no tienen todavía resultado registrado.
+
+Los controles principales de fases anteriores se probaron con mutaciones deliberadas: círculos desplazados 3 px, un dígito de color cambiado y círculos del icono encogidos. Cada una hizo fallar el test correspondiente.
+
+El lint y las reglas de capas se probaron con importaciones prohibidas deliberadas, y las exclusiones de Vitest con tests que fallarían si se ejecutaran. Esas pruebas fueron manuales y no forman parte de la suite. Los resultados concretos de DR-001 están en su registro de validación.
 
 ## Construcción y publicación
 
@@ -212,18 +264,20 @@ docs/documentation-policy.json mantiene dtsDerivatives en deferred durante DR-00
 
 npm run docs:check:final exige que todos los hashes coincidan, con independencia de esa política. DR-007 genera y revisa las páginas, termina los manuales y cambia dtsDerivatives a required, de modo que la comprobación ordinaria también exige sincronización. La CI de cierre incorpora el comando estricto.
 
-La CI preparada tiene dos trabajos con `npm ci --ignore-scripts`. El de la base usa Node 24 y Python 3.10, el mínimo admitido, y ejecuta data:check, audit:music, test:base y docs:check. El de la aplicación ejecuta typecheck, lint, test:unit, build, la descarga de Chromium con sus dependencias del sistema y test:e2e. Un test de node:test comprueba que el workflow conserva esos pasos. Al preparar el commit de DR-001 no se habían ejecutado en GitHub; su resultado se consulta en Actions. El código en Git tampoco equivale a tener el juego desplegado.
+La CI preparada tiene dos trabajos con `npm ci --ignore-scripts`. El de la base usa Node 24 y Python 3.10, el mínimo admitido, y ejecuta data:check, audit:music, test:base y docs:check. El de la aplicación ejecuta typecheck, lint, test:unit, build, la descarga de Chromium con sus dependencias del sistema y test:e2e. Un test de node:test comprueba que el workflow conserva esos pasos. Los resultados de cada entrega están en su registro de validación y en Actions; para DR-006 todavía no hay una ejecución registrada. El código en Git tampoco equivale a tener la aplicación desplegada.
+
+**Base de publicación.** Sin configuración, `vite build` publica en la raíz (`/`). `DROP_ROUTE_BASE` fija otra base; la forma recomendada es `/Drop_Route/`, con barra inicial y final. `normalizeBase` también admite `Drop_Route` y `/Drop_Route` y los convierte a `/Drop_Route/`; rechaza con un mensaje claro las URLs y las rutas inseguras, como `./`, `../`, espacios o barras dobles. Por ejemplo, `DROP_ROUTE_BASE=/Drop_Route/ npm run build` en bash, o `$env:DROP_ROUTE_BASE = '/Drop_Route/'; npm run build` en PowerShell. Algunos shells de Windows convierten las rutas que empiezan por `/`; en ese caso el build falla en lugar de publicar mal. Se sirve el contenido de `dist/` en esa subruta, por HTTPS o desde `localhost`, que es lo que exigen los service workers. La base cambia el ámbito del worker, el nombre de sus cachés y las URL de los recursos; el manifest, al ser relativo, no cambia. Un test construye de verdad con `/` y con `/Drop_Route/` y comprueba el worker resultante. No existe todavía un flujo de despliegue ni se ha elegido el alojamiento.
 
 | Comando | Función |
 | --- | --- |
 | `npm run dev` | Servidor de desarrollo de Vite. |
-| `npm run build` | Comprueba tipos y genera `dist/`. |
+| `npm run build` | Comprueba tipos y genera `dist/`, con `sw.js`. Admite `DROP_ROUTE_BASE`. |
 | `npm run preview` | Sirve `dist/`. |
 | `npm run typecheck` | `tsc` sobre aplicación y herramientas. |
 | `npm run lint` | ESLint, con los límites entre capas. |
 | `npm test` | node:test de la base y después Vitest. |
 | `npm run test:e2e` | Playwright sobre un build recién generado. |
-| `npm run icon:export` | Regenera las exportaciones del icono desde su SVG. |
+| `npm run icon:export` | Regenera las exportaciones del icono y de la PWA desde sus SVG (Chromium). `-- --solo-pwa` rehace solo el 192 y el maskable. |
 
 Playwright genera el build y lo sirve con vite preview al ejecutar los E2E. Nunca reutiliza un servidor existente: con el puerto 4173 ocupado, la ejecución falla antes de probar nada. El humo comprueba además que dist/index.html es posterior al inicio de la ejecución y que el preview sirve ese mismo fichero, de modo que no se prueba una compilación anterior ni el servidor de desarrollo. Ningún preview queda iniciado. Los scripts `test:unit` y `test:base` ejecutan cada corredor por separado.
 
@@ -233,11 +287,13 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 
 ## Limitaciones actuales
 
-- No hay progreso ni PWA. Las rutas existen solo para Drop 2 sets 1 y 2, mayor y menor; no se ofrecen otras familias porque faltan sus rutas normalizadas. Las pruebas móviles usan emulación de Chromium, también el arrastre táctil, que se probó con eventos táctiles de Chromium y no con un dedo real ni con Safari.
+- El progreso se guarda por dispositivo y navegador: no se sincroniza ni se exporta, y las copias de seguridad de datos dañados, reparados o migrados no se pueden recuperar desde la interfaz. Hay solo contadores, sin puntuación detallada, rachas ni repaso. Las rutas existen solo para Drop 2 sets 1 y 2, mayor y menor; no se ofrecen otras familias porque faltan sus rutas normalizadas. Las pruebas móviles usan emulación de Chromium, también el arrastre táctil, que se probó con eventos táctiles de Chromium y no con un dedo real ni con Safari.
 - En difícil, el área táctil de cada destino sobre la tarjeta es la celda del círculo (unos 55 por 25 px a 360 px): mayor que el círculo, pero menor que 48 px de alto porque las cuerdas están a 20 unidades y áreas mayores se solaparían. Por eso existe «Colocar sin arrastrar», con cuatro botones de 48 px o más. Las fichas, botones y desplegables también superan los 48 px.
 - La tarjeta de ruta no usa la ventana común de ruta de la plantilla, por no delatar la respuesta (véase arriba). El deslizamiento es opcional: el selector 1 a 4 y las flechas hacen lo mismo.
-- No hay puntuación ni recuento de aciertos de la sesión; la puntuación detallada sigue pendiente de decisión.
-- El icono está aprobado y no incluye aún los tamaños de la PWA ni la variante maskable.
+- La puntuación detallada sigue pendiente de decisión; los contadores de DR-006 cuentan intentos y aciertos sin más.
+- El icono está aprobado. El PNG de 192 y el maskable de 512 los generó el supervisor con CairoSVG 2.9.1 y no con el Chromium del script; el 512 «any» es el aprobado.
+- La PWA solo se ha probado en Chromium. No se ha comprobado la instalación en un dispositivo real, en Safari ni en Firefox, y las pruebas de actualización usan un servidor propio y no un alojamiento real.
+- No hay flujo de despliegue ni alojamiento elegido; el paquete sigue en 0.0.0.
 - Las tarjetas no dibujan la sustitución C6 de la plantilla ni la añaden a los ejercicios, pero su ventana cuenta el traste de la sexta como la plantilla. Por eso las cuatro tarjetas de Drop 2+4 set 1, 3ª inversión, empiezan en el traste 12 y no en el 13, con las mismas notas.
 - Las fuentes manuscritas pesan 87 kB y se descargan al mostrar tarjetas; hasta entonces el texto usa una fuente de respaldo.
 - El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.
@@ -252,7 +308,7 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 
 ## Evolución
 
-DR-001 configuró las herramientas y está fusionada en main; DR-002 creó tarjetas e icono y queda entregada para revisión, sin fusionar; DR-003 y DR-004, reconocimiento, integradas en main; DR-005, rutas, entregada para revisión; DR-006, progreso/PWA; DR-007, cierre documental y pruebas.
+DR-001 configuró las herramientas; DR-002 creó tarjetas e icono; DR-003 y DR-004, el reconocimiento; DR-005, las rutas. Las cinco están integradas en main. DR-006, progreso y PWA, está implementada en feat/progress-and-pwa y pendiente de revisión. DR-007, cierre documental y pruebas, está pendiente: en ella se regenerarán LaTeX y PDF y se escribirán los manuales.
 
 Convertir lo planificado en descripción de implementación solo después de inspeccionar y probar el código. No extender una tarea a mejoras no pedidas.
 
@@ -260,4 +316,4 @@ Convertir lo planificado en descripción de implementación solo después de ins
 
 Verificados: mismas tres referencias, SHA-256, extracción, notas físicas, fórmulas, grados, inversiones, rutas y 24 tests ejecutados nuevamente. Documentación reconstruida desde las decisiones visibles de la conversación.
 
-El juego no está implementado. Las comprobaciones de DR-001 y DR-002 se registran en el directorio de validación del repositorio, junto con la compilación del DTS anterior, su revisión visual y la validación documental de la base.
+Las comprobaciones de cada fase se registran en el directorio de validación del repositorio, junto con la compilación del DTS anterior, su revisión visual y la validación documental de la base. Los juegos de reconocimiento y de rutas están implementados e integrados en main; el progreso y la PWA, en la rama de DR-006, con la evidencia que conste en su registro.

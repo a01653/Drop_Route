@@ -1,0 +1,11 @@
+{
+  "_fixture": "Documento de PRUEBA del esquema 0. No es un formato publicado: ninguna versión de Drop Route lo escribió. Existe solo para ejercitar la cadena de migración. Véase README.md.",
+  "schemaVersion": 0,
+  "config": { "game": "routes", "setId": "D2S2", "difficulty": "medium", "routeMode": "minor", "stretch": "both" },
+  "counters": {
+    "recognition/D2S1/easy": [10, 7],
+    "recognition/D24S1/hard": [4, 1],
+    "routes/D2S2/minor/ii-v": [5, 3],
+    "routes/D2S2/minor/v-i": [2, 2]
+  }
+}

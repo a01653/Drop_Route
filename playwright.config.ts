@@ -21,8 +21,9 @@ export default defineConfig({
   },
   projects: [
     { name: 'escritorio', use: { ...devices['Desktop Chrome'] } },
-    // La comparación con la plantilla original no depende del dispositivo: se ejecuta una sola vez.
-    { name: 'movil', testIgnore: /reference\.spec\.ts$/, use: { ...devices['Pixel 7'] } },
+    // La comparación con la plantilla original y la actualización de la PWA (builds y servidor propios) no dependen del
+    // dispositivo: se ejecutan una sola vez, en escritorio.
+    { name: 'movil', testIgnore: /(reference|pwa-update)\.spec\.ts$/, use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
     command: `npm run build && npm run preview -- --host 127.0.0.1 --port ${port} --strictPort`,

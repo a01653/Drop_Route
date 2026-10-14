@@ -1,7 +1,10 @@
 import { catalog, routesDocument, summarizeData } from '../../data'
+import { EMPTY_PROGRESS } from '../../progress'
+import type { ProgressData } from '../../progress'
 import { DIFFICULTIES, DROP_LABELS, GAMES, ROUTE_MODES, ROUTE_STRETCHES, dropFamilies, setsOfDrop } from '../../session'
 import type { Difficulty, MenuState, SessionAction } from '../../session'
 import { OptionGroup } from './OptionGroup'
+import { ProgressPanel } from './ProgressPanel'
 
 const summary = summarizeData(catalog, routesDocument)
 
@@ -19,10 +22,12 @@ interface MenuScreenProps {
   dispatch: (action: SessionAction) => void
   /** Semilla para la primera pregunta. La aplicación la saca del navegador. */
   newSeed: () => number
+  /** Contadores guardados. Sin ellos se muestra el menú como la primera vez. */
+  progress?: ProgressData
 }
 
 /** Menú de arranque (R01): juego, Drop, set con sus cuerdas y dificultad o, en rutas, modo y tramo. */
-export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
+export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS }: MenuScreenProps) {
   const { config } = state
   const routes = config.game === 'routes'
   const sets = setsOfDrop(catalog, config.drop, config.game)
@@ -99,11 +104,14 @@ export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
         </button>
       </form>
 
+      <ProgressPanel progress={progress} config={config} />
+
       <section className="estado" aria-labelledby="estado-titulo">
         <h2 id="estado-titulo">Estado de desarrollo</h2>
         <p>
           <strong>En desarrollo.</strong> Ya puedes reconocer voicings en fácil, medio y difícil y continuar rutas
-          II-V-I en Drop 2; el progreso local y la instalación llegarán después.
+          II-V-I en Drop 2. Tu progreso se guarda en este dispositivo y, tras la primera carga completa, la
+          aplicación funciona sin conexión y puedes instalarla desde tu navegador si lo permite.
         </p>
         <p>Datos cargados desde la plantilla original:</p>
         <dl>

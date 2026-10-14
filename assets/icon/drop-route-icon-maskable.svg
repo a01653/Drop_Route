@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Drop Route: variante maskable del icono (DR-006). Es el MISMO dibujo de drop-route-icon.svg, sin cambios,
+  dentro de un grupo reducido al 80 % y centrado, sobre un fondo opaco a sangre.
+  Zona segura maskable: un CIRCULO central de radio el 40 % del tamaño (https://www.w3.org/TR/appmanifest/#icon-masks),
+  es decir, radio 204,8 sobre este lienzo de 512. Con la escala 0,8 el punto más lejano del dibujo
+  (el cejuelo con su extremo redondeado) queda a unos 198 del centro. Un test lo comprueba con la geometría del
+  SVG y, sobre el PNG exportado, píxel a píxel.
+  Si se edita el icono original, hay que copiar aquí el dibujo de nuevo (un test comprueba que son idénticos)
+  y ejecutar: npm run icon:export
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Drop Route</title>
+  <desc>Fragmento de mástil con cuatro círculos de colores unidos como una ruta. Variante maskable.</desc>
+
+  <rect id="fondo" width="512" height="512" fill="#0B1D2E"/>
+
+  <g id="dibujo" transform="translate(51.2 51.2) scale(0.8)">
+  <!-- Mástil: cuatro cuerdas, cuatro trastes y un cejuelo a la izquierda. -->
+  <g id="mastil" fill="none" stroke="#8FD3FE" stroke-linecap="round">
+    <g id="cuerdas" stroke-width="8" opacity="0.5">
+      <line x1="64" y1="121" x2="448" y2="121"/>
+      <line x1="64" y1="211" x2="448" y2="211"/>
+      <line x1="64" y1="301" x2="448" y2="301"/>
+      <line x1="64" y1="391" x2="448" y2="391"/>
+    </g>
+    <g id="trastes" stroke-width="6" opacity="0.28">
+      <line x1="160" y1="121" x2="160" y2="391"/>
+      <line x1="256" y1="121" x2="256" y2="391"/>
+      <line x1="352" y1="121" x2="352" y2="391"/>
+      <line x1="448" y1="121" x2="448" y2="391"/>
+    </g>
+    <line id="cejuelo" x1="64" y1="113" x2="64" y2="399" stroke-width="16" opacity="0.6"/>
+  </g>
+
+  <!-- Ruta: pasa por el centro de los cuatro círculos, entre trastes. -->
+  <polyline id="ruta" points="112,391 208,211 304,301 400,121" fill="none" stroke="#8FD3FE" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Círculos: raíz, tercera, quinta y séptima, de izquierda a derecha. -->
+  <g id="circulos">
+    <circle id="raiz" cx="112" cy="391" r="44" fill="#E11D48"/>
+    <circle id="tercera" cx="208" cy="211" r="44" fill="#0284C7"/>
+    <circle id="quinta" cx="304" cy="301" r="44" fill="#059669"/>
+    <circle id="septima" cx="400" cy="121" r="44" fill="#EDBC07"/>
+  </g>
+  </g>
+</svg>
