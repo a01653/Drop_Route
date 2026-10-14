@@ -65,8 +65,8 @@ export async function nextQuestion(page: Page, number: number, name: string | Re
 // Reconocimiento
 // ---------------------------------------------------------------------------------------------------------------
 
-const SPOKEN: Record<string, string> = { '1': '1', '3': '3', b3: 'bemol 3', '5': '5', b5: 'bemol 5', '7': '7', b7: 'bemol 7' }
-const BANK = ['1', '3', 'b3', '5', 'b5', '7', 'b7']
+export const SPOKEN: Record<string, string> = { '1': '1', '3': '3', b3: 'bemol 3', '5': '5', b5: 'bemol 5', '7': '7', b7: 'bemol 7' }
+export const BANK = ['1', '3', 'b3', '5', 'b5', '7', 'b7']
 const QUALITIES = [...new Set(catalog.voicings.filter((item) => item.quizEnabled).map((item) => item.quality))]
 
 /**
@@ -182,7 +182,7 @@ export async function storedCounters(page: Page): Promise<Expected> {
   if (raw === null) return {}
   const doc = JSON.parse(raw) as { schemaVersion: number; progress: Record<string, { attempts: number; correct: number }> }
   expect(doc.schemaVersion).toBe(1)
-  return Object.fromEntries(Object.entries(doc.progress).map(([key, counter]) => [key, [counter.correct, counter.attempts]]))
+  return Object.fromEntries(Object.entries(doc.progress).map(([key, counter]): [string, [number, number]] => [key, [counter.correct, counter.attempts]]))
 }
 
 /** Lo que muestra el resumen del menú: una línea por contador con intentos. */

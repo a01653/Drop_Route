@@ -42,7 +42,7 @@ export default defineConfig([
     languageOptions: { globals: globals.browser },
   },
   {
-    files: ['*.config.ts', '*.config.test.ts', 'e2e/**/*.ts'],
+    files: ['*.config.ts', '*.config.test.ts', 'e2e/**/*.ts', 'captures/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
   {

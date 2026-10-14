@@ -44,6 +44,12 @@ Pruebas dirigidas durante ajustes y batería completa al cierre. DR-001 añadió
 
 Los E2E generan el build antes de servirlo y no reutilizan un servidor existente: con el puerto ocupado fallan sin probar nada. Un test del humo comprueba que dist/index.html es posterior al inicio de la ejecución y que el preview devuelve ese mismo fichero. Para añadir un escenario móvil basta ampliar el humo o añadir un spec: el proyecto móvil ya existe.
 
+## Capturas de los manuales (DR-007)
+
+`npm run docs:captures` es un comando explícito, fuera de build, test, validate e instalación. Con `playwright.captures.config.ts` ejecuta `captures/manual.captures.ts` solo en Chromium: construye la aplicación actual en un directorio temporal, la sirve con vite preview en un puerto libre, juega por la interfaz con el mismo oráculo de los E2E (posiciones visibles más `data/catalog.json` y `data/routes.json`, sin semillas ni soluciones inyectadas) y escribe los PNG y `capturas.json` en el destino elegido: sin variable, `docs/manuals/capturas/` (regeneración local intencional de las entradas versionadas); con `DROP_ROUTE_CAPTURE_OUTPUT`, solo en ese directorio. Cierra siempre el preview y borra el directorio temporal. No sustituye a los E2E ni a las pruebas del código.
+
+La CI lo ejecuta después de `npm run test:e2e` con `DROP_ROUTE_CAPTURE_OUTPUT: test-results/manual-captures` y sube de ahí las imágenes como el artefacto `drop-route-manual-captures`, sin tocar las entradas versionadas. El contrato de nombres y los metadatos están en `docs/manuals/capturas/README.md`. Los tests de la base comprueban el paso de la CI, su destino aislado, la resolución del destino y que ninguna otra orden lo lance. Hasta que se ejecute y se revise el resultado, no hay capturas observadas.
+
 La batería final aplicable: `npm run validate`, `npm run lint`, `npm run build` y `npm run test:e2e`. El workflow de GitHub ejecuta los mismos pasos por separado (`data:check`, `audit:music`, `test:base`, `docs:check`, `typecheck`, `lint`, `test:unit`, `build` y `test:e2e`) y se ejecuta en GitHub Actions al publicar la rama. Con DR-006 todavía no hay una ejecución registrada.
 
 Registrar resultados reales en docs/validation. Los resultados de Mástil no son resultados de Drop Route.

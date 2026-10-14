@@ -44,3 +44,16 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      # Capturas reales para los manuales (DR-007): comando explícito sobre un build propio y su preview en un puerto libre.
+      # DROP_ROUTE_CAPTURE_OUTPUT aísla el destino: la CI nunca sobrescribe las capturas versionadas de los manuales
+      # (entradas de los PDF); las preguntas y el commit cambian en cada ejecución.
+      - run: npm run docs:captures
+        env:
+          DROP_ROUTE_CAPTURE_OUTPUT: test-results/manual-captures
+      - uses: actions/upload-artifact@v7
+        with:
+          name: drop-route-manual-captures
+          path: |
+            test-results/manual-captures/*.png
+            test-results/manual-captures/capturas.json
+          if-no-files-found: error

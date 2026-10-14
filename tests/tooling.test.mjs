@@ -101,6 +101,75 @@ test('el trabajo de la aplicación ejecuta tipos, lint, Vitest, build y E2E con 
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b), 'orden de los pasos');
 });
 
+test('la CI genera las capturas del manual tras las comprobaciones de la aplicación y las sube como artefacto', () => {
+  const job = jobBody('app');
+  const e2e = job.indexOf('- run: npm run test:e2e');
+  const captures = job.indexOf('- run: npm run docs:captures');
+  assert.ok(e2e >= 0 && captures > e2e, 'docs:captures va después de test:e2e');
+  assert.equal(job.split('npm run docs:captures').length - 1, 1, 'se ejecuta una sola vez');
+  assert.ok(!jobBody('foundation').includes('docs:captures'), 'la base no genera capturas');
+  const upload = job.slice(captures);
+  assert.match(upload, /- uses: actions\/upload-artifact@v7\n\s+with:/);
+  assert.match(upload, /name: drop-route-manual-captures\n/);
+  assert.match(upload, /if-no-files-found: error\n/);
+  assert.match(upload, /test-results\/manual-captures\/\*\.png\n/);
+  assert.match(upload, /test-results\/manual-captures\/capturas\.json\n/);
+  assert.ok(!/deploy|pages|publish/i.test(upload), 'las capturas no despliegan nada');
+});
+
+test('la CI escribe las capturas en un destino aislado y no toca las entradas versionadas', () => {
+  const job = jobBody('app');
+  assert.match(job, /- run: npm run docs:captures\n\s+env:\n\s+DROP_ROUTE_CAPTURE_OUTPUT: test-results\/manual-captures\n/);
+  assert.ok(!job.includes('docs/manuals/capturas'), 'el trabajo no referencia la carpeta versionada');
+  assert.ok(!workflow.includes('docs/manuals/capturas'), 'el workflow no referencia la carpeta versionada');
+  // Ningún otro paso invoca el script, así que ninguno puede escribir sin la variable.
+  assert.equal(workflow.split('docs:captures').length - 1, 1);
+  const scripts = JSON.parse(read('package.json')).scripts;
+  assert.equal(scripts['docs:captures'], 'playwright test -c playwright.captures.config.ts', 'la variable llega por el entorno, no por el script');
+});
+
+test('el destino de las capturas lo elige DROP_ROUTE_CAPTURE_OUTPUT y nunca es el versionado con ella definida', async () => {
+  const { OUTPUT_VARIABLE, VERSIONED_DIR, resolveCaptureDir } = await import('../scripts/lib/capture-output.mjs');
+  const cwd = resolve(ROOT);
+  assert.equal(OUTPUT_VARIABLE, 'DROP_ROUTE_CAPTURE_OUTPUT');
+  assert.equal(VERSIONED_DIR, 'docs/manuals/capturas');
+  assert.equal(resolveCaptureDir({}, cwd), resolve(cwd, 'docs/manuals/capturas'), 'sin variable: entradas versionadas');
+  assert.equal(resolveCaptureDir({ DROP_ROUTE_CAPTURE_OUTPUT: 'test-results/manual-captures' }, cwd), resolve(cwd, 'test-results/manual-captures'));
+  for (const same of ['docs/manuals/capturas', './docs/manuals/capturas/', 'docs/manuals/../manuals/capturas', resolve(cwd, 'docs/manuals/capturas')]) {
+    assert.throws(() => resolveCaptureDir({ DROP_ROUTE_CAPTURE_OUTPUT: same }, cwd), /no puede apuntar/, same);
+  }
+  for (const blank of ['', '   ']) {
+    assert.throws(() => resolveCaptureDir({ DROP_ROUTE_CAPTURE_OUTPUT: blank }, cwd), /vacía/, JSON.stringify(blank));
+  }
+});
+
+test('el grabador solo limpia el destino elegido y conserva el README', () => {
+  const recorder = read('captures/recorder.ts');
+  assert.match(recorder, /export const CAPTURES_DIR = resolveCaptureDir\(\)/);
+  assert.ok(!recorder.includes("resolve('docs/manuals/capturas')"), 'el grabador no fija la carpeta versionada');
+  const prepare = /async prepare\(\) \{([\s\S]*?)\n  \}/.exec(recorder);
+  assert.ok(prepare, 'falta Recorder.prepare');
+  assert.match(prepare[1], /readdir\(this\.dir\)/);
+  assert.match(prepare[1], /name\.endsWith\('\.png'\) \|\| name === MANIFEST/);
+  assert.ok(!/README|recursive: true, force|rm\(this\.dir/.test(prepare[1].replace('mkdir(this.dir, { recursive: true })', '')), 'prepare solo borra PNG y manifiesto');
+  assert.match(read('captures/manual.captures.ts'), /new Recorder\(CAPTURES_DIR,/);
+});
+
+test('docs:captures es un comando explícito y ninguna otra orden de npm lo ejecuta', () => {
+  const scripts = JSON.parse(read('package.json')).scripts;
+  assert.equal(scripts['docs:captures'], 'playwright test -c playwright.captures.config.ts');
+  for (const [name, command] of Object.entries(scripts)) {
+    if (name !== 'docs:captures') assert.ok(!command.includes('docs:captures') && !command.includes('playwright.captures'), name);
+  }
+  for (const hook of ['preinstall', 'install', 'postinstall', 'prepare', 'prebuild', 'postbuild', 'pretest', 'posttest']) {
+    assert.equal(scripts[hook], undefined, hook);
+  }
+  // Playwright de los E2E solo busca en e2e/: las capturas no se cuelan en npm run test:e2e.
+  assert.match(read('playwright.config.ts'), /testDir: 'e2e'/);
+  assert.match(read('playwright.captures.config.ts'), /testDir: 'captures'/);
+  assert.match(read('playwright.captures.config.ts'), /testMatch: '\*\*\/\*\.captures\.ts'/);
+});
+
 test('Playwright genera el build y no reutiliza servidores existentes', () => {
   const config = read('playwright.config.ts');
   assert.match(config, /command: `npm run build && npm run preview/);

@@ -20,7 +20,9 @@
     "vitest.config.ts",
     "vitest.config.test.ts",
     "playwright.config.ts",
+    "playwright.captures.config.ts",
     "e2e",
+    "captures",
     "src/progress/layers.test.ts"
   ]
 }
