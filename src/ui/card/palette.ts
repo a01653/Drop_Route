@@ -26,6 +26,7 @@ export function degreeFunction(degree: Degree): DegreeFunction {
     case '5':
     case 'b5':
       return 'fifth'
+    case '6':
     case '7':
     case 'b7':
     case 'bb7':

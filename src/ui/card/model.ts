@@ -39,12 +39,24 @@ export function toPosition(
 }
 
 export function toSolution(shape: ChordShape & { name: string }, catalog: Catalog): CardSolution {
+  const set = catalog.sets.find((item) => item.id === shape.setId)
+  let bass = catalog.qualities[shape.quality].degrees[shape.inversion] ?? ''
+  if (set) {
+    for (const string of set.strings) {
+      const note = shape.notes.find((item) => item.string === string)
+      if (note) {
+        bass = note.degree
+        break
+      }
+    }
+  }
+
   return {
     name: shape.name,
     quality: shape.quality,
     degrees: shape.notes.map((note) => note.degree),
     inversionLabel: catalog.inversions[shape.inversion] ?? '',
-    bass: catalog.qualities[shape.quality].degrees[shape.inversion] ?? '',
+    bass,
   }
 }
 

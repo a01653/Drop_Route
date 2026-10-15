@@ -7,7 +7,7 @@ import {
   movementText,
   totalVoiceMovement,
   transposeRoute,
-  transposeShapes,
+  transposeStudyVoicing,
   voiceMovement,
 } from '../../study/transposition'
 import { FretboardCard } from '../card/FretboardCard'
@@ -77,7 +77,7 @@ export function StudyScreen() {
     () => catalog.voicings.find((item) => item.quizEnabled && item.setId === setId && item.quality === quality && item.inversion === inversion),
     [setId, quality, inversion],
   )
-  const transposedVoicing = useMemo(() => (voicing ? transposeShapes([voicing], tonicPc) : null), [voicing, tonicPc])
+  const transposedVoicing = useMemo(() => (voicing ? transposeStudyVoicing(voicing, tonicPc) : null), [voicing, tonicPc])
 
   const matchingRoutes = useMemo(
     () =>
@@ -103,110 +103,116 @@ export function StudyScreen() {
         </a>
       </header>
 
-      <OptionGroup
-        legend="Estudiar"
-        value={kind}
-        onChange={setKind}
-        options={STUDY_KINDS.map((item) => ({ id: item.id, label: item.label }))}
-      />
-
-      <section className="study-control">
-        <label>
-          <span>Tonalidad</span>
-          <select value={tonicPc} onChange={(event) => setTonicPc(Number(event.target.value))}>
-            {TONALITIES.map((tonality) => (
-              <option key={tonality.pc} value={tonality.pc}>
-                {tonality.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </section>
-
-      {kind === 'voicings' ? (
-        <>
+      <div className="study-workspace">
+        <aside className="study-sidebar" aria-label="Controles de estudio">
           <OptionGroup
-            legend="Drop"
-            value={drop}
-            onChange={(nextDrop) => {
-              setDrop(nextDrop)
-              setSetId(catalog.sets.find((set) => set.drop === nextDrop)?.id ?? firstSet.id)
-            }}
-            options={[...new Set(catalog.sets.map((set) => set.drop))].map((item) => ({ id: item, label: DROP_LABELS[item] }))}
-          />
-          <OptionGroup
-            legend="Set de cuerdas"
-            value={setId}
-            onChange={setSetId}
-            options={voicingSets.map((set) => ({ id: set.id, label: `Set ${set.number}`, detail: `cuerdas ${set.strings.join('-')}` }))}
-          />
-          <OptionGroup
-            legend="Calidad"
-            value={quality}
-            onChange={setQuality}
-            options={QUALITY_OPTIONS.map((item) => ({ id: item, label: qualityLabel(item) }))}
-          />
-          <OptionGroup
-            legend="Inversión"
-            value={String(inversion)}
-            onChange={(value) => setInversion(Number(value) as Inversion)}
-            options={INVERSIONS.map((item) => ({ id: String(item), label: inversionLabel(item) }))}
+            legend="Estudiar"
+            value={kind}
+            onChange={setKind}
+            options={STUDY_KINDS.map((item) => ({ id: item.id, label: item.label }))}
           />
 
-          <section className="study-card" aria-labelledby="study-voicing-title">
-            <h2 id="study-voicing-title">Forma</h2>
-            {transposedVoicing ? (
-              <>
-                <FretboardCard
-                  view="solution"
-                  position={toPosition(transposedVoicing.shapes[0]!, catalog)}
-                  solution={toSolution(transposedVoicing.shapes[0]!, catalog)}
-                />
-                <p className="juego-pie">
-                  {transposedVoicing.shapes[0]!.name} · {inversionLabel(inversion).toLowerCase()} · cuerdas {selectedSet?.strings.join('-')}
-                </p>
-                <ShiftNote shift={transposedVoicing.shift} />
-              </>
-            ) : (
-              <p>No hay una forma disponible con esta combinación.</p>
-            )}
+          <section className="study-control">
+            <label>
+              <span>Tonalidad</span>
+              <select value={tonicPc} onChange={(event) => setTonicPc(Number(event.target.value))}>
+                {TONALITIES.map((tonality) => (
+                  <option key={tonality.pc} value={tonality.pc}>
+                    {tonality.label}
+                  </option>
+                ))}
+              </select>
+            </label>
           </section>
-        </>
-      ) : (
-        <>
-          <OptionGroup
-            legend="Set de cuerdas"
-            value={routeSetId}
-            onChange={(value) => {
-              setRouteSetId(value)
-              setRouteIndex(0)
-            }}
-            options={routeSets.map((set) => ({ id: set.id, label: `Set ${set.number}`, detail: `cuerdas ${set.strings.join('-')}` }))}
-          />
-          <OptionGroup
-            legend="Modo"
-            value={routeMode}
-            onChange={(value) => {
-              setRouteMode(value)
-              setRouteIndex(0)
-            }}
-            options={[
-              { id: 'major', label: 'Mayor' },
-              { id: 'minor', label: 'Menor' },
-            ]}
-          />
-          <OptionGroup
-            legend="Ruta"
-            value={String(Math.min(routeIndex, Math.max(0, matchingRoutes.length - 1)))}
-            onChange={(value) => setRouteIndex(Number(value))}
-            options={matchingRoutes.map((item, index) => ({
-              id: String(index),
-              label: `Ruta ${index + 1}`,
-              detail: `II ${inversionLabel(item.steps[0]!.inversion).toLowerCase()}`,
-            }))}
-          />
 
-          {transposedRoute && route ? (
+          {kind === 'voicings' ? (
+            <>
+              <OptionGroup
+                legend="Drop"
+                value={drop}
+                onChange={(nextDrop) => {
+                  setDrop(nextDrop)
+                  setSetId(catalog.sets.find((set) => set.drop === nextDrop)?.id ?? firstSet.id)
+                }}
+                options={[...new Set(catalog.sets.map((set) => set.drop))].map((item) => ({ id: item, label: DROP_LABELS[item] }))}
+              />
+              <OptionGroup
+                legend="Set de cuerdas"
+                value={setId}
+                onChange={setSetId}
+                options={voicingSets.map((set) => ({ id: set.id, label: `Set ${set.number}`, detail: `cuerdas ${set.strings.join('-')}` }))}
+              />
+              <OptionGroup
+                legend="Calidad"
+                value={quality}
+                onChange={setQuality}
+                options={QUALITY_OPTIONS.map((item) => ({ id: item, label: qualityLabel(item) }))}
+              />
+              <OptionGroup
+                legend="Inversión"
+                value={String(inversion)}
+                onChange={(value) => setInversion(Number(value) as Inversion)}
+                options={INVERSIONS.map((item) => ({ id: String(item), label: inversionLabel(item) }))}
+              />
+            </>
+          ) : (
+            <>
+              <OptionGroup
+                legend="Set de cuerdas"
+                value={routeSetId}
+                onChange={(value) => {
+                  setRouteSetId(value)
+                  setRouteIndex(0)
+                }}
+                options={routeSets.map((set) => ({ id: set.id, label: `Set ${set.number}`, detail: `cuerdas ${set.strings.join('-')}` }))}
+              />
+              <OptionGroup
+                legend="Modo"
+                value={routeMode}
+                onChange={(value) => {
+                  setRouteMode(value)
+                  setRouteIndex(0)
+                }}
+                options={[
+                  { id: 'major', label: 'Mayor' },
+                  { id: 'minor', label: 'Menor' },
+                ]}
+              />
+              <OptionGroup
+                legend="Ruta"
+                value={String(Math.min(routeIndex, Math.max(0, matchingRoutes.length - 1)))}
+                onChange={(value) => setRouteIndex(Number(value))}
+                options={matchingRoutes.map((item, index) => ({
+                  id: String(index),
+                  label: `Ruta ${index + 1}`,
+                  detail: `II ${inversionLabel(item.steps[0]!.inversion).toLowerCase()}`,
+                }))}
+              />
+            </>
+          )}
+        </aside>
+
+        <div className="study-content">
+          {kind === 'voicings' ? (
+            <section className="study-card" aria-labelledby="study-voicing-title">
+              <h2 id="study-voicing-title">Forma</h2>
+              {transposedVoicing ? (
+                <>
+                  <FretboardCard
+                    view="solution"
+                    position={toPosition(transposedVoicing.shape, catalog)}
+                    solution={toSolution(transposedVoicing.shape, catalog)}
+                  />
+                  <p className="juego-pie">
+                    {transposedVoicing.shape.name} · {inversionLabel(inversion).toLowerCase()} · cuerdas {selectedSet?.strings.join('-')}
+                  </p>
+                  <ShiftNote shift={transposedVoicing.shift} />
+                </>
+              ) : (
+                <p>No hay una forma disponible con esta combinación.</p>
+              )}
+            </section>
+          ) : transposedRoute && route ? (
             <>
               <section className="study-route" aria-labelledby="study-route-title">
                 <div className="study-route-heading">
@@ -245,8 +251,8 @@ export function StudyScreen() {
           ) : (
             <p>No hay rutas disponibles con esta combinación.</p>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </main>
   )
 }

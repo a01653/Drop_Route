@@ -28,6 +28,15 @@
   white-space: nowrap;
 }
 
+.study-workspace,
+.study-sidebar,
+.study-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
 .study h2 {
   margin: 0 0 0.5rem;
   font-size: 1rem;

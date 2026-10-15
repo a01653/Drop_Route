@@ -1,12 +1,16 @@
 import { describe, expect, it } from 'vitest'
+import { routesDocument } from '../data'
 import type { NamedShape } from './transposition'
 import {
   chordName,
   commonFretShift,
   movementText,
   routeChordName,
+  transposeRoute,
   transposeShape,
   transposeShapes,
+  transposeStudyVoicing,
+  usesSourceSixth,
   voiceMovement,
 } from './transposition'
 
@@ -58,6 +62,43 @@ describe('transposición para estudio', () => {
     const originalMovement = voiceMovement(ii, v).map((voice) => voice.delta)
     const { shapes } = transposeShapes([ii, v], 4)
     expect(voiceMovement(shapes[0]!, shapes[1]!).map((voice) => voice.delta)).toEqual(originalMovement)
+  })
+
+  it('muestra la sexta alternativa de la fuente en las terceras inversiones mayores', () => {
+    const source: NamedShape = {
+      ...shape([9, 9, 8, 8]),
+      inversion: 3,
+      notes: [
+        { string: 4, fret: 9, degree: '7' },
+        { string: 3, fret: 9, degree: '3' },
+        { string: 2, fret: 8, degree: '5' },
+        { string: 1, fret: 8, degree: '1' },
+      ],
+    }
+    expect(usesSourceSixth(source)).toBe(true)
+
+    const inC = transposeStudyVoicing(source, 0)
+    expect(inC.shape.name).toBe('Cmaj7 – C6')
+    expect(inC.shape.notes.map((note) => note.fret)).toEqual([7, 9, 8, 8])
+    expect(inC.shape.notes.map((note) => note.degree)).toEqual(['6', '3', '5', '1'])
+
+    const inD = transposeStudyVoicing(source, 2)
+    expect(inD.shape.name).toBe('Dmaj7 – D6')
+    expect(inD.shape.notes.map((note) => note.fret)).toEqual([9, 11, 10, 10])
+  })
+
+  it('conserva en las rutas mayores la sustitución C6 citada por la fuente y la transpone', () => {
+    const route = routesDocument.routes.find((item) => item.id === 'd2s1-major-i3')
+    expect(route).toBeDefined()
+
+    const inC = transposeRoute(route!.steps, 0).shapes[2]!
+    expect(inC.name).toBe('Cmaj7 – C6')
+    expect(inC.notes.map((note) => note.fret)).toEqual([7, 9, 8, 8])
+    expect(inC.notes.map((note) => note.degree)).toEqual(['6', '3', '5', '1'])
+
+    const inD = transposeRoute(route!.steps, 2).shapes[2]!
+    expect(inD.name).toBe('Dmaj7 – D6')
+    expect(inD.notes.map((note) => note.fret)).toEqual([9, 11, 10, 10])
   })
 
   it('describe el sentido y tamaño del movimiento', () => {

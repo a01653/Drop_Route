@@ -1,4 +1,4 @@
-import type { ChordShape, QualityKey, RouteFunction, RouteStep, StringNumber } from '../data'
+import type { ChordShape, QualityKey, RouteFunction, RouteStep, SetId, StringNumber } from '../data'
 
 export interface TonalityOption {
   pc: number
@@ -43,6 +43,8 @@ const ROUTE_ROOTS: Readonly<Record<number, Readonly<Record<RouteFunction, string
   10: { I: 'B♭', ii: 'C', V: 'F' },
   11: { I: 'B', ii: 'C♯', V: 'F♯' },
 }
+
+const DROP24_SETS: ReadonlySet<SetId> = new Set(['D24S1', 'D24S2'])
 
 const mod12 = (value: number) => ((value % 12) + 12) % 12
 
@@ -93,16 +95,50 @@ export function transposeShapes<T extends NamedShape>(shapes: readonly T[], toni
   return { shift, shapes: shapes.map((shape) => transposeShape(shape, shift)) }
 }
 
+/**
+ * La lámina original muestra C6 como lectura alternativa de Cmaj7 bajando la 7ª mayor dos trastes.
+ * En voicings aparece en todas las terceras inversiones y, en Drop 2+4, también en la primera.
+ * Es una transformación exclusiva del modo estudio: los JSON y los juegos evaluables siguen intactos.
+ */
+export function usesSourceSixth(shape: ChordShape): boolean {
+  return shape.quality === 'maj7' && (shape.inversion === 3 || (shape.inversion === 1 && DROP24_SETS.has(shape.setId)))
+}
+
+function withSixthAlternative<T extends NamedShape>(shape: T, enabled: boolean): T {
+  if (!enabled) return shape
+  return {
+    ...shape,
+    name: `${shape.name} – ${shape.root}6`,
+    notes: shape.notes.map((note) =>
+      note.degree === '7' ? { ...note, fret: note.fret - 2, degree: '6' as const } : note,
+    ),
+  }
+}
+
+/** Transpone una forma de estudio y conserva, cuando corresponde, la variante C6 de la fuente. */
+export function transposeStudyVoicing<T extends NamedShape>(shape: T, tonicPc: number): { shift: number; shape: T } {
+  const showSixth = usesSourceSixth(shape)
+  const sourceShape = withSixthAlternative(shape, showSixth)
+  const shift = commonFretShift([sourceShape], tonicPc)
+  return { shift, shape: withSixthAlternative(transposeShape(shape, shift), showSixth) }
+}
+
 /** Transpone una ruta y corrige la grafía de I, ii y V según la tonalidad elegida. */
 export function transposeRoute(steps: readonly RouteStep[], tonicPc: number): { shift: number; shapes: RouteStep[] } {
-  const transposed = transposeShapes(steps, tonicPc)
+  const sourceSteps = steps.map((step) => withSixthAlternative(step, step.sourceOptionalSubstitution === 'C6'))
+  const shift = commonFretShift(sourceSteps, tonicPc)
   return {
-    shift: transposed.shift,
-    shapes: transposed.shapes.map((step) => ({
-      ...step,
-      root: routeRootName(tonicPc, step.function),
-      name: routeChordName(tonicPc, step.function, step.quality),
-    })),
+    shift,
+    shapes: sourceSteps.map((sourceStep) => {
+      const step = transposeShape(sourceStep, shift)
+      const root = routeRootName(tonicPc, step.function)
+      const name = routeChordName(tonicPc, step.function, step.quality)
+      return {
+        ...step,
+        root,
+        name: sourceStep.sourceOptionalSubstitution === 'C6' ? `${name} – ${root}6` : name,
+      }
+    }),
   }
 }
 
