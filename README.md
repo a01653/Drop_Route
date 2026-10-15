@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado:** DR-001 a DR-005 están integradas en `main`. La rama `feat/progress-and-pwa` añade el progreso local, la PWA y el cierre documental de DR-006 y DR-007. El candidato contiene los manuales, sus capturas reales, los derivados LaTeX/PDF sincronizados y el workflow de GitHub Pages. Falta integrar esta rama en `main` y comprobar el primer despliegue público.
+**Estado:** DR-001 a DR-007 están integradas en `main`. La aplicación incluye reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación generada y publicación automática en GitHub Pages.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -101,17 +101,17 @@ $env:DROP_ROUTE_BASE = '/Drop_Route/'
 npm run build
 ```
 
-Cuando el workflow esté en `main` y el despliegue termine correctamente, la dirección será:
+La aplicación está publicada en:
 
 <https://a01653.github.io/Drop_Route/>
 
-Si GitHub Pages no está activado todavía, en el repositorio hay que seleccionar **Settings → Pages → Source: GitHub Actions** una sola vez.
+El primer despliegue desde `main` terminó correctamente en la ejecución `38675602253` de GitHub Actions.
 
 ## Integración continua
 
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-La ejecución `38588437353` sobre `eb1bbbe` validó DR-006 en los dos trabajos antes del cierre documental. DR-007 regeneró y validó la documentación, comprobó el build con base `/Drop_Route/` y dejó el candidato preparado para una nueva batería de CI antes de integrarlo en `main`.
+La batería final sobre `main` terminó correctamente en la ejecución `38675602319`: documentación estricta, typecheck, lint, unitarias, build, E2E y capturas sin fallos.
 
 ## Límites actuales
 
