@@ -151,14 +151,3 @@ h1 {
   justify-content: center;
   text-decoration: none;
 }
-
-.enlace-revision {
-  margin: 0;
-}
-
-.enlace-revision a {
-  display: inline-block;
-  padding: 0.75rem 0;
-  color: var(--tinta);
-  font-weight: 600;
-}

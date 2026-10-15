@@ -21,9 +21,10 @@ describe('menú de arranque', () => {
     expect(html).not.toContain('Datos cargados desde la plantilla original')
   })
 
-  it('enlaza con estudio y con la pantalla de revisión de tarjetas e icono', () => {
+  it('enlaza con estudio sin mostrar el acceso de revisión de tarjetas e icono', () => {
     expect(html).toContain('<a class="boton-secundario menu-estudio" href="#/study">Modo estudio</a>')
-    expect(html).toContain('<a href="#/revision">Revisar tarjetas e icono</a>')
+    expect(html).not.toContain('Revisar tarjetas e icono')
+    expect(html).not.toContain('href="#/revision"')
   })
 
   it('permite elegir juego, Drop, set con sus cuerdas y dificultad (R01)', () => {

@@ -16,9 +16,9 @@ export interface RegisterOptions {
 
 /**
  * Registra el service worker. No activa nunca una versión nueva por su cuenta: la que se descarga espera, y la
- * página sigue con el código y la caché con los que arrancó hasta que la persona pide actualizar. Solo entonces se
- * le pide a la versión en espera que tome el control y, cuando lo hace, se recarga una vez. Así una pregunta abierta
- * no se pierde ni se mezclan los bundles de dos versiones. Si el registro falla (sin conexión en la primera visita,
+ * página no se recarga hasta que la persona pide actualizar. Entonces se pide a la versión en espera que tome el
+ * control y, cuando lo hace, se recarga una vez. Si otra pestaña ya la activó, el clic recarga con esa versión.
+ * Así una pregunta abierta no se pierde por una recarga automática. Si el registro falla (sin conexión en la primera visita,
  * navegador restringido) la aplicación sigue funcionando sin service worker. Lo mismo si el registro se resuelve
  * sin objeto, como hace Playwright con serviceWorkers: 'block': no hay nada que vigilar y no se añade ningún listener.
  */
@@ -35,16 +35,20 @@ export async function registerServiceWorker(options: RegisterOptions): Promise<S
 
   let applying = false
   let reloaded = false
-  const apply = () => {
-    const waiting = registration.waiting
-    if (!waiting) return
-    applying = true
-    waiting.postMessage({ type: 'SKIP_WAITING' })
-  }
-  container.addEventListener('controllerchange', () => {
-    if (!applying || reloaded) return
+  const reloadOnce = () => {
+    if (reloaded) return
     reloaded = true
     reload()
+  }
+  const apply = () => {
+    if (applying || reloaded) return
+    applying = true
+    const waiting = registration.waiting
+    if (waiting) waiting.postMessage({ type: 'SKIP_WAITING' })
+    else reloadOnce()
+  }
+  container.addEventListener('controllerchange', () => {
+    if (applying) reloadOnce()
   })
 
   // Hay versión nueva si una espera y ya había otra controlando la página: la primera instalación no cuenta.

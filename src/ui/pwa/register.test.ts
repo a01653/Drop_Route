@@ -156,22 +156,27 @@ describe('registro del service worker', () => {
     await run()
     const apply = announced[0]!
     apply()
+    apply()
     expect(registration.waiting!.posted).toEqual([{ type: 'SKIP_WAITING' }])
     expect(reload).not.toHaveBeenCalled()
     container.dispatchEvent(new Event('controllerchange'))
     container.dispatchEvent(new Event('controllerchange'))
+    apply()
     expect(reload).toHaveBeenCalledTimes(1)
   })
 
-  it('actualizar sin versión en espera no hace nada', async () => {
+  it('si otra pestaña ya activó la actualización, solo recarga al pulsar y una sola vez', async () => {
     const { container, announced, reload, run, registration } = setup({ controller: true, waiting: true })
     await run()
     const worker = registration.waiting!
     registration.waiting = null
+    container.dispatchEvent(new Event('controllerchange'))
+    expect(reload).not.toHaveBeenCalled()
+    announced[0]!()
     announced[0]!()
     expect(worker.posted).toEqual([])
     container.dispatchEvent(new Event('controllerchange'))
-    expect(reload).not.toHaveBeenCalled()
+    expect(reload).toHaveBeenCalledTimes(1)
   })
 
   it('al volver a primer plano comprueba si hay versión nueva, y un fallo de red no rompe nada', async () => {

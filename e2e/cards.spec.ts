@@ -182,11 +182,11 @@ test('el icono se ve a tamaño real y sus exportaciones cargan', async ({ page }
   }
 })
 
-test('la pantalla de arranque enlaza con la revisión y se puede volver', async ({ page }) => {
+test('la revisión interna permite volver al inicio sin mostrar allí su acceso', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 })
-  await page.goto('/')
-  await page.getByRole('link', { name: 'Revisar tarjetas e icono' }).click()
+  await page.goto('/#/revision')
   await expect(page.getByRole('heading', { level: 1, name: 'Revisión de tarjetas e icono' })).toBeVisible()
   await page.getByRole('link', { name: /Volver al inicio/ }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Drop Route' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Revisar tarjetas e icono' })).toHaveCount(0)
 })

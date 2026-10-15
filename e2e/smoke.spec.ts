@@ -13,7 +13,7 @@ test('arranca desde el build con el menú sin el bloque informativo de versión'
   await expect(page.getByRole('region', { name: 'Tu progreso' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Empezar' })).toBeEnabled()
   await expect(page.getByRole('link', { name: 'Modo estudio' })).toBeVisible()
-  await expect(page.getByRole('link', { name: 'Revisar tarjetas e icono' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Revisar tarjetas e icono' })).toHaveCount(0)
 })
 
 test('el preview sirve el build generado en esta ejecución', async ({ request }) => {

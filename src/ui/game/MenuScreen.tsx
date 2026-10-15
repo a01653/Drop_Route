@@ -103,9 +103,6 @@ export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS
         <a className="boton-secundario menu-estudio" href="#/study">
           Modo estudio
         </a>
-        <p className="enlace-revision">
-          <a href="#/revision">Revisar tarjetas e icono</a>
-        </p>
       </form>
 
       <ProgressPanel progress={progress} config={config} />

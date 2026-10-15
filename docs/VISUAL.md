@@ -33,7 +33,7 @@ Tras error, marcar elegida y correcta con texto y rojo/verde. Tu respuesta/Soluc
 
 A partir de 960 px no se conserva una columna de móvil centrada. Se usa el ancho de la pantalla sin convertir el mástil corto en un diagrama artificialmente largo.
 
-- Menú: configuración en la zona principal y progreso en una columna lateral. El acceso a revisión queda bajo «Modo estudio»; el bloque «Versión actual» se retiró el 15/10/2026.
+- Menú: configuración en la zona principal y progreso en una columna lateral. Se retiraron el bloque «Versión actual» y el enlace «Revisar tarjetas e icono»; la revisión se conserva como ruta interna para las comprobaciones visuales.
 - Reconocimiento: tarjeta a la izquierda y respuesta/corrección a la derecha.
 - Rutas: partida y candidata en paralelo; tras verificar, comparación y selección aprovechan dos columnas.
 - Modo estudio: controles en una columna lateral estable y forma o ruta en el área principal.

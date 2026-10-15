@@ -309,6 +309,49 @@ test.describe('raíz', () => {
 
 test.describe('subruta /Drop_Route/', () => {
   test.use({ siteBase: '/Drop_Route/' })
+  test('actualizar sigue funcionando si otra pestaña ya activó B, sin recarga automática ni pérdida de progreso', async ({ page, context, site }) => {
+    const { A } = built[site.base]!
+    const seen = watch(page)
+    await installFirst(page, site, A)
+    await configureRecognition(page, FIRST, 'Fácil')
+    await startQuestion(page)
+    await answerRecognition(page, FIRST, 'Fácil', 'completo')
+    await leave(page)
+    const played: Expected = { 'recognition:D24S1:easy': [1, 1] }
+    await expectProgress(page, played)
+    const before = await stored(page, STORAGE_KEY)
+
+    const other = await context.newPage()
+    await other.goto(site.url())
+    await expectRunning(other, 'A')
+    await offerB(page, site)
+    await expect(updateNotice(page)).toBeVisible()
+    await expect(updateNotice(other)).toBeVisible()
+
+    // La primera pestaña sigue en una pregunta cuando la segunda activa B.
+    await startQuestion(page)
+    const loadsBefore = seen.loads
+    await other.getByRole('button', { name: 'Actualizar ahora', exact: true }).click()
+    await expectRunning(other, 'B')
+    await expect.poll(() => running(page), WAIT).toEqual({ script: 'A', meta: 'A', marker: 'B', controlled: true })
+    expect(seen.loads, 'la otra pestaña no interrumpe la pregunta').toBe(loadsBefore)
+    await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 1' })).toBeVisible()
+    await expect(updateNotice(page)).toHaveCount(0)
+    await leave(page)
+    await expect(updateNotice(page)).toBeVisible()
+    expect(await page.evaluate(async () => (await navigator.serviceWorker.getRegistration())?.waiting)).toBeNull()
+
+    // Aunque ya no queda worker en espera, el clic explícito carga B una sola vez.
+    await updateNotice(page).getByRole('button', { name: 'Actualizar ahora', exact: true }).click()
+    await expectRunning(page, 'B')
+    await expect(updateNotice(page)).toHaveCount(0)
+    await expectProgress(page, played)
+    expect(await stored(page, STORAGE_KEY)).toBe(before)
+    expect(seen.loads - loadsBefore).toBe(1)
+    expect(seen.errors).toEqual([])
+    expect(seen.dialogs).toEqual([])
+  })
+
   test('el mismo recorrido bajo /Drop_Route/: ámbito, cachés propias del ámbito, actualización y juego sin conexión', async ({ page, context, site }) => {
     test.setTimeout(180_000)
     await updateScenario(page, context, site)

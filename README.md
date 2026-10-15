@@ -95,7 +95,7 @@ Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni p
 
 La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
 
-La pantalla `#/revision` permite revisar las 112 tarjetas y el icono sin entrar en una partida. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris. El enlace de revisión está debajo de «Modo estudio»; se ha retirado del inicio el bloque «Versión actual».
+La pantalla interna `#/revision` permite revisar las 112 tarjetas y el icono. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris. El menú ya no muestra el enlace «Revisar tarjetas e icono» ni el bloque «Versión actual».
 
 ## Diseño responsive
 
@@ -107,7 +107,7 @@ Cada pregunta verificada suma un intento. En reconocimiento se cuenta por set y 
 
 La configuración y los contadores se guardan en `localStorage` en el navegador y dispositivo actuales. No hay cuentas ni sincronización. Si el almacenamiento falla, la aplicación lo avisa y permite continuar en memoria.
 
-El build genera un service worker con precaché de los recursos de la aplicación. Una versión nueva queda esperando hasta que el usuario acepta actualizar desde el menú. La actualización no borra el progreso guardado.
+El build genera un service worker con precaché de los recursos de la aplicación. Una versión nueva queda esperando hasta que el usuario acepta actualizar desde el menú. Si otra pestaña ya la activó, «Actualizar ahora» recarga con esa versión aunque ya no haya un worker en espera. Las otras pestañas no se recargan automáticamente. La actualización no borra el progreso guardado.
 
 ## GitHub Pages
 
@@ -142,8 +142,9 @@ Las correcciones posteriores también están integradas y publicadas:
 
 - [C6 en revisión y séptima gris](docs/validation/2026-10-15-dr-009-c6-review.md), commit `3af957e`: la sexta y su séptima de referencia se muestran como en la plantilla, también al transponer en estudio.
 - [Retirada del bloque «Versión actual»](docs/validation/2026-10-15-remove-version-panel.md), commit `78833d6`: inicio sin el bloque informativo y acceso a revisión bajo «Modo estudio».
+- [Retirada del acceso de revisión y actualización entre pestañas](docs/validation/2026-10-15-update-recovery-and-hide-review.md): el menú deja de mostrar la revisión y el botón de actualización funciona aunque otra pestaña ya haya activado la versión nueva.
 
-La [CI del último cambio funcional en `main`](https://github.com/a01653/Drop_Route/actions/runs/38721526122) terminó correctamente. El estado de cada orden figura en el [índice de fases](docs/work-orders/README.md).
+La [CI de la retirada del bloque de versión en `main`](https://github.com/a01653/Drop_Route/actions/runs/38721526122) terminó correctamente. El estado de cada orden figura en el [índice de fases](docs/work-orders/README.md).
 
 ## Límites actuales
 

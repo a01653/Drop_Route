@@ -41,8 +41,7 @@
 
   .menu-formulario > .menu-ayuda,
   .menu-formulario > .boton-principal,
-  .menu-formulario > .menu-estudio,
-  .menu-formulario > .enlace-revision {
+  .menu-formulario > .menu-estudio {
     grid-column: 1 / -1;
   }
 
