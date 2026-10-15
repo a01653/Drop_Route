@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: read
 jobs:
   finalize:
     runs-on: ubuntu-latest
@@ -16,6 +17,29 @@ jobs:
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
+      - name: Restore reviewed manual captures
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api /repos/${{ github.repository }}/actions/artifacts/11906402133/zip > /tmp/manual-captures.zip
+          unzip -o /tmp/manual-captures.zip -d docs/manuals/capturas
+      - name: Wire final documentation generators
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('package.json')
+          s=p.read_text(encoding='utf-8')
+          old='"docs:build": "node scripts/run-python.mjs scripts/build_dts.py"'
+          new='"docs:build": "node scripts/run-python.mjs scripts/build_dts.py && node scripts/run-python.mjs scripts/build_manuals.py"'
+          if old not in s:
+              raise SystemExit('No se encontró scripts.docs:build esperado')
+          p.write_text(s.replace(old,new),encoding='utf-8',newline='\n')
+          v=Path('scripts/lib/manual-documentation-validation.mjs')
+          s=v.read_text(encoding='utf-8')
+          if "scripts/build_dts.py" not in s:
+              raise SystemExit('No se encontró el generador de manuales esperado')
+          v.write_text(s.replace('scripts/build_dts.py','scripts/build_manuals.py'),encoding='utf-8',newline='\n')
+          PY
       - name: Install document toolchain
         run: |
           sudo apt-get update
