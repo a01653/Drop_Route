@@ -10,6 +10,7 @@ import { Notices } from './Notices'
 import { NO_UPDATES } from './pwa/update'
 import type { UpdateController } from './pwa/update'
 import { ReviewScreen } from './review/ReviewScreen'
+import { StudyScreen } from './study/StudyScreen'
 import { useHashRoute } from './useHashRoute'
 
 /** Semilla de una pregunta nueva: el azar de producción vive aquí, no en la sesión. */
@@ -30,6 +31,7 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
   const dispatch = store.dispatch
 
   if (route === '#/revision') return <ReviewScreen />
+  if (route === '#/study') return <StudyScreen />
 
   const screen =
     session.phase === 'menu' ? (
