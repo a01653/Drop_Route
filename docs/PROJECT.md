@@ -4,7 +4,7 @@ Propietario: Jesús Quevedo Rodríguez. Diseño acordado el 12/10/2026; base rec
 
 ## Alcance
 
-Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y móvil. Primera etapa en C. Ventana corta del mástil con apariencia de las láminas, no un mástil de doce trastes.
+Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y móvil. Primera etapa de los juegos evaluables en C. Ventana corta del mástil con apariencia de las láminas, no un mástil de doce trastes.
 
 | ID | Comportamiento |
 | --- | --- |
@@ -28,13 +28,22 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R18 | Al recargar o reabrir se vuelve al menú con lo guardado; una pregunta abierta no se reanuda. |
 | R19 | Almacenamiento ilegible, bloqueado, lleno o de una versión posterior del esquema: se avisa, se puede seguir jugando y no se destruye lo guardado. Antes de reparar o migrar se conserva una copia del original; si la copia falla, no se sobrescribe. |
 | R20 | PWA instalable que, tras una primera carga completa, recarga y se juega sin conexión. Una versión nueva espera y solo se activa a petición explícita desde el menú; si lo que hay en la página no está guardado, el aviso lo dice antes. La actualización no borra el progreso. |
+| R21 | Modo estudio sin evaluación ni puntuación para consultar voicings por Drop, set, calidad e inversión y las rutas II-V-I completas. |
+| R22 | En estudio de rutas, mostrar II, V e I y permitir ver el movimiento por cuerda en II → V y V → I, incluida la suma de movimiento absoluto de las cuatro voces. |
+| R23 | En modo estudio, transponer las formas a las 12 tonalidades cromáticas desplazando todas sus voces la misma cantidad. Se usa el desplazamiento más corto que no produzca trastes negativos; en una ruta II-V-I se usa un desplazamiento común para conservar la conducción de voces. |
 
 ## Datos de rutas
 
-Drop 2 sets 1 y 2, mayor y menor; cuatro inversiones iniciales. No ofrecer sets sin rutas normalizadas. Las demás familias sí están disponibles para reconocimiento.
+Drop 2 sets 1 y 2, mayor y menor; cuatro inversiones iniciales. No ofrecer sets sin rutas normalizadas. Las demás familias sí están disponibles para reconocimiento y para estudio de voicings.
 
 Mayor: Dm7-G7-Cmaj7. Menor: Dm7(b5)-G7-Cm7. La respuesta pertenece a nuestra secuencia, no es la única posibilidad musical.
 
-## Etapas posteriores
+## Estado
 
-El progreso local y la PWA (R17 a R20) se implementaron en DR-006, pendiente de revisión. Sin cuentas, backend, sincronización ni notificaciones. Sin puntuación avanzada, rachas ni clasificaciones. Estudio, repaso adaptativo, sesiones de diez preguntas, Ver movimiento, audio y transposición son ampliaciones posibles, fuera del alcance actual. DR-007 cierra la documentación y los manuales.
+DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio.
+
+Los juegos evaluables permanecen en C en esta entrega. El modo estudio no modifica los contadores de progreso.
+
+## Ampliaciones posteriores
+
+Siguen fuera del alcance actual: audio, metrónomo, repaso adaptativo, sesiones cerradas de preguntas, cuentas, backend, sincronización entre dispositivos, notificaciones, puntuación avanzada, rachas y clasificaciones. También queda como posible ampliación futura llevar la transposición a los juegos evaluables.
