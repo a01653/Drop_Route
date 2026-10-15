@@ -169,6 +169,13 @@ h1 {
   font-size: 0.875rem;
 }
 
+.menu-estudio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
 .enlace-revision {
   margin: 1rem 0 0;
 }
