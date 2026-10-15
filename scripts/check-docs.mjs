@@ -19,7 +19,7 @@ for(const p of files){
   }
 }
 if(!readFileSync(resolve(ROOT,'CLAUDE.md'),'utf8').includes('@AGENTS.md'))errors.push('Falta importación de reglas comunes');
-for(let i=1;i<=7;i++)if(!existsSync(resolve(ROOT,'docs/work-orders/DR-'+String(i).padStart(3,'0')+'.md')))errors.push('Falta una orden de trabajo');
+for(let i=1;i<=8;i++)if(!existsSync(resolve(ROOT,'docs/work-orders/DR-'+String(i).padStart(3,'0')+'.md')))errors.push('Falta una orden de trabajo');
 const final=args.includes('--final');
 const dts=validateDtsDocumentation(ROOT,{final});
 const manuals=validateManualDocumentation(ROOT,{final});
