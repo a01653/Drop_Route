@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado:** DR-001 a DR-007 están integradas en `main`. La rama `feat/study-movement-transposition` desarrolla DR-008: modo estudio, visualización del movimiento de voces y transposición del material de estudio.
+**Estado:** DR-001 a DR-008 cubren la versión actual: reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación, publicación en GitHub Pages y el nuevo modo estudio con movimiento de voces y transposición.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -124,7 +124,7 @@ El primer despliegue desde `main` terminó correctamente en la ejecución `38675
 
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-La batería final de DR-008 se registrará en `docs/validation/` antes de integrar la rama en `main`.
+DR-008 quedó validada en la ejecución `38695734680`; el resultado está registrado en [docs/validation/2026-10-15-dr-008-study-movement-transposition.md](docs/validation/2026-10-15-dr-008-study-movement-transposition.md).
 
 ## Límites actuales
 
