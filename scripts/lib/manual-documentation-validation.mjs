@@ -3,11 +3,11 @@ import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 
 // Integridad de los manuales de uso e instalación y de sus capturas. Independiente de la del DTS: no ejecuta el
-// Markdown ni compila nada; solo contrasta los archivos con los registros que escribe scripts/build_dts.py
+// Markdown ni compila nada; solo contrasta los archivos con los registros que escribe scripts/build_manuals.py
 // (<manual>.build.json) y con capturas.json, que escribe `npm run docs:captures`.
 
 export const MANUAL_TEMPLATE = 'docs/latex/manual-template.tex';
-export const MANUAL_GENERATOR = 'scripts/build_dts.py';
+export const MANUAL_GENERATOR = 'scripts/build_manuals.py';
 export const MANUAL_COMMAND = 'npm run docs:build';
 export const MANUAL_ENGINES = ['lualatex', 'xelatex'];
 export const MANUALS = [

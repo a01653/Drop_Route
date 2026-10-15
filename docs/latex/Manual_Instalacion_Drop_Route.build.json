@@ -1,0 +1,39 @@
+{
+  "document": "instalacion",
+  "title": "Manual de instalación",
+  "source": "docs/manuals/INSTALACION.md",
+  "command": "npm run docs:build",
+  "engine": "lualatex",
+  "files": [
+    {
+      "path": "docs/manuals/INSTALACION.md",
+      "sha256": "55db8afab0e4354d9e1560681a838fda7173e6ddb87057d4cdb6ff73ab5e29b0",
+      "role": "source"
+    },
+    {
+      "path": "docs/latex/manual-template.tex",
+      "sha256": "f680bfd3916ed8eda5615c4079906fb3ac2dd57259f3b3d2777b9a3f34bd5753",
+      "role": "template"
+    },
+    {
+      "path": "scripts/build_manuals.py",
+      "sha256": "f208ab8909c60efda2791b53347e1e42a33a667e5925dea0fccd75f881f3c152",
+      "role": "generator"
+    },
+    {
+      "path": "docs/manuals/capturas/escritorio-menu-1280.png",
+      "sha256": "702f2ec0ce01bc77d02783047b5d40f14693b5da0d2c5fd4f43710a4a0414fcb",
+      "role": "capture"
+    },
+    {
+      "path": "docs/latex/Manual_Instalacion_Drop_Route.tex",
+      "sha256": "fb9edb25f590caa0077430201715aa4e385687a388898321ce269e01a3626395",
+      "role": "latex"
+    },
+    {
+      "path": "docs/latex/Manual_Instalacion_Drop_Route.pdf",
+      "sha256": "565b8bca38c7c90a83b673306bd1e61d6e8a52ecc3413743603a8d997f72cb54",
+      "role": "pdf"
+    }
+  ]
+}

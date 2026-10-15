@@ -21,7 +21,7 @@
     "icon:export": "node scripts/export-icon.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "docs:check:final": "node scripts/check-docs.mjs --final",
-    "docs:build": "node scripts/run-python.mjs scripts/build_dts.py",
+    "docs:build": "node scripts/run-python.mjs scripts/build_dts.py && node scripts/run-python.mjs scripts/build_manuals.py",
     "docs:captures": "playwright test -c playwright.captures.config.ts",
     "validate": "npm run data:check && npm run audit:music && npm test && npm run docs:check"
   },

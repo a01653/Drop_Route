@@ -1,0 +1,94 @@
+{
+  "document": "uso",
+  "title": "Manual de uso",
+  "source": "docs/manuals/USO.md",
+  "command": "npm run docs:build",
+  "engine": "lualatex",
+  "files": [
+    {
+      "path": "docs/manuals/USO.md",
+      "sha256": "f25a0c03be4da62ada35b0ab25a2b95207b6a9496967331c9404a0c3db1f3dd1",
+      "role": "source"
+    },
+    {
+      "path": "docs/latex/manual-template.tex",
+      "sha256": "f680bfd3916ed8eda5615c4079906fb3ac2dd57259f3b3d2777b9a3f34bd5753",
+      "role": "template"
+    },
+    {
+      "path": "scripts/build_manuals.py",
+      "sha256": "f208ab8909c60efda2791b53347e1e42a33a667e5925dea0fccd75f881f3c152",
+      "role": "generator"
+    },
+    {
+      "path": "docs/manuals/capturas/menu-reconocimiento-360.png",
+      "sha256": "b7773048ecc3a81cb17a83309e2ce0bc7248aab216e90ca013407de559623f60",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/menu-rutas-360.png",
+      "sha256": "91417752a6d95a8086a57d72c3b7cf6d196c7c54a0eb6635e4f38591e038226e",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/facil-pregunta-360.png",
+      "sha256": "57a83ce15a09750847c965856bfbb7ed0109313ea5b43f2c6409888eae688d78",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/facil-correccion-360.png",
+      "sha256": "81cc0a016b9754299389728ed3bbfb567e293343b3417fbdaa2171ff829f38ea",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/medio-pregunta-360.png",
+      "sha256": "10e036405e3b7bd2e1e25793f8cbf781105df05c42d06f6b156ca5a4aea83086",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/medio-correccion-360.png",
+      "sha256": "6324036f30ac7e5085e1c477e137fa4b4c9292ec4f7f0b7dd47564df6935dd92",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/dificil-pregunta-360.png",
+      "sha256": "6d4ed06bcd0435423b272335c19ea21163e84112f7677b2224fd348a4601e7ba",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/dificil-correccion-360.png",
+      "sha256": "52d3a5c0e246a01fa20eff2b64d18c8842e90c40ecae3676db67e2bb720fac28",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/ruta-pregunta-360.png",
+      "sha256": "2b44233d8a868d7414eea9472324263adf57ebb555301682db626973f07fe4f6",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/ruta-fallo-solucion-360.png",
+      "sha256": "c05be5897c7707d140f8ac2bdfecef71afaab67976b37bd430a6a21367ecca92",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/ruta-fallo-tu-respuesta-360.png",
+      "sha256": "15db7fdeb9b36d12f7f4d312a5182b28fafcf7feba63c64d44b9a86fd3133551",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/progreso-detalle-360.png",
+      "sha256": "e5af16ef0881a6ec41c4c7022cad98fc0876a9a0c927ec1b3c1b63e9638252fd",
+      "role": "capture"
+    },
+    {
+      "path": "docs/latex/Manual_Uso_Drop_Route.tex",
+      "sha256": "d9d1ab7dc9022adf0c5a697da72fdffd70908a60c1c56b11a1bcf46a8a6dbef6",
+      "role": "latex"
+    },
+    {
+      "path": "docs/latex/Manual_Uso_Drop_Route.pdf",
+      "sha256": "8b7bcbf9a9a04c46e1aac3b5484925dc4abce3b12d0a74b14f94461fc5f08ccf",
+      "role": "pdf"
+    }
+  ]
+}
