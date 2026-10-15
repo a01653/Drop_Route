@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import { catalog, routesDocument } from '../../data'
-import type { DropFamily, Inversion, QualityKey, SetId } from '../../data'
+import type { ChordShape, DropFamily, Inversion, QualityKey, SetId } from '../../data'
 import { DROP_LABELS } from '../../session'
 import {
   TONALITIES,
   movementText,
   totalVoiceMovement,
+  transposeRoute,
   transposeShapes,
   voiceMovement,
 } from '../../study/transposition'
@@ -42,7 +43,7 @@ function ShiftNote({ shift }: { shift: number }) {
   )
 }
 
-function MovementPanel({ from, to, label }: { from: ReturnType<typeof transposeShapes>['shapes'][number]; to: ReturnType<typeof transposeShapes>['shapes'][number]; label: string }) {
+function MovementPanel({ from, to, label }: { from: ChordShape; to: ChordShape; label: string }) {
   const voices = voiceMovement(from, to)
   return (
     <section className="study-movement" aria-label={`Movimiento ${label}`}>
@@ -86,7 +87,7 @@ export function StudyScreen() {
     [routeSetId, routeMode],
   )
   const route = matchingRoutes[Math.min(routeIndex, Math.max(0, matchingRoutes.length - 1))]
-  const transposedRoute = useMemo(() => (route ? transposeShapes(route.steps, tonicPc) : null), [route, tonicPc])
+  const transposedRoute = useMemo(() => (route ? transposeRoute(route.steps, tonicPc) : null), [route, tonicPc])
   const selectedSet = catalog.sets.find((set) => set.id === setId)
   const selectedRouteSet = catalog.sets.find((set) => set.id === routeSetId)
 
