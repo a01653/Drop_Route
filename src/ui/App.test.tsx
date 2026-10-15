@@ -8,9 +8,10 @@ import { MenuScreen } from './game/MenuScreen'
 describe('menú de arranque', () => {
   const html = renderToStaticMarkup(<App />)
 
-  it('muestra el nombre y el estado de desarrollo', () => {
+  it('muestra el nombre y el estado de la versión actual', () => {
     expect(html).toContain('<h1>Drop Route</h1>')
-    expect(html).toContain('En desarrollo.')
+    expect(html).toContain('Versión actual')
+    expect(html).toContain('estudiar las formas sin examen')
   })
 
   it('resume los datos cargados desde la capa de datos', () => {
@@ -19,7 +20,8 @@ describe('menú de arranque', () => {
     expect(html).toContain('<dt>Rutas II-V-I</dt><dd>16</dd>')
   })
 
-  it('enlaza con la pantalla de revisión de tarjetas e icono', () => {
+  it('enlaza con estudio y con la pantalla de revisión de tarjetas e icono', () => {
+    expect(html).toContain('<a class="boton-secundario menu-estudio" href="#/study">Modo estudio</a>')
     expect(html).toContain('<a href="#/revision">Revisar tarjetas e icono</a>')
   })
 
