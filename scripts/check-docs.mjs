@@ -2,6 +2,7 @@ import {readFileSync,readdirSync,existsSync} from 'node:fs';
 import {resolve,dirname,relative} from 'node:path';
 import {ROOT} from './lib/music-validation.mjs';
 import {validateDtsDocumentation} from './lib/documentation-validation.mjs';
+import {validateManualDocumentation} from './lib/manual-documentation-validation.mjs';
 const args=process.argv.slice(2);
 if(args.some(arg=>arg!=='--final')){
   console.error('Uso: node scripts/check-docs.mjs [--final]');
@@ -19,10 +20,15 @@ for(const p of files){
 }
 if(!readFileSync(resolve(ROOT,'CLAUDE.md'),'utf8').includes('@AGENTS.md'))errors.push('Falta importación de reglas comunes');
 for(let i=1;i<=7;i++)if(!existsSync(resolve(ROOT,'docs/work-orders/DR-'+String(i).padStart(3,'0')+'.md')))errors.push('Falta una orden de trabajo');
-const dts=validateDtsDocumentation(ROOT,{final:args.includes('--final')});
-errors.push(...dts.errors);
+const final=args.includes('--final');
+const dts=validateDtsDocumentation(ROOT,{final});
+const manuals=validateManualDocumentation(ROOT,{final});
+for(const e of [...dts.errors,...manuals.errors])if(!errors.includes(e))errors.push(e);
 if(errors.length){for(const e of errors)console.error('FAIL '+e);process.exitCode=1;}
 else {
   if(dts.pending.length)console.log('PENDIENTE DR-007: regenerar DTS por cambios en '+dts.pending.join(', ')+'.');
-  console.log('OK: '+files.length+' documentos, enlaces, órdenes e integridad de los derivados existentes'+(dts.pending.length?' (regeneración aplazada).':'; DTS sincronizado.'));
+  if(manuals.pending.length)console.log('PENDIENTE DR-007: regenerar manuales por cambios en '+manuals.pending.join(', ')+'.');
+  if(manuals.notGenerated.length)console.log('PENDIENTE DR-007: manuales aún sin generar: '+manuals.notGenerated.join(', ')+'.');
+  const deferred=dts.pending.length||manuals.pending.length||manuals.notGenerated.length;
+  console.log('OK: '+files.length+' documentos, enlaces, órdenes e integridad de los derivados existentes'+(deferred?' (regeneración aplazada).':'; DTS y manuales sincronizados.'));
 }
