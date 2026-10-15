@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado:** DR-001 a DR-007 están integradas en `main`. La aplicación incluye reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación generada y publicación automática en GitHub Pages.
+**Estado:** DR-001 a DR-007 están integradas en `main`. La rama `feat/study-movement-transposition` desarrolla DR-008: modo estudio, visualización del movimiento de voces y transposición del material de estudio.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -14,9 +14,10 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
 - Aplicación React, TypeScript y Vite en `src/`, separada en datos, música, sesión, progreso e interfaz.
 - Reconocimiento de voicings en fácil, medio y difícil, y rutas II-V-I de Drop 2.
+- Modo estudio sin examen para consultar voicings y rutas, transponerlos a las 12 tonalidades y ver la conducción de voces.
 - Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
 - Pruebas con node:test, Vitest y Playwright.
-- [DTS principal](docs/DTS.md), [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX sincronizados.
+- [DTS principal](docs/DTS.md), [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX sincronizados con la primera versión cerrada.
 - [Manual de uso](docs/manuals/USO.md) y [manual de instalación](docs/manuals/INSTALACION.md), con sus PDF en `docs/latex/`.
 - [Plan de pruebas](docs/TEST_PLAN.md), [órdenes de trabajo](docs/work-orders/README.md) y [registros de validación](docs/validation/).
 
@@ -74,11 +75,23 @@ En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acord
 
 En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas.
 
-La pantalla `#/revision` permite revisar las 112 tarjetas y el icono sin entrar en una partida.
+Los juegos evaluables continúan en C en DR-008; sus reglas y contadores no cambian.
+
+## Modo estudio
+
+Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni puntuación.
+
+**Voicings:** eliges Drop, set, calidad e inversión y ves la solución completa. El selector de tonalidad transpone la forma a cualquiera de las 12 tónicas cromáticas sin modificar los datos fuente.
+
+**Rutas II-V-I:** eliges set, mayor o menor y una de las cuatro rutas. Se muestran II, V e I juntos y `Ver movimiento` detalla cuánto se desplaza cada voz en cada cuerda entre II → V y V → I. La suma de movimiento absoluto ayuda a comparar visualmente la conducción.
+
+La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar exactamente los movimientos de voces de la fuente.
+
+La pantalla `#/revision` sigue permitiendo revisar las 112 tarjetas y el icono sin entrar en una partida.
 
 ## Progreso y PWA
 
-Cada pregunta verificada suma un intento. En reconocimiento se cuenta por set y dificultad; en rutas, por set, modo y tramo. Solo hay acierto cuando la respuesta completa coincide con la solución del ejercicio.
+Cada pregunta verificada suma un intento. En reconocimiento se cuenta por set y dificultad; en rutas, por set, modo y tramo. Solo hay acierto cuando la respuesta completa coincide con la solución del ejercicio. El modo estudio no suma intentos ni aciertos.
 
 La configuración y los contadores se guardan en `localStorage` en el navegador y dispositivo actuales. No hay cuentas ni sincronización. Si el almacenamiento falla, la aplicación lo avisa y permite continuar en memoria.
 
@@ -111,10 +124,10 @@ El primer despliegue desde `main` terminó correctamente en la ejecución `38675
 
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-La batería final sobre `main` terminó correctamente en la ejecución `38675602319`: documentación estricta, typecheck, lint, unitarias, build, E2E y capturas sin fallos.
+La batería final de DR-008 se registrará en `docs/validation/` antes de integrar la rama en `main`.
 
 ## Límites actuales
 
-No hay audio, transposición, cuentas, backend, sincronización entre dispositivos ni notificaciones. Las rutas se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
+No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. La transposición de DR-008 se limita al modo estudio; los juegos evaluables permanecen en C. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
 
 `FILES_SHA256.json` y `RECOVERY_STATUS.json` son instantáneas históricas de la reconstrucción inicial y no describen el estado actual del repositorio.
