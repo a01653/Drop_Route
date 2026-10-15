@@ -1,0 +1,148 @@
+.study {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 72rem;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+}
+
+.study-header,
+.study-route-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.study-header h1 {
+  font-size: clamp(2rem, 8vw, 3.25rem);
+}
+
+.study-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.study h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.study h3 {
+  margin: 0;
+}
+
+.study-control label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 14rem;
+  font-weight: 700;
+}
+
+.study-control select {
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--tinta-suave);
+  border-radius: 0.625rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+}
+
+.study-card,
+.study-route,
+.study-movement {
+  padding: 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--tarjeta);
+}
+
+.study-card {
+  max-width: 34rem;
+}
+
+.study-note {
+  margin: 0.5rem 0 0;
+  color: var(--tinta-suave);
+  font-size: 0.9375rem;
+}
+
+.study-route {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.study-route-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.study-route-step {
+  position: relative;
+  min-width: 0;
+}
+
+.study-route-step > h3 {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 1.125rem;
+}
+
+.study-arrow {
+  position: absolute;
+  top: 50%;
+  right: -1.1rem;
+  z-index: 2;
+  font-size: 1.75rem;
+  font-weight: 800;
+  transform: translateY(-50%);
+}
+
+.study-movements {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.study-movement h3 {
+  margin-bottom: 0.25rem;
+}
+
+.study-movement ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+@media (max-width: 760px) {
+  .study-header,
+  .study-route-heading {
+    flex-direction: column;
+  }
+
+  .study-route-grid,
+  .study-movements {
+    grid-template-columns: 1fr;
+  }
+
+  .study-arrow {
+    position: static;
+    display: block;
+    margin: 0.5rem 0 -0.5rem;
+    text-align: center;
+    transform: rotate(90deg);
+  }
+}
