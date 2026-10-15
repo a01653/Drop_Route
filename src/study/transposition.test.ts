@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import type { NamedShape } from './transposition'
-import { chordName, commonFretShift, movementText, transposeShape, transposeShapes, voiceMovement } from './transposition'
+import {
+  chordName,
+  commonFretShift,
+  movementText,
+  routeChordName,
+  transposeShape,
+  transposeShapes,
+  voiceMovement,
+} from './transposition'
 
 const shape = (frets: number[], rootPc = 0, quality: NamedShape['quality'] = 'maj7'): NamedShape => ({
   setId: 'D2S1',
@@ -9,7 +17,11 @@ const shape = (frets: number[], rootPc = 0, quality: NamedShape['quality'] = 'ma
   inversion: 0,
   root: 'C',
   name: chordName(rootPc, quality),
-  notes: frets.map((fret, index) => ({ string: (4 - index) as 4 | 3 | 2 | 1, fret, degree: ['1', '5', '7', '3'][index] as '1' | '5' | '7' | '3' })),
+  notes: frets.map((fret, index) => ({
+    string: (4 - index) as 4 | 3 | 2 | 1,
+    fret,
+    degree: ['1', '5', '7', '3'][index] as '1' | '5' | '7' | '3',
+  })),
 })
 
 describe('transposición para estudio', () => {
@@ -32,6 +44,12 @@ describe('transposición para estudio', () => {
     expect(transposed.notes.map((note) => note.fret)).toEqual([5, 7, 6, 7])
     expect(transposed.notes.map((note) => note.degree)).toEqual(source.notes.map((note) => note.degree))
     expect(transposed.inversion).toBe(source.inversion)
+  })
+
+  it('usa grafía funcional correcta en tonalidades con sostenidos', () => {
+    expect(routeChordName(11, 'ii', 'm7')).toBe('C♯m7')
+    expect(routeChordName(11, 'V', '7')).toBe('F♯7')
+    expect(routeChordName(4, 'ii', 'm7b5')).toBe('F♯m7(♭5)')
   })
 
   it('usa un desplazamiento común para una ruta completa y conserva la conducción de voces', () => {
