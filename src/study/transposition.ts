@@ -1,4 +1,4 @@
-import type { ChordShape, QualityKey, StringNumber } from '../data'
+import type { ChordShape, QualityKey, RouteFunction, RouteStep, StringNumber } from '../data'
 
 export interface TonalityOption {
   pc: number
@@ -28,6 +28,22 @@ const QUALITY_SUFFIX: Record<QualityKey, string> = {
   dim7: 'dim7',
 }
 
+/** Escritura funcional de I, ii y V para cada tonalidad elegida. */
+const ROUTE_ROOTS: Readonly<Record<number, Readonly<Record<RouteFunction, string>>>> = {
+  0: { I: 'C', ii: 'D', V: 'G' },
+  1: { I: 'D♭', ii: 'E♭', V: 'A♭' },
+  2: { I: 'D', ii: 'E', V: 'A' },
+  3: { I: 'E♭', ii: 'F', V: 'B♭' },
+  4: { I: 'E', ii: 'F♯', V: 'B' },
+  5: { I: 'F', ii: 'G', V: 'C' },
+  6: { I: 'G♭', ii: 'A♭', V: 'D♭' },
+  7: { I: 'G', ii: 'A', V: 'D' },
+  8: { I: 'A♭', ii: 'B♭', V: 'E♭' },
+  9: { I: 'A', ii: 'B', V: 'E' },
+  10: { I: 'B♭', ii: 'C', V: 'F' },
+  11: { I: 'B', ii: 'C♯', V: 'F♯' },
+}
+
 const mod12 = (value: number) => ((value % 12) + 12) % 12
 
 export function noteName(pc: number): string {
@@ -38,11 +54,20 @@ export function chordName(rootPc: number, quality: QualityKey): string {
   return `${noteName(rootPc)}${QUALITY_SUFFIX[quality]}`
 }
 
+export function routeRootName(tonicPc: number, functionName: RouteFunction): string {
+  return ROUTE_ROOTS[mod12(tonicPc)]?.[functionName] ?? noteName(tonicPc)
+}
+
+export function routeChordName(tonicPc: number, functionName: RouteFunction, quality: QualityKey): string {
+  return `${routeRootName(tonicPc, functionName)}${QUALITY_SUFFIX[quality]}`
+}
+
 /**
  * Desplazamiento físico desde C a la tonalidad elegida. Se prefiere el movimiento cromático más corto
  * (-6..+5 semitonos); si alguna nota caería por debajo del traste 0, se usa la misma tonalidad una octava arriba.
  */
 export function commonFretShift(shapes: readonly ChordShape[], tonicPc: number): number {
+  if (shapes.length === 0) return 0
   let shift = ((mod12(tonicPc) + 6) % 12) - 6
   const minFret = Math.min(...shapes.flatMap((shape) => shape.notes.map((note) => note.fret)))
   if (minFret + shift < 0) shift += 12
@@ -66,6 +91,19 @@ export function transposeShape<T extends NamedShape>(shape: T, shift: number): T
 export function transposeShapes<T extends NamedShape>(shapes: readonly T[], tonicPc: number): { shift: number; shapes: T[] } {
   const shift = commonFretShift(shapes, tonicPc)
   return { shift, shapes: shapes.map((shape) => transposeShape(shape, shift)) }
+}
+
+/** Transpone una ruta y corrige la grafía de I, ii y V según la tonalidad elegida. */
+export function transposeRoute(steps: readonly RouteStep[], tonicPc: number): { shift: number; shapes: RouteStep[] } {
+  const transposed = transposeShapes(steps, tonicPc)
+  return {
+    shift: transposed.shift,
+    shapes: transposed.shapes.map((step) => ({
+      ...step,
+      root: routeRootName(tonicPc, step.function),
+      name: routeChordName(tonicPc, step.function, step.quality),
+    })),
+  }
 }
 
 export interface VoiceMovement {
