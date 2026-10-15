@@ -102,16 +102,19 @@ export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS
         <button className="boton-principal" type="submit">
           Empezar
         </button>
+        <a className="boton-secundario menu-estudio" href="#/study">
+          Modo estudio
+        </a>
       </form>
 
       <ProgressPanel progress={progress} config={config} />
 
       <section className="estado" aria-labelledby="estado-titulo">
-        <h2 id="estado-titulo">Estado de desarrollo</h2>
+        <h2 id="estado-titulo">Versión actual</h2>
         <p>
-          <strong>En desarrollo.</strong> Ya puedes reconocer voicings en fácil, medio y difícil y continuar rutas
-          II-V-I en Drop 2. Tu progreso se guarda en este dispositivo y, tras la primera carga completa, la
-          aplicación funciona sin conexión y puedes instalarla desde tu navegador si lo permite.
+          Puedes reconocer voicings en fácil, medio y difícil, continuar rutas II-V-I en Drop 2 y estudiar las formas
+          sin examen. Tu progreso se guarda en este dispositivo y, tras la primera carga completa, la aplicación funciona
+          sin conexión y puedes instalarla desde tu navegador si lo permite.
         </p>
         <p>Datos cargados desde la plantilla original:</p>
         <dl>
