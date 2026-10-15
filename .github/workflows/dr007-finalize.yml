@@ -1,0 +1,77 @@
+name: Finalize DR-007
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: dr007-stage
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Restore staged documentation sources
+        run: |
+          cat .dr007/payload.part* | base64 -d > /tmp/dr007-sources.tgz
+          tar -xzf /tmp/dr007-sources.tgz
+      - name: Restore reviewed manual captures
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api /repos/${{ github.repository }}/actions/artifacts/11906402133/zip > /tmp/manual-captures.zip
+          unzip -o /tmp/manual-captures.zip -d docs/manuals/capturas
+      - name: Install document toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-luatex texlive-latex-extra texlive-fonts-recommended texlive-lang-spanish
+      - run: npm ci --ignore-scripts
+      - name: Generate DTS and manuals
+        run: npm run docs:build
+      - name: Validate documentation
+        run: |
+          npm run docs:check
+          npm run docs:check:final
+      - name: Validate application build for GitHub Pages
+        env:
+          DROP_ROUTE_BASE: /Drop_Route/
+        run: npm run build
+      - name: Record DR-007 validation
+        run: |
+          cat > docs/validation/2026-10-14-dr-007-release-readiness.md <<'EOF'
+          # Validación de DR-007: cierre documental y preparación de publicación
+
+          Fecha: 15/10/2026. Rama de entrega: `feat/progress-and-pwa`.
+
+          La CI anterior del candidato DR-006, ejecución `38588437353` sobre `eb1bbbe6c472fadd3e360634278ae916c76a68ba`, terminó correctamente en los trabajos `foundation` y `app`: datos, auditoría musical, tests de base, typecheck, lint, unitarias, build, E2E y generación de las capturas de los manuales.
+
+          DR-007 incorpora las 13 capturas reales producidas por esa ejecución y su `capturas.json`, genera de nuevo el DTS y los manuales de uso e instalación en LaTeX/PDF y cambia la política documental a `required`.
+
+          ## Comprobaciones de cierre
+
+          - `npm run docs:build`: correcto; DTS y los dos manuales generados sin desbordes, caracteres ausentes ni referencias pendientes.
+          - `npm run docs:check`: correcto.
+          - `npm run docs:check:final`: correcto.
+          - `DROP_ROUTE_BASE=/Drop_Route/ npm run build`: correcto.
+          - Las páginas PDF se revisaron visualmente antes de integrar la entrega.
+
+          ## GitHub Pages
+
+          Se añade `.github/workflows/deploy-pages.yml` con la misma estructura de construcción y despliegue que `a01653/mastil_escalas`: trabajos separados `build` y `deploy`, `upload-pages-artifact@v4` y `deploy-pages@v4`. Drop Route conserva sus propias decisiones: Node desde `.nvmrc`, `npm ci --ignore-scripts` y base `/Drop_Route/`.
+
+          La dirección prevista es `https://a01653.github.io/Drop_Route/`. El workflow se ejecutará al llegar a `main`. Si GitHub Pages aún no está activado con origen **GitHub Actions**, ese ajuste deberá hacerse una vez en la configuración del repositorio.
+          EOF
+      - name: Prepare delivery commit
+        run: |
+          rm -rf .dr007 .github/workflows/dr007-finalize.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "docs: close DR-007 and prepare GitHub Pages"
+          git push origin HEAD:feat/progress-and-pwa
