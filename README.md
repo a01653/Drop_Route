@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado:** DR-001 a DR-008 cubren la versión actual: reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación, publicación en GitHub Pages y el nuevo modo estudio con movimiento de voces y transposición.
+**Estado:** DR-001 a DR-009 cubren la versión actual: reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación, publicación en GitHub Pages, modo estudio con movimiento/transposición, la variante C6 de la fuente y una distribución específica para escritorio.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -15,6 +15,8 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - Aplicación React, TypeScript y Vite en `src/`, separada en datos, música, sesión, progreso e interfaz.
 - Reconocimiento de voicings en fácil, medio y difícil, y rutas II-V-I de Drop 2.
 - Modo estudio sin examen para consultar voicings y rutas, transponerlos a las 12 tonalidades y ver la conducción de voces.
+- Variante C6 de la fuente reproducida en modo estudio sobre copias derivadas, sin convertirla en calidad evaluable.
+- Diseño responsive: flujo compacto en móvil y distribución horizontal en escritorio para menú, juego, rutas y estudio.
 - Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
 - Pruebas con node:test, Vitest y Playwright.
 - [DTS principal](docs/DTS.md), [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX sincronizados con la primera versión cerrada.
@@ -75,19 +77,23 @@ En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acord
 
 En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas.
 
-Los juegos evaluables continúan en C en DR-008; sus reglas y contadores no cambian.
+Los juegos evaluables continúan en C en DR-009; sus reglas, datos y contadores no cambian.
 
 ## Modo estudio
 
 Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni puntuación.
 
-**Voicings:** eliges Drop, set, calidad e inversión y ves la solución completa. El selector de tonalidad transpone la forma a cualquiera de las 12 tónicas cromáticas sin modificar los datos fuente.
+**Voicings:** eliges Drop, set, calidad e inversión y ves la solución completa. El selector de tonalidad transpone la forma a cualquiera de las 12 tónicas cromáticas sin modificar los datos fuente. Cuando la plantilla original muestra la variante de sexta de un Cmaj7, el estudio reproduce `Cmaj7 – C6`: la 7ª mayor baja dos trastes y pasa a 6. La misma lectura se transpone (`Dmaj7 – D6`, etc.).
 
-**Rutas II-V-I:** eliges set, mayor o menor y una de las cuatro rutas. Se muestran II, V e I juntos y `Ver movimiento` detalla cuánto se desplaza cada voz en cada cuerda entre II → V y V → I. La suma de movimiento absoluto ayuda a comparar visualmente la conducción.
+**Rutas II-V-I:** eliges set, mayor o menor y una de las cuatro rutas. Se muestran II, V e I juntos y `Ver movimiento` detalla cuánto se desplaza cada voz en cada cuerda entre II → V y V → I. Las rutas que citan C6 en la fuente muestran también esa variante, por lo que el movimiento se calcula sobre la forma que realmente se ve.
 
-La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar exactamente los movimientos de voces de la fuente.
+La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
 
 La pantalla `#/revision` sigue permitiendo revisar las 112 tarjetas y el icono sin entrar en una partida.
+
+## Diseño responsive
+
+En móvil se mantiene el flujo vertical y los controles táctiles existentes. En escritorio, a partir de 960 px, la aplicación aprovecha el ancho disponible: el menú separa configuración y progreso, el reconocimiento coloca tarjeta y respuesta en paralelo, las rutas distribuyen partida y candidato/resultado en columnas y el modo estudio deja los controles a un lado del contenido. El mástil conserva su ventana corta; no se estira para llenar el monitor.
 
 ## Progreso y PWA
 
@@ -124,10 +130,10 @@ El primer despliegue desde `main` terminó correctamente en la ejecución `38675
 
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-DR-008 quedó validada en la ejecución `38695734680`; el resultado está registrado en [docs/validation/2026-10-15-dr-008-study-movement-transposition.md](docs/validation/2026-10-15-dr-008-study-movement-transposition.md).
+DR-009 quedó validada en la ejecución `38707724976`: typecheck, lint, 293 pruebas unitarias, build, E2E, capturas y validaciones documentales terminaron correctamente. El resultado está registrado en [docs/validation/2026-10-15-dr-009-c6-desktop-layout.md](docs/validation/2026-10-15-dr-009-c6-desktop-layout.md).
 
 ## Límites actuales
 
-No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. La transposición de DR-008 se limita al modo estudio; los juegos evaluables permanecen en C. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
+No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. La transposición se limita al modo estudio; los juegos evaluables permanecen en C. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
 
 `FILES_SHA256.json` y `RECOVERY_STATUS.json` son instantáneas históricas de la reconstrucción inicial y no describen el estado actual del repositorio.

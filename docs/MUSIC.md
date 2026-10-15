@@ -46,4 +46,8 @@ La fuente HTML es autoridad de las posiciones normalizadas. Los PDF son guías d
 
 Preguntas de reconocimiento (DR-003 y DR-004): se eligen entre las 16 formas evaluables del set y la inversión esperada sale del bajo físico. El banco de grados de la dificultad difícil es fijo: 1, 3, b3, 5, b5, 7 y b7. Se comparan tal cual con el grado de cada nota: b3 no equivale a 3, ni b5 a 5, ni b7 a 7.
 
-C6 se conserva en sourceOptionalSubstitution cuando aparece en la fuente. No se transforma automáticamente en una calidad evaluable.
+## Variante C6 de la fuente
+
+C6 no es una quinta calidad evaluable. `data/catalog.json` mantiene Cmaj7 y `data/routes.json` conserva `sourceOptionalSubstitution: "C6"` cuando la propia fuente cita esa alternativa.
+
+En modo estudio se reproduce esa lectura sobre una copia derivada: la voz con grado 7 baja dos trastes, pasa a grado 6 y el nombre se muestra como `Cmaj7 – C6`. Al transponer se aplica la misma operación (`Dmaj7 – D6`, etc.) sin reescribir los JSON ni cambiar los juegos evaluables. La regla de la plantilla original se aplica a los Cmaj7 de 3ª inversión y, en Drop 2+4, también a los de 1ª inversión. En las rutas se respeta exclusivamente donde `sourceOptionalSubstitution` lo indica.

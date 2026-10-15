@@ -12,8 +12,9 @@ Cada tarea se pide por separado. Las reglas permanentes están en CLAUDE.md y AG
 | [DR-006](DR-006.md) | Progreso local y PWA. |
 | [DR-007](DR-007.md) | Cierre, documentación y DTS. |
 | [DR-008](DR-008.md) | Modo estudio, movimiento de voces y transposición. |
+| [DR-009](DR-009.md) | Variante C6 de la fuente y distribución responsive de escritorio. |
 
-Pedir: «Lee CLAUDE.md y docs/work-orders/DR-008.md. Ejecuta solo DR-008 y entrega para revisión». No avanzar automáticamente a la siguiente tarea. Registrar nuevas decisiones en docs/DECISIONS.md.
+Pedir: «Lee CLAUDE.md y docs/work-orders/DR-009.md. Ejecuta solo DR-009 y entrega para revisión». No avanzar automáticamente a la siguiente tarea. Registrar nuevas decisiones en la documentación del cambio.
 
 ## Bloques históricos
 

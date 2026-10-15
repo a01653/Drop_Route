@@ -31,6 +31,8 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R21 | Modo estudio sin evaluación ni puntuación para consultar voicings por Drop, set, calidad e inversión y las rutas II-V-I completas. |
 | R22 | En estudio de rutas, mostrar II, V e I y permitir ver el movimiento por cuerda en II → V y V → I, incluida la suma de movimiento absoluto de las cuatro voces. |
 | R23 | En modo estudio, transponer las formas a las 12 tonalidades cromáticas desplazando todas sus voces la misma cantidad. Se usa el desplazamiento más corto que no produzca trastes negativos; en una ruta II-V-I se usa un desplazamiento común para conservar la conducción de voces. |
+| R24 | En modo estudio, reproducir la variante de sexta que muestra la fuente para Cmaj7: la 7ª mayor baja dos trastes y pasa a grado 6, se rotula Cmaj7 – C6 y se transpone de la misma forma a las demás tonalidades. Sigue sin ser una calidad evaluable y los JSON fuente no se modifican. |
+| R25 | La interfaz debe ser responsive de verdad: en móvil mantiene el flujo vertical y sin desplazamiento horizontal; a partir de escritorio aprovecha el ancho con configuración y contenido en columnas, sin estirar el mástil corto hasta convertirlo en un mástil completo. |
 
 ## Datos de rutas
 
@@ -40,7 +42,7 @@ Mayor: Dm7-G7-Cmaj7. Menor: Dm7(b5)-G7-Cm7. La respuesta pertenece a nuestra sec
 
 ## Estado
 
-DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio.
+DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio. DR-009 corrige la fidelidad de la variante C6 de la fuente y añade una distribución específica para escritorio sin cambiar el flujo móvil.
 
 Los juegos evaluables permanecen en C en esta entrega. El modo estudio no modifica los contadores de progreso.
 
