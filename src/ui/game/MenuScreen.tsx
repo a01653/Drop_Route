@@ -1,12 +1,10 @@
-import { catalog, routesDocument, summarizeData } from '../../data'
+import { catalog } from '../../data'
 import { EMPTY_PROGRESS } from '../../progress'
 import type { ProgressData } from '../../progress'
 import { DIFFICULTIES, DROP_LABELS, GAMES, ROUTE_MODES, ROUTE_STRETCHES, dropFamilies, setsOfDrop } from '../../session'
 import type { Difficulty, MenuState, SessionAction } from '../../session'
 import { OptionGroup } from './OptionGroup'
 import { ProgressPanel } from './ProgressPanel'
-
-const summary = summarizeData(catalog, routesDocument)
 
 const DIFFICULTY_HELP: Record<Difficulty, string> = {
   easy: 'Eliges el acorde entre cuatro botones.',
@@ -105,36 +103,12 @@ export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS
         <a className="boton-secundario menu-estudio" href="#/study">
           Modo estudio
         </a>
-      </form>
-
-      <ProgressPanel progress={progress} config={config} />
-
-      <section className="estado" aria-labelledby="estado-titulo">
-        <h2 id="estado-titulo">Versión actual</h2>
-        <p>
-          Puedes reconocer voicings en fácil, medio y difícil, continuar rutas II-V-I en Drop 2 y estudiar las formas
-          sin examen. Tu progreso se guarda en este dispositivo y, tras la primera carga completa, la aplicación funciona
-          sin conexión y puedes instalarla desde tu navegador si lo permite.
-        </p>
-        <p>Datos cargados desde la plantilla original:</p>
-        <dl>
-          <div>
-            <dt>Posiciones de juego</dt>
-            <dd>{summary.playableVoicings}</dd>
-          </div>
-          <div>
-            <dt>Posiciones de referencia</dt>
-            <dd>{summary.referenceVoicings}</dd>
-          </div>
-          <div>
-            <dt>Rutas II-V-I</dt>
-            <dd>{summary.routes}</dd>
-          </div>
-        </dl>
         <p className="enlace-revision">
           <a href="#/revision">Revisar tarjetas e icono</a>
         </p>
-      </section>
+      </form>
+
+      <ProgressPanel progress={progress} config={config} />
     </main>
   )
 }

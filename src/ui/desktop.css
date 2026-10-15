@@ -13,10 +13,10 @@
     grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
     grid-template-areas:
       'header header'
-      'form progress'
-      'form status';
+      'form progress';
     gap: 1.5rem 2rem;
     align-items: start;
+    align-content: start;
     justify-content: stretch;
     max-width: 82rem;
     min-height: 100dvh;
@@ -41,16 +41,13 @@
 
   .menu-formulario > .menu-ayuda,
   .menu-formulario > .boton-principal,
-  .menu-formulario > .menu-estudio {
+  .menu-formulario > .menu-estudio,
+  .menu-formulario > .enlace-revision {
     grid-column: 1 / -1;
   }
 
   .menu > .progreso {
     grid-area: progress;
-  }
-
-  .menu > .estado:not(.progreso) {
-    grid-area: status;
   }
 
   .menu .estado {
