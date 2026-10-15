@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { catalog } from '../../data'
 import type { DropFamily, QualityKey, SetId } from '../../data'
+import { transposeStudyVoicing, usesSourceSixth } from '../../study/transposition'
 import { FretboardCard } from '../card/FretboardCard'
+import { groupWindow } from '../card/geometry'
 import { displayDegree, toPosition, toSolution } from '../card/model'
 import { IconPreview } from './IconPreview'
 import './review.css'
@@ -74,8 +76,9 @@ export function ReviewScreen() {
         <h2 id="tarjetas-titulo">Tarjetas ({cards.length})</h2>
         <ol className="revision-rejilla">
           {cards.map((voicing, index) => {
-            const position = toPosition(voicing, catalog)
-            const solution = view === 'solution' ? toSolution(voicing, catalog) : null
+            const shape = usesSourceSixth(voicing) ? transposeStudyVoicing(voicing, 0).shape : voicing
+            const position = toPosition(shape, catalog, groupWindow(catalog, setId, voicing.inversion))
+            const solution = view === 'solution' ? toSolution(shape, catalog) : null
             return (
               <li className="revision-tarjeta" key={voicing.id}>
                 {solution ? (

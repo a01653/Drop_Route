@@ -1,5 +1,36 @@
 import { expect, test } from '@playwright/test'
 
+test('estudio conserva la séptima gris junto a la sexta en voicings y rutas, también al transponer', async ({ page }) => {
+  await page.goto('/#/study')
+  await page.getByRole('button', { name: '3ª inversión', exact: true }).click()
+
+  for (const kind of ['Voicings', 'Rutas II-V-I']) {
+    await page.getByRole('button', { name: kind, exact: true }).click()
+    if (kind === 'Rutas II-V-I') await page.getByRole('button', { name: /^Ruta 4/ }).click()
+    const card = page.locator(kind === 'Voicings' ? '.study-card svg' : '.study-route-step:last-child svg')
+    for (let tonicPc = 0; tonicPc < 12; tonicPc++) {
+      await page.getByLabel('Tonalidad').selectOption(String(tonicPc))
+      await expect(card.locator('.card-reference-dot')).toHaveCount(1)
+      await expect(card.locator('.card-dot:not(.card-reference-dot)')).toHaveCount(4)
+      await expect(card).toHaveAttribute('aria-label', /Referencia en gris: cuerda 4, traste \d+, grado 7\./)
+      const reference = await card.evaluate((svg) => {
+        const ghost = svg.querySelector('.card-reference-dot')!
+        const sixth = [...svg.querySelectorAll('.card-dot:not(.card-reference-dot)')].find((dot) => dot.parentElement!.querySelector('text')?.textContent === '6')!
+        const x = (el: Element) => Number(el.getAttribute('cx'))
+        return {
+          distance: x(ghost) - x(sixth),
+          sameString: ghost.getAttribute('cy') === sixth.getAttribute('cy'),
+          ghostLabel: ghost.parentElement!.querySelector('text')?.textContent,
+          ghostColor: getComputedStyle(ghost).fill,
+          sixthColor: getComputedStyle(sixth).fill,
+        }
+      })
+      expect(reference).toEqual({ distance: 88, sameString: true, ghostLabel: '7', ghostColor: 'rgb(223, 225, 234)', sixthColor: 'rgb(237, 188, 7)' })
+      if (tonicPc === 0) await card.screenshot({ path: test.info().outputPath(kind === 'Voicings' ? 'c6-estudio.png' : 'c6-ruta.png') })
+    }
+  }
+})
+
 test('abre el modo estudio y transpone un voicing sin convertirlo en pregunta', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('link', { name: 'Modo estudio' }).click()

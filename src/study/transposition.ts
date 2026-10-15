@@ -87,6 +87,9 @@ export function transposeShape<T extends NamedShape>(shape: T, shift: number): T
     root: noteName(rootPc),
     name: chordName(rootPc, shape.quality),
     notes: shape.notes.map((note) => ({ ...note, fret: note.fret + shift })),
+    ...(shape.referenceNotes && {
+      referenceNotes: shape.referenceNotes.map((note) => ({ ...note, fret: note.fret + shift })),
+    }),
   }
 }
 
@@ -98,7 +101,7 @@ export function transposeShapes<T extends NamedShape>(shapes: readonly T[], toni
 /**
  * La lámina original muestra C6 como lectura alternativa de Cmaj7 bajando la 7ª mayor dos trastes.
  * En voicings aparece en todas las terceras inversiones y, en Drop 2+4, también en la primera.
- * Es una transformación exclusiva del modo estudio: los JSON y los juegos evaluables siguen intactos.
+ * Se usa en estudio y revisión: los JSON y los juegos evaluables siguen intactos.
  */
 export function usesSourceSixth(shape: ChordShape): boolean {
   return shape.quality === 'maj7' && (shape.inversion === 3 || (shape.inversion === 1 && DROP24_SETS.has(shape.setId)))
@@ -109,6 +112,7 @@ function withSixthAlternative<T extends NamedShape>(shape: T, enabled: boolean):
   return {
     ...shape,
     name: `${shape.name} – ${shape.root}6`,
+    referenceNotes: shape.notes.filter((note) => note.degree === '7').map((note) => ({ ...note })),
     notes: shape.notes.map((note) =>
       note.degree === '7' ? { ...note, fret: note.fret - 2, degree: '6' as const } : note,
     ),

@@ -1,4 +1,4 @@
-import type { Catalog, ChordShape, Degree, QualityKey, StringNumber } from '../../data'
+import type { Catalog, ChordShape, Degree, NotePosition, QualityKey, StringNumber } from '../../data'
 import { windowForPosition } from './geometry'
 import type { FretWindow, PositionNote } from './geometry'
 
@@ -21,6 +21,8 @@ export interface CardSolution {
   inversionLabel: string
   /** Grado del bajo real, por ejemplo «b3». */
   bass: string
+  /** Alternativas de la fuente, dibujadas en gris sin sumarlas a las voces activas. */
+  referenceNotes?: NotePosition[]
 }
 
 export function toPosition(
@@ -34,7 +36,7 @@ export function toPosition(
   return {
     strings: set.strings,
     notes,
-    window: window ?? windowForPosition(catalog, shape.setId, notes),
+    window: window ?? windowForPosition(catalog, shape.setId, [...notes, ...(shape.referenceNotes ?? [])]),
   }
 }
 
@@ -57,6 +59,7 @@ export function toSolution(shape: ChordShape & { name: string }, catalog: Catalo
     degrees: shape.notes.map((note) => note.degree),
     inversionLabel: catalog.inversions[shape.inversion] ?? '',
     bass,
+    ...(shape.referenceNotes && { referenceNotes: shape.referenceNotes }),
   }
 }
 
@@ -83,5 +86,8 @@ export function solutionLabel(position: CardPosition, solution: CardSolution): s
   const notes = position.notes.map(
     (note, i) => `cuerda ${note.string}, traste ${note.fret}, grado ${spokenDegree(solution.degrees[i] ?? '1')}`,
   )
-  return `${solution.name}, ${solution.inversionLabel}: ${notes.join('; ')}.`
+  const reference = solution.referenceNotes?.map(
+    (note) => `cuerda ${note.string}, traste ${note.fret}, grado ${spokenDegree(note.degree)}`,
+  )
+  return `${solution.name}, ${solution.inversionLabel}: ${notes.join('; ')}.${reference?.length ? ` Referencia en gris: ${reference.join('; ')}.` : ''}`
 }

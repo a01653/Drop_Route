@@ -146,7 +146,7 @@ test('las 112 tarjetas coinciden con las de la plantilla original', async ({ pag
         expect(card.fretNumbers, `${id}: ventana`).toEqual(reference.fretNumbers)
 
         // C6: la plantilla baja la séptima dos trastes y deja un fantasma gris donde está el maj7.
-        // Aquí no se dibuja ni se añade al ejercicio: solo se comprueba que no mueve ningún círculo.
+        // La revisión muestra la sexta y, en solución, la séptima gris de referencia.
         const sixth = reference.dots.find((dot) => dot.label === '6')
         expect(sixth !== undefined, `${id}: C6 en la plantilla`).toBe(C6_CARDS.includes(`${set}/${index}`))
         if (sixth) {
@@ -155,18 +155,20 @@ test('las 112 tarjetas coinciden con las de la plantilla original', async ({ pag
           expect(ghost, `${id}: séptima fantasma`).toBeDefined()
           near(sixth.y, ghost!.y, `${id} C6 cuerda`)
           near(ghost!.x - sixth.x, 2 * FRET, `${id} C6 dos trastes`)
-          expect(card.dots.some((dot) => Math.abs(dot.x - sixth.x) < 0.5 && Math.abs(dot.y - sixth.y) < 0.5), `${id}: C6 no se dibuja`).toBe(false)
+          expect(card.dots.some((dot) => Math.abs(dot.x - sixth.x) < 0.5 && Math.abs(dot.y - sixth.y) < 0.5), `${id}: sexta de C6 dibujada`).toBe(true)
+          expect(card.dots.some((dot) => Math.abs(dot.x - ghost!.x) < 0.5 && Math.abs(dot.y - ghost!.y) < 0.5), `${id}: séptima de referencia`).toBe(view === 'Solución')
+          if (view === 'Solución') expect(card.name, `${id}: nombre de la variante`).toBe('Cmaj7 – C6')
         }
-        const originalDots = reference.dots.filter((dot) => dot.label !== '6')
+        const originalDots = reference.dots.filter((dot) => view === 'Solución' || dot.color !== GHOST)
         expect(card.dots, id).toHaveLength(originalDots.length)
         for (const dot of originalDots) {
-          const own = card.dots.find((candidate) => Math.abs(candidate.y - dot.y) < 0.5)
+          const own = card.dots.find((candidate) => Math.abs(candidate.y - dot.y) < 0.5 && (view !== 'Solución' || candidate.label === dot.label))
           expect(own, `${id}: no hay círculo en la cuerda y=${dot.y}`).toBeDefined()
           near(own!.x, dot.x, `${id} x`)
           near(own!.y, dot.y, `${id} y`)
           if (view === 'Solución') {
             expect(own!.label, `${id} etiqueta`).toBe(dot.label)
-            if (dot.color !== GHOST) expect(own!.color, `${id} color`).toBe(dot.color)
+            expect(own!.color, `${id} color`).toBe(dot.color)
           }
         }
         expect(card.nutWidth > 0, `${id}: cejuelo`).toBe(reference.nutWidth > 0)
@@ -178,7 +180,7 @@ test('las 112 tarjetas coinciden con las de la plantilla original', async ({ pag
           near(own!.x, mark.x, `${id} marca x`)
         }
         if (view === 'Solución') {
-          expect(reference.name.startsWith(card.name), `${id}: nombre ${card.name} frente a ${reference.name}`).toBe(true)
+          expect(card.name.replace(' – ', ' - '), `${id}: nombre`).toBe(reference.name)
           expect(card.family, id).toBe(reference.family)
           expect(card.background, `${id} fondo`).toBe(reference.background)
           expect(card.border, `${id} borde`).toBe(reference.border)

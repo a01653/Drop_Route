@@ -5,6 +5,7 @@ export const INK = '#14183A'
 export const PAPER = '#FFFFFF'
 export const STRING_NUMBER_COLOR = '#1B2A78'
 export const SECONDARY_COLOR = '#5C6AB0'
+export const REFERENCE_COLORS = { fill: '#DFE1EA', text: '#9AA3C9' } as const
 
 export type DegreeFunction = 'root' | 'third' | 'fifth' | 'seventh'
 

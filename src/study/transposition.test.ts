@@ -81,10 +81,13 @@ describe('transposición para estudio', () => {
     expect(inC.shape.name).toBe('Cmaj7 – C6')
     expect(inC.shape.notes.map((note) => note.fret)).toEqual([7, 9, 8, 8])
     expect(inC.shape.notes.map((note) => note.degree)).toEqual(['6', '3', '5', '1'])
+    expect(inC.shape.referenceNotes).toEqual([{ string: 4, fret: 9, degree: '7' }])
 
     const inD = transposeStudyVoicing(source, 2)
     expect(inD.shape.name).toBe('Dmaj7 – D6')
     expect(inD.shape.notes.map((note) => note.fret)).toEqual([9, 11, 10, 10])
+    expect(inD.shape.referenceNotes).toEqual([{ string: 4, fret: 11, degree: '7' }])
+    expect(source.notes[0]).toEqual({ string: 4, fret: 9, degree: '7' })
   })
 
   it('conserva en las rutas mayores la sustitución C6 citada por la fuente y la transpone', () => {
@@ -95,9 +98,12 @@ describe('transposición para estudio', () => {
     expect(inC.name).toBe('Cmaj7 – C6')
     expect(inC.notes.map((note) => note.fret)).toEqual([7, 9, 8, 8])
     expect(inC.notes.map((note) => note.degree)).toEqual(['6', '3', '5', '1'])
+    expect(inC.referenceNotes).toEqual([{ string: 4, fret: 9, degree: '7' }])
 
     const inD = transposeRoute(route!.steps, 2).shapes[2]!
     expect(inD.name).toBe('Dmaj7 – D6')
+    expect(inD.referenceNotes).toEqual([{ string: 4, fret: 11, degree: '7' }])
+    expect(voiceMovement(route!.steps[1]!, inC)).toHaveLength(4)
     expect(inD.notes.map((note) => note.fret)).toEqual([9, 11, 10, 10])
   })
 

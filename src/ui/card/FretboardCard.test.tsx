@@ -2,6 +2,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { catalog } from '../../data'
 import type { Voicing } from '../../data'
+import { transposeStudyVoicing, usesSourceSixth } from '../../study/transposition'
+import { layoutCard } from './geometry'
 import { FretboardCard } from './FretboardCard'
 import { positionLabel, spokenDegree, toPosition, toSolution } from './model'
 import { DEGREE_COLORS, INK, NEUTRAL_COLORS, QUALITY_COLORS, SECONDARY_COLOR, STRING_NUMBER_COLOR, degreeFunction } from './palette'
@@ -101,6 +103,42 @@ describe('vista neutra', () => {
 })
 
 describe('vista de solución', () => {
+  it('encuadra la sexta y su séptima de referencia en los nueve casos de la fuente y las doce tonalidades', () => {
+    const variants = playable.filter(usesSourceSixth)
+    expect(variants).toHaveLength(9)
+    for (const source of variants) {
+      const seventh = source.notes.find((note) => note.degree === '7')!
+      for (let tonicPc = 0; tonicPc < 12; tonicPc++) {
+        const { shape, shift } = transposeStudyVoicing(source, tonicPc)
+        const reference = shape.referenceNotes!
+        expect(reference).toEqual([{ ...seventh, fret: seventh.fret + shift }])
+        const sixth = shape.notes.find((note) => note.degree === '6')!
+        expect(sixth.string).toBe(seventh.string)
+        expect(sixth.fret).toBe(reference[0]!.fret - 2)
+        const position = toPosition(shape, catalog)
+        const dots = layoutCard([...position.notes, ...reference], position.strings, position.window).dots
+        expect(dots).toHaveLength(5)
+        expect(dots.every((dot) => dot.cx - dot.r > 32 && dot.cy - dot.r >= 0)).toBe(true)
+      }
+    }
+  })
+
+  it('conserva la séptima gris como referencia de C6 sin añadir una quinta voz ni mostrar pistas en neutra', () => {
+    const source = byId('d2s1-maj7-i3')
+    const shape = transposeStudyVoicing(source, 0).shape
+    const position = toPosition(shape, catalog)
+    const markup = renderToStaticMarkup(<FretboardCard view="solution" position={position} solution={toSolution(shape, catalog)} />)
+    expect(position.notes).toHaveLength(4)
+    expect(markup).toContain('Cmaj7 – C6')
+    expect(markup).toContain('Referencia en gris: cuerda 4, traste 9, grado 7.')
+    expect(markup).toMatch(/<circle class="card-dot card-reference-dot"[^>]*fill="#DFE1EA"/)
+    expect(markup).toContain('fill="#9AA3C9"')
+    expect(texts(markup).filter((text) => text === '6')).toHaveLength(2) // cuerda 6 y grado 6
+    const neutralMarkup = renderToStaticMarkup(<FretboardCard view="neutral" position={position} />)
+    expect(neutralMarkup.match(/<circle /g)).toHaveLength(4)
+    expect(neutralMarkup).not.toMatch(/card-reference|\bC6\b|grado|Referencia/)
+  })
+
   it('recupera nombre, familia, fondo y borde de la calidad', () => {
     const markup = solution(byId('d3s1-m7-i3'))
     expect(markup).toContain('>Cm7<')

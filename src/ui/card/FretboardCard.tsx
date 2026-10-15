@@ -9,6 +9,7 @@ import {
   INK,
   NEUTRAL_COLORS,
   QUALITY_COLORS,
+  REFERENCE_COLORS,
   SECONDARY_COLOR,
   STRING_NUMBER_COLOR,
   degreeFunction,
@@ -69,11 +70,11 @@ function NeutralDot({ dot }: { dot: DotGeometry }) {
   )
 }
 
-function SolutionDot({ dot, degree }: { dot: DotGeometry; degree: Degree }) {
-  const colors = DEGREE_COLORS[degreeFunction(degree)]
+function SolutionDot({ dot, degree, reference = false }: { dot: DotGeometry; degree: Degree; reference?: boolean }) {
+  const colors = reference ? REFERENCE_COLORS : DEGREE_COLORS[degreeFunction(degree)]
   return (
     <g>
-      <circle className="card-dot" cx={dot.cx} cy={dot.cy} r={dot.r} fill={colors.fill} />
+      <circle className={reference ? 'card-dot card-reference-dot' : 'card-dot'} cx={dot.cx} cy={dot.cy} r={dot.r} fill={colors.fill} />
       <DegreeLabel degree={degree} cx={dot.cx} cy={dot.cy} color={colors.text} />
     </g>
   )
@@ -88,6 +89,8 @@ export function FretboardCard(props: FretboardCardProps) {
   const { position } = props
   const layout = layoutCard(position.notes, position.strings, position.window)
   const solution = props.view === 'solution' ? props.solution : null
+  const referenceNotes = solution?.referenceNotes ?? []
+  const referenceDots = layoutCard(referenceNotes, position.strings, position.window).dots
   const colors = solution ? QUALITY_COLORS[solution.quality] : NEUTRAL_COLORS
   const background = solution ? QUALITY_COLORS[solution.quality].background : NEUTRAL_COLORS.background
   const label = solution ? solutionLabel(position, solution) : positionLabel(position)
@@ -114,7 +117,7 @@ export function FretboardCard(props: FretboardCardProps) {
       />
       {solution && (
         <>
-          <text className="card-name" x={AREA_X - 22} y={27} fill={STRING_NUMBER_COLOR}>
+          <text className={referenceNotes.length ? 'card-name card-name-alternative' : 'card-name'} x={AREA_X - 22} y={27} fill={STRING_NUMBER_COLOR}>
             {solution.name}
           </text>
           <text
@@ -167,6 +170,9 @@ export function FretboardCard(props: FretboardCardProps) {
           <NeutralDot key={dot.string} dot={dot} />
         ),
       )}
+      {referenceDots.map((dot, i) => (
+        <SolutionDot key={`reference-${dot.string}`} dot={dot} degree={referenceNotes[i]!.degree} reference />
+      ))}
     </svg>
   )
 }

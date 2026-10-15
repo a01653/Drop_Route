@@ -11,7 +11,7 @@ const SETS = [
   'Drop 2+4 · set 2',
 ]
 const WIDTHS = [360, 390, 430]
-const HINTS = /maj7|m7b5|Cm7|C7|inversi|Fundamental|bajo:|MAYOR|DOMINANTE|MENOR|SEMIDISMINUIDO/
+const HINTS = /maj7|m7b5|Cm7|C7|C6|inversi|Fundamental|bajo:|MAYOR|DOMINANTE|MENOR|SEMIDISMINUIDO/
 const MUSICAL_COLORS = ['rgb(225, 29, 72)', 'rgb(2, 132, 199)', 'rgb(5, 150, 105)', 'rgb(237, 188, 7)']
 
 async function openReview(page: Page, width: number) {
@@ -43,10 +43,10 @@ async function measureCards(page: Page) {
       const frets = [...svg.querySelectorAll('.card-fret')].map((el) => el.getBoundingClientRect())
       const strings = [...svg.querySelectorAll('.card-string')].map((el) => el.getBoundingClientRect())
       if (frets.length !== 6 || strings.length !== 6) issues.push(`${at}: ${frets.length} trastes y ${strings.length} cuerdas`)
-      const dots = [...svg.querySelectorAll('.card-dot')]
+      const dots = [...svg.querySelectorAll('.card-dot:not(.card-reference-dot)')]
       if (dots.length !== 4) issues.push(`${at}: ${dots.length} círculos`)
       const scale = box.width / svg.viewBox.baseVal.width
-      for (const dot of dots) {
+      for (const dot of svg.querySelectorAll('.card-dot')) {
         const rect = dot.getBoundingClientRect()
         const cx = rect.left + rect.width / 2
         const cy = rect.top + rect.height / 2
@@ -148,13 +148,16 @@ test('la vista de solución recupera nombres, grados y colores musicales', async
   await expect(first.locator('.card-family')).toHaveText('MAYOR 7')
   await expect(first).toContainText('Fundamental · bajo: 1')
   const report = await page.evaluate(() => {
-    const fills = [...document.querySelectorAll('.revision-rejilla .card-dot')].map((el) => getComputedStyle(el).fill)
+    const fills = [...document.querySelectorAll('.revision-rejilla .card-dot:not(.card-reference-dot)')].map((el) => getComputedStyle(el).fill)
     const names = [...document.querySelectorAll('.revision-rejilla .card-name')].map((el) => el.textContent)
     return { fills: [...new Set(fills)].sort(), names: [...new Set(names)] }
   })
   expect(report.fills).toEqual([...MUSICAL_COLORS].sort())
-  expect(report.names).toEqual(['Cmaj7', 'C7', 'Cm7', 'Cm7(b5)'])
+  expect(report.names).toEqual(['Cmaj7', 'Cmaj7 – C6', 'C7', 'Cm7', 'Cm7(b5)'])
   await expect(page.getByRole('img', { name: /^Cmaj7, Fundamental: cuerda 4, traste 10, grado 1;/ })).toHaveCount(1)
+  const variant = page.locator('.revision-tarjeta').nth(3)
+  await expect(variant.locator('.card-reference-dot')).toHaveCount(1)
+  await variant.screenshot({ path: test.info().outputPath('c6-revision.png') })
   await page.getByRole('button', { name: 'Neutra', exact: true }).click()
   await expect(page.locator('.revision-rejilla .card-name')).toHaveCount(0)
 })
