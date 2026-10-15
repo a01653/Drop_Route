@@ -1,5 +1,7 @@
 name: Finalize DR-007
 on:
+  push:
+    branches: [dr007-stage]
   workflow_dispatch:
 permissions:
   contents: write
