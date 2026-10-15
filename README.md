@@ -2,15 +2,11 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado:** DR-001 a DR-009 están completadas e integradas en `main`: reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación, publicación en GitHub Pages, modo estudio con movimiento/transposición, la variante C6 de la fuente y una distribución específica para escritorio. DR-009 incluye también las correcciones de revisión y de la séptima gris; no queda pendiente de ejecución.
-
 ## Abrir en el móvil
 
 La versión móvil está publicada como **PWA instalable** en [Drop Route](https://a01653.github.io/Drop_Route/). Se abre y se instala desde el navegador, siguiendo el [manual de instalación](docs/manuals/INSTALACION.md).
 
 **No hay un APK ni un AAB de Android generado o subido al repositorio, ni un paquete móvil descargable en Releases.** El código, el manifest, los iconos y el service worker de la PWA sí forman parte del proyecto.
-
-Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
 ## Contenido
 
@@ -25,11 +21,9 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - Diseño responsive: flujo compacto en móvil y distribución horizontal en escritorio para menú, juego, rutas y estudio.
 - Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
 - Pruebas con node:test, Vitest y Playwright.
-- [DTS principal](docs/DTS.md), [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX sincronizados con la primera versión cerrada.
+- [DTS principal](docs/DTS.md), [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX.
 - [Manual de uso](docs/manuals/USO.md) y [manual de instalación](docs/manuals/INSTALACION.md), con sus PDF en `docs/latex/`.
 - [Plan de pruebas](docs/TEST_PLAN.md), [órdenes de trabajo](docs/work-orders/README.md) y [registros de validación](docs/validation/).
-
-El 13/10/2026 se autorizó publicar la base completa en `a01653/Drop_Route`, incluidos los tres materiales originales.
 
 ## Uso del paquete
 
@@ -83,7 +77,7 @@ En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acord
 
 En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas.
 
-Los juegos evaluables continúan en C en DR-009; sus reglas, datos y contadores no cambian.
+Los juegos evaluables se practican en C.
 
 ## Modo estudio
 
@@ -95,7 +89,7 @@ Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni p
 
 La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
 
-La pantalla interna `#/revision` permite revisar las 112 tarjetas y el icono. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris. El menú ya no muestra el enlace «Revisar tarjetas e icono» ni el bloque «Versión actual».
+La pantalla interna `#/revision` permite revisar las 112 tarjetas y el icono. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris.
 
 ## Diseño responsive
 
@@ -111,7 +105,7 @@ El build genera un service worker con precaché de los recursos de la aplicació
 
 ## GitHub Pages
 
-El repositorio incluye `.github/workflows/deploy-pages.yml`, siguiendo el esquema de publicación usado en `a01653/mastil_escalas`: un trabajo construye la aplicación y otro despliega el artefacto con GitHub Pages.
+El repositorio incluye `.github/workflows/deploy-pages.yml`: un trabajo construye la aplicación y otro despliega el artefacto con GitHub Pages.
 
 Drop Route se construye para la subruta `/Drop_Route/`:
 
@@ -130,24 +124,10 @@ La aplicación está publicada en:
 
 <https://a01653.github.io/Drop_Route/>
 
-El primer despliegue desde `main` terminó correctamente en la ejecución `38675602253` de GitHub Actions.
-
 ## Integración continua
 
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-La entrega inicial de DR-009 quedó validada en la ejecución `38707724976`: typecheck, lint, 293 pruebas unitarias, build, E2E, capturas y validaciones documentales terminaron correctamente. El resultado está registrado en [su validación inicial](docs/validation/2026-10-15-dr-009-c6-desktop-layout.md).
-
-Las correcciones posteriores también están integradas y publicadas:
-
-- [C6 en revisión y séptima gris](docs/validation/2026-10-15-dr-009-c6-review.md), commit `3af957e`: la sexta y su séptima de referencia se muestran como en la plantilla, también al transponer en estudio.
-- [Retirada del bloque «Versión actual»](docs/validation/2026-10-15-remove-version-panel.md), commit `78833d6`: inicio sin el bloque informativo y acceso a revisión bajo «Modo estudio».
-- [Retirada del acceso de revisión y actualización entre pestañas](docs/validation/2026-10-15-update-recovery-and-hide-review.md): el menú deja de mostrar la revisión y el botón de actualización funciona aunque otra pestaña ya haya activado la versión nueva.
-
-La [CI de la retirada del bloque de versión en `main`](https://github.com/a01653/Drop_Route/actions/runs/38721526122) terminó correctamente. El estado de cada orden figura en el [índice de fases](docs/work-orders/README.md).
-
 ## Límites actuales
 
 No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. La transposición se limita al modo estudio; los juegos evaluables permanecen en C. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
-
-`FILES_SHA256.json` y `RECOVERY_STATUS.json` son instantáneas históricas de la reconstrucción inicial y no describen el estado actual del repositorio.
