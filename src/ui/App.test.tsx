@@ -4,6 +4,7 @@ import { catalog } from '../data'
 import { configure, createSession } from '../session'
 import { App } from './App'
 import { MenuScreen } from './game/MenuScreen'
+import { version } from '../../package.json'
 
 describe('menú de arranque', () => {
   const html = renderToStaticMarkup(<App />)
@@ -12,6 +13,12 @@ describe('menú de arranque', () => {
     expect(html).toContain('<h1>Drop Route</h1>')
     expect(html).not.toContain('Versión actual')
     expect(html).not.toContain('estudiar las formas sin examen')
+  })
+
+  it('muestra la versión del paquete en una etiqueta pequeña', () => {
+    expect(html).toContain('aria-label="Versión de Drop Route"')
+    expect(html).toContain(`v${version}`)
+    expect(html).not.toContain('Versión actual')
   })
 
   it('muestra el progreso sin las cifras del bloque informativo eliminado', () => {

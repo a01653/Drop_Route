@@ -75,6 +75,8 @@ La política de `docs/documentation-policy.json` está en `required`: `docs:chec
 
 En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acorde; medio añade la inversión; difícil añade los cuatro grados sobre la tarjeta mediante arrastre, dos toques, teclado o los controles de colocación sin arrastre.
 
+Las tarjetas salen al azar entre las que quedan por mostrar: se recorre todo el set antes de repetir. Después empieza otra ronda, evitando repetir seguidas la última tarjeta y la primera de la ronda nueva. La versión instalada aparece arriba, en una etiqueta pequeña.
+
 En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas.
 
 Los juegos evaluables se practican en C.

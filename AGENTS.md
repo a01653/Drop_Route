@@ -13,7 +13,8 @@ DR-001 a DR-007 forman la primera versión y están integradas en `main`. Las am
 - Conserva las referencias originales y una sola definición de datos.
 - Señala contradicciones musicales o pedagógicas concretas antes de implementar. Resuelve detalles menores compatibles sin frenar el trabajo.
 - No añadas funciones fuera de la orden solicitada.
-- No uses subagentes o delegación salvo petición del usuario.
+- Prioriza Claude Code para desarrollar o revisar siempre que esté disponible, según la preferencia del usuario del 15/10/2026. Si la conexión falla, indícalo expresamente y no atribuyas a Claude trabajo que no haya realizado.
+- No uses otros subagentes o delegación salvo petición del usuario.
 - Las transformaciones de estudio no modifican `data/catalog.json` ni `data/routes.json`: operan sobre copias derivadas en memoria.
 
 El 13/10/2026 el usuario autorizó expresamente subir la base completa a a01653/Drop_Route, incluyendo la plantilla HTML y las dos guías PDF originales, conociendo que quedarían públicas. Las publicaciones posteriores requieren una orden que cubra commit, merge, push o despliegue.

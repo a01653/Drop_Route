@@ -1,7 +1,7 @@
 # Documento de Diseño Técnico del Software - Drop Route
 
-Repositorio: a01653/Drop_Route. Revisión: progreso local y PWA (DR-006), 14/10/2026.
-Paquete: 0.0.0. Autor del proyecto: Jesús Quevedo Rodríguez.
+Repositorio: a01653/Drop_Route. Documento base de DR-006 con una revisión parcial del selector de reconocimiento y la versión visible, 15/10/2026.
+Paquete: 1.0.0. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión parcial del 15/10/2026: rotación de reconocimiento y versión visible.
 
 Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil y desde DR-005 el juego de rutas II-V-I de Drop 2; todo ello está integrado en main. DR-006 añade el progreso local y la PWA en la rama feat/progress-and-pwa, pendiente de revisión y sin integrar; sus pruebas E2E y la CI de esa fase no tienen todavía resultado registrado. Falta el cierre documental (DR-007). La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
@@ -107,7 +107,11 @@ Seleccionar no evalúa. Verificar exige respuesta completa y produce un único r
 
 La corrección no sobrescribe lo que contestó el usuario. Si falla el V de una ruta, el paso V-I debe partir del V correcto.
 
-La sesión implementa ese modelo con tres fases: `menu`, `pregunta` y `verificada`. Seleccionar cambia la respuesta pero no verifica ni puntúa. Verificar solo actúa con la respuesta completa del nivel, calcula el resultado una sola vez y bloquea la respuesta; verificar de nuevo, cambiar campos o mover grados después no hace nada. Siguiente abre otra pregunta con la misma configuración sin repetir la forma anterior mientras haya alternativas (cada set tiene 16). Salir vuelve al menú y conserva la última configuración. Esa sesión es la misma de DR-003 a DR-005: DR-006 no la modifica, la envuelve con el progreso.
+La sesión implementa ese modelo con tres fases: `menu`, `pregunta` y `verificada`. Seleccionar cambia la respuesta pero no verifica ni puntúa. Verificar solo actúa con la respuesta completa del nivel, calcula el resultado una sola vez y bloquea la respuesta; verificar de nuevo, cambiar campos o mover grados después no hace nada. Siguiente abre otra pregunta con la misma configuración. En reconocimiento descarta todas las formas que ya salieron en esa ronda, hasta agotar las disponibles (actualmente 16 por set). Salir vuelve al menú y conserva la última configuración.
+
+Desde 1.0.0, `RecognitionQuestion.roundVoicingIds` conserva las tarjetas ya mostradas en la ronda. `createQuestion` elige con igual probabilidad entre las pendientes; al agotarlas reinicia la ronda y excluye de su primera elección la tarjeta inmediatamente anterior, salvo que solo exista una. La lista no se muta y queda acotada al tamaño del set. Verificar conserva la misma pregunta y Siguiente recibe su historial, también en Medio y Difícil. El orden de los cuatro botones se sigue barajando por separado. La rotación es memoria de la partida: Salir y empezar de nuevo o recargar inicia otra; no se guarda en los contadores ni exige cambiar el esquema de persistencia. El selector de rutas no cambia.
+
+`App` muestra una etiqueta de versión en todas sus pantallas, incluida la de estudio. Importa únicamente `version` de `package.json`, sin duplicar un número en los componentes ni restaurar el antiguo bloque informativo. La versión del paquete queda fijada en 1.0.0 para esta entrega.
 
 ### Progreso local (DR-006)
 
@@ -117,7 +121,7 @@ Cada contador cuenta por separado: reconocimiento por set y dificultad (`recogni
 
 El documento guardado es un único texto JSON en `localStorage` bajo `drop-route:state`: `schemaVersion`, la configuración del menú (juego, Drop, set, dificultad, modo y tramo) y los contadores `{ attempts, correct }`. El orden es fijo, de modo que dos estados iguales dan el mismo texto y no se vuelve a escribir si no hay nada nuevo. `createAppStore` lee una sola vez al abrir y escribe el documento completo tras cada acción que cambie la configuración o los contadores. Al abrir se vuelve siempre al menú: una pregunta abierta no se reanuda, solo se conserva la configuración.
 
-El esquema vigente es el 1. Es independiente de la versión del paquete (0.0.0): cambiar la versión de la aplicación no cambia el esquema, y cambiar el formato exige subir el esquema y añadir una migración. La cadena de migraciones (`MIGRATIONS`) convierte cada versión n en la n + 1. El esquema 0 es un fixture de prueba (`src/progress/fixtures/schema-0.json`): un formato inventado, con `counters` y pares `[intentos, aciertos]`, que no corresponde a ninguna versión pública, porque Drop Route no había publicado ningún guardado. Existe para ejercitar la cadena con un caso real antes de que haga falta una migración verdadera.
+El esquema vigente es el 1. Es independiente de la versión del paquete: cambiar la versión de la aplicación no cambia el esquema, y cambiar el formato exige subir el esquema y añadir una migración. La cadena de migraciones (`MIGRATIONS`) convierte cada versión n en la n + 1. El esquema 0 es un fixture de prueba (`src/progress/fixtures/schema-0.json`): un formato inventado, con `counters` y pares `[intentos, aciertos]`, que no corresponde a ninguna versión pública, porque Drop Route no había publicado ningún guardado. Existe para ejercitar la cadena con un caso real antes de que haga falta una migración verdadera.
 
 | Situación al abrir | Qué hace | Aviso |
 | --- | --- | --- |
@@ -293,7 +297,7 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 - La puntuación detallada sigue pendiente de decisión; los contadores de DR-006 cuentan intentos y aciertos sin más.
 - El icono está aprobado. El PNG de 192 y el maskable de 512 los generó el supervisor con CairoSVG 2.9.1 y no con el Chromium del script; el 512 «any» es el aprobado.
 - La PWA solo se ha probado en Chromium. No se ha comprobado la instalación en un dispositivo real, en Safari ni en Firefox, y las pruebas de actualización usan un servidor propio y no un alojamiento real.
-- No hay flujo de despliegue ni alojamiento elegido; el paquete sigue en 0.0.0.
+- La aplicación está publicada en GitHub Pages. El paquete de la revisión actual es 1.0.0; la versión visible procede de ese metadato y el esquema de progreso permanece en 1.
 - Las tarjetas no dibujan la sustitución C6 de la plantilla ni la añaden a los ejercicios, pero su ventana cuenta el traste de la sexta como la plantilla. Por eso las cuatro tarjetas de Drop 2+4 set 1, 3ª inversión, empiezan en el traste 12 y no en el 13, con las mismas notas.
 - Las fuentes manuscritas pesan 87 kB y se descargan al mostrar tarjetas; hasta entonces el texto usa una fuente de respaldo.
 - El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.

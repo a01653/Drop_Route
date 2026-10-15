@@ -20,6 +20,16 @@ body {
   color: var(--tinta);
 }
 
+.app-version {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 0;
+  text-align: right;
+  color: var(--tinta-suave);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .arranque {
   display: flex;
   flex-direction: column;

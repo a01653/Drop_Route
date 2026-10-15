@@ -13,6 +13,7 @@ import type { UpdateController } from './pwa/update'
 import { ReviewScreen } from './review/ReviewScreen'
 import { StudyScreen } from './study/StudyScreen'
 import { useHashRoute } from './useHashRoute'
+import { version } from '../../package.json'
 
 /** Semilla de una pregunta nueva: el azar de producción vive aquí, no en la sesión. */
 const newSeed = () => Math.floor(Math.random() * 2 ** 32)
@@ -31,11 +32,12 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
   const updateReady = useSyncExternalStore(pwa.subscribe, pwa.getSnapshot, pwa.getSnapshot)
   const dispatch = store.dispatch
 
-  if (route === '#/revision') return <ReviewScreen />
-  if (route === '#/study') return <StudyScreen />
-
   const screen =
-    session.phase === 'menu' ? (
+    route === '#/revision' ? (
+      <ReviewScreen />
+    ) : route === '#/study' ? (
+      <StudyScreen />
+    ) : session.phase === 'menu' ? (
       <MenuScreen state={session} dispatch={dispatch} newSeed={newSeed} progress={progress} />
     ) : session.phase === 'ruta' || session.phase === 'ruta-verificada' ? (
       <RouteScreen state={session} dispatch={dispatch} newSeed={newSeed} />
@@ -45,13 +47,16 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
 
   return (
     <>
-      <Notices
-        storage={notice}
-        onDismiss={store.dismissNotice}
-        update={updateReady && session.phase === 'menu'}
-        onUpdate={pwa.apply}
-        unsaved={isMemoryOnly(notice)}
-      />
+      <div className="app-version" aria-label="Versión de Drop Route">v{version}</div>
+      {route !== '#/revision' && route !== '#/study' && (
+        <Notices
+          storage={notice}
+          onDismiss={store.dismissNotice}
+          update={updateReady && session.phase === 'menu'}
+          onUpdate={pwa.apply}
+          unsaved={isMemoryOnly(notice)}
+        />
+      )}
       {screen}
     </>
   )
