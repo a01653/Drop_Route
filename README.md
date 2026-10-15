@@ -2,7 +2,13 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado:** DR-001 a DR-009 cubren la versión actual: reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación, publicación en GitHub Pages, modo estudio con movimiento/transposición, la variante C6 de la fuente y una distribución específica para escritorio.
+**Estado:** DR-001 a DR-009 están completadas e integradas en `main`: reconocimiento de voicings, rutas II-V-I, progreso local, PWA, documentación, publicación en GitHub Pages, modo estudio con movimiento/transposición, la variante C6 de la fuente y una distribución específica para escritorio. DR-009 incluye también las correcciones de revisión y de la séptima gris; no queda pendiente de ejecución.
+
+## Abrir en el móvil
+
+La versión móvil está publicada como **PWA instalable** en [Drop Route](https://a01653.github.io/Drop_Route/). Se abre y se instala desde el navegador, siguiendo el [manual de instalación](docs/manuals/INSTALACION.md).
+
+**No hay un APK ni un AAB de Android generado o subido al repositorio, ni un paquete móvil descargable en Releases.** El código, el manifest, los iconos y el service worker de la PWA sí forman parte del proyecto.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -15,7 +21,7 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - Aplicación React, TypeScript y Vite en `src/`, separada en datos, música, sesión, progreso e interfaz.
 - Reconocimiento de voicings en fácil, medio y difícil, y rutas II-V-I de Drop 2.
 - Modo estudio sin examen para consultar voicings y rutas, transponerlos a las 12 tonalidades y ver la conducción de voces.
-- Variante C6 de la fuente reproducida en modo estudio sobre copias derivadas, sin convertirla en calidad evaluable.
+- Variante C6 de la fuente reproducida en estudio y revisión sobre copias derivadas, con la sexta dorada y la séptima gris de referencia, sin convertirla en calidad evaluable.
 - Diseño responsive: flujo compacto en móvil y distribución horizontal en escritorio para menú, juego, rutas y estudio.
 - Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
 - Pruebas con node:test, Vitest y Playwright.
@@ -83,13 +89,13 @@ Los juegos evaluables continúan en C en DR-009; sus reglas, datos y contadores 
 
 Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni puntuación.
 
-**Voicings:** eliges Drop, set, calidad e inversión y ves la solución completa. El selector de tonalidad transpone la forma a cualquiera de las 12 tónicas cromáticas sin modificar los datos fuente. Cuando la plantilla original muestra la variante de sexta de un Cmaj7, el estudio reproduce `Cmaj7 – C6`: la 7ª mayor baja dos trastes y pasa a 6. La misma lectura se transpone (`Dmaj7 – D6`, etc.).
+**Voicings:** eliges Drop, set, calidad e inversión y ves la solución completa. El selector de tonalidad transpone la forma a cualquiera de las 12 tónicas cromáticas sin modificar los datos fuente. Cuando la plantilla original muestra la variante de sexta de un Cmaj7, el estudio reproduce `Cmaj7 – C6`: la 7ª mayor baja dos trastes y pasa a 6. La séptima original permanece como círculo gris de referencia. Las dos posiciones se transponen juntas (`Dmaj7 – D6`, etc.); la referencia gris no cuenta como una quinta voz.
 
 **Rutas II-V-I:** eliges set, mayor o menor y una de las cuatro rutas. Se muestran II, V e I juntos y `Ver movimiento` detalla cuánto se desplaza cada voz en cada cuerda entre II → V y V → I. Las rutas que citan C6 en la fuente muestran también esa variante, por lo que el movimiento se calcula sobre la forma que realmente se ve.
 
 La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
 
-La pantalla `#/revision` sigue permitiendo revisar las 112 tarjetas y el icono sin entrar en una partida.
+La pantalla `#/revision` permite revisar las 112 tarjetas y el icono sin entrar en una partida. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris. El enlace de revisión está debajo de «Modo estudio»; se ha retirado del inicio el bloque «Versión actual».
 
 ## Diseño responsive
 
@@ -130,7 +136,14 @@ El primer despliegue desde `main` terminó correctamente en la ejecución `38675
 
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-DR-009 quedó validada en la ejecución `38707724976`: typecheck, lint, 293 pruebas unitarias, build, E2E, capturas y validaciones documentales terminaron correctamente. El resultado está registrado en [docs/validation/2026-10-15-dr-009-c6-desktop-layout.md](docs/validation/2026-10-15-dr-009-c6-desktop-layout.md).
+La entrega inicial de DR-009 quedó validada en la ejecución `38707724976`: typecheck, lint, 293 pruebas unitarias, build, E2E, capturas y validaciones documentales terminaron correctamente. El resultado está registrado en [su validación inicial](docs/validation/2026-10-15-dr-009-c6-desktop-layout.md).
+
+Las correcciones posteriores también están integradas y publicadas:
+
+- [C6 en revisión y séptima gris](docs/validation/2026-10-15-dr-009-c6-review.md), commit `3af957e`: la sexta y su séptima de referencia se muestran como en la plantilla, también al transponer en estudio.
+- [Retirada del bloque «Versión actual»](docs/validation/2026-10-15-remove-version-panel.md), commit `78833d6`: inicio sin el bloque informativo y acceso a revisión bajo «Modo estudio».
+
+La [CI del último cambio funcional en `main`](https://github.com/a01653/Drop_Route/actions/runs/38721526122) terminó correctamente. El estado de cada orden figura en el [índice de fases](docs/work-orders/README.md).
 
 ## Límites actuales
 
