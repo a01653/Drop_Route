@@ -11,19 +11,18 @@ Cada tarea se pide por separado. Las reglas permanentes están en CLAUDE.md y AG
 | [DR-005](DR-005.md) | Rutas II-V-I. |
 | [DR-006](DR-006.md) | Progreso local y PWA. |
 | [DR-007](DR-007.md) | Cierre, documentación y DTS. |
+| [DR-008](DR-008.md) | Modo estudio, movimiento de voces y transposición. |
 
-Pedir: «Lee CLAUDE.md y docs/work-orders/DR-001.md. Ejecuta solo DR-001 y entrega para revisión». No avanzar automáticamente a la siguiente tarea. Registrar nuevas decisiones en docs/DECISIONS.md.
+Pedir: «Lee CLAUDE.md y docs/work-orders/DR-008.md. Ejecuta solo DR-008 y entrega para revisión». No avanzar automáticamente a la siguiente tarea. Registrar nuevas decisiones en docs/DECISIONS.md.
 
-## Bloques
+## Bloques históricos
 
-El usuario puede autorizar expresamente, en su petición, un bloque de órdenes consecutivas. Los bloques admitidos son:
+Los bloques usados para la primera versión fueron:
 
 | Bloque | Órdenes | Rama |
 | --- | --- | --- |
 | Reconocimiento | DR-003 y DR-004 | feat/recognition-game |
 | Rutas | DR-005 | feat/ii-v-i-game |
-| Cierre | DR-006 y DR-007 | la que nombre el usuario; por defecto feat/progress-and-pwa |
+| Cierre | DR-006 y DR-007 | feat/progress-and-pwa |
 
-Una rama por bloque, pruebas dirigidas entre fases con sus resultados registrados, sin aprobación intermedia salvo contradicción importante o decisión del usuario, batería final una vez sobre el bloque completo y revisión humana al terminar. No se enlaza ningún bloque con el siguiente ni se hace commit, merge o push sin orden expresa. Si el bloque incluye DR-007 rigen sus reglas de cierre documental.
-
-DR-001 a DR-006 mantienen DTS Markdown, README y registros al día y ejecutan las comprobaciones aplicables. LaTeX/PDF, manuales completos, capturas y revisión visual documental se concentran en DR-007. La comprobación documental estricta se exige en ese cierre.
+La primera versión quedó integrada en `main`. Las ampliaciones posteriores se abren como una nueva orden y una nueva rama por objetivo. Una aprobación funcional no autoriza por sí sola commit, merge, tag, push o publicación; esas acciones siguen las reglas de AGENTS.md.
