@@ -134,7 +134,8 @@
     padding: 1.5rem 2rem 3rem;
   }
 
-  .study-workspace {
+  /* Más específico que la base móvil de study.css para que el orden de los CSS empaquetados no pueda devolverlo a flex. */
+  .study .study-workspace {
     display: grid;
     grid-template-columns: minmax(18rem, 22rem) minmax(0, 1fr);
     gap: 2rem;
