@@ -132,7 +132,7 @@ export function verify(catalog: Catalog, state: SessionState, routes: RoutesDocu
   }
 }
 
-/** Siguiente pregunta tras verificar, con la misma configuración y sin repetir la anterior. */
+/** Siguiente pregunta tras verificar: conserva la ronda de reconocimiento y su configuración. */
 export function next(
   catalog: Catalog,
   state: SessionState,

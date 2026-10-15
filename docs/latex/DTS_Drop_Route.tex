@@ -1,4 +1,4 @@
-% Source-SHA256: 52a49b91c7b6f64a631ebf30aa391cab00b35ed22bfbc3058c08ef195571e002
+% Source-SHA256: 39d87a7254130a31a0d24d4ff98e3e859fec9cce80c3b4e6d63cda0c816affd0
 % !TeX program = lualatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
@@ -29,7 +29,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[C]{\small\sffamily\color{softgray}Drop Route --- Diseño Técnico del Software}
-\fancyfoot[L]{\small\sffamily\color{softgray}Base reconstruida y DR-001 · 13/10/2026}
+\fancyfoot[L]{\small\sffamily\color{softgray}Revisión parcial 1.0.0 · 15/10/2026}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
@@ -63,7 +63,7 @@
 \fill[white] (8.75,2) circle (0.2);
 \fill[lightblue] (8.75,2.5) circle (0.2);
 \end{scope}
-\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión:} base reconstruida y DR-001 · 13/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} juego pendiente de implementación};
+\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión parcial:} rotación y versión 1.0.0 · 15/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} aplicación de estudio y práctica};
 \end{tikzpicture}
 \end{titlepage}
 \restoregeometry
@@ -314,11 +314,28 @@ La sesión implementa ese modelo con tres fases: \texttt{menu},
 pero no verifica ni puntúa. Verificar solo actúa con la respuesta
 completa del nivel, calcula el resultado una sola vez y bloquea la
 respuesta; verificar de nuevo, cambiar campos o mover grados después no
-hace nada. Siguiente abre otra pregunta con la misma configuración sin
-repetir la forma anterior mientras haya alternativas (cada set tiene
-16). Salir vuelve al menú y conserva la última configuración. Esa sesión
-es la misma de DR-003 a DR-005: DR-006 no la modifica, la envuelve con
-el progreso.
+hace nada. Siguiente abre otra pregunta con la misma configuración. En
+reconocimiento descarta todas las formas que ya salieron en esa ronda,
+hasta agotar las disponibles (actualmente 16 por set). Salir vuelve al
+menú y conserva la última configuración.
+
+Desde 1.0.0, \texttt{RecognitionQuestion.roundVoicingIds} conserva las
+tarjetas ya mostradas en la ronda. \texttt{createQuestion} elige con
+igual probabilidad entre las pendientes; al agotarlas reinicia la ronda
+y excluye de su primera elección la tarjeta inmediatamente anterior,
+salvo que solo exista una. La lista no se muta y queda acotada al tamaño
+del set. Verificar conserva la misma pregunta y Siguiente recibe su
+historial, también en Medio y Difícil. El orden de los cuatro botones se
+sigue barajando por separado. La rotación es memoria de la partida:
+Salir y empezar de nuevo o recargar inicia otra; no se guarda en los
+contadores ni exige cambiar el esquema de persistencia. El selector de
+rutas no cambia.
+
+\texttt{App} muestra una etiqueta de versión en todas sus pantallas,
+incluida la de estudio. Importa únicamente \texttt{version} de
+\texttt{package.json}, sin duplicar un número en los componentes ni
+restaurar el antiguo bloque informativo. La versión del paquete queda
+fijada en 1.0.0 para esta entrega.
 
 \hypertarget{progreso-local-dr-006}{%
 \subsection{Progreso local (DR-006)}\label{progreso-local-dr-006}}
@@ -351,11 +368,11 @@ el documento completo tras cada acción que cambie la configuración o los
 contadores. Al abrir se vuelve siempre al menú: una pregunta abierta no
 se reanuda, solo se conserva la configuración.
 
-El esquema vigente es el 1. Es independiente de la versión del paquete
-(0.0.0): cambiar la versión de la aplicación no cambia el esquema, y
-cambiar el formato exige subir el esquema y añadir una migración. La
-cadena de migraciones (\texttt{MIGRATIONS}) convierte cada versión n en
-la n + 1. El esquema 0 es un fixture de prueba
+El esquema vigente es el 1. Es independiente de la versión del paquete:
+cambiar la versión de la aplicación no cambia el esquema, y cambiar el
+formato exige subir el esquema y añadir una migración. La cadena de
+migraciones (\texttt{MIGRATIONS}) convierte cada versión n en la n + 1.
+El esquema 0 es un fixture de prueba
 (\texttt{src/progress/fixtures/schema-0.json}): un formato inventado,
 con \texttt{counters} y pares \texttt{{[}intentos,\ aciertos{]}}, que no
 corresponde a ninguna versión pública, porque Drop Route no había
@@ -953,8 +970,9 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
   pruebas de actualización usan un servidor propio y no un alojamiento
   real.
 \item
-  No hay flujo de despliegue ni alojamiento elegido; el paquete sigue en
-  0.0.0.
+  La aplicación está publicada en GitHub Pages. El paquete de la
+  revisión actual es 1.0.0; la versión visible procede de ese metadato y
+  el esquema de progreso permanece en 1.
 \item
   Las tarjetas no dibujan la sustitución C6 de la plantilla ni la añaden
   a los ejercicios, pero su ventana cuenta el traste de la sexta como la

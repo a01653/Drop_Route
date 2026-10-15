@@ -16,7 +16,7 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R06 | Verificar habilitado con respuesta completa. Seleccionar no verifica. |
 | R07 | Tras verificar, bloquear respuesta, marcar resultado con rojo/verde y texto, conservar lo contestado y mostrar solución. |
 | R08 | Corregir acorde, inversión y cada grado por separado; acierto completo exige todos los campos del nivel. |
-| R09 | Siguiente genera otra pregunta; sesión libre hasta Salir. |
+| R09 | Siguiente genera otra pregunta; en reconocimiento se sortean con el mismo peso las tarjetas pendientes, sin repetir ninguna hasta agotar el set. Al empezar otra ronda tampoco se repite la última tarjeta si existe una alternativa. Sesión libre hasta Salir. |
 | R10 | Salir vuelve al menú. |
 | R11 | Rutas: elegir mayor/menor y un set con datos. Partida siempre visible. |
 | R12 | Una candidata dibujada cada vez, botones 1/2/3/4 y deslizamiento opcional. |
@@ -33,6 +33,7 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R23 | En modo estudio, transponer las formas a las 12 tonalidades cromáticas desplazando todas sus voces la misma cantidad. Se usa el desplazamiento más corto que no produzca trastes negativos; en una ruta II-V-I se usa un desplazamiento común para conservar la conducción de voces. |
 | R24 | En modo estudio, reproducir la variante de sexta que muestra la fuente para Cmaj7: la 7ª mayor baja dos trastes y pasa a grado 6, se rotula Cmaj7 – C6 y se transpone de la misma forma a las demás tonalidades. Sigue sin ser una calidad evaluable y los JSON fuente no se modifican. |
 | R25 | La interfaz debe ser responsive de verdad: en móvil mantiene el flujo vertical y sin desplazamiento horizontal; a partir de escritorio aprovecha el ancho con configuración y contenido en columnas, sin estirar el mástil corto hasta convertirlo en un mástil completo. |
+| R26 | Mostrar la versión de la aplicación como una etiqueta pequeña en el menú, los juegos y el modo estudio, obtenida de `package.json`. |
 
 ## Datos de rutas
 

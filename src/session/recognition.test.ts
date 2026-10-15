@@ -105,6 +105,39 @@ describe('preguntas de reconocimiento (R02)', () => {
     }
     expect(seen.size).toBe(16)
   })
+
+  for (const difficulty of ['easy', 'medium', 'hard'] as const) {
+    it.each(SET_IDS)(`${difficulty}: cada ronda recorre todo %s una vez, incluso con azar constante`, (setId) => {
+      const pool = questionPool(catalog, setId)
+      let previous: ReturnType<typeof createQuestion> | undefined
+      for (let round = 0; round < 4; round += 1) {
+        const seen: string[] = []
+        for (let i = 0; i < pool.length; i += 1) {
+          const question = createQuestion(catalog, config(setId, difficulty), () => 0, previous)
+          expect(question.voicingId).not.toBe(previous?.voicingId)
+          seen.push(question.voicingId)
+          previous = question
+        }
+        expect([...seen].sort()).toEqual(pool.map((item) => item.id).sort())
+      }
+    })
+  }
+
+  it('con once formas disponibles muestra las once antes de repetir, también con azar en el extremo superior', () => {
+    const fixture = { ...catalog, voicings: questionPool(catalog, 'D2S1').slice(0, 11) }
+    let previous: ReturnType<typeof createQuestion> | undefined
+    for (let round = 0; round < 3; round += 1) {
+      const seen = new Set<string>()
+      for (let i = 0; i < 11; i += 1) {
+        const question = createQuestion(fixture, config('D2S1'), () => 0.999999, previous)
+        expect(seen.has(question.voicingId)).toBe(false)
+        expect(question.voicingId).not.toBe(previous?.voicingId)
+        seen.add(question.voicingId)
+        previous = question
+      }
+      expect(seen.size).toBe(11)
+    }
+  })
 })
 
 describe('respuesta completa por nivel (R03, R04, R06)', () => {

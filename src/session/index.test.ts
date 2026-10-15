@@ -139,6 +139,22 @@ describe('siguiente y salir (R09, R10)', () => {
     }
   })
 
+  it('Siguiente conserva las tarjetas descartadas al verificar y completa cada ronda sin repeticiones', () => {
+    let state = started('easy', 'D3S2', 1)
+    let lastId: string | undefined
+    for (let round = 0; round < 3; round += 1) {
+      const seen = new Set<string>()
+      for (let i = 0; i < 16; i += 1) {
+        expect(state.question.voicingId).not.toBe(lastId)
+        expect(seen.has(state.question.voicingId)).toBe(false)
+        seen.add(state.question.voicingId)
+        lastId = state.question.voicingId
+        state = asQuestion(next(catalog, finish(state), 1))
+      }
+      expect(seen.size).toBe(16)
+    }
+  })
+
   it('salir vuelve al menú desde cualquier fase y conserva la configuración', () => {
     const state = started('medium', 'D24S2')
     expect(exit(state)).toEqual({ phase: 'menu', config: state.config })

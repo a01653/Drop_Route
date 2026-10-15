@@ -30,6 +30,8 @@ export interface RecognitionQuestion {
   difficulty: Difficulty
   /** Orden de los botones de acorde en fácil: una permutación de las calidades evaluables. */
   qualityOrder: QualityKey[]
+  /** Formas ya mostradas en la ronda actual. Solo vive en la sesión, nunca en el progreso guardado. */
+  roundVoicingIds: readonly string[]
 }
 
 export function voicingOf(catalog: Catalog, question: Pick<RecognitionQuestion, 'voicingId'>): Voicing {
@@ -39,18 +41,20 @@ export function voicingOf(catalog: Catalog, question: Pick<RecognitionQuestion, 
 }
 
 /**
- * Elige la siguiente pregunta. Si hay alternativas en el set no repite la forma de la pregunta anterior; con
- * una única forma disponible la repite, porque no hay otra.
+ * Sortea entre las formas pendientes, todas con el mismo peso. Agota el set antes de iniciar otra ronda
+ * y evita repetir la última forma al cruzar de ronda, salvo que solo exista una.
  */
 export function createQuestion(
   catalog: Catalog,
   config: GameConfig,
   rng: Rng,
-  previous?: Pick<RecognitionQuestion, 'number' | 'voicingId'>,
+  previous?: Pick<RecognitionQuestion, 'number' | 'voicingId' | 'setId' | 'roundVoicingIds'>,
 ): RecognitionQuestion {
   const pool = questionPool(catalog, config.setId)
   if (pool.length === 0) throw new Error(`No hay formas evaluables en ${config.setId}`)
-  const alternatives = pool.filter((voicing) => voicing.id !== previous?.voicingId)
+  const played = previous?.setId === config.setId ? previous.roundVoicingIds : []
+  const pending = pool.filter((voicing) => !played.includes(voicing.id))
+  const alternatives = pending.length > 0 ? pending : pool.filter((voicing) => voicing.id !== previous?.voicingId)
   const voicing = pickOne(alternatives.length > 0 ? alternatives : pool, rng)
   return {
     number: (previous?.number ?? 0) + 1,
@@ -58,6 +62,7 @@ export function createQuestion(
     setId: config.setId,
     difficulty: config.difficulty,
     qualityOrder: shuffle(answerQualities(catalog), rng),
+    roundVoicingIds: pending.length > 0 ? [...played, voicing.id] : [voicing.id],
   }
 }
 
@@ -110,7 +115,7 @@ export interface RecognitionResult {
  * Corrige por campos. La inversión esperada sale del bajo físico de la forma, no de la etiqueta que
  * lleve el dato ni del orden de sus notas.
  */
-export function evaluate(catalog: Catalog, question: RecognitionQuestion, answer: RecognitionAnswer): RecognitionResult {
+export function evaluate(catalog: Catalog, question: Pick<RecognitionQuestion, 'voicingId' | 'difficulty'>, answer: RecognitionAnswer): RecognitionResult {
   const voicing = voicingOf(catalog, question)
   const inversion = inversionFromBass(voicing, catalog)
   if (inversion === null) throw new Error(`El bajo de ${voicing.id} no es una nota del acorde`)
