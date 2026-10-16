@@ -1,0 +1,30 @@
+name: Publish annotated tag v1.0.1
+on:
+  push:
+    branches: [release/publish-tag-v1.0.1-63a184f]
+permissions:
+  contents: write
+jobs:
+  publish-tag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: 63a184fd5777bd75883b573d4a78eecc68c9b4c0
+          fetch-depth: 0
+      - name: Publish verified annotated tag
+        run: |
+          set -eu
+          tag_object=$(git hash-object -t tag -w --stdin <<'ANNOTATED_TAG'
+          object 63a184fd5777bd75883b573d4a78eecc68c9b4c0
+          type commit
+          tag v1.0.1
+          tagger Codex <codex@openai.com> 1792139933 +0200
+          
+          v1.0.1: C6 en preguntas y corrección completa en móvil
+          ANNOTATED_TAG
+          )
+          test "$tag_object" = "c1d1b3b63fc94d86395505d94bec37d252814d87"
+          git update-ref refs/tags/v1.0.1 "c1d1b3b63fc94d86395505d94bec37d252814d87"
+          git push origin refs/tags/v1.0.1
