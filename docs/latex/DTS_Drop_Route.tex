@@ -1,7 +1,9 @@
-% Source-SHA256: aa91fedb0c69ed50003d909b6de99d054db19a038e915ac1b018b380d0466706
-% !TeX program = lualatex
+% Source-SHA256: 7c2c1ecd42e57c1023f42d2022fe89943281115c8e438d98605133f2f1dd27e2
+% !TeX program = xelatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
+\usepackage{newunicodechar}
+\newunicodechar{♭}{\ensuremath{\flat}}
 \IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
 \IfFontExistsTF{TeX Gyre Heros}{\setsansfont{TeX Gyre Heros}}{\setsansfont{Nimbus Sans}}
 \IfFontExistsTF{TeX Gyre Cursor}{\setmonofont{TeX Gyre Cursor}[Scale=0.88]}{\setmonofont{Nimbus Mono PS}[Scale=0.88]}
@@ -29,7 +31,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[C]{\small\sffamily\color{softgray}Drop Route --- Diseño Técnico del Software}
-\fancyfoot[L]{\small\sffamily\color{softgray}Revisión parcial 1.0.1 · 15/10/2026}
+\fancyfoot[L]{\small\sffamily\color{softgray}Revisión parcial 1.0.2 · 16/10/2026}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
@@ -63,7 +65,7 @@
 \fill[white] (8.75,2) circle (0.2);
 \fill[lightblue] (8.75,2.5) circle (0.2);
 \end{scope}
-\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión parcial:} versión 1.0.1 y corrección móvil · 15/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} aplicación de estudio y práctica};
+\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión parcial:} versión 1.0.2 y lectura por tónica · 16/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} aplicación de estudio y práctica};
 \end{tikzpicture}
 \end{titlepage}
 \restoregeometry
@@ -558,6 +560,19 @@ cuál se dibuja. La clave de familia y el progreso siguen siendo
 Difícil contiene siempre 6 y 7; no se acepta uno por el otro. Los JSON
 originales no cambian.
 
+La revisión 1.0.2 indica «Tónica: C» antes de responder, en los tres
+niveles. No marca su ubicación en el diagrama. Tras verificar,
+\texttt{src/music/tonicReading.ts} identifica la raíz mediante afinación
+y traste, sin depender de las etiquetas de grado ni del orden de las
+notas. Solo para las notas de sexta mayor o menor séptima explica la
+lectura equivalente: C6/Am7 o Cm7/E♭6, con la inversión obtenida del
+bajo físico respecto a la raíz alternativa. No añade respuestas
+equivalentes aceptadas: la corrección sigue referida a la tónica
+anunciada. La autoría «Creado por Jesús Quevedo Rodríguez» se muestra en
+un pie común después de la pantalla, sin posición fija ni superposición
+de controles. No cambia el catálogo, las rutas, el esquema de progreso
+ni la selección de preguntas.
+
 \Needspace{4cm}
 \hypertarget{muxf3vil-y-accesibilidad}{%
 \section{Móvil y accesibilidad}\label{muxf3vil-y-accesibilidad}}
@@ -990,9 +1005,10 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
   pruebas de actualización usan un servidor propio y no un alojamiento
   real.
 \item
-  La aplicación está publicada en GitHub Pages. El paquete de esta
-  revisión es 1.0.1; la versión visible procede de ese metadato y el
-  esquema de progreso permanece en 1.
+  GitHub Pages publica la aplicación desde \texttt{main}. El paquete de
+  esta entrega es 1.0.2; la versión visible procede de ese metadato y el
+  esquema de progreso permanece en 1. El estado del despliegue se
+  comprueba en GitHub Actions.
 \item
   Reconocimiento, estudio y revisión muestran las nueve variantes C6 de
   la fuente sobre copias derivadas. El juego de rutas conserva los pasos

@@ -111,3 +111,7 @@ docs:check sigue verificando la documentación y la integridad de los derivados 
 ## Ajuste de reconocimiento 1.0.1 (15/10/2026)
 
 El usuario pidió aplicar en las preguntas la sexta que ya se muestra en estudio. Se comparte la transformación en la capa musical para las nueve variantes de la fuente, sin editar los JSON. La vista neutra tiene cuatro notas activas; al corregir se recupera la séptima gris de referencia. Se mantiene una opción mayor fija, «Cmaj7 / C6», en todas las preguntas: cambia la forma evaluada, no las opciones ni el número de tarjetas. Difícil incluye siempre ocho grados, con 6 y 7, y corrige la sexta como 6. El bajo se calcula con 0,4,7,9 para C6. Esto sustituye las restricciones anteriores de C6 solo en estudio y del banco de siete grados; el juego de rutas mantiene sus pasos canónicos.
+
+## Lectura por tónica y autoría 1.0.2 (16/10/2026)
+
+Las preguntas anuncian la tónica en la cabecera. La corrección localiza su nota y explica las lecturas C6/Am7 o Cm7/E♭6 después de verificar. No se aceptan inversiones correspondientes a otra raíz: la respuesta se evalúa respecto a la referencia anunciada. La equivalencia se calcula a partir de las notas físicas, sin cambiar el catálogo. La tónica se coloca en la cabecera para conservar el espacio del banco de grados y los gestos de arrastre en escritorio. La autoría común aparece después de cada pantalla. El usuario autorizó commit, merge, push y publicación de esta versión el 16/10/2026.

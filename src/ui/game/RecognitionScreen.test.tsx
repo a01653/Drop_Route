@@ -65,6 +65,18 @@ describe('pregunta media (R04)', () => {
 })
 
 describe('la pregunta no da pistas (R02, R15)', () => {
+  it('fija C como tónica en todos los niveles, sin localizarla ni adelantar equivalencias', () => {
+    for (const difficulty of ['easy', 'medium', 'hard'] as const) {
+      const state = start(catalog, configure(catalog, createSession(catalog), { difficulty }), 9) as QuestionState
+      const html = render(state)
+      expect(html).toContain('<strong>Tónica: C</strong>')
+      expect(html).not.toContain('lectura-tonica')
+      expect(html).not.toContain('Am7')
+      expect(html).not.toContain('E♭6')
+      expect(html).not.toContain('La tónica está en')
+    }
+  })
+
   it('la tarjeta es neutra y nada del DOM revela acorde, inversión ni grados antes de verificar', () => {
     for (const difficulty of ['easy', 'medium'] as const) {
       for (const setId of catalog.sets.map((set) => set.id)) {
@@ -96,6 +108,20 @@ describe('la pregunta no da pistas (R02, R15)', () => {
 })
 
 describe('verificación (R07, R08)', () => {
+  it.each([
+    ['d2s1-maj7-i3', 'C6', 'la cuerda 1, traste 8', 'Am7', 'fundamental'],
+    ['d2s1-m7-i0', 'Cm7', 'la cuerda 4, traste 10', 'E♭6', '3ª inversión'],
+  ])('%s: explica la tónica y la lectura equivalente solo al corregir', (id, name, location, alias, inversion) => {
+    const initial = open('medium')
+    const state = { ...initial, question: { ...initial.question, voicingId: id! } }
+    const shape = truth(state)
+    const html = render(answered(state, shape.quality, shape.inversion))
+    expect(html).toContain(`se lee <strong>${name}</strong>`)
+    expect(html).toContain(`La tónica está en ${location}.`)
+    expect(html).toContain(`Las mismas notas forman <strong>${alias}</strong>`)
+    expect(html).toContain(`La inversión pasa a ser <strong>${inversion}</strong>`)
+  })
+
   it('acierto: bloquea la respuesta, conserva lo contestado y muestra la solución', () => {
     const state = open('medium')
     const voicing = truth(state)

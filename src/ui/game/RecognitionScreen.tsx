@@ -1,6 +1,7 @@
 import { Fragment, useId } from 'react'
 import { catalog } from '../../data'
 import type { Degree, Inversion, QualityKey } from '../../data'
+import { tonicReading } from '../../music/tonicReading'
 import { DIFFICULTIES, DROP_LABELS, answerQualities, answerQualityLabel, isAnswerComplete, voicingOf } from '../../session'
 import type { FieldResult, QuestionState, SessionAction, VerifiedState } from '../../session'
 import { FretboardCard } from '../card/FretboardCard'
@@ -61,6 +62,7 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
   const voicing = voicingOf(catalog, question)
   const position = toPosition(voicing, catalog)
   const solution = verified ? toSolution(voicing, catalog) : null
+  const reading = verified ? tonicReading(voicing, catalog) : null
   const set = catalog.sets.find((item) => item.id === question.setId)
   const complete = isAnswerComplete(question.difficulty, answer)
   const hintId = useId()
@@ -77,6 +79,7 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
         </button>
         <p>
           {DROP_LABELS[config.drop]} · set {set?.number} · {difficultyLabel}
+          <span className="juego-tonica"><strong>Tónica: {voicing.root}</strong></span>
         </p>
       </header>
 
@@ -213,6 +216,21 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
           <h2 id="resultado-titulo" tabIndex={-1} ref={resultHeading}>
             {headline(result.fields)}
           </h2>
+          {reading && (
+            <div className="lectura-tonica">
+              <p>
+                Con tónica <strong>{voicing.root}</strong>, se lee <strong>{reading.name}</strong>. La tónica está en{' '}
+                {reading.roots.map((note) => `la cuerda ${note.string}, traste ${note.fret}`).join(' y ')}.
+              </p>
+              {reading.equivalent && (
+                <p>
+                  Las mismas notas forman <strong>{reading.equivalent.name}</strong> si tomas{' '}
+                  <strong>{reading.equivalent.root}</strong> como tónica. La inversión pasa a ser{' '}
+                  <strong>{inversionName(reading.equivalent.inversion).toLowerCase()}</strong>.
+                </p>
+              )}
+            </div>
+          )}
           {result.fields.length > 1 && (
             <p className="resumen">
               {result.fields.filter((item) => item.correct).length} de {result.fields.length} campos correctos.

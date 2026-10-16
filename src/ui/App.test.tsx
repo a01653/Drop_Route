@@ -21,6 +21,10 @@ describe('menú de arranque', () => {
     expect(html).not.toContain('Versión actual')
   })
 
+  it('muestra la autoría al pie de la aplicación', () => {
+    expect(html).toContain('<footer class="app-author">Creado por Jesús Quevedo Rodríguez</footer>')
+  })
+
   it('muestra el progreso sin las cifras del bloque informativo eliminado', () => {
     expect(html).toContain('Tu progreso')
     expect(html).not.toContain('Posiciones de juego')

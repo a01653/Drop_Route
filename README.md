@@ -79,6 +79,8 @@ La opción mayor se llama **Cmaj7 / C6** en todas las preguntas. Las formas que 
 
 Las tarjetas salen al azar entre las que quedan por mostrar: se recorre todo el set antes de repetir. Después empieza otra ronda, evitando repetir seguidas la última tarjeta y la primera de la ronda nueva. La versión instalada aparece arriba, en una etiqueta pequeña.
 
+Cada pregunta indica **Tónica: C**. La inversión y los grados se interpretan respecto a esa referencia, aunque las mismas notas admitan otro nombre. Tras verificar, la corrección localiza la tónica por cuerda y traste y explica las lecturas equivalentes **C6/Am7** y **Cm7/E♭6**, con su inversión calculada desde el bajo real. Durante la pregunta, los círculos permanecen neutros. Al pie aparece «Creado por Jesús Quevedo Rodríguez».
+
 En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas.
 
 Los juegos evaluables se practican en C.

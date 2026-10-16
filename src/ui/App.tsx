@@ -58,6 +58,7 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
         />
       )}
       {screen}
+      <footer className="app-author">Creado por Jesús Quevedo Rodríguez</footer>
     </>
   )
 }
