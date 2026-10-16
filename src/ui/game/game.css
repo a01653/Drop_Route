@@ -140,6 +140,25 @@ h2:focus-visible {
   margin: 0;
 }
 
+.juego-tonica {
+  display: block;
+  color: var(--tinta);
+}
+
+.lectura-tonica {
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--borde);
+  font-size: 0.9375rem;
+}
+
+.lectura-tonica p {
+  margin: 0 0 0.5rem;
+}
+
+.lectura-tonica p:last-child {
+  margin-bottom: 0;
+}
+
 .juego-pie {
   margin: 0.25rem 0 0;
   text-align: center;

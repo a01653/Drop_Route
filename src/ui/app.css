@@ -30,6 +30,15 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.app-author {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  color: var(--tinta-suave);
+  font-size: 0.75rem;
+}
+
 .arranque {
   display: flex;
   flex-direction: column;

@@ -34,6 +34,8 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R24 | Reproducir la variante de sexta de la fuente en estudio, revisión y reconocimiento: la 7ª mayor baja dos trastes y pasa a 6; se rotula Cmaj7 – C6 al revelar la solución, con la séptima gris de referencia. En Difícil se evalúa 6 y se ofrece siempre un banco de ocho grados. El bajo se calcula con la fórmula C6 cuando corresponde. En estudio se transpone junto con la referencia. No se añade una quinta calidad ni se modifican los JSON fuente. |
 | R25 | La interfaz debe ser responsive de verdad: en móvil mantiene el flujo vertical y sin desplazamiento horizontal; al verificar muestra el resultado y Siguiente completos si caben, o comienza por el título y permite desplazarse si la corrección es más alta que la pantalla. A partir de escritorio aprovecha el ancho con configuración y contenido en columnas, sin estirar el mástil corto hasta convertirlo en un mástil completo. |
 | R26 | Mostrar la versión de la aplicación como una etiqueta pequeña en el menú, los juegos y el modo estudio, obtenida de `package.json`. |
+| R27 | Indicar la tónica de referencia antes de responder en reconocimiento. Corregir inversión y grados respecto a ella; tras verificar, localizarla por cuerda y traste y explicar C6/Am7 y Cm7/E♭6 con la inversión de la lectura equivalente. No señalar la posición de la tónica ni adelantar la equivalencia durante la pregunta. |
+| R28 | Mostrar «Creado por Jesús Quevedo Rodríguez» en pequeño al pie, después del contenido y sin superponer controles. |
 
 ## Datos de rutas
 

@@ -44,6 +44,8 @@ Selección por familia y set, fácil correcto/incorrecto, medio con inversión f
 
 Usar fixtures o semilla solo en entorno de prueba. No depender del azar de producción. Probar sobre build actual.
 
+`tonic-reading.spec.ts` comprueba la tónica visible, el rechazo de una inversión propia de la lectura equivalente y la explicación posterior de C6/Am7 y Cm7/E♭6. Antes de verificar no aparecen ubicaciones ni equivalencias. También mide la autoría al pie en menú, juego y estudio a 360×640, sin solapamiento ni desplazamiento horizontal. `src/session/tonic-reading.test.ts` usa dos posiciones físicas independientes, cambia su raíz sin mover las notas y comprueba que cambia la inversión; además, verifica las 112 formas evaluables y que la lectura no modifica sus datos.
+
 ## Flujo
 
 Pruebas dirigidas durante ajustes y batería completa al cierre. DR-001 añadió Vitest, lint, build y Playwright, conservando los tests musicales y sus oráculos con node:test. Vitest amplía configDefaults.exclude con e2e, tests y los worktrees, sin eliminar los valores predeterminados; un test de configuración lo comprueba.
