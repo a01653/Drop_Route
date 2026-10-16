@@ -44,10 +44,14 @@ Comparar con nuestra ruta exacta. En el juego, las cuatro candidatas de una preg
 
 La fuente HTML es autoridad de las posiciones normalizadas. Los PDF son guías de imágenes de Pedro Bellora; sus 42 páginas no se han transcrito íntegramente. Para añadir rutas se exige transcripción, auditoría física y oráculos independientes.
 
-Preguntas de reconocimiento (DR-003 y DR-004): se eligen entre las 16 formas evaluables del set y la inversión esperada sale del bajo físico. El banco de grados de la dificultad difícil es fijo: 1, 3, b3, 5, b5, 7 y b7. Se comparan tal cual con el grado de cada nota: b3 no equivale a 3, ni b5 a 5, ni b7 a 7.
+Preguntas de reconocimiento: se eligen entre las 16 formas del set y la inversión esperada sale del bajo físico. El banco de Difícil es fijo: 1, 3, b3, 5, b5, 6, 7 y b7. Se comparan tal cual con cada nota: 6 no equivale a 7, b3 a 3, b5 a 5 ni b7 a 7.
 
 ## Variante C6 de la fuente
 
 C6 no es una quinta calidad evaluable. `data/catalog.json` mantiene Cmaj7 y `data/routes.json` conserva `sourceOptionalSubstitution: "C6"` cuando la propia fuente cita esa alternativa.
 
-En modo estudio y en la revisión de tarjetas se reproduce esa lectura sobre una copia derivada: la voz con grado 7 baja dos trastes, pasa a grado 6 y el nombre se muestra como `Cmaj7 – C6`. La séptima original se conserva como círculo gris de referencia, con su etiqueta 7; no es una quinta voz activa ni interviene en el cálculo del movimiento. Al transponer en estudio se desplazan tanto la sexta como esa referencia (`Dmaj7 – D6`, etc.) sin reescribir los JSON ni cambiar los juegos evaluables. La regla de la plantilla original se aplica a los Cmaj7 de 3ª inversión y, en Drop 2+4, también a los de 1ª inversión. En las rutas se respeta exclusivamente donde `sourceOptionalSubstitution` lo indica. La vista neutra de revisión oculta la séptima de referencia y todas las etiquetas.
+Estudio, revisión y preguntas de reconocimiento comparten la transformación pura de `src/music/sourceSixth.ts`: la voz con grado 7 baja dos trastes, pasa a grado 6 y se rotula `Cmaj7 – C6`. Son nueve formas: todas las terceras inversiones mayores y, en Drop 2+4, también las primeras. La séptima original se conserva en gris al revelar la solución; no es una quinta voz activa. La vista neutra solo muestra las cuatro posiciones activas, sin la referencia ni etiquetas.
+
+En reconocimiento se ofrece siempre la opción conjunta `Cmaj7 / C6`, para no revelar la variante mediante los botones. La clave interna de la familia continúa siendo `maj7`; se evalúan los grados de la forma dibujada. Para el bajo de una variante C6 se usa la fórmula 0,4,7,9: el bajo 6 corresponde a la tercera inversión y no se fuerza a séptima. Los JSON originales, el número de tarjetas por set y el esquema de progreso no cambian.
+
+Al transponer en estudio se desplazan la sexta y la referencia gris (`Dmaj7 – D6`, etc.), sin sumar esta última al movimiento. Las rutas de estudio respetan C6 exclusivamente donde `sourceOptionalSubstitution` lo indica; el juego de rutas conserva sus pasos canónicos.

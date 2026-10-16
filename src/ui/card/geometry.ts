@@ -53,8 +53,8 @@ export const stringY = (string: number): number => AREA_Y + (string - 1) * STRIN
 
 /**
  * Grupos de set e inversión en los que la plantilla dibuja la sustitución opcional C6 sobre el Cmaj7: la
- * séptima mayor bajada dos trastes en su cuerda. C6 no es evaluable ni se dibuja aquí, pero la plantilla
- * cuenta su traste al calcular la ventana (columnStart) y las tarjetas conservan ese encuadre. Solo cambia
+ * séptima mayor bajada dos trastes en su cuerda. Los datos canónicos conservan maj7; la plantilla
+ * cuenta también el traste de la sexta al calcular la ventana (columnStart). Solo cambia
  * la ventana de D24S1 inversión 3, que empieza en el traste 12 y no en el 13; en los otros ocho grupos la
  * sexta no queda por debajo de las demás notas. Lista leída de la plantilla: el E2E la compara con su DOM.
  */
@@ -75,7 +75,7 @@ const C6_FRET_DROP = 2
 /**
  * Ventana común a las cuatro calidades de un set e inversión, como en la plantilla
  * (columnStart): empieza en el traste más bajo del grupo, contando la sexta de C6 en los grupos de
- * TEMPLATE_C6_GROUPS aunque no se dibuje. Así las cuatro tarjetas de una columna comparten fondo y
+ * TEMPLATE_C6_GROUPS, tanto con datos canónicos como con formas derivadas. Las tarjetas comparten fondo y
  * numeración, y la ventana no depende de la calidad contestada. Se amplía por encima de cinco trastes si el
  * grupo lo necesitara.
  */

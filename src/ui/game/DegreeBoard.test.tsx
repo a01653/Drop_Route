@@ -32,7 +32,7 @@ describe('pregunta difícil (R05)', () => {
   it('el banco es el mismo en todas las preguntas y no se reduce a los grados correctos', () => {
     const bank = (state: QuestionState) =>
       [...render(state).matchAll(/class="ficha"[^>]*aria-label="Grado ([^"]+)"/g)].map((match) => match[1])
-    const expected = ['1', '3', 'bemol 3', '5', 'bemol 5', '7', 'bemol 7']
+    const expected = ['1', '3', 'bemol 3', '5', 'bemol 5', '6', '7', 'bemol 7']
     for (const [setId, seed] of [['D2S1', 1], ['D3S2', 9], ['D24S2', 33]] as const) {
       const state = hard(setId, seed)
       expect(bank(state), setId).toEqual(expected)

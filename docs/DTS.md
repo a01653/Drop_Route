@@ -1,7 +1,7 @@
 # Documento de Diseño Técnico del Software - Drop Route
 
-Repositorio: a01653/Drop_Route. Documento base de DR-006 con una revisión parcial del selector de reconocimiento y la versión visible, 15/10/2026.
-Paquete: 1.0.0. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión parcial del 15/10/2026: rotación de reconocimiento y versión visible.
+Repositorio: a01653/Drop_Route. Documento base de DR-006 con una revisión parcial del selector de reconocimiento, la versión visible, las variantes C6 en reconocimiento y el desplazamiento de la corrección en móvil, 15/10/2026.
+Paquete: 1.0.1. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión parcial del 15/10/2026: rotación de reconocimiento, C6 en preguntas y corrección completa en móvil.
 
 Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil y desde DR-005 el juego de rutas II-V-I de Drop 2; todo ello está integrado en main. DR-006 añade el progreso local y la PWA en la rama feat/progress-and-pwa, pendiente de revisión y sin integrar; sus pruebas E2E y la CI de esa fase no tienen todavía resultado registrado. Falta el cierre documental (DR-007). La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
@@ -111,7 +111,7 @@ La sesión implementa ese modelo con tres fases: `menu`, `pregunta` y `verificad
 
 Desde 1.0.0, `RecognitionQuestion.roundVoicingIds` conserva las tarjetas ya mostradas en la ronda. `createQuestion` elige con igual probabilidad entre las pendientes; al agotarlas reinicia la ronda y excluye de su primera elección la tarjeta inmediatamente anterior, salvo que solo exista una. La lista no se muta y queda acotada al tamaño del set. Verificar conserva la misma pregunta y Siguiente recibe su historial, también en Medio y Difícil. El orden de los cuatro botones se sigue barajando por separado. La rotación es memoria de la partida: Salir y empezar de nuevo o recargar inicia otra; no se guarda en los contadores ni exige cambiar el esquema de persistencia. El selector de rutas no cambia.
 
-`App` muestra una etiqueta de versión en todas sus pantallas, incluida la de estudio. Importa únicamente `version` de `package.json`, sin duplicar un número en los componentes ni restaurar el antiguo bloque informativo. La versión del paquete queda fijada en 1.0.0 para esta entrega.
+`App` muestra una etiqueta de versión en todas sus pantallas, incluida la de estudio. Importa únicamente `version` de `package.json`, sin duplicar un número en los componentes ni restaurar el antiguo bloque informativo. La etiqueta se introdujo en 1.0.0; la corrección del desplazamiento en móvil corresponde a 1.0.1.
 
 ### Progreso local (DR-006)
 
@@ -144,7 +144,7 @@ Afinación estándar EADGBE. MIDI al aire, cuerdas 6 a 1: 40,45,50,55,59,64. Alt
 
 Calidades evaluables en C: maj7 (0,4,7,11), 7 (0,4,7,10), m7 (0,3,7,10) y m7(b5) (0,3,6,10). Grados reales, incluidas b3, b5 y b7.
 
-Inversión por bajo real: raíz, tercera, quinta o séptima. No deducirla del primer elemento de un array.
+Inversión por bajo real: raíz, tercera, quinta o séptima (sexta en las variantes C6). No deducirla del primer elemento de un array.
 
 Cdim7 se conserva como referencia: 0,3,6,9 y bb7. La fuente rotula su séptima como °7. El acorde es simétrico y no se evalúa sin fijar raíz y contexto.
 
@@ -183,9 +183,13 @@ Rutas (DR-005). La sesión añade dos fases, `ruta` y `ruta-verificada`. Una pre
 
 La tarjeta de ruta usa la ventana de trastes de su posición física, igual que en reconocimiento, y no la ventana común de la ruta que usa la plantilla: con esa ventana la candidata correcta sería la única con la numeración de trastes de la partida, lo que delataría la respuesta. Tras verificar, «Tu respuesta» y «Solución» se muestran de una en una, de modo que en móvil nunca hay más de dos diagramas a la vez.
 
-Implementado en DR-003 y DR-004: fácil exige solo el acorde, medio acorde e inversión y difícil, además, los cuatro grados. La inversión correcta sale del bajo físico de la forma y no de su etiqueta. En difícil el banco es fijo, igual para todas las preguntas y con siete grados únicos (1, 3, ♭3, 5, ♭5, 7 y ♭7), de modo que sobran tres y no delata la solución; cada grado se compara tal cual con la nota de su círculo, así que ♭3 no es 3. Arrastre, dos toques, teclado y la alternativa «Colocar sin arrastrar» (cuatro botones de 48 px o más, identificados por cuerda y traste, que reflejan el estado de los círculos) envían las mismas acciones a la sesión. Con el dedo, la ficha que se ve en el arrastre va 64 px por encima del punto de contacto para que el dedo no la tape; el destino se calcula con las coordenadas reales del dedo. Tras verificar un error en fácil, el botón elegido se marca en rojo con ✗ y el correcto en verde con ✓, con aria-pressed solo en el elegido y los cuatro botones bloqueados; antes de verificar no hay ninguna marca. La corrección da un resultado por campo (acorde, inversión y cada círculo) con texto, símbolo y color, conserva los aciertos parciales y muestra la solución con la tarjeta de colores.
+Implementado en DR-003 y DR-004: fácil exige solo el acorde, medio acorde e inversión y difícil, además, los cuatro grados. La inversión correcta sale del bajo físico de la forma y no de su etiqueta. En difícil el banco es fijo, igual para todas las preguntas y con ocho grados únicos (1, 3, ♭3, 5, ♭5, 6, 7 y ♭7), de modo que sobran cuatro y no delata la solución; cada grado se compara tal cual con la nota de su círculo, así que ♭3 no es 3. Arrastre, dos toques, teclado y la alternativa «Colocar sin arrastrar» (cuatro botones de 48 px o más, identificados por cuerda y traste, que reflejan el estado de los círculos) envían las mismas acciones a la sesión. Con el dedo, la ficha que se ve en el arrastre va 64 px por encima del punto de contacto para que el dedo no la tape; el destino se calcula con las coordenadas reales del dedo. Tras verificar un error en fácil, el botón elegido se marca en rojo con ✗ y el correcto en verde con ✓, con aria-pressed solo en el elegido y los cuatro botones bloqueados; antes de verificar no hay ninguna marca. La corrección da un resultado por campo (acorde, inversión y cada círculo) con texto, símbolo y color, conserva los aciertos parciales y muestra la solución con la tarjeta de colores.
+
+Desde 1.0.1, `voicingOf` deriva las nueve variantes de sexta mediante `src/music/sourceSixth.ts`, compartido con estudio. Se pregunta la posición con 6 y se conserva la séptima gris solo para la solución. La opción fija «Cmaj7 / C6» agrupa ambas variantes sin revelar cuál se dibuja. La clave de familia y el progreso siguen siendo `maj7`. `evaluate` compara los grados activos y `inversionFromBass` usa 0,4,7,9 en las formas C6. El banco de Difícil contiene siempre 6 y 7; no se acepta uno por el otro. Los JSON originales no cambian.
 
 ## Móvil y accesibilidad
+
+Al verificar reconocimiento o rutas, `useGameFocus` conserva el foco accesible en el título del resultado y desplaza la página solo lo necesario para mostrar la corrección completa y «Siguiente». Respeta el viewport visual y el margen inferior de seguridad. Si la corrección supera la altura disponible, empieza por el título y permite leer el resto desplazándose, sin reducir la letra. El juego desactiva el anclaje automático del navegador para que no deshaga este desplazamiento al sustituir la pregunta por la corrección. La pregunta siguiente vuelve a enfocar su título.
 
 El fondo es el tramo corto de mástil de las tarjetas, no un mástil completo de doce trastes. En rutas, partida arriba, candidata debajo y selector 1/2/3/4; no cuatro candidatas pequeñas simultáneas.
 
@@ -297,15 +301,15 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 - La puntuación detallada sigue pendiente de decisión; los contadores de DR-006 cuentan intentos y aciertos sin más.
 - El icono está aprobado. El PNG de 192 y el maskable de 512 los generó el supervisor con CairoSVG 2.9.1 y no con el Chromium del script; el 512 «any» es el aprobado.
 - La PWA solo se ha probado en Chromium. No se ha comprobado la instalación en un dispositivo real, en Safari ni en Firefox, y las pruebas de actualización usan un servidor propio y no un alojamiento real.
-- La aplicación está publicada en GitHub Pages. El paquete de la revisión actual es 1.0.0; la versión visible procede de ese metadato y el esquema de progreso permanece en 1.
-- Las tarjetas no dibujan la sustitución C6 de la plantilla ni la añaden a los ejercicios, pero su ventana cuenta el traste de la sexta como la plantilla. Por eso las cuatro tarjetas de Drop 2+4 set 1, 3ª inversión, empiezan en el traste 12 y no en el 13, con las mismas notas.
+- La aplicación está publicada en GitHub Pages. El paquete de esta revisión es 1.0.1; la versión visible procede de ese metadato y el esquema de progreso permanece en 1.
+- Reconocimiento, estudio y revisión muestran las nueve variantes C6 de la fuente sobre copias derivadas. El juego de rutas conserva los pasos canónicos; sus variantes opcionales se consultan en estudio.
 - Las fuentes manuscritas pesan 87 kB y se descargan al mostrar tarjetas; hasta entonces el texto usa una fuente de respaldo.
 - El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.
 - Playwright solo prueba Chromium; Firefox y WebKit no están configurados.
 - Python se ejecutó en esta revisión solo con la versión 3.13.7. El mínimo 3.10 se comprobó por gramática y por las API usadas, y lo ejercita la CI, que usa esa versión.
 - Solo se normalizaron las rutas Drop 2 sets 1 y 2 del HTML.
 - Los PDF tienen 21 páginas de imágenes cada uno; no se han transcrito íntegramente.
-- Cdim7 y C6 no son calidades evaluables de la primera etapa.
+- Cdim7 sigue como referencia. C6 se evalúa como variante de la familia mayor en reconocimiento, sin añadir una quinta opción de calidad.
 - Transposición y audio quedan para otra etapa.
 - La reconstrucción conserva contratos y datos, no recupera el commit local perdido byte a byte.
 - Hosting y licencia del código nuevo pendientes; las referencias conservan su autoría.

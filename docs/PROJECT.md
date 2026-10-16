@@ -10,7 +10,7 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | --- | --- |
 | R01 | Elegir juego, Drop, set y dificultad. Mostrar las cuerdas del set. |
 | R02 | Una posición sin respuesta visible por pregunta de reconocimiento. |
-| R03 | Fácil: cuatro botones Cmaj7, C7, Cm7 y Cm7(b5), orden variable. |
+| R03 | Fácil: cuatro botones Cmaj7 / C6, C7, Cm7 y Cm7(b5), orden variable. La opción mayor agrupa ambas variantes y no cambia según la pregunta. |
 | R04 | Medio: dos desplegables, acorde e inversión (Fundamental, 1ª, 2ª, 3ª). |
 | R05 | Difícil: añade colocar grados sobre círculos grises, por arrastre o dos toques. |
 | R06 | Verificar habilitado con respuesta completa. Seleccionar no verifica. |
@@ -31,8 +31,8 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R21 | Modo estudio sin evaluación ni puntuación para consultar voicings por Drop, set, calidad e inversión y las rutas II-V-I completas. |
 | R22 | En estudio de rutas, mostrar II, V e I y permitir ver el movimiento por cuerda en II → V y V → I, incluida la suma de movimiento absoluto de las cuatro voces. |
 | R23 | En modo estudio, transponer las formas a las 12 tonalidades cromáticas desplazando todas sus voces la misma cantidad. Se usa el desplazamiento más corto que no produzca trastes negativos; en una ruta II-V-I se usa un desplazamiento común para conservar la conducción de voces. |
-| R24 | En modo estudio, reproducir la variante de sexta que muestra la fuente para Cmaj7: la 7ª mayor baja dos trastes y pasa a grado 6, se rotula Cmaj7 – C6 y se transpone de la misma forma a las demás tonalidades. Sigue sin ser una calidad evaluable y los JSON fuente no se modifican. |
-| R25 | La interfaz debe ser responsive de verdad: en móvil mantiene el flujo vertical y sin desplazamiento horizontal; a partir de escritorio aprovecha el ancho con configuración y contenido en columnas, sin estirar el mástil corto hasta convertirlo en un mástil completo. |
+| R24 | Reproducir la variante de sexta de la fuente en estudio, revisión y reconocimiento: la 7ª mayor baja dos trastes y pasa a 6; se rotula Cmaj7 – C6 al revelar la solución, con la séptima gris de referencia. En Difícil se evalúa 6 y se ofrece siempre un banco de ocho grados. El bajo se calcula con la fórmula C6 cuando corresponde. En estudio se transpone junto con la referencia. No se añade una quinta calidad ni se modifican los JSON fuente. |
+| R25 | La interfaz debe ser responsive de verdad: en móvil mantiene el flujo vertical y sin desplazamiento horizontal; al verificar muestra el resultado y Siguiente completos si caben, o comienza por el título y permite desplazarse si la corrección es más alta que la pantalla. A partir de escritorio aprovecha el ancho con configuración y contenido en columnas, sin estirar el mástil corto hasta convertirlo en un mástil completo. |
 | R26 | Mostrar la versión de la aplicación como una etiqueta pequeña en el menú, los juegos y el modo estudio, obtenida de `package.json`. |
 
 ## Datos de rutas

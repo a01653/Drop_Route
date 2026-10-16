@@ -1,6 +1,6 @@
 # Drop Route: manual de instalación
 
-Autor: Jesús Quevedo Rodríguez. Paquete 0.0.0, candidato para revisión.
+Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
 
 La aplicación se puede abrir en el navegador o instalar como PWA. La dirección prevista para GitHub Pages es <https://a01653.github.io/Drop_Route/>. Solo debe darse por activa después de que el despliegue de `main` termine correctamente.
 

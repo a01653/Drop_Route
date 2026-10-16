@@ -1,8 +1,8 @@
 # Drop Route: manual de uso
 
-Autor: Jesús Quevedo Rodríguez. Paquete 0.0.0, candidato para revisión.
+Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
 
-Drop Route es un juego para estudiar voicings de guitarra y recorridos II-V-I. Esta entrega trabaja en Do (C), sin audio ni transposición. Guarda el progreso en el navegador del dispositivo; no usa cuentas ni sincroniza datos.
+Drop Route es un juego para estudiar voicings de guitarra y recorridos II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio permite transponer las formas. Guarda el progreso en el navegador del dispositivo; no usa cuentas ni sincroniza datos.
 
 ## 1. Elegir qué practicar
 
@@ -24,7 +24,7 @@ Cada pregunta muestra una tarjeta neutra: ves la posición física de las notas,
 
 ### Fácil
 
-Elige el acorde entre Cmaj7, C7, Cm7 y Cm7(b5). El orden de los botones cambia entre preguntas.
+Elige entre Cmaj7 / C6, C7, Cm7 y Cm7(b5). El orden cambia entre preguntas. La opción mayor agrupa las formas con séptima y con sexta; siempre tiene el mismo nombre para no dar pistas. Cuando la plantilla usa C6, se pregunta esa posición con sexta y, al corregir, la séptima original aparece en gris como referencia. Las formas mantienen cuatro voces activas.
 
 ![Pregunta fácil sin responder.](capturas/facil-pregunta-360.png)
 
@@ -50,7 +50,7 @@ Indica el acorde y la inversión con los dos selectores. La aplicación comprueb
 
 ### Difícil
 
-Además del acorde y la inversión, coloca los cuatro grados sobre los círculos de la tarjeta. El banco incluye 1, 3, ♭3, 5, ♭5, 7 y ♭7. Puedes arrastrar, usar dos toques, teclado o los controles de colocación sin arrastre.
+Además del acorde y la inversión, coloca los cuatro grados sobre los círculos de la tarjeta. El banco incluye siempre 1, 3, ♭3, 5, ♭5, 6, 7 y ♭7. En las variantes con sexta se coloca 6, no 7, en su círculo. Puedes arrastrar, usar dos toques, teclado o los controles de colocación sin arrastre.
 
 ![Pregunta difícil con grados colocados.](capturas/dificil-pregunta-360.png)
 

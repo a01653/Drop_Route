@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useId, useRef, useState } from 'react'
+import { Fragment, useId, useRef, useState } from 'react'
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { catalog, routesDocument } from '../../data'
 import type { Inversion } from '../../data'
@@ -7,6 +7,7 @@ import { DROP_LABELS, ROUTE_MODES, answerStep, candidateSteps, startStep } from 
 import type { RouteQuestionState, RouteVerifiedState, SessionAction } from '../../session'
 import { FretboardCard } from '../card/FretboardCard'
 import { toPosition, toSolution } from '../card/model'
+import { useGameFocus } from './useGameFocus'
 
 const CANDIDATE_COUNT = 4
 /** Desplazamiento horizontal mínimo, en píxeles, para que un gesto cuente como deslizamiento. */
@@ -129,13 +130,8 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
   const set = catalog.sets.find((item) => item.id === question.setId)
   const modeLabel = ROUTE_MODES.find((item) => item.id === config.routeMode)?.label ?? ''
   const stretchLabel = question.target === 'V' ? 'II → V' : 'V → I'
-  const questionHeading = useRef<HTMLHeadingElement>(null)
-  const resultHeading = useRef<HTMLHeadingElement>(null)
+  const { questionHeading, resultHeading, resultPanel } = useGameFocus(question.number, verified)
   const swipe = useRef<{ x: number; y: number } | null>(null)
-
-  useEffect(() => {
-    ;(verified ? resultHeading : questionHeading).current?.focus()
-  }, [question.number, verified])
 
   const select = (index: number) => {
     if (index >= 0 && index < CANDIDATE_COUNT) dispatch({ type: 'candidate', index })
@@ -200,7 +196,7 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
 
       {verified && (
         <>
-          <section className="resultado" aria-labelledby="resultado-titulo">
+          <section className="resultado" aria-labelledby="resultado-titulo" ref={resultPanel}>
             <h2 id="resultado-titulo" tabIndex={-1} ref={resultHeading}>
               {state.result.correct ? 'Es la de nuestra ruta' : 'No es la de nuestra ruta'}
             </h2>

@@ -7,6 +7,7 @@ import type { QuestionState, VerifiedState } from '../../session'
 import { RecognitionScreen } from './RecognitionScreen'
 
 const noop = () => undefined
+const choiceName = (name: string) => name.startsWith('Cmaj7') ? 'Cmaj7 / C6' : name
 const open = (difficulty: 'easy' | 'medium', setId: SetId = 'D2S1', seed = 5): QuestionState => {
   const drop = catalog.sets.find((set) => set.id === setId)!.drop
   return start(catalog, configure(catalog, createSession(catalog), { drop, setId, difficulty }), seed) as QuestionState
@@ -25,9 +26,9 @@ describe('pregunta fácil (R03)', () => {
   const html = render(state)
 
   it('ofrece cuatro botones de acorde, sin desplegables', () => {
-    const labels = [...html.matchAll(/aria-pressed="false"[^>]*>(Cmaj7|C7|Cm7|Cm7\(b5\))</g)].map((match) => match[1])
-    expect([...labels].sort()).toEqual(['C7', 'Cm7', 'Cm7(b5)', 'Cmaj7'])
-    expect(labels).toEqual(state.question.qualityOrder.map((quality) => catalog.qualities[quality].name))
+    const labels = [...html.matchAll(/aria-pressed="false"[^>]*>([^<]+)</g)].map((match) => match[1])
+    expect([...labels].sort()).toEqual(['C7', 'Cm7', 'Cm7(b5)', 'Cmaj7 / C6'])
+    expect(labels).toEqual(state.question.qualityOrder.map((quality) => choiceName(catalog.qualities[quality].name)))
     expect(html).not.toContain('<select')
   })
 
@@ -47,7 +48,7 @@ describe('pregunta media (R04)', () => {
 
   it('ofrece dos desplegables, acorde e inversión, y ningún botón de acorde', () => {
     expect(html.match(/<select/g)).toHaveLength(2)
-    for (const name of ['Cmaj7', 'C7', 'Cm7', 'Cm7(b5)', 'Fundamental', '1ª inversión', '2ª inversión', '3ª inversión']) {
+    for (const name of ['Cmaj7 / C6', 'C7', 'Cm7', 'Cm7(b5)', 'Fundamental', '1ª inversión', '2ª inversión', '3ª inversión']) {
       expect(html).toContain(`>${name}</option>`)
     }
     expect(html).not.toMatch(/aria-pressed/)
@@ -89,7 +90,7 @@ describe('la pregunta no da pistas (R02, R15)', () => {
 
   it('las opciones de acorde son las mismas cuatro para cualquier pregunta', () => {
     const names = (state: QuestionState) =>
-      [...render(state).matchAll(/aria-pressed="false"[^>]*>(Cmaj7|C7|Cm7|Cm7\(b5\))</g)].map((match) => match[1]).sort()
+      [...render(state).matchAll(/aria-pressed="false"[^>]*>([^<]+)</g)].map((match) => match[1]).sort()
     expect(names(open('easy', 'D2S1', 1))).toEqual(names(open('easy', 'D24S2', 77)))
   })
 })
@@ -138,7 +139,7 @@ describe('verificación (R07, R08)', () => {
 
 describe('fácil: marcas tras verificar (ajuste de revisión)', () => {
   const buttonOf = (html: string, name: string) =>
-    new RegExp(`<button[^>]*>${name.replace(/[()]/g, '\\$&')}(?:<span[^>]*>[^<]*</span>)?</button>`).exec(html)![0]
+      new RegExp(`<button[^>]*>${choiceName(name).replace(/[()]/g, '\\$&')}(?:<span[^>]*>[^<]*</span>)?</button>`).exec(html)![0]
   const wrongAnswer = () => {
     const state = open('easy')
     const voicing = truth(state)

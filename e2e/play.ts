@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
-import { SETS, catalog, signature, truth } from './support'
+import { SETS, catalog, choiceName, signature, truth } from './support'
 import type { Note, Voicing } from './support'
 
 // Ayudas compartidas por los E2E de progreso y de modo sin conexión. Juegan solo por la interfaz y toman como
@@ -65,8 +65,8 @@ export async function nextQuestion(page: Page, number: number, name: string | Re
 // Reconocimiento
 // ---------------------------------------------------------------------------------------------------------------
 
-export const SPOKEN: Record<string, string> = { '1': '1', '3': '3', b3: 'bemol 3', '5': '5', b5: 'bemol 5', '7': '7', b7: 'bemol 7' }
-export const BANK = ['1', '3', 'b3', '5', 'b5', '7', 'b7']
+export const SPOKEN: Record<string, string> = { '1': '1', '3': '3', b3: 'bemol 3', '5': '5', b5: 'bemol 5', '6': '6', '7': '7', b7: 'bemol 7' }
+export const BANK = ['1', '3', 'b3', '5', 'b5', '6', '7', 'b7']
 const QUALITIES = [...new Set(catalog.voicings.filter((item) => item.quizEnabled).map((item) => item.quality))]
 
 /**
@@ -84,7 +84,7 @@ export async function answerRecognition(page: Page, target: Target, difficulty: 
   if (difficulty === 'Fácil') {
     expect(answer, 'en fácil solo se contesta el acorde').toMatch(/^(completo|acorde-incorrecto)$/)
     const name = answer === 'completo' ? voicing.name : catalog.voicings.find((item) => item.quizEnabled && item.quality === quality)!.name
-    await page.getByRole('button', { name, exact: true }).click()
+    await page.getByRole('button', { name: choiceName(name), exact: true }).click()
   } else {
     await page.getByRole('combobox', { name: 'Acorde', exact: true }).selectOption(quality)
     await page.getByRole('combobox', { name: 'Inversión', exact: true }).selectOption(String(inversion))

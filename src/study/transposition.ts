@@ -1,4 +1,6 @@
-import type { ChordShape, QualityKey, RouteFunction, RouteStep, SetId, StringNumber } from '../data'
+import type { ChordShape, QualityKey, RouteFunction, RouteStep, StringNumber } from '../data'
+import { usesSourceSixth, withSixthAlternative } from '../music/sourceSixth'
+export { usesSourceSixth } from '../music/sourceSixth'
 
 export interface TonalityOption {
   pc: number
@@ -43,8 +45,6 @@ const ROUTE_ROOTS: Readonly<Record<number, Readonly<Record<RouteFunction, string
   10: { I: 'B♭', ii: 'C', V: 'F' },
   11: { I: 'B', ii: 'C♯', V: 'F♯' },
 }
-
-const DROP24_SETS: ReadonlySet<SetId> = new Set(['D24S1', 'D24S2'])
 
 const mod12 = (value: number) => ((value % 12) + 12) % 12
 
@@ -96,27 +96,6 @@ export function transposeShape<T extends NamedShape>(shape: T, shift: number): T
 export function transposeShapes<T extends NamedShape>(shapes: readonly T[], tonicPc: number): { shift: number; shapes: T[] } {
   const shift = commonFretShift(shapes, tonicPc)
   return { shift, shapes: shapes.map((shape) => transposeShape(shape, shift)) }
-}
-
-/**
- * La lámina original muestra C6 como lectura alternativa de Cmaj7 bajando la 7ª mayor dos trastes.
- * En voicings aparece en todas las terceras inversiones y, en Drop 2+4, también en la primera.
- * Se usa en estudio y revisión: los JSON y los juegos evaluables siguen intactos.
- */
-export function usesSourceSixth(shape: ChordShape): boolean {
-  return shape.quality === 'maj7' && (shape.inversion === 3 || (shape.inversion === 1 && DROP24_SETS.has(shape.setId)))
-}
-
-function withSixthAlternative<T extends NamedShape>(shape: T, enabled: boolean): T {
-  if (!enabled) return shape
-  return {
-    ...shape,
-    name: `${shape.name} – ${shape.root}6`,
-    referenceNotes: shape.notes.filter((note) => note.degree === '7').map((note) => ({ ...note })),
-    notes: shape.notes.map((note) =>
-      note.degree === '7' ? { ...note, fret: note.fret - 2, degree: '6' as const } : note,
-    ),
-  }
 }
 
 /** Transpone una forma de estudio y conserva, cuando corresponde, la variante C6 de la fuente. */

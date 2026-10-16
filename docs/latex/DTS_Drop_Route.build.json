@@ -5,19 +5,19 @@
   "files": [
     {
       "path": "docs/DTS.md",
-      "sha256": "39d87a7254130a31a0d24d4ff98e3e859fec9cce80c3b4e6d63cda0c816affd0"
+      "sha256": "aa91fedb0c69ed50003d909b6de99d054db19a038e915ac1b018b380d0466706"
     },
     {
       "path": "docs/latex/DTS_Drop_Route.tex",
-      "sha256": "35c475f393d1e3763bd1743e140adc4676f9e5745acf86608be027d448386f69"
+      "sha256": "e9034e8a807c699736e9535bffab64b28364b4942aa9fe86fb103f5a685311e3"
     },
     {
       "path": "docs/latex/DTS_Drop_Route.pdf",
-      "sha256": "07f31abf6e44fa0e2a15a10da2a50f885a469147a7dec3fade28c025bcf09cd0"
+      "sha256": "5b0343815ef0114d331d66c4cb91c032d90f4882eb1b1f1c73a03d56a72f4532"
     },
     {
       "path": "docs/latex/dts-template.tex",
-      "sha256": "fff5a0c04276b93a329ecfa898cfaa3347668920af90cdefb9fe7a8ab20ae91a"
+      "sha256": "a5a50881ff2f66ccd8017823572ec03355de1e1f43264e0e24716b7ef1e30162"
     },
     {
       "path": "scripts/build_dts.py",

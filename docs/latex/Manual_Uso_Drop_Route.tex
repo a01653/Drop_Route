@@ -1,4 +1,4 @@
-% Source-SHA256: f25a0c03be4da62ada35b0ab25a2b95207b6a9496967331c9404a0c3db1f3dd1
+% Source-SHA256: 378a1d60f583814b06986d4f02044f705facf6de3d0279b70ef441b56017fabb
 % !TeX program = lualatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
@@ -33,7 +33,7 @@
 \fancyhf{}
 \fancyhead[L]{\small\sffamily\color{softgray}Drop Route}
 \fancyhead[R]{\small\sffamily\color{softgray}Manual de uso}
-\fancyfoot[L]{\small\sffamily\color{softgray}Paquete 0.0.0 · candidato para revisión}
+\fancyfoot[L]{\small\sffamily\color{softgray}Versión 1.0.1}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
@@ -81,7 +81,7 @@
 {\sffamily\fontsize{14}{20}\selectfont\color{lightblue} Reconocer voicings y continuar rutas II--V--I\par}
 \vfill
 {\sffamily\small Autor del proyecto: Jesús Quevedo Rodríguez\par}
-{\sffamily\small Paquete 0.0.0 · candidato para revisión\par}
+{\sffamily\small Versión 1.0.1\par}
 {\sffamily\small Repositorio: a01653/Drop\_Route\par}
 \vspace{2cm}
 \end{center}
@@ -91,12 +91,12 @@
 \setcounter{page}{2}
 \tableofcontents
 \newpage
-Autor: Jesús Quevedo Rodríguez. Paquete 0.0.0, candidato para revisión.
+Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
 
 Drop Route es un juego para estudiar voicings de guitarra y recorridos
-II-V-I. Esta entrega trabaja en Do (C), sin audio ni transposición.
-Guarda el progreso en el navegador del dispositivo; no usa cuentas ni
-sincroniza datos.
+II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio
+permite transponer las formas. Guarda el progreso en el navegador del
+dispositivo; no usa cuentas ni sincroniza datos.
 
 \hypertarget{1-elegir-quuxe9-practicar}{%
 \section{1. Elegir qué practicar}\label{1-elegir-quuxe9-practicar}}
@@ -125,8 +125,12 @@ notas, pero no el nombre del acorde ni los grados de la solución.
 \hypertarget{fuxe1cil}{%
 \subsection{Fácil}\label{fuxe1cil}}
 
-Elige el acorde entre Cmaj7, C7, Cm7 y Cm7(b5). El orden de los botones
-cambia entre preguntas.
+Elige entre Cmaj7 / C6, C7, Cm7 y Cm7(b5). El orden cambia entre
+preguntas. La opción mayor agrupa las formas con séptima y con sexta;
+siempre tiene el mismo nombre para no dar pistas. Cuando la plantilla
+usa C6, se pregunta esa posición con sexta y, al corregir, la séptima
+original aparece en gris como referencia. Las formas mantienen cuatro
+voces activas.
 
 \includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-pregunta-360.png}
 
@@ -157,7 +161,8 @@ comprueba ambos campos por separado.
 \subsection{Difícil}\label{difuxedcil}}
 
 Además del acorde y la inversión, coloca los cuatro grados sobre los
-círculos de la tarjeta. El banco incluye 1, 3, ♭3, 5, ♭5, 7 y ♭7. Puedes
+círculos de la tarjeta. El banco incluye siempre 1, 3, ♭3, 5, ♭5, 6, 7 y
+♭7. En las variantes con sexta se coloca 6, no 7, en su círculo. Puedes
 arrastrar, usar dos toques, teclado o los controles de colocación sin
 arrastre.
 

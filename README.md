@@ -17,7 +17,7 @@ La versión móvil está publicada como **PWA instalable** en [Drop Route](https
 - Aplicación React, TypeScript y Vite en `src/`, separada en datos, música, sesión, progreso e interfaz.
 - Reconocimiento de voicings en fácil, medio y difícil, y rutas II-V-I de Drop 2.
 - Modo estudio sin examen para consultar voicings y rutas, transponerlos a las 12 tonalidades y ver la conducción de voces.
-- Variante C6 de la fuente reproducida en estudio y revisión sobre copias derivadas, con la sexta dorada y la séptima gris de referencia, sin convertirla en calidad evaluable.
+- Variante C6 de la fuente reproducida en estudio, revisión y preguntas de reconocimiento sobre copias derivadas: sexta activa y séptima gris de referencia al revelar la solución.
 - Diseño responsive: flujo compacto en móvil y distribución horizontal en escritorio para menú, juego, rutas y estudio.
 - Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
 - Pruebas con node:test, Vitest y Playwright.
@@ -74,6 +74,8 @@ La política de `docs/documentation-policy.json` está en `required`: `docs:chec
 ## Juego
 
 En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acorde; medio añade la inversión; difícil añade los cuatro grados sobre la tarjeta mediante arrastre, dos toques, teclado o los controles de colocación sin arrastre.
+
+La opción mayor se llama **Cmaj7 / C6** en todas las preguntas. Las formas que llevan sexta en la plantilla se preguntan con esa sexta, también en tercera inversión; al corregir aparecen la sexta dorada y la séptima gris de referencia. En Difícil se coloca **6**, no 7, en el círculo de la sexta. El banco ofrece siempre ambos grados. La etiqueta agrupa las dos variantes de la familia mayor y no afirma que C6 y Cmaj7 tengan las mismas notas.
 
 Las tarjetas salen al azar entre las que quedan por mostrar: se recorre todo el set antes de repetir. Después empieza otra ronda, evitando repetir seguidas la última tarjeta y la primera de la ronda nueva. La versión instalada aparece arriba, en una etiqueta pequeña.
 

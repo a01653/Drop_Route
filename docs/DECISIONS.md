@@ -107,3 +107,7 @@ El 13/10/2026 el usuario autorizó la publicación de la base completa en el rep
 Por decisión del usuario, DR-001 a DR-006 actualizan DTS Markdown, README, instrucciones y evidencia de validación. La generación de LaTeX/PDF, los manuales completos, las capturas y la revisión visual documental se aplazan a DR-007 para reducir el tiempo de cada fase. Los tests y las auditorías no se aplazan.
 
 docs:check sigue verificando la documentación y la integridad de los derivados conservados, y declara las fuentes pendientes de regenerar. docs:check:final exige sincronización completa aunque la política siga en modo deferred. DR-007 cambia la política a required y mantiene ese control en la CI de cierre.
+
+## Ajuste de reconocimiento 1.0.1 (15/10/2026)
+
+El usuario pidió aplicar en las preguntas la sexta que ya se muestra en estudio. Se comparte la transformación en la capa musical para las nueve variantes de la fuente, sin editar los JSON. La vista neutra tiene cuatro notas activas; al corregir se recupera la séptima gris de referencia. Se mantiene una opción mayor fija, «Cmaj7 / C6», en todas las preguntas: cambia la forma evaluada, no las opciones ni el número de tarjetas. Difícil incluye siempre ocho grados, con 6 y 7, y corrige la sexta como 6. El bajo se calcula con 0,4,7,9 para C6. Esto sustituye las restricciones anteriores de C6 solo en estudio y del banco de siete grados; el juego de rutas mantiene sus pasos canónicos.
