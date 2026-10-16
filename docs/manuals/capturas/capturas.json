@@ -3,9 +3,9 @@
   "generatedBy": "npm run docs:captures",
   "browser": {
     "name": "chromium",
-    "version": "156.0.8078.4"
+    "version": "153.0.8010.0"
   },
-  "commit": "eb1bbbe6c472fadd3e360634278ae916c76a68ba",
+  "commit": null,
   "captures": [
     {
       "id": "menu-reconocimiento-360",
@@ -34,8 +34,8 @@
         "width": 720,
         "height": 1442
       },
-      "bytes": 98236,
-      "sha256": "b7773048ecc3a81cb17a83309e2ce0bc7248aab216e90ca013407de559623f60"
+      "bytes": 97622,
+      "sha256": "fec07157add006e0eb32bfa5301c911e5e322f6a49a104c97c7e676509c2b01a"
     },
     {
       "id": "menu-rutas-360",
@@ -64,8 +64,8 @@
         "width": 720,
         "height": 1780
       },
-      "bytes": 128154,
-      "sha256": "91417752a6d95a8086a57d72c3b7cf6d196c7c54a0eb6635e4f38591e038226e"
+      "bytes": 128259,
+      "sha256": "f94a7137aaeef3550ea14ec6e6154751abaffbb9ef8f8a38fbde9da2ba2ea98e"
     },
     {
       "id": "facil-pregunta-360",
@@ -94,8 +94,8 @@
         "width": 720,
         "height": 1266
       },
-      "bytes": 70577,
-      "sha256": "57a83ce15a09750847c965856bfbb7ed0109313ea5b43f2c6409888eae688d78"
+      "bytes": 72077,
+      "sha256": "8c9bee6cd9f154044e24c22dae53bd6637debcfdf95a6ef98f569f3c6bde7099"
     },
     {
       "id": "facil-correccion-360",
@@ -113,7 +113,7 @@
         "kind": "tramo",
         "from": ".juego-cabecera",
         "to": ".resultado",
-        "cssHeight": 809
+        "cssHeight": 831
       },
       "observed": {
         "fase": "verificada",
@@ -122,10 +122,10 @@
       },
       "pixels": {
         "width": 720,
-        "height": 1618
+        "height": 1662
       },
-      "bytes": 97001,
-      "sha256": "81cc0a016b9754299389728ed3bbfb567e293343b3417fbdaa2171ff829f38ea"
+      "bytes": 104850,
+      "sha256": "9ce51488b2e1e3b8b785eefc55dd88fabcd48854f9d44e7c0f17fcb95f0baeeb"
     },
     {
       "id": "medio-pregunta-360",
@@ -154,8 +154,8 @@
         "width": 720,
         "height": 1354
       },
-      "bytes": 82778,
-      "sha256": "10e036405e3b7bd2e1e25793f8cbf781105df05c42d06f6b156ca5a4aea83086"
+      "bytes": 82137,
+      "sha256": "203278a9eb31dcbdec7ab7248c7e132b0b42fe6aa7cb93deec3b6cb028c2009e"
     },
     {
       "id": "medio-correccion-360",
@@ -173,7 +173,7 @@
         "kind": "tramo",
         "from": ".juego-cabecera",
         "to": ".resultado",
-        "cssHeight": 939
+        "cssHeight": 961
       },
       "observed": {
         "fase": "verificada",
@@ -182,10 +182,10 @@
       },
       "pixels": {
         "width": 720,
-        "height": 1878
+        "height": 1922
       },
-      "bytes": 124405,
-      "sha256": "6324036f30ac7e5085e1c477e137fa4b4c9292ec4f7f0b7dd47564df6935dd92"
+      "bytes": 135089,
+      "sha256": "6418d604d9ba2fecfdf1800de92431139a8509119e91be5974489f9b9598b394"
     },
     {
       "id": "dificil-pregunta-360",
@@ -214,8 +214,8 @@
         "width": 720,
         "height": 2810
       },
-      "bytes": 224677,
-      "sha256": "6d4ed06bcd0435423b272335c19ea21163e84112f7677b2224fd348a4601e7ba"
+      "bytes": 222634,
+      "sha256": "82a2c5d6e8b48d3f959faaa3cbdd1eb4603a1aec02d0dfcf6d59ccfede292617"
     },
     {
       "id": "dificil-correccion-360",
@@ -244,8 +244,8 @@
         "width": 720,
         "height": 2684
       },
-      "bytes": 205794,
-      "sha256": "52d3a5c0e246a01fa20eff2b64d18c8842e90c40ecae3676db67e2bb720fac28"
+      "bytes": 202780,
+      "sha256": "83cf67bca547779e6b975620aba5e4db214b44810c5052b07910b4748d15c350"
     },
     {
       "id": "ruta-pregunta-360",
@@ -274,8 +274,8 @@
         "width": 720,
         "height": 1676
       },
-      "bytes": 104057,
-      "sha256": "2b44233d8a868d7414eea9472324263adf57ebb555301682db626973f07fe4f6"
+      "bytes": 98828,
+      "sha256": "34dbf8a37a4e2c9d2a2b00660e9b5ac9785f534de26f6b0e716587981676fbd9"
     },
     {
       "id": "ruta-fallo-solucion-360",
@@ -304,8 +304,8 @@
         "width": 720,
         "height": 2240
       },
-      "bytes": 156417,
-      "sha256": "c05be5897c7707d140f8ac2bdfecef71afaab67976b37bd430a6a21367ecca92"
+      "bytes": 152688,
+      "sha256": "2ad70e2d3b2a420f802cb70a0c6f735a1290daf42e32d78233eb1950893b6650"
     },
     {
       "id": "ruta-fallo-tu-respuesta-360",
@@ -334,8 +334,8 @@
         "width": 720,
         "height": 2286
       },
-      "bytes": 157548,
-      "sha256": "15db7fdeb9b36d12f7f4d312a5182b28fafcf7feba63c64d44b9a86fd3133551"
+      "bytes": 153241,
+      "sha256": "4659385c5dd80066b657d5ad3a935f76ea656fbe52955cde669927d899502a88"
     },
     {
       "id": "progreso-detalle-360",
@@ -353,7 +353,7 @@
         "kind": "tramo",
         "from": ".progreso",
         "to": ".progreso",
-        "cssHeight": 693
+        "cssHeight": 723
       },
       "observed": {
         "fase": "menu",
@@ -362,10 +362,10 @@
       },
       "pixels": {
         "width": 720,
-        "height": 1386
+        "height": 1446
       },
-      "bytes": 130115,
-      "sha256": "e5af16ef0881a6ec41c4c7022cad98fc0876a9a0c927ec1b3c1b63e9638252fd"
+      "bytes": 133886,
+      "sha256": "5408ee8b9b21adeef6bdc7c73cd72616bee6304bae8d20c3b533fe0e89eaf087"
     },
     {
       "id": "escritorio-menu-1280",
@@ -391,8 +391,8 @@
         "width": 1280,
         "height": 800
       },
-      "bytes": 60771,
-      "sha256": "702f2ec0ce01bc77d02783047b5d40f14693b5da0d2c5fd4f43710a4a0414fcb"
+      "bytes": 89148,
+      "sha256": "323e273c95219a854ec2d13cbc874b8f31f04f2f77e5d5bc88e10d79b2770971"
     }
   ]
 }

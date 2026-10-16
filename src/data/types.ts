@@ -37,7 +37,7 @@ export interface ChordShape {
   rootPc: number
   inversion: Inversion
   notes: NotePosition[]
-  /** Notas grises de referencia en formas derivadas de estudio; no son voces que se toquen. */
+  /** Notas grises en formas derivadas de estudio o preguntas; no son voces que se toquen. */
   referenceNotes?: NotePosition[]
 }
 

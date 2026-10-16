@@ -38,6 +38,10 @@ Selección por familia y set, fácil correcto/incorrecto, medio con inversión f
 
 `recognition-rotation.spec.ts` recorre dos rondas completas de Fácil por los controles reales, con azar constante para reproducir la repetición del selector anterior. Deduce cada tarjeta de sus posiciones físicas y del catálogo. También comprueba la versión del paquete en menú, pregunta, corrección, rutas y estudio, en escritorio y móvil.
 
+`mobile-result.spec.ts` mide la corrección antes de tocar «Siguiente», para que el desplazamiento automático de Playwright no oculte un botón recortado. Cubre Fácil correcto e incorrecto a 400×776 y 360×640, Medio a 390×700, rutas con ambas respuestas y el foco de la pregunta siguiente. En Difícil, a 360×480 con letra de 20 px, una corrección más alta que la pantalla comienza por el título y permite llegar al botón desplazándose. En escritorio, una corrección que ya cabe no cambia el desplazamiento de la página.
+
+`source-sixth.spec.ts` compara las posiciones neutras de las siete terceras inversiones mayores con la séptima de la fuente bajada dos trastes. Verifica la sexta activa y séptima gris después de corregir, la opción mayor fija, la inversión por bajo y, en Difícil, el rechazo de 7 donde debe ir 6 y el acierto al colocar 6. Incluye primera inversión de Drop 2+4. `src/session/source-sixth.test.ts` cubre las nueve variantes, sus alturas físicas 0,4,7,9, los tres niveles, el bajo con notas desordenadas y la conservación de los datos originales.
+
 Usar fixtures o semilla solo en entorno de prueba. No depender del azar de producción. Probar sobre build actual.
 
 ## Flujo

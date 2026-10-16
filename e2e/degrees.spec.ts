@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
 import type { Locator, Page } from '@playwright/test'
-import { FIRST, SETS, begin, truth } from './support'
+import { FIRST, SETS, begin, cardName, truth } from './support'
 import type { Voicing } from './support'
 
-const SPOKEN: Record<string, string> = { '1': '1', '3': '3', b3: 'bemol 3', '5': '5', b5: 'bemol 5', '7': '7', b7: 'bemol 7' }
-const BANK = ['1', '3', 'b3', '5', 'b5', '7', 'b7']
+const SPOKEN: Record<string, string> = { '1': '1', '3': '3', b3: 'bemol 3', '5': '5', b5: 'bemol 5', '6': '6', '7': '7', b7: 'bemol 7' }
+const BANK = ['1', '3', 'b3', '5', 'b5', '6', '7', 'b7']
 
 const ficha = (page: Page, degree: string) => page.locator(`.ficha[aria-label^="Grado ${SPOKEN[degree]}"]`)
 const destino = (page: Page, slot: number) => page.locator(`[data-destino="${slot}"]`)
@@ -46,7 +46,7 @@ async function answerSelects(page: Page, voicing: Voicing) {
 
 test('difícil: banco fijo con b3, b5 y b7 reales, cuatro destinos y tarjeta neutra', async ({ page }) => {
   const answer = await startHard(page)
-  await expect(page.locator('.ficha')).toHaveCount(7)
+  await expect(page.locator('.ficha')).toHaveCount(8)
   const names = await page.locator('.ficha').evaluateAll((items) => items.map((item) => item.getAttribute('aria-label')))
   expect(names).toEqual(BANK.map((degree) => `Grado ${SPOKEN[degree]}`))
   // El banco no se reduce a la solución: sobran grados.
@@ -99,8 +99,9 @@ test('dos toques: ficha y destino colocan los cuatro grados, y Verificar exige t
   await expect(page.locator('.correccion li.ok')).toHaveCount(6)
   // El tablero desaparece, la solución recupera nombre, grados y colores.
   await expect(page.locator('[data-destino]')).toHaveCount(0)
-  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(answer.name)
-  await expect(page.locator('.juego-tarjeta .card-dot-label')).toHaveCount(4)
+  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(cardName(answer))
+  await expect(page.locator('.juego-tarjeta .card-dot:not(.card-reference-dot) ~ .card-dot-label')).toHaveCount(4)
+  await expect(page.locator('.juego-tarjeta .card-reference-dot')).toHaveCount(answer.notes.some((note) => note.degree === '6') ? 1 : 0)
 })
 
 test('aciertos parciales: solo falla el círculo equivocado y el resto se conserva', async ({ page }) => {
@@ -301,7 +302,7 @@ test('difícil en los siete sets: cuatro destinos y banco completo con la tarjet
   for (const target of SETS) {
     const answer = await startHard(page, target)
     await expect(page.locator('[data-destino]'), target.id).toHaveCount(answer.notes.length)
-    await expect(page.locator('.ficha'), target.id).toHaveCount(7)
+    await expect(page.locator('.ficha'), target.id).toHaveCount(8)
     const html = await page.locator('.juego-tarjeta').innerHTML()
     expect(html).not.toContain(answer.id)
     expect(html).not.toMatch(/data-(quality|voicing|id|inversion|degree)/)

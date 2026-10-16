@@ -13,7 +13,7 @@ const answer = (quality: QualityKey | null, inversion: 0 | 1 | 2 | 3 | null, deg
   degrees,
 })
 const hardQuestion = (id: string) => {
-  const voicing = catalog.voicings.find((item) => item.id === id)!
+  const voicing = voicingOf(catalog, { voicingId: id })
   return {
     voicing,
     question: {

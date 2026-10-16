@@ -1,14 +1,15 @@
-import { Fragment, useEffect, useId, useRef } from 'react'
+import { Fragment, useId } from 'react'
 import { catalog } from '../../data'
 import type { Degree, Inversion, QualityKey } from '../../data'
-import { DIFFICULTIES, DROP_LABELS, answerQualities, isAnswerComplete, voicingOf } from '../../session'
+import { DIFFICULTIES, DROP_LABELS, answerQualities, answerQualityLabel, isAnswerComplete, voicingOf } from '../../session'
 import type { FieldResult, QuestionState, SessionAction, VerifiedState } from '../../session'
 import { FretboardCard } from '../card/FretboardCard'
 import { displayDegree, toPosition, toSolution } from '../card/model'
 import { DegreeBoard } from './DegreeBoard'
+import { useGameFocus } from './useGameFocus'
 
 const INVERSIONS: Inversion[] = [0, 1, 2, 3]
-const qualityName = (quality: QualityKey | null) => (quality ? catalog.qualities[quality].name : 'sin respuesta')
+const qualityName = (quality: QualityKey | null) => (quality ? answerQualityLabel(catalog, quality) : 'sin respuesta')
 const inversionName = (inversion: Inversion | null) =>
   inversion === null ? 'sin respuesta' : (catalog.inversions[inversion] ?? 'sin respuesta')
 
@@ -63,13 +64,7 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
   const set = catalog.sets.find((item) => item.id === question.setId)
   const complete = isAnswerComplete(question.difficulty, answer)
   const hintId = useId()
-  const questionHeading = useRef<HTMLHeadingElement>(null)
-  const resultHeading = useRef<HTMLHeadingElement>(null)
-
-  // El foco acompaña al flujo: pregunta nueva al título, verificada al resultado.
-  useEffect(() => {
-    ;(verified ? resultHeading : questionHeading).current?.focus()
-  }, [question.number, verified])
+  const { questionHeading, resultHeading, resultPanel } = useGameFocus(question.number, verified)
 
   const qualityResult = result?.fields.find((item) => item.field === 'quality')
   const difficultyLabel = DIFFICULTIES.find((item) => item.id === config.difficulty)?.label ?? ''
@@ -139,7 +134,7 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
                     disabled={verified}
                     onClick={() => dispatch({ type: 'choose', change: { quality } })}
                   >
-                    {catalog.qualities[quality].name}
+                    {qualityName(quality)}
                     {mark && <span aria-hidden="true"> {mark === 'ok' ? '✓' : '✗'}</span>}
                   </button>
                   {note && (
@@ -165,7 +160,7 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
                 <option value="">Elige el acorde</option>
                 {answerQualities(catalog).map((quality) => (
                   <option key={quality} value={quality}>
-                    {catalog.qualities[quality].name}
+                    {qualityName(quality)}
                   </option>
                 ))}
               </select>
@@ -214,7 +209,7 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
       </section>
 
       {result && (
-        <section className="resultado" aria-labelledby="resultado-titulo">
+        <section className="resultado" aria-labelledby="resultado-titulo" ref={resultPanel}>
           <h2 id="resultado-titulo" tabIndex={-1} ref={resultHeading}>
             {headline(result.fields)}
           </h2>

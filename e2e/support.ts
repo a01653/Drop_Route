@@ -18,6 +18,7 @@ export interface Voicing {
   inversion: number
   quizEnabled: boolean
   notes: Note[]
+  cardName?: string
 }
 export const catalog = JSON.parse(readFileSync(resolve('data/catalog.json'), 'utf8')) as {
   inversions: string[]
@@ -40,6 +41,17 @@ export const SETS = [
 ]
 export const FIRST = SETS[5]! // Drop 2+4, set 1: la familia con la ventana de la plantilla en el traste 12
 export const CHORDS = ['Cmaj7', 'C7', 'Cm7', 'Cm7(b5)']
+export const choiceName = (name: string) => name === 'Cmaj7' ? 'Cmaj7 / C6' : name
+export const cardName = (voicing: Voicing) => voicing.cardName ?? voicing.name
+
+/** Oráculo físico independiente: la sexta está dos trastes bajo la séptima de la fuente. */
+export function questionShape(source: Voicing): Voicing {
+  const sixth = source.quality === 'maj7' && (source.inversion === 3 || (source.inversion === 1 && ['D24S1', 'D24S2'].includes(source.setId)))
+  return sixth ? {
+    ...source, cardName: 'Cmaj7 – C6',
+    notes: source.notes.map((note) => note.degree === '7' ? { ...note, fret: note.fret - 2, degree: '6' } : { ...note }),
+  } : source
+}
 export const MUSICAL_COLORS = ['#E11D48', '#0284C7', '#059669', '#EDBC07']
 
 export async function begin(page: Page, target: (typeof SETS)[number], difficulty: 'Fácil' | 'Medio' | 'Difícil') {
@@ -63,7 +75,7 @@ export async function visiblePositions(page: Page): Promise<Note[]> {
 /** La solución real: la forma del catálogo con esas posiciones en ese set. */
 export async function truth(page: Page, setId: string): Promise<Voicing> {
   const wanted = signature(await visiblePositions(page))
-  const matches = catalog.voicings.filter((item) => item.quizEnabled && item.setId === setId && signature(item.notes) === wanted)
+  const matches = catalog.voicings.filter((item) => item.quizEnabled && item.setId === setId).map(questionShape).filter((item) => signature(item.notes) === wanted)
   expect(matches, `posiciones ${wanted} en ${setId}`).toHaveLength(1)
   return matches[0]!
 }

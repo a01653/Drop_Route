@@ -1,5 +1,6 @@
 import type { Catalog, Degree, Inversion, QualityKey, SetId, StringNumber, Voicing } from '../data/types'
 import { inversionFromBass } from '../music/pitch'
+import { withSixthAlternative } from '../music/sourceSixth'
 import type { Difficulty, GameConfig } from './config'
 import { newSlots } from './degrees'
 import { pickOne, shuffle } from './rng'
@@ -11,6 +12,12 @@ const QUALITY_ORDER: readonly QualityKey[] = ['maj7', '7', 'm7', 'm7b5']
 /** Calidades que se ofrecen como respuesta: las evaluables del catálogo. Cdim7 queda como referencia. */
 export function answerQualities(catalog: Catalog): QualityKey[] {
   return QUALITY_ORDER.filter((key) => catalog.qualities[key]?.quizEnabled !== false)
+}
+
+/** Opción fija para toda la familia mayor, sin revelar qué variante se pregunta. */
+export function answerQualityLabel(catalog: Catalog, quality: QualityKey): string {
+  const name = catalog.qualities[quality].name
+  return quality === 'maj7' ? `${name} / C6` : name
 }
 
 /** Formas evaluables de un set: 16 (cuatro calidades por cuatro inversiones). */
@@ -37,7 +44,7 @@ export interface RecognitionQuestion {
 export function voicingOf(catalog: Catalog, question: Pick<RecognitionQuestion, 'voicingId'>): Voicing {
   const voicing = catalog.voicings.find((item) => item.id === question.voicingId)
   if (!voicing) throw new Error(`Forma desconocida: ${question.voicingId}`)
-  return voicing
+  return withSixthAlternative(voicing)
 }
 
 /**

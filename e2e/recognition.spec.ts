@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
-import { CHORDS, FIRST, MUSICAL_COLORS, SETS, begin, catalog, truth } from './support'
+import { CHORDS, FIRST, MUSICAL_COLORS, SETS, begin, cardName, catalog, choiceName, truth } from './support'
 
 const otherChord = (name: string) => CHORDS.find((chord) => chord !== name)!
 const chordSelect = (page: Page) => page.getByRole('combobox', { name: 'Acorde', exact: true })
 const inversionSelect = (page: Page) => page.getByRole('combobox', { name: 'Inversión', exact: true })
-const chordButton = (page: Page, name: string) => page.getByRole('button', { name, exact: true })
+const chordButton = (page: Page, name: string) => page.getByRole('button', { name: choiceName(name), exact: true })
 const inversionName = (inversion: number) => catalog.inversions[inversion]!
 
 test('fácil: cuatro botones, seleccionar no verifica y el acierto bloquea y muestra la solución', async ({ page }) => {
@@ -37,8 +37,8 @@ test('fácil: cuatro botones, seleccionar no verifica y el acierto bloquea y mue
   // Respuesta bloqueada y conservada; solución con su nombre y colores musicales.
   for (const chord of CHORDS) await expect(chordButton(page, chord)).toBeDisabled()
   await expect(chordButton(page, answer.name)).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(answer.name)
-  await expect(page.locator('.juego-pie')).toContainText(`Solución: ${answer.name}, ${inversionName(answer.inversion)}`)
+  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(cardName(answer))
+  await expect(page.locator('.juego-pie')).toContainText(`Solución: ${cardName(answer)}, ${inversionName(answer.inversion)}`)
   await expect(page.getByRole('button', { name: 'Verificar' })).toHaveCount(0)
 })
 
@@ -51,12 +51,12 @@ test('fácil: el error se marca con texto y símbolo, conserva la respuesta y Si
 
   await expect(page.getByRole('heading', { name: 'Incorrecto' })).toBeVisible()
   await expect(page.locator('.correccion li.ko')).toContainText('Acorde: incorrecto.')
-  await expect(page.locator('.correccion li.ko')).toContainText(`Tu respuesta: ${wrong}.`)
-  await expect(page.locator('.correccion li.ko')).toContainText(`Solución: ${first.name}.`)
+  await expect(page.locator('.correccion li.ko')).toContainText(`Tu respuesta: ${choiceName(wrong)}.`)
+  await expect(page.locator('.correccion li.ko')).toContainText(`Solución: ${choiceName(first.name)}.`)
   await expect(page.locator('.correccion li.ko .marca')).toHaveText('✗')
   await expect(chordButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
   await expect(chordButton(page, wrong)).toHaveClass(/ko/)
-  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(first.name)
+  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(cardName(first))
 
   await page.getByRole('button', { name: 'Siguiente' }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 2' })).toBeVisible()
@@ -95,7 +95,7 @@ test('medio: acorde e inversión por separado, Verificar exige ambos y se corrig
   await expect(inversionSelect(page)).toBeDisabled()
   await expect(chordSelect(page)).toHaveValue(answer.quality)
   await expect(inversionSelect(page)).toHaveValue(String(wrongInversion))
-  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(answer.name)
+  await expect(page.locator('.juego-tarjeta .card-name')).toHaveText(cardName(answer))
 })
 
 test('medio: acierto completo con acorde e inversión correctos', async ({ page }) => {
@@ -240,7 +240,7 @@ for (const width of [360, 390, 430]) {
       [...document.querySelectorAll('.opciones-acorde button')].map((button) => [button.textContent, getComputedStyle(button).backgroundColor]),
     )
     // El texto del botón es el nombre, más « ✓» o « ✗» si está marcado: coincidencia exacta, porque Cm7 es prefijo de Cm7(b5).
-    const colourOf = (name: string) => colours.find(([text]) => text!.replace(/ [✓✗]$/, '') === name)![1]
+    const colourOf = (name: string) => colours.find(([text]) => text!.replace(/ [✓✗]$/, '') === choiceName(name))![1]
     expect(colourOf(wrong)).toBe('rgb(185, 28, 28)')
     expect(colourOf(answer.name)).toBe('rgb(22, 101, 52)')
     // Descripción accesible, sin cambiar el nombre accesible.

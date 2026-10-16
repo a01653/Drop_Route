@@ -18,6 +18,9 @@ export function pitchClass(midi: number): number {
  */
 export function inversionFromBass(shape: ChordShape, catalog: Catalog): Inversion | null {
   const bass = Math.min(...shape.notes.map((note) => midiOf(note, catalog.tuning)))
-  const index = catalog.qualities[shape.quality].formula.indexOf(pitchClass(bass - shape.rootPc))
+  const formula = shape.quality === 'maj7' && shape.notes.some((note) => note.degree === '6')
+    ? [0, 4, 7, 9]
+    : catalog.qualities[shape.quality].formula
+  const index = formula.indexOf(pitchClass(bass - shape.rootPc))
   return index === -1 ? null : (index as Inversion)
 }
