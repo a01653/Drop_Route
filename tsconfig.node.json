@@ -8,11 +8,21 @@
     "strict": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
+    "allowJs": true,
     "skipLibCheck": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["vite.config.ts", "vitest.config.ts", "vitest.config.test.ts", "playwright.config.ts", "e2e"]
+  "include": [
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.config.test.ts",
+    "playwright.config.ts",
+    "playwright.captures.config.ts",
+    "e2e",
+    "captures",
+    "src/progress/layers.test.ts"
+  ]
 }

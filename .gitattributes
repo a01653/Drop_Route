@@ -11,3 +11,5 @@ references/laminas-drop-original.html -whitespace
 *.png binary
 *.woff2 binary
 *.yml text eol=lf
+*.webmanifest text eol=lf
+*.js text eol=lf

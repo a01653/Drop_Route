@@ -5,7 +5,7 @@ import type { Degree } from '../data/types'
  * grados de las cuatro calidades evaluables, con sus alteraciones reales: ofrecer solo los cuatro correctos
  * daría una pista. Cada grado aparece una sola vez, así que no hay fichas duplicadas.
  */
-export const DEGREE_BANK: readonly Degree[] = ['1', '3', 'b3', '5', 'b5', '7', 'b7']
+export const DEGREE_BANK: readonly Degree[] = ['1', '3', 'b3', '5', 'b5', '6', '7', 'b7']
 
 /** Destinos de una pregunta: una nota por círculo, cuatro en todas las formas evaluables. */
 export const SLOT_COUNT = 4

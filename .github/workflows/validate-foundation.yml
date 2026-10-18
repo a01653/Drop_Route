@@ -25,6 +25,7 @@ jobs:
       - run: npm run audit:music
       - run: npm run test:base
       - run: npm run docs:check
+      - run: npm run docs:check:final
   # Aplicación: tipos, lint, Vitest, build y E2E con Chromium sobre el build recién generado.
   app:
     runs-on: ubuntu-latest
@@ -44,3 +45,13 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: npm run docs:captures
+        env:
+          DROP_ROUTE_CAPTURE_OUTPUT: test-results/manual-captures
+      - uses: actions/upload-artifact@v7
+        with:
+          name: drop-route-manual-captures
+          path: |
+            test-results/manual-captures/*.png
+            test-results/manual-captures/capturas.json
+          if-no-files-found: error

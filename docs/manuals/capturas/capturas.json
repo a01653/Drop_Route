@@ -1,0 +1,398 @@
+{
+  "schema": 1,
+  "generatedBy": "npm run docs:captures",
+  "browser": {
+    "name": "chromium",
+    "version": "153.0.8010.0"
+  },
+  "commit": null,
+  "captures": [
+    {
+      "id": "menu-reconocimiento-360",
+      "file": "menu-reconocimiento-360.png",
+      "title": "Menú con «Reconocer voicings»",
+      "game": "menu",
+      "state": "Menú recién abierto, juego de reconocimiento seleccionado, sin progreso guardado.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": "main.menu > header",
+        "to": ".menu-formulario .boton-principal",
+        "cssHeight": 721
+      },
+      "observed": {
+        "fase": "menu",
+        "titulo": "Drop Route",
+        "pulsados": "Reconocer voicings | Drop 2 | Set 1cuerdas 4-3-2-1 | Fácil"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1442
+      },
+      "bytes": 97622,
+      "sha256": "fec07157add006e0eb32bfa5301c911e5e322f6a49a104c97c7e676509c2b01a"
+    },
+    {
+      "id": "menu-rutas-360",
+      "file": "menu-rutas-360.png",
+      "title": "Menú con «Rutas II-V-I»",
+      "game": "menu",
+      "state": "Menú con el juego de rutas seleccionado: solo Drop 2, modo y tramo, sin dificultad.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": "main.menu > header",
+        "to": ".menu-formulario .boton-principal",
+        "cssHeight": 890
+      },
+      "observed": {
+        "fase": "menu",
+        "titulo": "Drop Route",
+        "pulsados": "Rutas II-V-I | Drop 2 | Set 1cuerdas 4-3-2-1 | MayorDm7 · G7 · Cmaj7 | II → Vdel II al V"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1780
+      },
+      "bytes": 128259,
+      "sha256": "f94a7137aaeef3550ea14ec6e6154751abaffbb9ef8f8a38fbde9da2ba2ea98e"
+    },
+    {
+      "id": "facil-pregunta-360",
+      "file": "facil-pregunta-360.png",
+      "title": "Fácil: pregunta neutra",
+      "game": "reconocimiento",
+      "state": "Pregunta abierta en fácil: tarjeta con círculos grises y cuatro botones de acorde, sin nada elegido.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".juego-respuesta",
+        "cssHeight": 633
+      },
+      "observed": {
+        "fase": "pregunta",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Fácil"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1266
+      },
+      "bytes": 72077,
+      "sha256": "8c9bee6cd9f154044e24c22dae53bd6637debcfdf95a6ef98f569f3c6bde7099"
+    },
+    {
+      "id": "facil-correccion-360",
+      "file": "facil-correccion-360.png",
+      "title": "Fácil: error corregido",
+      "game": "reconocimiento",
+      "state": "Pregunta fácil verificada con un acorde equivocado: el elegido en rojo, el correcto en verde y la tarjeta con los colores musicales.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".resultado",
+        "cssHeight": 831
+      },
+      "observed": {
+        "fase": "verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Fácil"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1662
+      },
+      "bytes": 104850,
+      "sha256": "9ce51488b2e1e3b8b785eefc55dd88fabcd48854f9d44e7c0f17fcb95f0baeeb"
+    },
+    {
+      "id": "medio-pregunta-360",
+      "file": "medio-pregunta-360.png",
+      "title": "Medio: acorde e inversión",
+      "game": "reconocimiento",
+      "state": "Pregunta abierta en medio: tarjeta neutra y los dos desplegables, Acorde e Inversión, sin elegir.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".juego-respuesta",
+        "cssHeight": 677
+      },
+      "observed": {
+        "fase": "pregunta",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Medio"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1354
+      },
+      "bytes": 82137,
+      "sha256": "203278a9eb31dcbdec7ab7248c7e132b0b42fe6aa7cb93deec3b6cb028c2009e"
+    },
+    {
+      "id": "medio-correccion-360",
+      "file": "medio-correccion-360.png",
+      "title": "Medio: acierto parcial",
+      "game": "reconocimiento",
+      "state": "Pregunta medio verificada con el acorde correcto y la inversión equivocada: corrección campo por campo.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".resultado",
+        "cssHeight": 961
+      },
+      "observed": {
+        "fase": "verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Medio"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1922
+      },
+      "bytes": 135089,
+      "sha256": "6418d604d9ba2fecfdf1800de92431139a8509119e91be5974489f9b9598b394"
+    },
+    {
+      "id": "dificil-pregunta-360",
+      "file": "dificil-pregunta-360.png",
+      "title": "Difícil: colocar los grados",
+      "game": "reconocimiento",
+      "state": "Pregunta abierta en difícil: acorde e inversión elegidos, dos grados colocados sobre los círculos y el banco de fichas en gris.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".juego-respuesta",
+        "cssHeight": 1405
+      },
+      "observed": {
+        "fase": "pregunta",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Difícil"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 2810
+      },
+      "bytes": 222634,
+      "sha256": "82a2c5d6e8b48d3f959faaa3cbdd1eb4603a1aec02d0dfcf6d59ccfede292617"
+    },
+    {
+      "id": "dificil-correccion-360",
+      "file": "dificil-correccion-360.png",
+      "title": "Difícil: corrección por campos",
+      "game": "reconocimiento",
+      "state": "Pregunta difícil verificada con un solo grado equivocado: cinco campos correctos, uno incorrecto y la tarjeta con su solución.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".resultado",
+        "cssHeight": 1342
+      },
+      "observed": {
+        "fase": "verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Difícil"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 2684
+      },
+      "bytes": 202780,
+      "sha256": "83cf67bca547779e6b975620aba5e4db214b44810c5052b07910b4748d15c350"
+    },
+    {
+      "id": "ruta-pregunta-360",
+      "file": "ruta-pregunta-360.png",
+      "title": "Ruta: partida y candidata",
+      "game": "rutas",
+      "state": "Pregunta de ruta abierta: la partida visible, una candidata neutra y el selector 1 a 4 con Verificar.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".candidata",
+        "cssHeight": 838
+      },
+      "observed": {
+        "fase": "ruta",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Mayor · II → V"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1676
+      },
+      "bytes": 98828,
+      "sha256": "34dbf8a37a4e2c9d2a2b00660e9b5ac9785f534de26f6b0e716587981676fbd9"
+    },
+    {
+      "id": "ruta-fallo-solucion-360",
+      "file": "ruta-fallo-solucion-360.png",
+      "title": "Ruta: no es la de nuestra ruta, Solución",
+      "game": "rutas",
+      "state": "Ruta verificada con otra candidata: selector bloqueado con la elegida en rojo y la de la ruta en verde, y la Solución en el comparador.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".comparacion",
+        "cssHeight": 1120
+      },
+      "observed": {
+        "fase": "ruta-verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Mayor · II → V"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 2240
+      },
+      "bytes": 152688,
+      "sha256": "2ad70e2d3b2a420f802cb70a0c6f735a1290daf42e32d78233eb1950893b6650"
+    },
+    {
+      "id": "ruta-fallo-tu-respuesta-360",
+      "file": "ruta-fallo-tu-respuesta-360.png",
+      "title": "Ruta: no es la de nuestra ruta, Tu respuesta",
+      "game": "rutas",
+      "state": "La misma pregunta de ruta con «Tu respuesta» en el comparador: la candidata que se eligió.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".comparacion",
+        "cssHeight": 1143
+      },
+      "observed": {
+        "fase": "ruta-verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Drop 2 · set 1 · Mayor · II → V"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 2286
+      },
+      "bytes": 153241,
+      "sha256": "4659385c5dd80066b657d5ad3a935f76ea656fbe52955cde669927d899502a88"
+    },
+    {
+      "id": "progreso-detalle-360",
+      "file": "progreso-detalle-360.png",
+      "title": "Progreso con el detalle de ambos juegos",
+      "game": "progreso",
+      "state": "Panel «Tu progreso» tras jugar de verdad reconocimiento (fácil, medio y difícil) y rutas, con «Ver todo el detalle» abierto.",
+      "viewport": {
+        "kind": "movil",
+        "width": 360,
+        "height": 780,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".progreso",
+        "to": ".progreso",
+        "cssHeight": 723
+      },
+      "observed": {
+        "fase": "menu",
+        "titulo": "Drop Route",
+        "pulsados": "Rutas II-V-I | Drop 2 | Set 1cuerdas 4-3-2-1 | MayorDm7 · G7 · Cmaj7 | II → Vdel II al V"
+      },
+      "pixels": {
+        "width": 720,
+        "height": 1446
+      },
+      "bytes": 133886,
+      "sha256": "5408ee8b9b21adeef6bdc7c73cd72616bee6304bae8d20c3b533fe0e89eaf087"
+    },
+    {
+      "id": "escritorio-menu-1280",
+      "file": "escritorio-menu-1280.png",
+      "title": "Vista general en ordenador",
+      "game": "menu",
+      "state": "Menú a 1280 px de ancho con el progreso de una pregunta verificada en cada juego.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 1
+      },
+      "region": {
+        "kind": "viewport"
+      },
+      "observed": {
+        "fase": "menu",
+        "titulo": "Drop Route",
+        "pulsados": "Reconocer voicings | Drop 2 | Set 1cuerdas 4-3-2-1 | Fácil"
+      },
+      "pixels": {
+        "width": 1280,
+        "height": 800
+      },
+      "bytes": 89148,
+      "sha256": "323e273c95219a854ec2d13cbc874b8f31f04f2f77e5d5bc88e10d79b2770971"
+    }
+  ]
+}

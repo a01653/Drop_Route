@@ -1,9 +1,10 @@
-import { catalog, routesDocument, summarizeData } from '../../data'
+import { catalog } from '../../data'
+import { EMPTY_PROGRESS } from '../../progress'
+import type { ProgressData } from '../../progress'
 import { DIFFICULTIES, DROP_LABELS, GAMES, ROUTE_MODES, ROUTE_STRETCHES, dropFamilies, setsOfDrop } from '../../session'
 import type { Difficulty, MenuState, SessionAction } from '../../session'
 import { OptionGroup } from './OptionGroup'
-
-const summary = summarizeData(catalog, routesDocument)
+import { ProgressPanel } from './ProgressPanel'
 
 const DIFFICULTY_HELP: Record<Difficulty, string> = {
   easy: 'Eliges el acorde entre cuatro botones.',
@@ -19,10 +20,12 @@ interface MenuScreenProps {
   dispatch: (action: SessionAction) => void
   /** Semilla para la primera pregunta. La aplicación la saca del navegador. */
   newSeed: () => number
+  /** Contadores guardados. Sin ellos se muestra el menú como la primera vez. */
+  progress?: ProgressData
 }
 
 /** Menú de arranque (R01): juego, Drop, set con sus cuerdas y dificultad o, en rutas, modo y tramo. */
-export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
+export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS }: MenuScreenProps) {
   const { config } = state
   const routes = config.game === 'routes'
   const sets = setsOfDrop(catalog, config.drop, config.game)
@@ -97,33 +100,12 @@ export function MenuScreen({ state, dispatch, newSeed }: MenuScreenProps) {
         <button className="boton-principal" type="submit">
           Empezar
         </button>
+        <a className="boton-secundario menu-estudio" href="#/study">
+          Modo estudio
+        </a>
       </form>
 
-      <section className="estado" aria-labelledby="estado-titulo">
-        <h2 id="estado-titulo">Estado de desarrollo</h2>
-        <p>
-          <strong>En desarrollo.</strong> Ya puedes reconocer voicings en fácil, medio y difícil y continuar rutas
-          II-V-I en Drop 2; el progreso local y la instalación llegarán después.
-        </p>
-        <p>Datos cargados desde la plantilla original:</p>
-        <dl>
-          <div>
-            <dt>Posiciones de juego</dt>
-            <dd>{summary.playableVoicings}</dd>
-          </div>
-          <div>
-            <dt>Posiciones de referencia</dt>
-            <dd>{summary.referenceVoicings}</dd>
-          </div>
-          <div>
-            <dt>Rutas II-V-I</dt>
-            <dd>{summary.routes}</dd>
-          </div>
-        </dl>
-        <p className="enlace-revision">
-          <a href="#/revision">Revisar tarjetas e icono</a>
-        </p>
-      </section>
+      <ProgressPanel progress={progress} config={config} />
     </main>
   )
 }

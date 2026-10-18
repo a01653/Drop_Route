@@ -42,5 +42,43 @@
       "size": 512,
       "sha256": "7a87e05faa5edb8f7aa15b8793e817b48d76ad537851d018ae3001ad39957ad3"
     }
-  ]
+  ],
+  "pwa": {
+    "maskableSource": "assets/icon/drop-route-icon-maskable.svg",
+    "maskableSourceSha256": "c00751c5ab05ca82daae33075fd8401b5e252ca978bed5c8950e2fefb315c484",
+    "exports": [
+      {
+        "file": "assets/icon/exports/icon-192.png",
+        "size": 192,
+        "purpose": "any",
+        "sha256": "479a3f554e29fbd21ebcc8cc4e63aa8756874f4a7913b6b199c97f4bf40ed473"
+      },
+      {
+        "file": "assets/icon/exports/icon-maskable-512.png",
+        "size": 512,
+        "purpose": "maskable",
+        "sha256": "f064bce45f39a09fbba7d85e38a52768ef0cbbb99c10e75f50360eb0d937e608"
+      }
+    ],
+    "public": [
+      {
+        "file": "public/icons/icon-192.png",
+        "size": 192,
+        "purpose": "any",
+        "sha256": "479a3f554e29fbd21ebcc8cc4e63aa8756874f4a7913b6b199c97f4bf40ed473"
+      },
+      {
+        "file": "public/icons/icon-512.png",
+        "size": 512,
+        "purpose": "any",
+        "sha256": "7a87e05faa5edb8f7aa15b8793e817b48d76ad537851d018ae3001ad39957ad3"
+      },
+      {
+        "file": "public/icons/maskable-512.png",
+        "size": 512,
+        "purpose": "maskable",
+        "sha256": "f064bce45f39a09fbba7d85e38a52768ef0cbbb99c10e75f50360eb0d937e608"
+      }
+    ]
+  }
 }

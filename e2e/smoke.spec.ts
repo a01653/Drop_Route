@@ -2,26 +2,18 @@ import { readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
 
-test('arranca desde el build con el nombre y el estado de desarrollo', async ({ page }) => {
+test('arranca desde el build con el menú sin el bloque informativo de versión', async ({ page }) => {
   await page.goto('/')
 
   await expect(page).toHaveTitle('Drop Route')
   await expect(page.getByRole('heading', { level: 1, name: 'Drop Route' })).toBeVisible()
 
-  const estado = page.getByRole('region', { name: 'Estado de desarrollo' })
-  await expect(estado).toContainText('En desarrollo.')
-  await expect(estado).toContainText('Ya puedes reconocer voicings')
+  await expect(page.getByRole('region', { name: 'Versión actual' })).toHaveCount(0)
+  await expect(page.getByText('Datos cargados desde la plantilla original:')).toHaveCount(0)
+  await expect(page.getByRole('region', { name: 'Tu progreso' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Empezar' })).toBeEnabled()
-})
-
-test('muestra los datos reales de data/ empaquetados en el build', async ({ page }) => {
-  await page.goto('/')
-
-  const estado = page.getByRole('region', { name: 'Estado de desarrollo' })
-  await expect(estado.getByText('Posiciones de juego')).toBeVisible()
-  await expect(estado.locator('div', { hasText: 'Posiciones de juego' }).locator('dd')).toHaveText('112')
-  await expect(estado.locator('div', { hasText: 'Posiciones de referencia' }).locator('dd')).toHaveText('12')
-  await expect(estado.locator('div', { hasText: 'Rutas II-V-I' }).locator('dd')).toHaveText('16')
+  await expect(page.getByRole('link', { name: 'Modo estudio' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Revisar tarjetas e icono' })).toHaveCount(0)
 })
 
 test('el preview sirve el build generado en esta ejecución', async ({ request }) => {

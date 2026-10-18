@@ -1,0 +1,180 @@
+/*
+ * Distribución específica de escritorio. El flujo móvil sigue en app.css,
+ * game.css y study.css; aquí solo se aprovecha el ancho disponible a partir de 960 px.
+ */
+@media (min-width: 960px) {
+  .avisos {
+    max-width: 82rem;
+    padding-inline: 2rem;
+  }
+
+  .arranque.menu {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
+    grid-template-areas:
+      'header header'
+      'form progress';
+    gap: 1.5rem 2rem;
+    align-items: start;
+    align-content: start;
+    justify-content: stretch;
+    max-width: 82rem;
+    min-height: 100dvh;
+    padding: 2rem;
+  }
+
+  .menu > header {
+    grid-area: header;
+  }
+
+  .menu-formulario {
+    grid-area: form;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  .menu-formulario > * {
+    min-width: 0;
+  }
+
+  .menu-formulario > .menu-ayuda,
+  .menu-formulario > .boton-principal,
+  .menu-formulario > .menu-estudio {
+    grid-column: 1 / -1;
+  }
+
+  .menu > .progreso {
+    grid-area: progress;
+  }
+
+  .menu .estado {
+    min-width: 0;
+  }
+
+  .juego {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(22rem, 0.7fr);
+    grid-template-areas:
+      'header header'
+      'title title'
+      'card answer'
+      'card result';
+    gap: 1rem 2rem;
+    align-items: start;
+    max-width: 82rem;
+    padding: 1.5rem 2rem 3rem;
+  }
+
+  .juego-cabecera {
+    grid-area: header;
+  }
+
+  .juego > h1 {
+    grid-area: title;
+  }
+
+  .juego-tarjeta {
+    grid-area: card;
+  }
+
+  .juego-respuesta {
+    grid-area: answer;
+  }
+
+  .juego > .resultado {
+    grid-area: result;
+  }
+
+  .juego .fretboard-card {
+    max-width: 44rem;
+    margin-inline: auto;
+  }
+
+  .juego.ruta[data-phase='ruta'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'header header'
+      'title title'
+      'start candidate';
+  }
+
+  .juego.ruta[data-phase='ruta-verificada'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'header header'
+      'title title'
+      'start result'
+      'comparison selection';
+  }
+
+  .ruta .partida {
+    grid-area: start;
+  }
+
+  .ruta .candidata {
+    grid-area: candidate;
+  }
+
+  .ruta .comparacion {
+    grid-area: comparison;
+  }
+
+  .ruta .seleccion {
+    grid-area: selection;
+  }
+
+  .study {
+    max-width: 88rem;
+    padding: 1.5rem 2rem 3rem;
+  }
+
+  /* Más específico que la base móvil de study.css para que el orden de los CSS empaquetados no pueda devolverlo a flex. */
+  .study .study-workspace {
+    display: grid;
+    grid-template-columns: minmax(18rem, 22rem) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .study-sidebar {
+    position: sticky;
+    top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--borde);
+    border-radius: 0.75rem;
+    background: var(--tarjeta);
+  }
+
+  .study-sidebar .opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .study-sidebar .opciones button {
+    width: 100%;
+  }
+
+  .study-control label {
+    max-width: none;
+  }
+
+  .study-card {
+    width: min(100%, 48rem);
+    max-width: none;
+  }
+
+  .study-route-grid {
+    gap: 2rem;
+  }
+
+  .study-movements {
+    gap: 1.5rem;
+  }
+
+  .revision {
+    max-width: 88rem;
+    padding-inline: 2rem;
+  }
+}

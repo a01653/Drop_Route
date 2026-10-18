@@ -40,7 +40,7 @@ describe('colocar, mover, devolver y cancelar', () => {
     const result = run(board(), { type: 'pick-bank', degree: 'b3' }, { type: 'drop-slot', slot: 2 })
     expect(result.slots).toEqual([null, null, 'b3', null])
     expect(result.held).toBeNull()
-    expect(bankRemaining(result.slots)).toEqual(['1', '3', '5', 'b5', '7', 'b7'])
+    expect(bankRemaining(result.slots)).toEqual(['1', '3', '5', 'b5', '6', '7', 'b7'])
   })
 
   it('una ficha colocada no se puede coger otra vez del banco', () => {

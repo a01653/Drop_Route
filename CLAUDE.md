@@ -6,13 +6,17 @@
 
 Lee docs/PROJECT.md, docs/DECISIONS.md y docs/DTS.md. Después abre la orden de trabajo indicada por el usuario. Para cambios musicales lee docs/MUSIC.md; para dibujos y móvil, docs/VISUAL.md.
 
-La interfaz tiene el menú, el juego de reconocimiento en sus tres dificultades (DR-003 y DR-004), el de rutas II-V-I de Drop 2 (DR-005) y la pantalla de revisión de tarjetas e icono (DR-002); el progreso y la PWA todavía no existen. Ejecuta una sola orden de trabajo por petición, salvo que el usuario autorice expresamente un bloque (DR-003 con DR-004, DR-005 por separado o DR-006 con DR-007): véase «Bloques de órdenes» en AGENTS.md. No conviertas DR-001 en la implementación completa del juego.
+DR-001 a DR-007 están integradas en `main`: interfaz, reconocimiento, rutas II-V-I de Drop 2, progreso local, PWA, documentación y publicación en GitHub Pages. Las ampliaciones se abren como órdenes nuevas; DR-008 añade modo estudio, movimiento de voces y transposición del material de estudio. Ejecuta solo la orden solicitada, salvo autorización expresa del usuario para un bloque.
 
 ## Reglas del producto
 
 - Nombre Drop Route. Comunicación e interfaz en español de España, con tuteo.
-- Primera etapa en C. Catálogo: Cmaj7, C7, Cm7 y Cm7(b5), cuatro inversiones y siete sets.
+- Los juegos evaluables permanecen en C mientras una orden no amplíe expresamente ese alcance.
+- Catálogo base: Cmaj7, C7, Cm7 y Cm7(b5), cuatro inversiones y siete sets.
 - Juegos: reconocer voicings y continuar las rutas II-V-I de la plantilla.
+- Modo estudio: consultar voicings y rutas sin evaluación; puede transponer visualmente las formas sin alterar los JSON fuente.
+- En transposición de estudio, desplaza todas las voces de una forma la misma cantidad. En una ruta aplica un único desplazamiento común a II, V e I para conservar la conducción de voces.
+- «Ver movimiento» describe por cuerda el cambio de traste entre acordes y no inventa una nueva ruta ni optimiza la fuente.
 - Fácil: cuatro botones de acorde. Medio: acorde e inversión mediante dos desplegables. Difícil: añade grados sobre cuatro círculos.
 - Pregunta neutra: círculos grises y fondo común, sin nombres, grados o colores que revelen la solución.
 - Corregir por campos, con texto y rojo/verde; recuperar los colores musicales al mostrar la solución.
@@ -32,10 +36,8 @@ Cdim7 se conserva como referencia y no se ofrece en preguntas. C6 es una sustitu
 
 ## Verificación y documentación
 
-Los tests de la base usan node:test y verifican los datos; Vitest cubre las capas de src y Playwright el humo del build, las tarjetas y los juegos de reconocimiento y rutas. Aún no hay pruebas de persistencia. Consulta docs/TEST_PLAN.md. No inventes resultados o comandos.
+Los tests de la base usan node:test y verifican los datos, el icono y el generador del service worker; Vitest cubre las capas de src, incluido el progreso, y Playwright el humo del build, las tarjetas, los juegos de reconocimiento y rutas, el progreso, el modo sin conexión y la actualización de la PWA. Añade regresiones unitarias o E2E cuando una orden amplíe comportamiento. El progreso guardado tiene un esquema versionado aparte de la app: no cambies su formato sin una migración y sin conservar copia del original. Consulta docs/TEST_PLAN.md.
 
-Distingue siempre lo existente de lo planificado. Actualiza los requisitos y el DTS en Markdown en la misma rama si cambia su comportamiento documentado.
-
-Durante DR-001 a DR-006 no regeneres LaTeX/PDF ni prepares los manuales completos o sus capturas. Se concentran en DR-007 por decisión del usuario. Ejecuta docs:check en cada fase; en DR-007 aplica también docs:check:final y la revisión visual completa indicada en AGENTS.md. Los tests del código no se aplazan.
+Distingue siempre lo existente de lo planificado. Actualiza los requisitos y la documentación de la misma rama cuando cambie el comportamiento documentado. La política documental está en modo `required`: no alteres DTS o manuales derivados sin regenerarlos y validarlos.
 
 Referencia de instrucciones persistentes: https://code.claude.com/docs/en/memory

@@ -1,27 +1,27 @@
 {
   "source": "docs/DTS.md",
   "command": "npm run docs:build",
-  "engine": "lualatex",
+  "engine": "xelatex",
   "files": [
     {
       "path": "docs/DTS.md",
-      "sha256": "0eaf6831a9b04221749833d064f067136c8783d87a1251a3859f6a6dd91a3c11"
+      "sha256": "7c2c1ecd42e57c1023f42d2022fe89943281115c8e438d98605133f2f1dd27e2"
     },
     {
       "path": "docs/latex/DTS_Drop_Route.tex",
-      "sha256": "72969ac480a4f9bf8515f670e5242b2baf87a523c1a285290a71027689db774d"
+      "sha256": "211a8c5999e6a6f29957631334c4b6cfaa6c95287380380d044a5c5fdcd8191c"
     },
     {
       "path": "docs/latex/DTS_Drop_Route.pdf",
-      "sha256": "2c5db9202af765499564a902a6e21a262c13a2277904823f5aa99d4488c05e28"
+      "sha256": "71f51ee33fa0c3eddd0843d635183b9f32b1c01d47ebb71bd6b070844a486629"
     },
     {
       "path": "docs/latex/dts-template.tex",
-      "sha256": "2102226b5d5832604cb8aa03d5659fc523f2b99550ba376e2f42cc6f3316ecf7"
+      "sha256": "89b811eeab6eee7057d41b51c97a4eb62d18a8879ebbc7e1445be84df7954513"
     },
     {
       "path": "scripts/build_dts.py",
-      "sha256": "2c5307c9f10a279e8cc86845041594e0e5c8c860e6626f67db00e4205c409f4a"
+      "sha256": "463defb80f057c57d03467dc20da1beb1cf72cd74ec604da1da88bb0f3c2ab52"
     }
   ]
 }

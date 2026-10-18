@@ -3,7 +3,7 @@
 
 export type StringNumber = 1 | 2 | 3 | 4 | 5 | 6
 export type QualityKey = 'maj7' | '7' | 'm7' | 'm7b5' | 'dim7'
-export type Degree = '1' | '3' | 'b3' | '5' | 'b5' | '7' | 'b7' | 'bb7'
+export type Degree = '1' | '3' | 'b3' | '5' | 'b5' | '6' | '7' | 'b7' | 'bb7'
 export type Inversion = 0 | 1 | 2 | 3
 export type DropFamily = 'drop2' | 'drop3' | 'drop2+4'
 export type SetId = 'D2S1' | 'D2S2' | 'D2S3' | 'D3S1' | 'D3S2' | 'D24S1' | 'D24S2'
@@ -37,6 +37,8 @@ export interface ChordShape {
   rootPc: number
   inversion: Inversion
   notes: NotePosition[]
+  /** Notas grises en formas derivadas de estudio o preguntas; no son voces que se toquen. */
+  referenceNotes?: NotePosition[]
 }
 
 export interface Voicing extends ChordShape {

@@ -2,96 +2,138 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado: en desarrollo. Existen la base técnica de la aplicación (DR-001), las tarjetas SVG, el icono (aprobado) y su pantalla de revisión (DR-002) el juego de reconocimiento de voicings en sus tres dificultades (DR-003 y DR-004, integrado en main) y el juego de rutas II-V-I de Drop 2 (DR-005, con ajuste de navegación y revisión del test pendiente de revisión humana). El progreso local y la PWA todavía no existen.** Claude Code realizará la interfaz por órdenes de trabajo.
+## Abrir en el móvil
 
-Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
+La versión móvil está publicada como **PWA instalable** en [Drop Route](https://a01653.github.io/Drop_Route/). Se abre y se instala desde el navegador, siguiendo el [manual de instalación](docs/manuals/INSTALACION.md).
+
+**No hay un APK ni un AAB de Android generado o subido al repositorio, ni un paquete móvil descargable en Releases.** El código, el manifest, los iconos y el service worker de la PWA sí forman parte del proyecto.
 
 ## Contenido
 
-- Instrucciones para Claude en [CLAUDE.md](CLAUDE.md), con reglas comunes en [AGENTS.md](AGENTS.md).
+- Instrucciones de desarrollo en [CLAUDE.md](CLAUDE.md) y [AGENTS.md](AGENTS.md).
 - [Requisitos](docs/PROJECT.md), [apariencia](docs/VISUAL.md), [contrato musical](docs/MUSIC.md) y [decisiones](docs/DECISIONS.md).
 - Plantilla HTML y dos guías PDF originales en [references](references/README.md).
-- Datos: 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
-- 51 tests con node:test (24 de la base musical, 11 del utillaje, 9 de la política documental y 7 del icono) y auditorías de música y procedencia.
-- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 172 tests Vitest.
-- Tarjetas SVG de las 112 formas, en vista neutra y de solución, con la apariencia de la plantilla ([cómo y qué difiere](docs/VISUAL.md)).
-- Icono: [original SVG editable y exportaciones](assets/icon/README.md).
-- 129 casos E2E definidos con Playwright sobre el build (pendientes de ejecutar en este entorno por falta de Chromium): humo, tarjetas a 360, 390 y 430 px, comparación con la plantilla original el juego de reconocimiento (fácil, medio y difícil con arrastre, dos toques y teclado) y el de rutas II-V-I.
-- [DTS principal](docs/DTS.md), su [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX derivado.
-- [Plan de pruebas](docs/TEST_PLAN.md) y [siete órdenes de trabajo](docs/work-orders/README.md).
-
-El 13/10/2026 el usuario autorizó publicar esta base completa en a01653/Drop_Route, incluidos los tres materiales originales. El ajuste de navegación y revisión del test está pendiente de revisión humana.
+- 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
+- Aplicación React, TypeScript y Vite en `src/`, separada en datos, música, sesión, progreso e interfaz.
+- Reconocimiento de voicings en fácil, medio y difícil, y rutas II-V-I de Drop 2.
+- Modo estudio sin examen para consultar voicings y rutas, transponerlos a las 12 tonalidades y ver la conducción de voces.
+- Variante C6 de la fuente reproducida en estudio, revisión y preguntas de reconocimiento sobre copias derivadas: sexta activa y séptima gris de referencia al revelar la solución.
+- Diseño responsive: flujo compacto en móvil y distribución horizontal en escritorio para menú, juego, rutas y estudio.
+- Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
+- Pruebas con node:test, Vitest y Playwright.
+- [DTS principal](docs/DTS.md), [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX.
+- [Manual de uso](docs/manuals/USO.md) y [manual de instalación](docs/manuals/INSTALACION.md), con sus PDF en `docs/latex/`.
+- [Plan de pruebas](docs/TEST_PLAN.md), [órdenes de trabajo](docs/work-orders/README.md) y [registros de validación](docs/validation/).
 
 ## Uso del paquete
 
-Descomprime el ZIP y abre una terminal en la carpeta Drop_Route. Requisitos:
+Requisitos para desarrollar o probar el proyecto:
 
-- Node.js 22.13 o superior (.nvmrc propone Node 24), Git y Claude Code instalado/autenticado.
-- Python 3.10 o superior para `data:check` y `docs:build`. El lanzador `scripts/run-python.mjs` lo localiza solo: prueba la variable `PYTHON` y después `py -3`, `python` y `python3` en Windows, o `python3` y `python` en Linux y macOS. Si no encuentra una versión válida, muestra qué probó y cómo resolverlo. Con una ruta no estándar, define `PYTHON`, por ejemplo `PYTHON=C:\Python312\python.exe`.
-- Chromium de Playwright para los E2E: `npx playwright install chromium`. No lo instala `npm ci`.
-- Pandoc y LuaLaTeX completo o XeLaTeX, solo para regenerar el DTS con `docs:build`.
+- Node.js 22.13 o superior; `.nvmrc` propone Node 24.
+- Git.
+- Python 3.10 o superior para `data:check` y la generación documental.
+- Chromium de Playwright para E2E y capturas: `npx playwright install chromium`.
+- Pandoc y LuaLaTeX completo o XeLaTeX para regenerar DTS y manuales.
 
 ```bash
 npm ci --ignore-scripts
 npm run validate
-claude
 ```
 
-Instrucción inicial para Claude:
-
-> Lee CLAUDE.md y docs/work-orders/DR-001.md. Ejecuta solo DR-001, conserva las referencias y los datos musicales y entrega el resultado para revisión. No avances a DR-002.
-
-Obtener la base desde el repositorio:
+Clonar el repositorio:
 
 ```bash
 git clone https://github.com/a01653/Drop_Route.git
 cd Drop_Route
 ```
 
-## Comandos actuales
-
-Aplicación:
+## Comandos
 
 ```bash
-npm run dev        # servidor de desarrollo de Vite
-npm run build      # comprueba tipos y genera dist/
-npm run preview    # sirve dist/; ejecuta antes npm run build
-npm run typecheck  # tsc sobre la aplicación y las herramientas
+npm run dev          # servidor de desarrollo de Vite
+npm run build        # typecheck y build en dist/
+npm run preview      # sirve el build existente
+npm run typecheck
 npm run lint
-npm test           # node:test de la base y Vitest
-npm run test:unit  # solo Vitest
-npm run test:base  # solo node:test
-npm run test:e2e   # Playwright sobre un build recién generado
-npm run icon:export # regenera los PNG del icono desde su SVG (necesita Chromium)
-```
-
-`npm run test:e2e` genera el build, lo sirve con vite preview durante la prueba y lo detiene al terminar. No hace falta iniciar el preview antes y no debe haber otro servidor en el puerto 4173: si lo hay, Playwright falla en lugar de probar una compilación anterior. El humo comprueba además que `dist/` se generó durante esa misma ejecución.
-
-Base de datos y documentación:
-
-```bash
+npm test             # node:test + Vitest
+npm run test:unit
+npm run test:base
+npm run test:e2e     # Playwright sobre un build nuevo
+npm run icon:export
 npm run audit:music
-npm run data:check # extracción de la plantilla, con Python 3.10 o superior
+npm run data:check
+npm run docs:build   # DTS y manuales en LaTeX/PDF
 npm run docs:check
 npm run docs:check:final
-npm run validate   # data:check, audit:music, npm test y docs:check
-npm run docs:build # DTS en LaTeX y PDF; Python, Pandoc y LaTeX
 ```
 
-docs:build requiere Pandoc y LuaLaTeX completo o XeLaTeX. Genera las versiones LaTeX/PDF desde el Markdown. Está comprobado con Pandoc 3.12.1. Por decisión del usuario se ejecutará en DR-007 junto con los manuales completos, sus capturas y la revisión visual documental; durante DR-001 a DR-006 solo se mantiene el Markdown actualizado.
+`npm run build` genera también `dist/sw.js` y empaqueta el manifest y los iconos de la PWA. `npm run test:e2e` crea un build nuevo, lo sirve durante la prueba y detiene el servidor al terminar.
 
-docs:check conserva las comprobaciones de enlaces e integridad y declara los cambios pendientes de regeneración. docs:check:final exige la sincronización completa de los derivados y se aplica en DR-007. El PDF existente corresponde a la última generación, no necesariamente al Markdown actual. La política explícita está en `docs/documentation-policy.json`.
+La política de `docs/documentation-policy.json` está en `required`: `docs:check` y `docs:check:final` exigen que el DTS y los manuales coincidan con sus fuentes y capturas registradas.
 
-Con `npm run dev` o `npm run preview`, la raíz es el menú: eliges Drop, set (con sus cuerdas) y dificultad y empiezas a reconocer voicings. Fácil usa cuatro botones de acorde, medio añade la inversión con dos desplegables y difícil añade colocar los grados sobre los cuatro círculos, por arrastre, dos toques, teclado o con los botones compactos «Colocar sin arrastrar». `#/revision` abre la pantalla de revisión: las 112 tarjetas por set, en vista neutra o de solución, y el icono a tamaño real. En el menú, «Rutas II-V-I» pide Drop 2 (sets 1 y 2, los únicos con rutas), modo mayor o menor y tramo (II → V, V → I o los dos seguidos): ves la partida, una sola candidata cada vez con el selector 1 a 4 (o deslizando la tarjeta), verificas y comparas Tu respuesta con la Solución de una en una. Puedes volver a preguntas anteriores y terminar el test para revisar los voicings elegidos y los de la ruta. El resumen señala qué respuestas coinciden, cuáles no y cuáles quedaron sin verificar; permite abrir los diagramas de ambos voicings para compararlos.
+## Juego
 
-## Instantáneas históricas
+En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acorde; medio añade la inversión; difícil añade los cuatro grados sobre la tarjeta mediante arrastre, dos toques, teclado o los controles de colocación sin arrastre.
 
-`FILES_SHA256.json` y `RECOVERY_STATUS.json` son instantáneas de la base inicial reconstruida el 13/10/2026, previas a la publicación y a DR-001. No se actualizan: sus hashes, sus 24 tests y su `applicationImplemented: false` describen aquel momento y no los archivos o resultados añadidos por las fases posteriores. Para saber qué hay hoy, consulta Git, este README, el [DTS](docs/DTS.md) y los [registros de validación](docs/validation/2026-10-13-dr-001-app-foundation.md). Ningún script ni test las comprueba.
+La opción mayor se llama **Cmaj7 / C6** en todas las preguntas. Las formas que llevan sexta en la plantilla se preguntan con esa sexta, también en tercera inversión; al corregir aparecen la sexta dorada y la séptima gris de referencia. En Difícil se coloca **6**, no 7, en el círculo de la sexta. El banco ofrece siempre ambos grados. La etiqueta agrupa las dos variantes de la familia mayor y no afirma que C6 y Cmaj7 tengan las mismas notas.
+
+Las tarjetas salen al azar entre las que quedan por mostrar: se recorre todo el set antes de repetir. Después empieza otra ronda, evitando repetir seguidas la última tarjeta y la primera de la ronda nueva. La versión instalada aparece arriba, en una etiqueta pequeña.
+
+Cada pregunta indica **Tónica: C**. La inversión y los grados se interpretan respecto a esa referencia, aunque las mismas notas admitan otro nombre. Tras verificar, la corrección localiza la tónica por cuerda y traste y explica las lecturas equivalentes **C6/Am7** y **Cm7/E♭6**, con su inversión calculada desde el bajo real. Durante la pregunta, los círculos permanecen neutros. Al pie aparece «Creado por Jesús Quevedo Rodríguez».
+
+En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas. Durante el test puedes volver a preguntas anteriores con tu selección y resultado conservados, y terminarlo para revisar cada respuesta junto a la posición que corresponde a la ruta, incluidas las que quedaron pendientes.
+
+Los juegos evaluables se practican en C.
+
+## Modo estudio
+
+Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni puntuación.
+
+**Voicings:** eliges Drop, set, calidad e inversión y ves la solución completa. El selector de tonalidad transpone la forma a cualquiera de las 12 tónicas cromáticas sin modificar los datos fuente. Cuando la plantilla original muestra la variante de sexta de un Cmaj7, el estudio reproduce `Cmaj7 – C6`: la 7ª mayor baja dos trastes y pasa a 6. La séptima original permanece como círculo gris de referencia. Las dos posiciones se transponen juntas (`Dmaj7 – D6`, etc.); la referencia gris no cuenta como una quinta voz.
+
+**Rutas II-V-I:** eliges set, mayor o menor y una de las cuatro rutas. Se muestran II, V e I juntos y `Ver movimiento` detalla cuánto se desplaza cada voz en cada cuerda entre II → V y V → I. Las rutas que citan C6 en la fuente muestran también esa variante, por lo que el movimiento se calcula sobre la forma que realmente se ve.
+
+La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
+
+La pantalla interna `#/revision` permite revisar las 112 tarjetas y el icono. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris.
+
+## Diseño responsive
+
+En móvil se mantiene el flujo vertical y los controles táctiles existentes. En escritorio, a partir de 960 px, la aplicación aprovecha el ancho disponible: el menú separa configuración y progreso, el reconocimiento coloca tarjeta y respuesta en paralelo, las rutas distribuyen partida y candidato/resultado en columnas y el modo estudio deja los controles a un lado del contenido. El mástil conserva su ventana corta; no se estira para llenar el monitor.
+
+## Progreso y PWA
+
+Cada pregunta verificada suma un intento. En reconocimiento se cuenta por set y dificultad; en rutas, por set, modo y tramo. Solo hay acierto cuando la respuesta completa coincide con la solución del ejercicio. El modo estudio no suma intentos ni aciertos.
+
+La configuración y los contadores se guardan en `localStorage` en el navegador y dispositivo actuales. No hay cuentas ni sincronización. Si el almacenamiento falla, la aplicación lo avisa y permite continuar en memoria.
+
+El build genera un service worker con precaché de los recursos de la aplicación. Una versión nueva queda esperando hasta que el usuario acepta actualizar desde el menú. Si otra pestaña ya la activó, «Actualizar ahora» recarga con esa versión aunque ya no haya un worker en espera. Las otras pestañas no se recargan automáticamente. La actualización no borra el progreso guardado.
+
+## GitHub Pages
+
+El repositorio incluye `.github/workflows/deploy-pages.yml`: un trabajo construye la aplicación y otro despliega el artefacto con GitHub Pages.
+
+Drop Route se construye para la subruta `/Drop_Route/`:
+
+```bash
+DROP_ROUTE_BASE=/Drop_Route/ npm run build
+```
+
+En PowerShell:
+
+```powershell
+$env:DROP_ROUTE_BASE = '/Drop_Route/'
+npm run build
+```
+
+La aplicación está publicada en:
+
+<https://a01653.github.io/Drop_Route/>
 
 ## Integración continua
 
-El workflow `.github/workflows/validate-foundation.yml` tiene dos trabajos, que no se habían ejecutado en GitHub al preparar el commit de DR-001; su resultado se consulta en la pestaña Actions. El de la base usa Node 24 y Python 3.10, e instala con `npm ci --ignore-scripts` antes de `data:check`, `audit:music`, `test:base` y `docs:check`. El de la aplicación ejecuta `typecheck`, `lint`, `test:unit`, `build`, la descarga de Chromium y `test:e2e`.
+`.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
-## Flujo
+## Límites actuales
 
-Una rama por objetivo. Pruebas dirigidas durante los ajustes; batería completa aplicable al cierre. Actualizar el DTS cuando cambie el diseño material. Commit, merge, tag, push y despliegue requieren una orden que cubra esas acciones, como en Mástil Escalas.
+No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. La transposición se limita al modo estudio; los juegos evaluables permanecen en C. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
