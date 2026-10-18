@@ -4,7 +4,7 @@ import { catalog, routesDocument } from '../../data'
 import type { Inversion } from '../../data'
 import { inversionFromBass } from '../../music/pitch'
 import { DROP_LABELS, ROUTE_MODES, answerStep, candidateSteps, startStep } from '../../session'
-import type { RouteQuestionState, RouteVerifiedState, SessionAction } from '../../session'
+import type { RouteAttempt, RouteQuestionState, RouteSummaryState, RouteVerifiedState, SessionAction } from '../../session'
 import { FretboardCard } from '../card/FretboardCard'
 import { toPosition, toSolution } from '../card/model'
 
@@ -14,6 +14,53 @@ const SWIPE_DISTANCE = 48
 
 const inversionName = (inversion: Inversion | null) =>
   inversion === null ? 'sin determinar' : (catalog.inversions[inversion] ?? 'sin determinar')
+
+/** Revisión final: identifica cada voicing elegido y el que usa la ruta del material. */
+export function RouteSummaryScreen({ state, dispatch }: { state: RouteSummaryState; dispatch: (action: SessionAction) => void }) {
+  return (
+    <main className="juego ruta resumen-ruta">
+      <header className="juego-cabecera">
+        <p>Rutas II-V-I · revisión del test</p>
+        <button className="boton-secundario" type="button" onClick={() => dispatch({ type: 'exit' })}>Salir al menú</button>
+      </header>
+      <h1>Revisión del test</h1>
+      <p className="resumen-ruta-total">Revisa en cada pregunta el voicing que elegiste y el que utiliza la ruta.</p>
+      <ol className="lista-revision-ruta">
+        {state.attempts.map((attempt) => <RouteAttemptReview key={attempt.question.number} attempt={attempt} />)}
+      </ol>
+    </main>
+  )
+}
+
+function RouteAttemptReview({ attempt }: { attempt: RouteAttempt }) {
+  const candidates = candidateSteps(routesDocument, attempt.question)
+  const chosen = candidates[attempt.selected]!
+  const expected = answerStep(routesDocument, attempt.question)
+  const expectedIndex = attempt.question.candidateRouteIds.indexOf(attempt.question.routeId)
+  const result = attempt.result
+  const status = result ? (result.correct ? 'Coincide con la ruta' : 'No coincide con la ruta') : 'Sin verificar'
+  return (
+    <li className={`revision-ruta-item ${result ? result.correct ? 'ok' : 'ko' : 'pendiente'}`}>
+      <h2>Pregunta {attempt.question.number} · {attempt.question.target === 'V' ? 'II → V' : 'V → I'}</h2>
+      <p><strong>Tu voicing:</strong> candidata {attempt.selected + 1}, {chosen.name}, {inversionName(result?.chosenInversion ?? inversionFromBass(chosen, catalog)).toLowerCase()}.</p>
+      <p><strong>Voicing de la ruta:</strong> candidata {expectedIndex + 1}, {expected.name}, {inversionName(result?.expectedInversion ?? inversionFromBass(expected, catalog)).toLowerCase()}.</p>
+      <p className="revision-ruta-estado">{status}</p>
+      <details className="revision-ruta-detalle">
+        <summary>Ver comparación de voicings</summary>
+        <div className="revision-ruta-diagramas">
+          <section aria-label="Tu voicing">
+            <h3>Tu respuesta · candidata {attempt.selected + 1}</h3>
+            <FretboardCard view="solution" position={toPosition(chosen, catalog)} solution={toSolution(chosen, catalog)} />
+          </section>
+          <section aria-label="Voicing de la ruta">
+            <h3>Ruta · candidata {expectedIndex + 1}</h3>
+            <FretboardCard view="solution" position={toPosition(expected, catalog)} solution={toSolution(expected, catalog)} />
+          </section>
+        </div>
+      </details>
+    </li>
+  )
+}
 
 interface RouteScreenProps {
   state: RouteQuestionState | RouteVerifiedState
@@ -156,9 +203,15 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
         <button className="boton-secundario" type="button" onClick={() => dispatch({ type: 'exit' })}>
           Salir
         </button>
+        <button className="boton-secundario" type="button" disabled={state.position === 0} onClick={() => dispatch({ type: 'previous' })}>
+          Pregunta anterior
+        </button>
         <p>
           {DROP_LABELS[config.drop]} · set {set?.number} · {modeLabel} · {stretchLabel}
         </p>
+        <button className="boton-secundario" type="button" disabled={state.position < state.attempts.length - 1} onClick={() => dispatch({ type: 'finish-test' })}>
+          Terminar test
+        </button>
       </header>
 
       <h1 tabIndex={-1} ref={questionHeading}>
@@ -213,7 +266,9 @@ export function RouteScreen({ state, dispatch, newSeed }: RouteScreenProps) {
                 : `Elegiste la candidata ${state.selected + 1}: ${candidate.name}, ${inversionName(state.result.chosenInversion).toLowerCase()}. Es otra posición válida de ${candidate.name}, pero esta ruta usa ${inversionName(state.result.expectedInversion).toLowerCase()}.`}
             </p>
             <button className="boton-principal" type="button" onClick={() => dispatch({ type: 'next', seed: newSeed() })}>
-              {config.stretch === 'both' && question.target === 'V' ? 'Siguiente: V → I' : 'Siguiente'}
+              {state.position < state.attempts.length - 1
+                ? 'Siguiente pregunta'
+                : config.stretch === 'both' && question.target === 'V' ? 'Siguiente: V → I' : 'Siguiente'}
             </button>
           </section>
           <section className="seleccion" aria-labelledby="seleccion-titulo">

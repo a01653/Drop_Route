@@ -69,6 +69,12 @@ Decisiones de implementación tomadas al ejecutar la orden, no confirmadas todav
 - Deslizamiento opcional con un umbral de 48 px y predominio horizontal; en los extremos no da la vuelta. Flechas del teclado sobre el selector.
 - Ajuste de la revisión (14/10/2026; validación aprobada: build, lint, npm test completo y Vitest dirigido con control negativo; E2E y CI pendientes): tras verificar el selector 1 a 4 no desaparece, queda bloqueado y marcado como los botones de acorde de fácil. Si la elegida no coincide con nuestra ruta va en rojo con ✗ y la de nuestra ruta en verde con ✓; si coincide, la elegida en verde con ✓. `aria-pressed` solo en la elegida y estado en la descripción accesible, sin cambiar el nombre «Candidata n». El rojo del botón significa «no es la de nuestra ruta»; el texto conserva «otra posición válida». El veredicto sigue en ámbar para no presentar la alternativa como error. Tu respuesta/Solución no cambia la elegida y Siguiente deja el selector libre y sin marcas.
 
+## Ajuste de navegación y revisión del test de rutas (18/10/2026)
+
+Solicitado por el usuario. La sesión de rutas mantiene una lista de preguntas y respuestas: «Pregunta anterior» restaura la candidata y el resultado; «Siguiente» recorre una pregunta ya visitada antes de crear otra. «Terminar test» aparece habilitado en la última pregunta visitada y permite finalizar en cualquier momento, sin fijar una cantidad de preguntas. El resumen identifica la candidata elegida, el voicing de la ruta y si coinciden; permite desplegar ambos diagramas físicos y conserva preguntas sin verificar. No añade una puntuación global. Una candidata alternativa es válida musicalmente y se etiqueta «No coincide con la ruta», no como error musical.
+
+La revisión humana y los E2E de navegador siguen pendientes. El test unitario cubre el guardado y la restauración; Playwright no pudo arrancar porque el entorno no tiene Chromium y la descarga del navegador devolvió un ZIP inválido de 0 MiB.
+
 ## Pendiente
 
 Icono final; puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; hosting y licencia del código nuevo. Las referencias conservan su autoría.

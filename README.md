@@ -2,7 +2,7 @@
 
 Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
 
-**Estado: en desarrollo. Existen la base técnica de la aplicación (DR-001), las tarjetas SVG, el icono (aprobado) y su pantalla de revisión (DR-002) el juego de reconocimiento de voicings en sus tres dificultades (DR-003 y DR-004, integrado en main) y el juego de rutas II-V-I de Drop 2 (DR-005, pendiente de revisión humana). El progreso local y la PWA todavía no existen.** Claude Code realizará la interfaz por órdenes de trabajo.
+**Estado: en desarrollo. Existen la base técnica de la aplicación (DR-001), las tarjetas SVG, el icono (aprobado) y su pantalla de revisión (DR-002) el juego de reconocimiento de voicings en sus tres dificultades (DR-003 y DR-004, integrado en main) y el juego de rutas II-V-I de Drop 2 (DR-005, con ajuste de navegación y revisión del test pendiente de revisión humana). El progreso local y la PWA todavía no existen.** Claude Code realizará la interfaz por órdenes de trabajo.
 
 Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal del primer intento. Conserva las decisiones del proyecto y vuelve a extraer las posiciones de las mismas referencias originales; no es una recuperación byte a byte del commit local perdido.
 
@@ -13,14 +13,14 @@ Esta base fue reconstruida el 13/10/2026 después de perder la copia temporal de
 - Plantilla HTML y dos guías PDF originales en [references](references/README.md).
 - Datos: 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
 - 51 tests con node:test (24 de la base musical, 11 del utillaje, 9 de la política documental y 7 del icono) y auditorías de música y procedencia.
-- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 163 tests Vitest.
+- Aplicación React, TypeScript y Vite en `src/`, con capas de datos, música, sesión e interfaz, y 172 tests Vitest.
 - Tarjetas SVG de las 112 formas, en vista neutra y de solución, con la apariencia de la plantilla ([cómo y qué difiere](docs/VISUAL.md)).
 - Icono: [original SVG editable y exportaciones](assets/icon/README.md).
-- 123 ejecuciones E2E con Playwright sobre el build: humo, tarjetas a 360, 390 y 430 px, comparación con la plantilla original el juego de reconocimiento (fácil, medio y difícil con arrastre, dos toques y teclado) y el de rutas II-V-I.
+- 129 casos E2E definidos con Playwright sobre el build (pendientes de ejecutar en este entorno por falta de Chromium): humo, tarjetas a 360, 390 y 430 px, comparación con la plantilla original el juego de reconocimiento (fácil, medio y difícil con arrastre, dos toques y teclado) y el de rutas II-V-I.
 - [DTS principal](docs/DTS.md), su [PDF](docs/latex/DTS_Drop_Route.pdf) y LaTeX derivado.
 - [Plan de pruebas](docs/TEST_PLAN.md) y [siete órdenes de trabajo](docs/work-orders/README.md).
 
-El 13/10/2026 el usuario autorizó publicar esta base completa en a01653/Drop_Route, incluidos los tres materiales originales. El juego sigue pendiente de implementación.
+El 13/10/2026 el usuario autorizó publicar esta base completa en a01653/Drop_Route, incluidos los tres materiales originales. El ajuste de navegación y revisión del test está pendiente de revisión humana.
 
 ## Uso del paquete
 
@@ -82,7 +82,7 @@ docs:build requiere Pandoc y LuaLaTeX completo o XeLaTeX. Genera las versiones L
 
 docs:check conserva las comprobaciones de enlaces e integridad y declara los cambios pendientes de regeneración. docs:check:final exige la sincronización completa de los derivados y se aplica en DR-007. El PDF existente corresponde a la última generación, no necesariamente al Markdown actual. La política explícita está en `docs/documentation-policy.json`.
 
-Con `npm run dev` o `npm run preview`, la raíz es el menú: eliges Drop, set (con sus cuerdas) y dificultad y empiezas a reconocer voicings. Fácil usa cuatro botones de acorde, medio añade la inversión con dos desplegables y difícil añade colocar los grados sobre los cuatro círculos, por arrastre, dos toques, teclado o con los botones compactos «Colocar sin arrastrar». `#/revision` abre la pantalla de revisión: las 112 tarjetas por set, en vista neutra o de solución, y el icono a tamaño real. En el menú, «Rutas II-V-I» pide Drop 2 (sets 1 y 2, los únicos con rutas), modo mayor o menor y tramo (II → V, V → I o los dos seguidos): ves la partida, una sola candidata cada vez con el selector 1 a 4 (o deslizando la tarjeta), verificas y comparas Tu respuesta con la Solución de una en una.
+Con `npm run dev` o `npm run preview`, la raíz es el menú: eliges Drop, set (con sus cuerdas) y dificultad y empiezas a reconocer voicings. Fácil usa cuatro botones de acorde, medio añade la inversión con dos desplegables y difícil añade colocar los grados sobre los cuatro círculos, por arrastre, dos toques, teclado o con los botones compactos «Colocar sin arrastrar». `#/revision` abre la pantalla de revisión: las 112 tarjetas por set, en vista neutra o de solución, y el icono a tamaño real. En el menú, «Rutas II-V-I» pide Drop 2 (sets 1 y 2, los únicos con rutas), modo mayor o menor y tramo (II → V, V → I o los dos seguidos): ves la partida, una sola candidata cada vez con el selector 1 a 4 (o deslizando la tarjeta), verificas y comparas Tu respuesta con la Solución de una en una. Puedes volver a preguntas anteriores y terminar el test para revisar los voicings elegidos y los de la ruta. El resumen señala qué respuestas coinciden, cuáles no y cuáles quedaron sin verificar; permite abrir los diagramas de ambos voicings para compararlos.
 
 ## Instantáneas históricas
 

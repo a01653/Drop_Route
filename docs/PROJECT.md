@@ -24,10 +24,12 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R14 | Practicar II-V y V-I; V-I parte del V correcto de esa ruta. |
 | R15 | Fondo común y círculos neutros antes de verificar; sin etiquetas o colores que den pistas. Recuperar colores musicales en solución. |
 | R16 | Operación con ratón, teclado y tacto; resultado comprensible sin distinguir colores. |
+| R17 | En rutas, volver a preguntas anteriores y conservar la candidata y la corrección; Siguiente recupera preguntas ya visitadas antes de crear otra. |
+| R18 | Terminar la sesión de rutas cuando se quiera y revisar cada voicing elegido frente al de la ruta, abrir sus dos diagramas y ver cuáles quedaron pendientes. Una posición alternativa se describe como no perteneciente a esa ruta, no como un error musical. |
 
 ## Datos de rutas
 
-Drop 2 sets 1 y 2, mayor y menor; cuatro inversiones iniciales. No ofrecer sets sin rutas normalizadas. Las demás familias sí están disponibles para reconocimiento.
+Drop 2 sets 1 y 2, mayor y menor; cuatro inversiones iniciales. No ofrecer sets sin rutas normalizadas. Las demás familias sí están disponibles para reconocimiento. El test de rutas no tiene una longitud fija: se termina manualmente y después muestra el repaso acumulado.
 
 Mayor: Dm7-G7-Cmaj7. Menor: Dm7(b5)-G7-Cm7. La respuesta pertenece a nuestra secuencia, no es la única posibilidad musical.
 

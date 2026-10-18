@@ -6,7 +6,7 @@ import './app.css'
 import './game/game.css'
 import { MenuScreen } from './game/MenuScreen'
 import { RecognitionScreen } from './game/RecognitionScreen'
-import { RouteScreen } from './game/RouteScreen'
+import { RouteScreen, RouteSummaryScreen } from './game/RouteScreen'
 import { ReviewScreen } from './review/ReviewScreen'
 import { useHashRoute } from './useHashRoute'
 
@@ -21,6 +21,7 @@ export function App() {
 
   if (route === '#/revision') return <ReviewScreen />
   if (state.phase === 'menu') return <MenuScreen state={state} dispatch={dispatch} newSeed={newSeed} />
+  if (state.phase === 'ruta-resumen') return <RouteSummaryScreen state={state} dispatch={dispatch} />
   if (state.phase === 'ruta' || state.phase === 'ruta-verificada') {
     return <RouteScreen state={state} dispatch={dispatch} newSeed={newSeed} />
   }

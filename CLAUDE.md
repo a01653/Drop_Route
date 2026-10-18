@@ -17,7 +17,7 @@ La interfaz tiene el menú, el juego de reconocimiento en sus tres dificultades 
 - Pregunta neutra: círculos grises y fondo común, sin nombres, grados o colores que revelen la solución.
 - Corregir por campos, con texto y rojo/verde; recuperar los colores musicales al mostrar la solución.
 - Mástil corto como nuestras tarjetas. No crear uno completo de doce trastes.
-- Rutas: partida visible y una forma candidata visible cada vez. Selector 1/2/3/4, Verificar y Siguiente.
+- Rutas: partida visible y una forma candidata visible cada vez. Selector 1/2/3/4, Verificar, Pregunta anterior, Siguiente y Terminar test. La sesión no tiene longitud fija; al terminar, se revisan las respuestas y el voicing de la ruta sin puntuación global.
 - Difícil permite arrastre, tocar ficha + destino y teclado.
 - Rutas mayores Dm7-G7-Cmaj7; menores Dm7(b5)-G7-Cm7. No sustituir el I menor por otra calidad.
 - Otra posición válida de G7 fuera de nuestra ruta no se describe como musicalmente incorrecta.
