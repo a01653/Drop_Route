@@ -96,6 +96,12 @@ PWA:
 - Iconos de la PWA a partir del icono aprobado, sin cambiarlo: 192 y 512 «any» y un 512 maskable que es el mismo dibujo al 80 % dentro de la zona segura. El PNG de 192 y el maskable de esta entrega los generó el supervisor con CairoSVG 2.9.1; el 512 «any» es el aprobado. Los iconos finales están versionados en `public/icons/`, de modo que el build no necesita Chromium.
 - Fuera de alcance: cuentas, backend, sincronización, notificaciones, exportar o recuperar copias desde la interfaz y cualquier ampliación. La versión sigue en 0.0.0 porque esta entrega aún no se ha publicado ni etiquetado.
 
+## Ajuste de navegación y revisión del test de rutas (18/10/2026)
+
+Solicitado por el usuario. La sesión de rutas mantiene una lista de preguntas y respuestas: «Pregunta anterior» restaura la candidata y el resultado; «Siguiente» recorre una pregunta ya visitada antes de crear otra. «Terminar test» aparece habilitado en la última pregunta visitada y permite finalizar en cualquier momento, sin fijar una cantidad de preguntas. El resumen identifica la candidata elegida, el voicing de la ruta y si coinciden; permite desplegar ambos diagramas físicos y conserva preguntas sin verificar. No añade una puntuación global. Una candidata alternativa es válida musicalmente y se etiqueta «No coincide con la ruta», no como error musical.
+
+La revisión humana y los E2E de navegador siguen pendientes. El test unitario cubre el guardado y la restauración; Playwright no pudo arrancar porque el entorno no tiene Chromium y la descarga del navegador devolvió un ZIP inválido de 0 MiB.
+
 ## Pendiente
 
 Puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; alojamiento y flujo de despliegue; licencia del código nuevo; si la interfaz debe permitir recuperar las copias de seguridad del progreso. Las referencias conservan su autoría. El icono ya está aprobado.

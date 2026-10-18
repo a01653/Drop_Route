@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { catalog, routesDocument } from '../data'
 import type { Inversion, RoutesDocument, SetId } from '../data'
 import { inversionFromBass } from '../music/pitch'
-import { configure, createSession, exit, next, selectCandidate, start, verify } from '.'
+import { configure, createSession, exit, finishRouteTest, next, previousRoute, selectCandidate, start, verify } from '.'
 import type { RouteQuestionState, RouteVerifiedState, SessionState } from '.'
 import { defaultConfig, dropFamilies, routeSetIds, setsForGame, setsOfDrop, updateConfig } from './config'
 import type { GameConfig, RouteMode, RouteStretch } from './config'
@@ -31,6 +31,7 @@ const config = (setId: SetId, routeMode: RouteMode, stretch: RouteStretch): Game
 })
 const signature = (notes: { string: number; fret: number }[]) =>
   notes.map((note) => `${note.string}:${note.fret}`).sort().join(',')
+const rightIndexFor = (state: RouteQuestionState) => state.question.candidateRouteIds.indexOf(state.question.routeId)
 
 // Oráculo independiente de docs/MUSIC.md: inversión del V y del I según la inversión inicial del II.
 const V_INVERSION: Inversion[] = [2, 3, 0, 1]
@@ -246,6 +247,38 @@ describe('partida estable y tramo V-I desde el V correcto (R14)', () => {
       expect(after.question.target).toBe('V')
       expect(after.question.routeId).not.toBe(state.question.routeId)
     }
+  })
+
+  it('vuelve a la pregunta anterior y restaura exactamente la candidata y la corrección guardadas', () => {
+    let first = begin('both', 12)
+    first = selectCandidate(first, (rightIndexFor(first) + 1) % 4) as RouteQuestionState
+    const firstDone = verify(catalog, first) as RouteVerifiedState
+    const second = next(catalog, firstDone, 33) as RouteQuestionState
+    const secondDone = verify(catalog, second) as RouteVerifiedState
+    const restored = previousRoute(secondDone) as RouteVerifiedState
+    expect(restored.question).toEqual(firstDone.question)
+    expect(restored.selected).toBe(firstDone.selected)
+    expect(restored.result).toEqual(firstDone.result)
+    expect(restored.position).toBe(0)
+    const forward = next(catalog, restored, 99) as RouteVerifiedState
+    expect(forward.question).toEqual(secondDone.question)
+    expect(forward.result).toEqual(secondDone.result)
+  })
+
+  it('termina y resume el test con los errores y las preguntas sin verificar', () => {
+    const first = begin('ii-v', 15)
+    const wrong = (rightIndexFor(first) + 1) % 4
+    const firstDone = verify(catalog, selectCandidate(first, wrong)) as RouteVerifiedState
+    const second = next(catalog, firstDone, 55) as RouteQuestionState
+    const summary = finishRouteTest(second)
+    expect(summary.phase).toBe('ruta-resumen')
+    if (summary.phase !== 'ruta-resumen') throw new Error('El test debería haber terminado')
+    expect(summary.attempts).toHaveLength(2)
+    expect(summary.attempts[0]?.result?.correct).toBe(false)
+    expect(summary.attempts[0]?.selected).toBe(wrong)
+    expect(summary.attempts[1]?.result).toBeNull()
+    const revisiting = previousRoute(second)
+    expect(finishRouteTest(revisiting)).toBe(revisiting)
   })
 
   it('los tramos sueltos no encadenan: cada pregunta es de otra ruta', () => {

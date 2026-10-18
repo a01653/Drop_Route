@@ -382,6 +382,41 @@ test('acierto: solo la elegida, en verde con ✓, y ninguna roja; Siguiente deja
   await expect(selectorButton(page, 3)).toHaveAttribute('aria-pressed', 'true')
 })
 
+test('anterior conserva las respuestas; Terminar test muestra los voicings elegidos y los pendientes', async ({ page }) => {
+  const { setId, mode } = await begin(page)
+  const firstRoute = await routeOfStart(page, setId, mode, 'II')
+  const firstCandidates = await browseCandidates(page)
+  const correct = firstCandidates.indexOf(signature(firstRoute.steps[1]!.notes))
+  const wrong = (correct + 1) % 4
+  await selectorButton(page, wrong).click()
+  await verifyButton(page).click()
+  await expect(page.getByRole('heading', { name: 'No es la de nuestra ruta' })).toBeVisible()
+  await page.getByRole('button', { name: 'Siguiente', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 2' })).toBeVisible()
+  await selectorButton(page, 2).click()
+
+  await page.getByRole('button', { name: 'Pregunta anterior' }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 1' })).toBeVisible()
+  await expect(selectorButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('button', { name: 'Terminar test' })).toBeDisabled()
+  await page.getByRole('button', { name: 'Siguiente pregunta' }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 2' })).toBeVisible()
+  await expect(selectorButton(page, 2)).toHaveAttribute('aria-pressed', 'true')
+  await page.getByRole('button', { name: 'Terminar test' }).click()
+
+  await expect(page.getByRole('heading', { name: 'Revisión del test' })).toBeVisible()
+  await expect(page.locator('.revision-ruta-item')).toHaveCount(2)
+  await expect(page.locator('.revision-ruta-item').nth(0)).toContainText('No coincide con la ruta')
+  await expect(page.locator('.revision-ruta-item').nth(0)).toContainText('Tu voicing:')
+  await expect(page.locator('.revision-ruta-item').nth(0)).toContainText('Voicing de la ruta:')
+  await expect(page.locator('.revision-ruta-item').nth(1)).toContainText('Sin verificar')
+  const comparison = page.locator('.revision-ruta-item').nth(0)
+  await comparison.getByText('Ver comparación de voicings').click()
+  await expect(comparison.locator('svg')).toHaveCount(2)
+  await expect(comparison.getByRole('heading', { name: /Tu respuesta · candidata/ })).toBeVisible()
+  await expect(comparison.getByRole('heading', { name: /Ruta · candidata/ })).toBeVisible()
+})
+
 for (const width of [360, 390, 430]) {
   for (const stretch of ['II → V', 'V → I'] as const) {
     test(`móvil ${width} px, ${stretch}: sin desplazamiento, tarjetas completas, controles de 48 px y nunca cuatro diagramas`, async ({ page }) => {

@@ -42,6 +42,8 @@ export interface RouteQuestionState {
   readonly config: GameConfig
   readonly question: RouteQuestion
   readonly selected: number
+  readonly attempts: readonly RouteAttempt[]
+  readonly position: number
 }
 
 /** Pregunta de ruta verificada: la candidata queda bloqueada y se compara con la ruta exacta. */
@@ -51,9 +53,25 @@ export interface RouteVerifiedState {
   readonly question: RouteQuestion
   readonly selected: number
   readonly result: RouteResult
+  readonly attempts: readonly RouteAttempt[]
+  readonly position: number
 }
 
-export type SessionState = MenuState | QuestionState | VerifiedState | RouteQuestionState | RouteVerifiedState
+/** Respuesta guardada para poder retroceder y revisar una sesión de rutas. */
+export interface RouteAttempt {
+  readonly question: RouteQuestion
+  readonly selected: number
+  readonly result: RouteResult | null
+}
+
+/** Resumen final de la sesión de rutas; incluye la pregunta actual aunque aún no se haya verificado. */
+export interface RouteSummaryState {
+  readonly phase: 'ruta-resumen'
+  readonly config: GameConfig
+  readonly attempts: readonly RouteAttempt[]
+}
+
+export type SessionState = MenuState | QuestionState | VerifiedState | RouteQuestionState | RouteVerifiedState | RouteSummaryState
 export type SessionPhase = SessionState['phase']
 
 export function createSession(catalog: Catalog): MenuState {
@@ -80,7 +98,11 @@ export function start(
   if (state.phase !== 'menu') return state
   const rng = createRng(seed)
   if (state.config.game === 'routes') {
-    return { phase: 'ruta', config: state.config, question: createRouteQuestion(state.config, rng, routes), selected: 0 }
+    const question = createRouteQuestion(state.config, rng, routes)
+    return {
+      phase: 'ruta', config: state.config, question, selected: 0,
+      attempts: [{ question, selected: 0, result: null }], position: 0,
+    }
   }
   const question = createQuestion(catalog, state.config, rng)
   return { phase: 'pregunta', config: state.config, question, answer: emptyAnswer(), held: null }
@@ -108,18 +130,41 @@ export function selectCandidate(state: SessionState, index: number): SessionStat
   if (state.phase !== 'ruta' || !Number.isInteger(index) || index < 0 || index >= state.question.candidateRouteIds.length) {
     return state
   }
-  return index === state.selected ? state : { ...state, selected: index }
+  if (index === state.selected) return state
+  const attempts = state.attempts.map((attempt, position) => position === state.position ? { ...attempt, selected: index } : attempt)
+  return { ...state, selected: index, attempts }
+}
+
+/** Recupera una pregunta anterior conservando su respuesta y su resultado. */
+export function previousRoute(state: SessionState): SessionState {
+  if ((state.phase !== 'ruta' && state.phase !== 'ruta-verificada') || state.position === 0) return state
+  const position = state.position - 1
+  const attempt = state.attempts[position]!
+  const common = { config: state.config, question: attempt.question, selected: attempt.selected, attempts: state.attempts, position }
+  return attempt.result
+    ? { phase: 'ruta-verificada', ...common, result: attempt.result }
+    : { phase: 'ruta', ...common }
+}
+
+/** Cierra la sesión para mostrar las respuestas y las posiciones de la ruta. */
+export function finishRouteTest(state: SessionState): SessionState {
+  if ((state.phase !== 'ruta' && state.phase !== 'ruta-verificada') || state.position !== state.attempts.length - 1) return state
+  return { phase: 'ruta-resumen', config: state.config, attempts: state.attempts.slice(0, state.position + 1) }
 }
 
 /** Verifica una respuesta completa. Incompleta, o ya verificada, no cambia nada. */
 export function verify(catalog: Catalog, state: SessionState, routes: RoutesDocument = routesDocument): SessionState {
   if (state.phase === 'ruta') {
+    const result = evaluateRoute(catalog, routes, state.question, state.selected)
+    const attempts = state.attempts.map((attempt, position) => position === state.position ? { ...attempt, result } : attempt)
     return {
       phase: 'ruta-verificada',
       config: state.config,
       question: state.question,
       selected: state.selected,
-      result: evaluateRoute(catalog, routes, state.question, state.selected),
+      result,
+      attempts,
+      position: state.position,
     }
   }
   if (state.phase !== 'pregunta' || !isAnswerComplete(state.question.difficulty, state.answer)) return state
@@ -140,8 +185,17 @@ export function next(
   routes: RoutesDocument = routesDocument,
 ): SessionState {
   if (state.phase === 'ruta-verificada') {
+    if (state.position < state.attempts.length - 1) {
+      const position = state.position + 1
+      const attempt = state.attempts[position]!
+      const common = { config: state.config, question: attempt.question, selected: attempt.selected, attempts: state.attempts, position }
+      return attempt.result
+        ? { phase: 'ruta-verificada', ...common, result: attempt.result }
+        : { phase: 'ruta', ...common }
+    }
     const question = createRouteQuestion(state.config, createRng(seed), routes, state.question)
-    return { phase: 'ruta', config: state.config, question, selected: 0 }
+    const attempts = [...state.attempts, { question, selected: 0, result: null }]
+    return { phase: 'ruta', config: state.config, question, selected: 0, attempts, position: attempts.length - 1 }
   }
   if (state.phase !== 'verificada') return state
   const question = createQuestion(catalog, state.config, createRng(seed), state.question)

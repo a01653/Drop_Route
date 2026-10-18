@@ -25,7 +25,7 @@ Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil 
 | Preguntas | Opciones únicas, una correcta, azar reproducible y rotación completa del set antes de repetir. Igual frecuencia por ronda, sin repetición inmediata entre rondas si hay alternativas. Probar los siete sets y tres dificultades, un catálogo de once formas, una sola forma y azar constante. |
 | Respuesta | Fácil no exige inversión; medio sí; difícil exige cuatro destinos. Incompleto no verifica. |
 | Corrección | Por campos; una sola puntuación por primer intento; respuesta bloqueada tras verificar. |
-| Rutas | Cuatro candidatas de misma calidad, solución exacta, partida estable y transición desde V correcto. |
+| Rutas | Cuatro candidatas de misma calidad, solución exacta, partida estable, transición desde V correcto, retroceso y avance con respuesta conservada, y resumen final con aciertos, alternativas y pendientes y diagramas comparables. |
 | Grados | Alteraciones, dos toques, arrastre, devolución, sustitución, teclado y pointercancel. |
 | Móvil | Anchos 360/390/430 px, controles táctiles, una candidata visible y sin recortes. Cubierto en tarjetas, revisión y los dos juegos; en DR-006 también avisos y panel de progreso. |
 | Pistas | Fondo y círculos neutros; sin solución en títulos, tooltips o nombres accesibles. Cubierto en las tarjetas y en las opciones de respuesta de los juegos. |
@@ -34,7 +34,7 @@ Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil 
 
 ## E2E
 
-Selección por familia y set, fácil correcto/incorrecto, medio con inversión fallida, difícil incompleto y completo por dos toques/arrastre, rutas II-V y V-I, Tu respuesta/Solución, Siguiente, Salir y teclado.
+Selección por familia y set, fácil correcto/incorrecto, medio con inversión fallida, difícil incompleto y completo por dos toques/arrastre, rutas II-V y V-I, Tu respuesta/Solución, navegación anterior/siguiente con estado restaurado, finalización y revisión del test, comparación de diagramas, Siguiente, Salir y teclado.
 
 `recognition-rotation.spec.ts` recorre dos rondas completas de Fácil por los controles reales, con azar constante para reproducir la repetición del selector anterior. Deduce cada tarjeta de sus posiciones físicas y del catálogo. También comprueba la versión del paquete en menú, pregunta, corrección, rutas y estudio, en escritorio y móvil.
 

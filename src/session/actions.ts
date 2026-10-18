@@ -1,6 +1,6 @@
 import { routesDocument } from '../data'
 import type { Catalog, RoutesDocument } from '../data/types'
-import { choose, configure, exit, moveDegree, next, selectCandidate, start, verify } from '.'
+import { choose, configure, exit, finishRouteTest, moveDegree, next, previousRoute, selectCandidate, start, verify } from '.'
 import type { SessionState } from '.'
 import type { DegreeAction } from './degrees'
 
@@ -19,6 +19,8 @@ export type SessionAction =
   | { type: 'candidate'; index: number }
   | { type: 'verify' }
   | { type: 'next'; seed: number }
+  | { type: 'previous' }
+  | { type: 'finish-test' }
   | { type: 'exit' }
 
 export function reduceSession(
@@ -42,6 +44,10 @@ export function reduceSession(
       return verify(catalog, state, routes)
     case 'next':
       return next(catalog, state, action.seed, routes)
+    case 'previous':
+      return previousRoute(state)
+    case 'finish-test':
+      return finishRouteTest(state)
     case 'exit':
       return exit(state)
   }

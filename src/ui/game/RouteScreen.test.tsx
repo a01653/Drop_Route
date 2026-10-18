@@ -5,7 +5,9 @@ import type { SetId } from '../../data'
 import {
   configure,
   createSession,
+  finishRouteTest,
   next,
+  previousRoute,
   selectCandidate,
   start,
   verify,
@@ -14,7 +16,7 @@ import {
 } from '../../session'
 import type { RouteMode, RouteQuestionState, RouteStretch, RouteVerifiedState, SessionState } from '../../session'
 import { MenuScreen } from './MenuScreen'
-import { RouteScreen } from './RouteScreen'
+import { RouteScreen, RouteSummaryScreen } from './RouteScreen'
 
 const noop = () => undefined
 const begin = (setId: SetId, mode: RouteMode, stretch: RouteStretch, seed = 5): RouteQuestionState => {
@@ -66,6 +68,9 @@ describe('pregunta de ruta (R12)', () => {
     expect(html).toContain('Candidata 1 de 4')
     expect(html).toMatch(/aria-pressed="true"[^>]*aria-label="Candidata 1"/)
     expect(html).toContain('>Verificar<')
+    expect(html).toContain('Pregunta anterior</button>')
+    expect(html).toContain('Terminar test</button>')
+    expect(html).toContain('disabled="">Pregunta anterior</button>')
   })
 
   it('la candidata es neutra: solo posiciones, sin nombre, grados, colores ni identificadores', () => {
@@ -248,5 +253,27 @@ describe('verificación de ruta (R13)', () => {
     const state = begin('D2S1', 'minor', 'ii-v', 9)
     expect(startStep(routesDocument, state.question).function).toBe('ii')
     expect(answerStep(routesDocument, state.question).function).toBe('V')
+  })
+
+  it('permite regresar a la pregunta anterior y muestra las respuestas y errores al terminar', () => {
+    const first = begin('D2S1', 'major', 'ii-v', 17)
+    const wrong = (rightIndex(first) + 1) % 4
+    const firstDone = finish(first, wrong)
+    const second = next(catalog, firstDone, 27) as RouteQuestionState
+    const returned = selectCandidate(second, 2) as RouteQuestionState
+    expect(returned.position).toBe(1)
+    const previous = previousRoute(returned) as RouteVerifiedState
+    expect(previous.question).toEqual(firstDone.question)
+    expect(previous.selected).toBe(wrong)
+    const summary = finishRouteTest(second)
+    if (summary.phase !== 'ruta-resumen') throw new Error('El test debería haber terminado')
+    const html = renderToStaticMarkup(<RouteSummaryScreen state={summary} dispatch={noop} />)
+    expect(html).toContain('Revisión del test')
+    expect(html).toContain('Tu voicing:')
+    expect(html).toContain('Voicing de la ruta:')
+    expect(html).toContain('No coincide con la ruta')
+    expect(html).toContain('Sin verificar')
+    expect(html).toContain('Ver comparación de voicings')
+    expect(html).toContain('Ruta · candidata')
   })
 })
