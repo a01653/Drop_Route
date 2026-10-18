@@ -14,6 +14,7 @@ Cada tarea se pide por separado. Las reglas permanentes están en CLAUDE.md y AG
 | [DR-008](DR-008.md) | Modo estudio, movimiento de voces y transposición. | Completada e integrada en `main`. |
 | [DR-009](DR-009.md) | Variante C6 de la fuente y distribución responsive de escritorio. | Completada e integrada en `main`, incluidas las correcciones de revisión y séptima gris. |
 | [DR-010](DR-010.md) | Tónica explícita, lecturas equivalentes y autoría al pie. | Implementada y validada; commit, merge, push y publicación autorizados el 16/10/2026. |
+| [DR-011](DR-011.md) | Navegación y revisión del test de reconocimiento. | En desarrollo. |
 
 DR-009 ya está terminada; no es una tarea pendiente. Sus evidencias están en la [validación inicial](../validation/2026-10-15-dr-009-c6-desktop-layout.md) y en la [corrección de C6 y séptima gris](../validation/2026-10-15-dr-009-c6-review.md).
 

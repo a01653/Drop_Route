@@ -18,13 +18,13 @@ La política documental tiene regresiones con fixtures temporales en `tests/docu
 
 ## Matriz
 
-Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil de los juegos de reconocimiento y pistas en las opciones de respuesta. Cubiertas en DR-005: rutas (cuatro candidatas de la misma calidad, solución exacta, partida estable y transición desde el V correcto) y su móvil a 360, 390 y 430 px. Con pruebas escritas en DR-006: persistencia y PWA, a falta de la evidencia de los E2E y de la CI de esa fase (véase su registro).
+Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil de los juegos de reconocimiento y pistas en las opciones de respuesta. DR-011 añade pruebas de restauración y revisión del test de reconocimiento; la lógica está cubierta por Vitest y su E2E sigue pendiente por falta de Chromium local. Cubiertas en DR-005: rutas (cuatro candidatas de la misma calidad, solución exacta, partida estable y transición desde el V correcto) y su móvil a 360, 390 y 430 px. Con pruebas escritas en DR-006: persistencia y PWA, a falta de la evidencia de los E2E y de la CI de esa fase (véase su registro).
 
 | Área | Comportamiento a probar |
 | --- | --- |
 | Preguntas | Opciones únicas, una correcta, azar reproducible y rotación completa del set antes de repetir. Igual frecuencia por ronda, sin repetición inmediata entre rondas si hay alternativas. Probar los siete sets y tres dificultades, un catálogo de once formas, una sola forma y azar constante. |
 | Respuesta | Fácil no exige inversión; medio sí; difícil exige cuatro destinos. Incompleto no verifica. |
-| Corrección | Por campos; una sola puntuación por primer intento; respuesta bloqueada tras verificar. |
+| Corrección | Por campos; una sola puntuación por primer intento; respuesta bloqueada tras verificar. En reconocimiento, retroceso/avance restaura la respuesta y el resultado; el resumen final detalla errores, solución y preguntas pendientes. |
 | Rutas | Cuatro candidatas de misma calidad, solución exacta, partida estable, transición desde V correcto, retroceso y avance con respuesta conservada, y resumen final con aciertos, alternativas y pendientes y diagramas comparables. |
 | Grados | Alteraciones, dos toques, arrastre, devolución, sustitución, teclado y pointercancel. |
 | Móvil | Anchos 360/390/430 px, controles táctiles, una candidata visible y sin recortes. Cubierto en tarjetas, revisión y los dos juegos; en DR-006 también avisos y panel de progreso. |
@@ -34,7 +34,7 @@ Cubiertas en DR-003 y DR-004: preguntas, respuesta, corrección, grados, móvil 
 
 ## E2E
 
-Selección por familia y set, fácil correcto/incorrecto, medio con inversión fallida, difícil incompleto y completo por dos toques/arrastre, rutas II-V y V-I, Tu respuesta/Solución, navegación anterior/siguiente con estado restaurado, finalización y revisión del test, comparación de diagramas, Siguiente, Salir y teclado.
+Selección por familia y set, fácil correcto/incorrecto, medio con inversión fallida, difícil incompleto y completo por dos toques/arrastre, rutas II-V y V-I, Tu respuesta/Solución, navegación anterior/siguiente con estado restaurado en ambos juegos, finalización y revisión del test, comparación de diagramas, Siguiente, Salir y teclado.
 
 `recognition-rotation.spec.ts` recorre dos rondas completas de Fácil por los controles reales, con azar constante para reproducir la repetición del selector anterior. Deduce cada tarjeta de sus posiciones físicas y del catálogo. También comprueba la versión del paquete en menú, pregunta, corrección, rutas y estudio, en escritorio y móvil.
 

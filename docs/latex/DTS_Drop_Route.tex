@@ -1,4 +1,4 @@
-% Source-SHA256: 7c2c1ecd42e57c1023f42d2022fe89943281115c8e438d98605133f2f1dd27e2
+% Source-SHA256: a77bfb8aec8522c92631bf9c0ad82ff15912a67a7f9760289fe280ac65533fdb
 % !TeX program = xelatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
@@ -572,6 +572,16 @@ anunciada. La autoría «Creado por Jesús Quevedo Rodríguez» se muestra en
 un pie común después de la pantalla, sin posición fija ni superposición
 de controles. No cambia el catálogo, las rutas, el esquema de progreso
 ni la selección de preguntas.
+
+DR-011 añade historial a reconocimiento, igual que el test de rutas:
+cada intento guarda pregunta, respuesta y resultado. «Anterior» recupera
+el estado guardado; «Siguiente» vuelve a preguntas visitadas antes de
+sortear otra. «Terminar y revisar» cierra la sesión libre en la pregunta
+actual y lista por campo qué se acertó, qué falló y cuál era la
+solución, con el diagrama físico desplegable. Las preguntas no
+verificadas quedan identificadas como pendientes y muestran la
+comparación al entrar en revisión. Retroceder y revisar no vuelven a
+contar intentos en el progreso.
 
 \Needspace{4cm}
 \hypertarget{muxf3vil-y-accesibilidad}{%

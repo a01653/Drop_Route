@@ -36,6 +36,7 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R26 | Mostrar la versión de la aplicación como una etiqueta pequeña en el menú, los juegos y el modo estudio, obtenida de `package.json`. |
 | R27 | Indicar la tónica de referencia antes de responder en reconocimiento. Corregir inversión y grados respecto a ella; tras verificar, localizarla por cuerda y traste y explicar C6/Am7 y Cm7/E♭6 con la inversión de la lectura equivalente. No señalar la posición de la tónica ni adelantar la equivalencia durante la pregunta. |
 | R28 | Mostrar «Creado por Jesús Quevedo Rodríguez» en pequeño al pie, después del contenido y sin superponer controles. |
+| R29 | En reconocimiento, volver a preguntas anteriores y avanzar conservando respuestas y resultados. Terminar el test en cualquier pregunta y revisar respuestas, errores y solución física, incluidas las preguntas sin verificar. |
 
 ## Datos de rutas
 
@@ -45,7 +46,7 @@ Mayor: Dm7-G7-Cmaj7. Menor: Dm7(b5)-G7-Cm7. La respuesta pertenece a nuestra sec
 
 ## Estado
 
-DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio. DR-009 corrige la fidelidad de la variante C6 de la fuente y añade una distribución específica para escritorio sin cambiar el flujo móvil.
+DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio. DR-009 corrige la fidelidad de la variante C6 de la fuente y añade una distribución específica para escritorio sin cambiar el flujo móvil. DR-011 está en desarrollo: navegación y revisión del test de reconocimiento.
 
 Los juegos evaluables permanecen en C en esta entrega. El modo estudio no modifica los contadores de progreso.
 

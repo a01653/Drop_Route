@@ -25,6 +25,8 @@ export interface QuestionState {
   readonly answer: RecognitionAnswer
   /** Ficha que se sostiene (arrastre, dos toques o teclado) en difícil; null si no hay ninguna. */
   readonly held: Held | null
+  readonly attempts: readonly RecognitionAttempt[]
+  readonly position: number
 }
 
 /** Pregunta verificada: la respuesta queda bloqueada y el resultado se calcula una sola vez. */
@@ -34,6 +36,22 @@ export interface VerifiedState {
   readonly question: RecognitionQuestion
   readonly answer: RecognitionAnswer
   readonly result: RecognitionResult
+  readonly attempts: readonly RecognitionAttempt[]
+  readonly position: number
+}
+
+/** Respuesta de reconocimiento guardada para volver a la pregunta o revisar el test. */
+export interface RecognitionAttempt {
+  readonly question: RecognitionQuestion
+  readonly answer: RecognitionAnswer
+  readonly result: RecognitionResult | null
+}
+
+/** Revisión final de una sesión de reconocimiento. */
+export interface RecognitionSummaryState {
+  readonly phase: 'reconocimiento-resumen'
+  readonly config: GameConfig
+  readonly attempts: readonly RecognitionAttempt[]
 }
 
 /** Pregunta de ruta abierta. La candidata que se ve es la respuesta: el índice va de 0 a 3. */
@@ -71,7 +89,7 @@ export interface RouteSummaryState {
   readonly attempts: readonly RouteAttempt[]
 }
 
-export type SessionState = MenuState | QuestionState | VerifiedState | RouteQuestionState | RouteVerifiedState | RouteSummaryState
+export type SessionState = MenuState | QuestionState | VerifiedState | RecognitionSummaryState | RouteQuestionState | RouteVerifiedState | RouteSummaryState
 export type SessionPhase = SessionState['phase']
 
 export function createSession(catalog: Catalog): MenuState {
@@ -105,7 +123,17 @@ export function start(
     }
   }
   const question = createQuestion(catalog, state.config, rng)
-  return { phase: 'pregunta', config: state.config, question, answer: emptyAnswer(), held: null }
+  return {
+    phase: 'pregunta', config: state.config, question, answer: emptyAnswer(), held: null,
+    attempts: [{ question, answer: emptyAnswer(), result: null }], position: 0,
+  }
+}
+
+function updateRecognitionAttempt<T extends QuestionState | VerifiedState>(state: T, attempt: RecognitionAttempt): T {
+  return {
+    ...state,
+    attempts: state.attempts.map((item, position) => position === state.position ? attempt : item),
+  }
 }
 
 /** Selecciona o cambia un campo de la respuesta. Seleccionar no verifica ni puntúa. */
@@ -114,7 +142,8 @@ export function choose(
   change: { quality: QualityKey | null } | { inversion: Inversion | null },
 ): SessionState {
   if (state.phase !== 'pregunta') return state
-  return { ...state, answer: { ...state.answer, ...change } }
+  const answer = { ...state.answer, ...change }
+  return updateRecognitionAttempt({ ...state, answer }, { question: state.question, answer, result: null })
 }
 
 /** Coloca, mueve, devuelve o quita grados en difícil. En otros niveles o fases no hace nada. */
@@ -122,7 +151,8 @@ export function moveDegree(state: SessionState, action: DegreeAction): SessionSt
   if (state.phase !== 'pregunta' || state.question.difficulty !== 'hard') return state
   const board = applyDegreeAction({ slots: state.answer.degrees, held: state.held }, action)
   if (board.slots === state.answer.degrees && board.held === state.held) return state
-  return { ...state, answer: { ...state.answer, degrees: board.slots }, held: board.held }
+  const answer = { ...state.answer, degrees: board.slots }
+  return updateRecognitionAttempt({ ...state, answer, held: board.held }, { question: state.question, answer, result: null })
 }
 
 /** Elige la candidata de ruta que se ve (0 a 3). Cambiar de candidata no cambia la partida ni verifica. */
@@ -146,10 +176,40 @@ export function previousRoute(state: SessionState): SessionState {
     : { phase: 'ruta', ...common }
 }
 
+/** Recupera la pregunta anterior de reconocimiento con la respuesta y corrección que ya tenía. */
+export function previousRecognition(state: SessionState): SessionState {
+  if ((state.phase !== 'pregunta' && state.phase !== 'verificada') || state.position === 0) return state
+  const position = state.position - 1
+  const attempt = state.attempts[position]!
+  const common = {
+    config: state.config, question: attempt.question, answer: attempt.answer,
+    attempts: state.attempts, position,
+  }
+  return attempt.result
+    ? { phase: 'verificada', ...common, result: attempt.result }
+    : { phase: 'pregunta', ...common, held: null }
+}
+
 /** Cierra la sesión para mostrar las respuestas y las posiciones de la ruta. */
 export function finishRouteTest(state: SessionState): SessionState {
   if ((state.phase !== 'ruta' && state.phase !== 'ruta-verificada') || state.position !== state.attempts.length - 1) return state
   return { phase: 'ruta-resumen', config: state.config, attempts: state.attempts.slice(0, state.position + 1) }
+}
+
+/** Termina el test de reconocimiento en la pregunta actual para revisar todo lo recorrido. */
+export function finishRecognitionTest(state: SessionState): SessionState {
+  if (state.phase !== 'pregunta' && state.phase !== 'verificada') return state
+  return { phase: 'reconocimiento-resumen', config: state.config, attempts: state.attempts }
+}
+
+/** Despacha el retroceso al juego activo. */
+export function previous(state: SessionState): SessionState {
+  return state.phase === 'ruta' || state.phase === 'ruta-verificada' ? previousRoute(state) : previousRecognition(state)
+}
+
+/** Termina y resume el juego activo. */
+export function finishTest(state: SessionState): SessionState {
+  return state.phase === 'ruta' || state.phase === 'ruta-verificada' ? finishRouteTest(state) : finishRecognitionTest(state)
 }
 
 /** Verifica una respuesta completa. Incompleta, o ya verificada, no cambia nada. */
@@ -168,12 +228,18 @@ export function verify(catalog: Catalog, state: SessionState, routes: RoutesDocu
     }
   }
   if (state.phase !== 'pregunta' || !isAnswerComplete(state.question.difficulty, state.answer)) return state
+  const result = evaluate(catalog, state.question, state.answer)
+  const attempts = state.attempts.map((attempt, position) => position === state.position
+    ? { ...attempt, answer: state.answer, result }
+    : attempt)
   return {
     phase: 'verificada',
     config: state.config,
     question: state.question,
     answer: state.answer,
-    result: evaluate(catalog, state.question, state.answer),
+    result,
+    attempts,
+    position: state.position,
   }
 }
 
@@ -198,8 +264,18 @@ export function next(
     return { phase: 'ruta', config: state.config, question, selected: 0, attempts, position: attempts.length - 1 }
   }
   if (state.phase !== 'verificada') return state
+  if (state.position < state.attempts.length - 1) {
+    const position = state.position + 1
+    const attempt = state.attempts[position]!
+    const common = { config: state.config, question: attempt.question, answer: attempt.answer, attempts: state.attempts, position }
+    return attempt.result
+      ? { phase: 'verificada', ...common, result: attempt.result }
+      : { phase: 'pregunta', ...common, held: null }
+  }
   const question = createQuestion(catalog, state.config, createRng(seed), state.question)
-  return { phase: 'pregunta', config: state.config, question, answer: emptyAnswer(), held: null }
+  const answer = emptyAnswer()
+  const attempts = [...state.attempts, { question, answer, result: null }]
+  return { phase: 'pregunta', config: state.config, question, answer, held: null, attempts, position: attempts.length - 1 }
 }
 
 /** Salir vuelve al menú conservando la última configuración. */

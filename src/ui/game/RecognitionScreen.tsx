@@ -2,8 +2,8 @@ import { Fragment, useId } from 'react'
 import { catalog } from '../../data'
 import type { Degree, Inversion, QualityKey } from '../../data'
 import { tonicReading } from '../../music/tonicReading'
-import { DIFFICULTIES, DROP_LABELS, answerQualities, answerQualityLabel, isAnswerComplete, voicingOf } from '../../session'
-import type { FieldResult, QuestionState, SessionAction, VerifiedState } from '../../session'
+import { DIFFICULTIES, DROP_LABELS, answerQualities, answerQualityLabel, evaluate, isAnswerComplete, voicingOf } from '../../session'
+import type { FieldResult, QuestionState, RecognitionAttempt, RecognitionSummaryState, SessionAction, VerifiedState } from '../../session'
 import { FretboardCard } from '../card/FretboardCard'
 import { displayDegree, toPosition, toSolution } from '../card/model'
 import { DegreeBoard } from './DegreeBoard'
@@ -37,6 +37,58 @@ function headline(fields: FieldResult[]): string {
   const hits = fields.filter((item) => item.correct).length
   if (hits === fields.length) return 'Acierto completo'
   return hits > 0 ? 'Acierto parcial' : 'Incorrecto'
+}
+
+/** Resumen final del reconocimiento, con el detalle de cada campo que falló. */
+export function RecognitionSummaryScreen({ state, dispatch }: { state: RecognitionSummaryState; dispatch: (action: SessionAction) => void }) {
+  const correct = state.attempts.filter((attempt) => attempt.result?.allCorrect).length
+  return (
+    <main className="juego resumen-reconocimiento">
+      <header className="juego-cabecera">
+        <p>Reconocer voicings · revisión del test</p>
+        <button className="boton-secundario" type="button" onClick={() => dispatch({ type: 'exit' })}>Salir al menú</button>
+      </header>
+      <h1>Revisión del test</h1>
+      <p className="resumen-ruta-total">{correct} de {state.attempts.length} respuestas completas. Revisa tus errores pregunta por pregunta.</p>
+      <ol className="lista-revision-ruta">
+        {state.attempts.map((attempt) => <RecognitionAttemptReview key={attempt.question.number} attempt={attempt} />)}
+      </ol>
+    </main>
+  )
+}
+
+function RecognitionAttemptReview({ attempt }: { attempt: RecognitionAttempt }) {
+  const voicing = voicingOf(catalog, attempt.question)
+  const result = attempt.result ?? evaluate(catalog, attempt.question, attempt.answer)
+  const answered = attempt.result !== null
+  const status = answered ? headline(result.fields) : 'Sin verificar'
+  const solution = toSolution(voicing, catalog)
+  return (
+    <li className={`revision-ruta-item ${answered ? result.allCorrect ? 'ok' : 'ko' : 'pendiente'}`}>
+      <h2>Pregunta {attempt.question.number}</h2>
+      <p className="revision-ruta-estado">{status}{answered ? ` · ${result.fields.filter((field) => field.correct).length} de ${result.fields.length} campos correctos` : ''}</p>
+      <ul className="correccion">
+        {result.fields.map((field) => {
+          const text = fieldText(field)
+          return (
+            <li key={field.field === 'degree' ? `degree-${field.slot}` : field.field} className={field.correct ? 'ok' : 'ko'}>
+              <span className="marca" aria-hidden="true">{field.correct ? '✓' : '✗'}</span>
+              <span><strong>{text.name}:</strong> tu respuesta: {text.given}; solución: {text.expected}.</span>
+            </li>
+          )
+        })}
+      </ul>
+      <details className="revision-ruta-detalle">
+        <summary>Ver voicing de la pregunta</summary>
+        <div className="revision-ruta-diagramas">
+          <section aria-label={`Solución de la pregunta ${attempt.question.number}`}>
+            <h3>{solution.name} · {solution.inversionLabel}</h3>
+            <FretboardCard view="solution" position={toPosition(voicing, catalog)} solution={solution} />
+          </section>
+        </div>
+      </details>
+    </li>
+  )
 }
 
 const PROMPTS = {
@@ -77,10 +129,16 @@ export function RecognitionScreen({ state, dispatch, newSeed }: RecognitionScree
         <button className="boton-secundario" type="button" onClick={() => dispatch({ type: 'exit' })}>
           Salir
         </button>
+        <button className="boton-secundario" type="button" disabled={state.position === 0} onClick={() => dispatch({ type: 'previous' })}>
+          Anterior
+        </button>
         <p>
           {DROP_LABELS[config.drop]} · set {set?.number} · {difficultyLabel}
           <span className="juego-tonica"><strong>Tónica: {voicing.root}</strong></span>
         </p>
+        <button className="boton-secundario" type="button" onClick={() => dispatch({ type: 'finish-test' })}>
+          Terminar y revisar
+        </button>
       </header>
 
       <h1 tabIndex={-1} ref={questionHeading}>
