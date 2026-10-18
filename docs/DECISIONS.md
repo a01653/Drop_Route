@@ -102,6 +102,10 @@ Solicitado por el usuario. La sesión de rutas mantiene una lista de preguntas y
 
 La revisión humana y los E2E de navegador siguen pendientes. El test unitario cubre el guardado y la restauración; Playwright no pudo arrancar porque el entorno no tiene Chromium y la descarga del navegador devolvió un ZIP inválido de 0 MiB.
 
+## Ajuste de navegación y revisión del reconocimiento (18/10/2026)
+
+Solicitado por el usuario al aclarar que la navegación anterior y la revisión también debían estar en «Reconocer voicings». La sesión guarda cada respuesta y resultado; Anterior y Siguiente recorren el historial sin sortear de nuevo las preguntas ya visitadas. «Terminar y revisar» cierra el test donde esté y muestra campos acertados y fallidos, la solución física y preguntas pendientes. El reconocimiento sigue siendo una sesión de duración libre: no se impone un número de preguntas.
+
 ## Pendiente
 
 Puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; alojamiento y flujo de despliegue; licencia del código nuevo; si la interfaz debe permitir recuperar las copias de seguridad del progreso. Las referencias conservan su autoría. El icono ya está aprobado.

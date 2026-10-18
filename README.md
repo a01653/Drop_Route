@@ -73,7 +73,7 @@ La política de `docs/documentation-policy.json` está en `required`: `docs:chec
 
 ## Juego
 
-En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acorde; medio añade la inversión; difícil añade los cuatro grados sobre la tarjeta mediante arrastre, dos toques, teclado o los controles de colocación sin arrastre.
+En reconocimiento eliges Drop, set de cuerdas y dificultad. Fácil pide el acorde; medio añade la inversión; difícil añade los cuatro grados sobre la tarjeta mediante arrastre, dos toques, teclado o los controles de colocación sin arrastre. Durante el test puedes volver a preguntas anteriores, avanzar restaurando tus respuestas y terminar para revisar los errores y la solución de cada pregunta.
 
 La opción mayor se llama **Cmaj7 / C6** en todas las preguntas. Las formas que llevan sexta en la plantilla se preguntan con esa sexta, también en tercera inversión; al corregir aparecen la sexta dorada y la séptima gris de referencia. En Difícil se coloca **6**, no 7, en el círculo de la sexta. El banco ofrece siempre ambos grados. La etiqueta agrupa las dos variantes de la familia mayor y no afirma que C6 y Cmaj7 tengan las mismas notas.
 

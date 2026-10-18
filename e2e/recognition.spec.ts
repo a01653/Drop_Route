@@ -70,6 +70,36 @@ test('fácil: el error se marca con texto y símbolo, conserva la respuesta y Si
   await expect(page.locator('.juego-tarjeta .card-name')).toHaveCount(0)
 })
 
+test('reconocimiento: anterior restaura el test y Terminar y revisar lista los errores', async ({ page }) => {
+  await begin(page, FIRST, 'Fácil')
+  const first = await truth(page, FIRST.id)
+  const wrong = otherChord(first.name)
+  await chordButton(page, wrong).click()
+  await page.getByRole('button', { name: 'Verificar' }).click()
+  await page.getByRole('button', { name: 'Siguiente' }).click()
+
+  const second = await truth(page, FIRST.id)
+  await chordButton(page, second.name).click()
+  await page.getByRole('button', { name: 'Verificar' }).click()
+  await page.getByRole('button', { name: 'Anterior', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 1' })).toBeVisible()
+  await expect(chordButton(page, wrong)).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('heading', { name: 'Incorrecto' })).toBeVisible()
+
+  await page.getByRole('button', { name: 'Siguiente' }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Pregunta 2' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Acierto completo' })).toBeVisible()
+  await page.getByRole('button', { name: 'Terminar y revisar' }).click()
+
+  await expect(page.getByRole('heading', { level: 1, name: 'Revisión del test' })).toBeVisible()
+  const attempts = page.locator('.lista-revision-ruta > li')
+  await expect(attempts).toHaveCount(2)
+  await expect(attempts.nth(0)).toContainText('Acorde: tu respuesta:')
+  await expect(attempts.nth(0)).toContainText(choiceName(wrong))
+  await expect(attempts.nth(0)).toContainText(choiceName(first.name))
+  await expect(attempts.nth(1)).toContainText('Acierto completo')
+})
+
 test('medio: acorde e inversión por separado, Verificar exige ambos y se corrige por campos', async ({ page }) => {
   await begin(page, FIRST, 'Medio')
   const answer = await truth(page, FIRST.id)

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { catalog } from '../data'
 import type { SetId } from '../data'
-import { choose, configure, createSession, exit, next, start, verify } from '.'
+import { choose, configure, createSession, exit, finishRecognitionTest, next, previousRecognition, start, verify } from '.'
 import type { QuestionState, SessionState, VerifiedState } from '.'
 import { dropFamilies, setsOfDrop, updateConfig } from './config'
 import { emptyAnswer, evaluate, voicingOf } from './recognition'
@@ -153,6 +153,41 @@ describe('siguiente y salir (R09, R10)', () => {
       }
       expect(seen.size).toBe(16)
     }
+  })
+
+  it('retrocede y avanza restaurando respuestas y resultados, y termina con el resumen de lo recorrido', () => {
+    const first = started('medium')
+    const firstTruth = correctChange(first)
+    const wrongQuality = firstTruth.quality === 'm7' ? 'maj7' : 'm7'
+    const firstReady = asQuestion(choose(choose(first, { quality: wrongQuality }), { inversion: firstTruth.inversion }))
+    const firstDone = verify(catalog, firstReady) as VerifiedState
+    const second = asQuestion(next(catalog, firstDone, 25))
+    const secondTruth = correctChange(second)
+    const secondDone = finish(asQuestion(choose(choose(second, { quality: secondTruth.quality }), { inversion: secondTruth.inversion })))
+
+    const returned = previousRecognition(secondDone) as VerifiedState
+    expect(returned.question.number).toBe(1)
+    expect(returned.answer.quality).toBe(wrongQuality)
+    expect(returned.result.allCorrect).toBe(false)
+    const forward = next(catalog, returned, 99) as VerifiedState
+    expect(forward.question.number).toBe(2)
+    expect(forward.answer.quality).toBe(secondTruth.quality)
+    expect(forward.result.allCorrect).toBe(true)
+
+    const summary = finishRecognitionTest(forward)
+    expect(summary.phase).toBe('reconocimiento-resumen')
+    if (summary.phase !== 'reconocimiento-resumen') throw new Error('Falta el resumen de reconocimiento')
+    expect(summary.attempts.map((attempt) => attempt.result?.allCorrect)).toEqual([false, true])
+  })
+
+  it('permite terminar una respuesta sin verificar y la incluye como pendiente', () => {
+    const first = choose(started('easy'), { quality: 'm7' })
+    const summary = finishRecognitionTest(first)
+    expect(summary.phase).toBe('reconocimiento-resumen')
+    if (summary.phase !== 'reconocimiento-resumen') throw new Error('Falta el resumen de reconocimiento')
+    expect(summary.attempts).toHaveLength(1)
+    expect(summary.attempts[0]!.answer.quality).toBe('m7')
+    expect(summary.attempts[0]!.result).toBeNull()
   })
 
   it('salir vuelve al menú desde cualquier fase y conserva la configuración', () => {

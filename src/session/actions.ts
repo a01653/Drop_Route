@@ -1,6 +1,6 @@
 import { routesDocument } from '../data'
 import type { Catalog, RoutesDocument } from '../data/types'
-import { choose, configure, exit, finishRouteTest, moveDegree, next, previousRoute, selectCandidate, start, verify } from '.'
+import { choose, configure, exit, finishTest, moveDegree, next, previous, selectCandidate, start, verify } from '.'
 import type { SessionState } from '.'
 import type { DegreeAction } from './degrees'
 
@@ -45,9 +45,9 @@ export function reduceSession(
     case 'next':
       return next(catalog, state, action.seed, routes)
     case 'previous':
-      return previousRoute(state)
+      return previous(state)
     case 'finish-test':
-      return finishRouteTest(state)
+      return finishTest(state)
     case 'exit':
       return exit(state)
   }

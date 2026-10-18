@@ -58,6 +58,23 @@ describe('un intento cuenta cuando se verifica y solo entonces', () => {
     expect(counter(verified, 'recognition:D2S1:easy')).toEqual({ attempts: 1, correct: 0 })
   })
 
+  it('retroceder, restaurar, revisar o terminar no vuelve a contar respuestas', () => {
+    let state = verify(answered(begin({ difficulty: 'easy' }), 'quality'))
+    state = act(state, { type: 'next', seed: 29 })
+    state = verify(answered(state))
+    const counted = state.progress
+    state = act(state, { type: 'previous' })
+    expect(state.session.phase).toBe('verificada')
+    expect(state.progress).toBe(counted)
+    state = act(state, { type: 'next', seed: 99 })
+    expect(state.session.phase).toBe('verificada')
+    expect(state.progress).toBe(counted)
+    state = act(state, { type: 'finish-test' })
+    expect(state.session.phase).toBe('reconocimiento-resumen')
+    expect(state.progress).toBe(counted)
+    expect(counter(state, 'recognition:D2S1:easy')).toEqual({ attempts: 2, correct: 1 })
+  })
+
   it('seleccionar, mover grados, Siguiente y Salir no cuentan nunca', () => {
     let state = begin({ difficulty: 'hard' })
     const initial = state.progress

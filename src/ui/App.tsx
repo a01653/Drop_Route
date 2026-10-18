@@ -5,7 +5,7 @@ import './app.css'
 import './game/game.css'
 import './desktop.css'
 import { MenuScreen } from './game/MenuScreen'
-import { RecognitionScreen } from './game/RecognitionScreen'
+import { RecognitionScreen, RecognitionSummaryScreen } from './game/RecognitionScreen'
 import { RouteScreen, RouteSummaryScreen } from './game/RouteScreen'
 import { Notices } from './Notices'
 import { NO_UPDATES } from './pwa/update'
@@ -41,6 +41,8 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
       <MenuScreen state={session} dispatch={dispatch} newSeed={newSeed} progress={progress} />
     ) : session.phase === 'ruta-resumen' ? (
       <RouteSummaryScreen state={session} dispatch={dispatch} />
+    ) : session.phase === 'reconocimiento-resumen' ? (
+      <RecognitionSummaryScreen state={session} dispatch={dispatch} />
     ) : session.phase === 'ruta' || session.phase === 'ruta-verificada' ? (
       <RouteScreen state={session} dispatch={dispatch} newSeed={newSeed} />
     ) : (

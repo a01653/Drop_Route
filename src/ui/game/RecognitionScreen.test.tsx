@@ -2,9 +2,9 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { catalog } from '../../data'
 import type { Inversion, QualityKey, SetId } from '../../data'
-import { choose, configure, createSession, start, verify, voicingOf } from '../../session'
+import { answerQualityLabel, choose, configure, createSession, finishRecognitionTest, next, start, verify, voicingOf } from '../../session'
 import type { QuestionState, VerifiedState } from '../../session'
-import { RecognitionScreen } from './RecognitionScreen'
+import { RecognitionScreen, RecognitionSummaryScreen } from './RecognitionScreen'
 
 const noop = () => undefined
 const choiceName = (name: string) => name.startsWith('Cmaj7') ? 'Cmaj7 / C6' : name
@@ -39,6 +39,33 @@ describe('pregunta fácil (R03)', () => {
     expect(chosen).not.toMatch(/<button[^>]*disabled=""[^>]*>Verificar<\/button>/)
     expect(chosen).not.toContain('Siguiente')
     expect(chosen).not.toContain('Acierto')
+  })
+
+  it('permite terminar y ofrece volver a preguntas anteriores cuando existen', () => {
+    expect(html).toContain('Terminar y revisar')
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Anterior<\/button>/)
+    const firstDone = verify(catalog, choose(state, { quality: truth(state).quality })) as VerifiedState
+    const second = next(catalog, firstDone, 21) as QuestionState
+    const secondHtml = render(second)
+    expect(secondHtml).toContain('Anterior')
+    expect(secondHtml).not.toMatch(/<button[^>]*disabled=""[^>]*>Anterior<\/button>/)
+  })
+})
+
+describe('revisión final del reconocimiento', () => {
+  it('muestra los errores por campo, la solución y el diagrama desplegable', () => {
+    const state = open('easy')
+    const expected = truth(state)
+    const wrong = expected.quality === 'm7' ? 'maj7' : 'm7'
+    const done = verify(catalog, choose(state, { quality: wrong })) as VerifiedState
+    const summary = finishRecognitionTest(done)
+    if (summary.phase !== 'reconocimiento-resumen') throw new Error('Falta el resumen')
+    const html = renderToStaticMarkup(<RecognitionSummaryScreen state={summary} dispatch={noop} />)
+    expect(html).toContain('Revisión del test')
+    expect(html).toContain('<strong>Acorde:</strong> tu respuesta:')
+    expect(html).toContain(answerQualityLabel(catalog, wrong))
+    expect(html).toContain(answerQualityLabel(catalog, expected.quality))
+    expect(html).toContain('Ver voicing de la pregunta')
   })
 })
 
