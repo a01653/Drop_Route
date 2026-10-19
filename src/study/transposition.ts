@@ -87,6 +87,7 @@ export function transposeShape<T extends NamedShape>(shape: T, shift: number): T
     root: noteName(rootPc),
     name: chordName(rootPc, shape.quality),
     notes: shape.notes.map((note) => ({ ...note, fret: note.fret + shift })),
+    ...(shape.anchorFret !== undefined && { anchorFret: shape.anchorFret + shift }),
     ...(shape.referenceNotes && {
       referenceNotes: shape.referenceNotes.map((note) => ({ ...note, fret: note.fret + shift })),
     }),
@@ -108,7 +109,13 @@ export function transposeStudyVoicing<T extends NamedShape>(shape: T, tonicPc: n
 
 /** Transpone una ruta y corrige la grafía de I, ii y V según la tonalidad elegida. */
 export function transposeRoute(steps: readonly RouteStep[], tonicPc: number): { shift: number; shapes: RouteStep[] } {
-  const sourceSteps = steps.map((step) => withSixthAlternative(step, step.sourceOptionalSubstitution === 'C6'))
+  // La plantilla marca en los tres acordes la columna donde cae la tónica del ii.
+  // Se añade a copias de estudio: data/routes.json conserva intacta la fuente.
+  const anchorFret = steps[0]?.notes.find((note) => note.degree === '1')?.fret
+  const sourceSteps = steps.map((step) => ({
+    ...withSixthAlternative(step, step.sourceOptionalSubstitution === 'C6'),
+    ...(anchorFret !== undefined && { anchorFret }),
+  }))
   const shift = commonFretShift(sourceSteps, tonicPc)
   return {
     shift,

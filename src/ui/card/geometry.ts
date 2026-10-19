@@ -23,6 +23,14 @@ export interface FretWindow {
   count: number
 }
 
+/** Amplía una ventana de tarjeta únicamente para mostrar el traste ancla de una solución. */
+export function includeAnchorFret(window: FretWindow, anchorFret?: number): FretWindow {
+  if (!Number.isInteger(anchorFret) || anchorFret! < 1) return window
+  const start = Math.min(window.start, anchorFret!)
+  const end = Math.max(window.start + window.count - 1, anchorFret!)
+  return { start, count: end - start + 1 }
+}
+
 /** Una nota situada solo por su cuerda y traste: es lo único que sabe la vista neutra. */
 export interface PositionNote {
   string: StringNumber
@@ -43,6 +51,7 @@ export interface CardLayout {
   fretLines: number[]
   stringLines: number[]
   nut: { x: number; y: number; width: number; height: number } | null
+  anchorColumn: { x: number; y: number; width: number; height: number; fret: number } | null
   stringNumbers: { string: StringNumber; x: number; y: number }[]
   fretNumbers: { fret: number; x: number; y: number }[]
   muteMarks: { string: StringNumber; cx: number; cy: number }[]
@@ -107,11 +116,13 @@ export function windowForPosition(catalog: Catalog, setId: SetId, notes: Positio
   )
   if (known) return groupWindow(catalog, setId, known.inversion)
   const frets = notes.map((note) => note.fret)
-  const start = Math.min(...frets)
-  return { start, count: Math.max(MIN_COLUMNS, Math.max(...frets) - start + 1) }
+  return (() => {
+    const start = Math.min(...frets)
+    return { start, count: Math.max(MIN_COLUMNS, Math.max(...frets) - start + 1) }
+  })()
 }
 
-export function layoutCard(notes: PositionNote[], setStrings: StringNumber[], window: FretWindow): CardLayout {
+export function layoutCard(notes: PositionNote[], setStrings: StringNumber[], window: FretWindow, anchorFret?: number): CardLayout {
   const areaWidth = window.count * FRET_WIDTH + 1
   const areaHeight = (STRING_COUNT - 1) * STRING_GAP + 1
   const dots = notes.map((note) => {
@@ -135,6 +146,9 @@ export function layoutCard(notes: PositionNote[], setStrings: StringNumber[], wi
     fretLines: Array.from({ length: window.count + 1 }, (_, i) => AREA_X + i * FRET_WIDTH),
     stringLines: strings.map(stringY),
     nut: window.start === 1 ? { x: AREA_X - NUT_WIDTH / 2, y: AREA_Y - 2, width: NUT_WIDTH, height: areaHeight + 3 } : null,
+    anchorColumn: Number.isInteger(anchorFret) && anchorFret! >= window.start && anchorFret! < window.start + window.count
+      ? { x: AREA_X + (anchorFret! - window.start) * FRET_WIDTH, y: AREA_Y, width: FRET_WIDTH, height: areaHeight, fret: anchorFret! }
+      : null,
     stringNumbers: strings.map((string) => ({ string, x: STRING_NUMBER_X, y: stringY(string) + 4 })),
     fretNumbers: Array.from({ length: window.count }, (_, i) => ({
       fret: window.start + i,

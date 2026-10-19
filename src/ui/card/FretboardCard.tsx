@@ -1,6 +1,6 @@
 import type { Degree } from '../../data'
 import './card.css'
-import { AREA_X, AREA_Y, layoutCard } from './geometry'
+import { AREA_X, AREA_Y, includeAnchorFret, layoutCard } from './geometry'
 import type { DotGeometry } from './geometry'
 import { positionLabel, solutionLabel } from './model'
 import type { CardPosition, CardSolution } from './model'
@@ -87,10 +87,11 @@ function SolutionDot({ dot, degree, reference = false }: { dot: DotGeometry; deg
  */
 export function FretboardCard(props: FretboardCardProps) {
   const { position } = props
-  const layout = layoutCard(position.notes, position.strings, position.window)
   const solution = props.view === 'solution' ? props.solution : null
+  const solutionWindow = solution ? includeAnchorFret(position.window, solution.anchorFret) : position.window
+  const layout = layoutCard(position.notes, position.strings, solutionWindow, solution?.anchorFret)
   const referenceNotes = solution?.referenceNotes ?? []
-  const referenceDots = layoutCard(referenceNotes, position.strings, position.window).dots
+  const referenceDots = layoutCard(referenceNotes, position.strings, solutionWindow).dots
   const colors = solution ? QUALITY_COLORS[solution.quality] : NEUTRAL_COLORS
   const background = solution ? QUALITY_COLORS[solution.quality].background : NEUTRAL_COLORS.background
   const label = solution ? solutionLabel(position, solution) : positionLabel(position)
@@ -132,6 +133,19 @@ export function FretboardCard(props: FretboardCardProps) {
         </>
       )}
       <g stroke={INK}>
+        {layout.anchorColumn && solution && (
+          <rect
+            className="card-anchor-fret"
+            x={layout.anchorColumn.x}
+            y={layout.anchorColumn.y}
+            width={layout.anchorColumn.width}
+            height={layout.anchorColumn.height}
+            fill={colors.border}
+            opacity={0.75}
+            stroke="none"
+            data-fret={layout.anchorColumn.fret}
+          />
+        )}
         {layout.stringLines.map((y) => (
           <line className="card-string" key={y} x1={AREA_X} x2={AREA_X + layout.areaWidth} y1={y} y2={y} strokeWidth={1.6} />
         ))}
@@ -159,7 +173,14 @@ export function FretboardCard(props: FretboardCardProps) {
         />
       ))}
       {layout.fretNumbers.map((item) => (
-        <text className="card-hand card-fret-number" key={item.fret} x={item.x} y={item.y} fill={SECONDARY_COLOR}>
+        <text
+          className="card-hand card-fret-number"
+          key={item.fret}
+          x={item.x}
+          y={item.y}
+          fill={SECONDARY_COLOR}
+          fontWeight={solution?.anchorFret === item.fret ? 700 : 400}
+        >
           {item.fret}
         </text>
       ))}

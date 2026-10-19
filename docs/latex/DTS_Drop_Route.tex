@@ -1,4 +1,4 @@
-% Source-SHA256: a77bfb8aec8522c92631bf9c0ad82ff15912a67a7f9760289fe280ac65533fdb
+% Source-SHA256: 651226d448cd0b1e6b8514af719a93c45104d04e3f7c075d7a70ea8e10ade52d
 % !TeX program = xelatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
@@ -137,10 +137,11 @@ esquema guardado, migración, reparación y copia; almacén
 (\texttt{createAppStore}) sobre un \texttt{KeyValueStore} mínimo;
 resumen. Sin React ni acceso directo a \texttt{localStorage}. \\
 \texttt{src/ui} & Menú y pantallas de juego (\texttt{game/}, con el
-panel de progreso), renderizador de tarjetas SVG (\texttt{card/}),
-pantalla de revisión (\texttt{review/}), avisos (\texttt{Notices.tsx}),
-adaptador de \texttt{localStorage} (\texttt{browserStorage.ts}) y
-registro del service worker (\texttt{pwa/}). \\
+panel de progreso), modo estudio (\texttt{study/}), renderizador de
+tarjetas SVG (\texttt{card/}), pantalla de revisión (\texttt{review/}),
+avisos (\texttt{Notices.tsx}), adaptador de \texttt{localStorage}
+(\texttt{browserStorage.ts}) y registro del service worker
+(\texttt{pwa/}). \\
 \end{longtable}
 
 La dependencia permitida es ui, progress, session, music, data. ESLint
@@ -487,6 +488,15 @@ No aplicar un optimizador que sustituya estas rutas ni afirmar mínimo
 universal. C6 aparece como sustitución opcional en ciertos pasos de la
 fuente; no se convierte automáticamente en otro acorde evaluable.
 
+En el modo estudio, \texttt{transposeRoute} deriva \texttt{anchorFret}
+del traste de la nota con grado \texttt{1} en el acorde II y lo asigna a
+copias de los tres pasos. No modifica \texttt{data/routes.json}. Al
+transponer, el ancla recibe el mismo desplazamiento común que las notas.
+La tarjeta de solución sombrea esa columna con el color del borde de la
+calidad y pone su número de traste en negrita;
+\texttt{windowForPosition} amplía el mástil si la columna queda fuera de
+su ventana habitual. La vista neutra no muestra el ancla.
+
 \Needspace{4cm}
 \hypertarget{preguntas-y-correcciuxf3n}{%
 \section{Preguntas y corrección}\label{preguntas-y-correcciuxf3n}}
@@ -572,6 +582,11 @@ anunciada. La autoría «Creado por Jesús Quevedo Rodríguez» se muestra en
 un pie común después de la pantalla, sin posición fija ni superposición
 de controles. No cambia el catálogo, las rutas, el esquema de progreso
 ni la selección de preguntas.
+
+DR-012 añade al modo estudio II--V--I el mismo traste ancla de la
+plantilla: el traste donde cae la raíz del II se sombrea en las tres
+tarjetas y se desplaza al cambiar de tonalidad. Se deriva en memoria
+para no alterar la fuente de rutas.
 
 DR-011 añade historial a reconocimiento, igual que el test de rutas:
 cada intento guarda pregunta, respuesta y resultado. «Anterior» recupera
@@ -1016,7 +1031,7 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
   real.
 \item
   GitHub Pages publica la aplicación desde \texttt{main}. El paquete de
-  esta entrega es 1.0.2; la versión visible procede de ese metadato y el
+  esta entrega es 1.0.3; la versión visible procede de ese metadato y el
   esquema de progreso permanece en 1. El estado del despliegue se
   comprueba en GitHub Actions.
 \item
@@ -1047,7 +1062,8 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
   Cdim7 sigue como referencia. C6 se evalúa como variante de la familia
   mayor en reconocimiento, sin añadir una quinta opción de calidad.
 \item
-  Transposición y audio quedan para otra etapa.
+  La transposición se limita al modo estudio; todavía no se aplica a las
+  respuestas evaluables. El audio queda para otra etapa.
 \item
   La reconstrucción conserva contratos y datos, no recupera el commit
   local perdido byte a byte.

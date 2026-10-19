@@ -11,6 +11,7 @@ import {
   STRING_GAP,
   TEMPLATE_C6_GROUPS,
   groupWindow,
+  includeAnchorFret,
   layoutCard,
 } from './geometry'
 import { toPosition } from './model'
@@ -143,6 +144,12 @@ describe('ventana de trastes', () => {
       expect(Math.max(...frets) - Math.min(...frets) + 1, key).toBeLessThanOrEqual(MIN_COLUMNS)
       expect(groupWindow(catalog, members[0]!.setId as SetId, members[0]!.inversion).count, key).toBe(MIN_COLUMNS)
     }
+  })
+
+  it('amplía una tarjeta de solución solo si el traste ancla queda fuera', () => {
+    expect(includeAnchorFret({ start: 8, count: 5 }, 7)).toEqual({ start: 7, count: 6 })
+    expect(includeAnchorFret({ start: 8, count: 5 }, 15)).toEqual({ start: 8, count: 8 })
+    expect(includeAnchorFret({ start: 8, count: 5 }, undefined)).toEqual({ start: 8, count: 5 })
   })
 
   it('Drop 2+4 set 1, 3.ª inversión, conserva la ventana de la plantilla desde el traste 12', () => {

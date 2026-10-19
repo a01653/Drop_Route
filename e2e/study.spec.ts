@@ -55,6 +55,13 @@ test('muestra la ruta completa, la transpone con grafía funcional y explica el 
   await expect(page.getByRole('img', { name: /F♯7/ })).toBeVisible()
   await expect(page.getByRole('img', { name: /Bmaj7/ })).toBeVisible()
 
+  const anchors = page.locator('.study-route-step .card-anchor-fret')
+  await expect(anchors).toHaveCount(3)
+  await expect(anchors.nth(0)).toHaveAttribute('data-fret', '11')
+  await expect(anchors.nth(1)).toHaveAttribute('data-fret', '11')
+  await expect(anchors.nth(2)).toHaveAttribute('data-fret', '11')
+  await expect(page.locator('.study-route-step .card-fret-number[font-weight="700"]')).toHaveCount(3)
+
   const iiV = page.getByRole('region', { name: 'Movimiento II → V' })
   const vI = page.getByRole('region', { name: 'Movimiento V → I' })
   await expect(iiV).toContainText('Movimiento total:')

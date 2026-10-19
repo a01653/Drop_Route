@@ -37,6 +37,8 @@ export interface ChordShape {
   rootPc: number
   inversion: Inversion
   notes: NotePosition[]
+  /** Columna de referencia de la plantilla; solo se añade a copias derivadas para estudio. */
+  anchorFret?: number
   /** Notas grises en formas derivadas de estudio o preguntas; no son voces que se toquen. */
   referenceNotes?: NotePosition[]
 }

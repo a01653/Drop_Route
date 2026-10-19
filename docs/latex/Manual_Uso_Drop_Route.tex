@@ -1,5 +1,5 @@
-% Source-SHA256: 378a1d60f583814b06986d4f02044f705facf6de3d0279b70ef441b56017fabb
-% !TeX program = lualatex
+% Source-SHA256: 818fdb5deaa08233b61aa1c51d1184ec8d13fe6f5d029c85ca9be76c293e8dfd
+% !TeX program = xelatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
 \IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
@@ -91,7 +91,7 @@
 \setcounter{page}{2}
 \tableofcontents
 \newpage
-Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
+Autor: Jesús Quevedo Rodríguez. Versión 1.0.3.
 
 Drop Route es un juego para estudiar voicings de guitarra y recorridos
 II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio
@@ -102,11 +102,12 @@ dispositivo; no usa cuentas ni sincroniza datos.
 \section{1. Elegir qué practicar}\label{1-elegir-quuxe9-practicar}}
 
 Al abrir la aplicación aparece el menú. Puedes elegir \textbf{Reconocer
-voicings} o \textbf{Rutas II-V-I}.
+voicings}, \textbf{Rutas II-V-I} o \textbf{Modo estudio}.
 
 En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En
 rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la
-secuencia.
+secuencia. El modo estudio sirve para consultar formas y rutas sin
+responder preguntas.
 
 \includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-reconocimiento-360.png}
 
@@ -211,8 +212,20 @@ ser la posición de la secuencia estudiada.
 
 \emph{Figura 11. Comparación con tu respuesta.}
 
-\hypertarget{4-progreso}{%
-\section{4. Progreso}\label{4-progreso}}
+\hypertarget{4-modo-estudio}{%
+\section{4. Modo estudio}\label{4-modo-estudio}}
+
+En el menú, abre \textbf{Modo estudio} y selecciona \textbf{Rutas
+II-V-I}. Elige el set, el modo mayor o menor, la ruta y la tonalidad.
+Verás los acordes II, V e I juntos y el movimiento de las voces.
+
+La columna sombreada marca el traste donde cae la raíz del acorde II. Se
+repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El
+número de ese traste aparece en negrita. El modo estudio no suma
+intentos ni modifica el progreso.
+
+\hypertarget{5-progreso}{%
+\section{5. Progreso}\label{5-progreso}}
 
 Cada pregunta suma un intento cuando pulsas \textbf{Verificar}. Salir,
 cambiar una selección o mirar la corrección no añade intentos. El panel
@@ -226,9 +239,9 @@ Los datos quedan en este navegador y dispositivo. Si borras los datos
 del sitio, se pierde ese progreso. Si el navegador no puede guardar,
 Drop Route lo avisa y permite seguir jugando en memoria.
 
-\hypertarget{5-actualizar-y-jugar-sin-conexiuxf3n}{%
-\section{5. Actualizar y jugar sin
-conexión}\label{5-actualizar-y-jugar-sin-conexiuxf3n}}
+\hypertarget{6-actualizar-y-jugar-sin-conexiuxf3n}{%
+\section{6. Actualizar y jugar sin
+conexión}\label{6-actualizar-y-jugar-sin-conexiuxf3n}}
 
 Después de una primera carga completa con conexión, la PWA guarda los
 recursos de la aplicación para poder recargar y jugar sin red.
@@ -238,12 +251,12 @@ La versión nueva no se activa mientras tienes una pregunta abierta. Si
 existen cambios que solo están en memoria, el aviso lo indica antes de
 actualizar.
 
-\hypertarget{6-luxedmites-de-esta-entrega}{%
-\section{6. Límites de esta
-entrega}\label{6-luxedmites-de-esta-entrega}}
+\hypertarget{7-luxedmites-de-esta-entrega}{%
+\section{7. Límites de esta
+entrega}\label{7-luxedmites-de-esta-entrega}}
 
-No incluye audio, transposición, cuentas, sincronización entre
-dispositivos, notificaciones, sesiones adaptativas ni una pantalla para
-restaurar copias del progreso. Las rutas se limitan a Drop 2, sets 1 y
+No incluye audio, transposición en las respuestas, cuentas ni
+sincronización. Tampoco ofrece notificaciones, sesiones adaptativas o
+restauración del progreso. Las rutas se limitan a Drop 2 en los sets 1 y
 2.
 \end{document}

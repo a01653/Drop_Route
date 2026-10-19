@@ -3,7 +3,7 @@
   "title": "Manual de instalación",
   "source": "docs/manuals/INSTALACION.md",
   "command": "npm run docs:build",
-  "engine": "lualatex",
+  "engine": "xelatex",
   "files": [
     {
       "path": "docs/manuals/INSTALACION.md",
@@ -27,12 +27,12 @@
     },
     {
       "path": "docs/latex/Manual_Instalacion_Drop_Route.tex",
-      "sha256": "f6e35a47c8bba4d02edf357684130ad516e8a2d3078e6f91cad8ad00a340961c",
+      "sha256": "f6d450b189e14f9895e85446b9e544f9e5a459577366fc0dc1b9c0290bc0eb5e",
       "role": "latex"
     },
     {
       "path": "docs/latex/Manual_Instalacion_Drop_Route.pdf",
-      "sha256": "33d07ea64549cf8555c1c3d6eded1f2a8ee85d10e2a045b76265499a27e8b981",
+      "sha256": "8e06a4c6474eebf3696f1c9f49f47743784007ed15684cd79047295e06875dcd",
       "role": "pdf"
     }
   ]

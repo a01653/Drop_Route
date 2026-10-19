@@ -1,14 +1,14 @@
 # Drop Route: manual de uso
 
-Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
+Autor: Jesús Quevedo Rodríguez. Versión 1.0.3.
 
 Drop Route es un juego para estudiar voicings de guitarra y recorridos II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio permite transponer las formas. Guarda el progreso en el navegador del dispositivo; no usa cuentas ni sincroniza datos.
 
 ## 1. Elegir qué practicar
 
-Al abrir la aplicación aparece el menú. Puedes elegir **Reconocer voicings** o **Rutas II-V-I**.
+Al abrir la aplicación aparece el menú. Puedes elegir **Reconocer voicings**, **Rutas II-V-I** o **Modo estudio**.
 
-En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la secuencia.
+En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la secuencia. El modo estudio sirve para consultar formas y rutas sin responder preguntas.
 
 ![Menú con Reconocer voicings elegido.](capturas/menu-reconocimiento-360.png)
 
@@ -85,7 +85,13 @@ La verificación indica si elegiste la posición usada por esa ruta. Otra invers
 
 *Figura 11. Comparación con tu respuesta.*
 
-## 4. Progreso
+## 4. Modo estudio
+
+En el menú, abre **Modo estudio** y selecciona **Rutas II-V-I**. Elige el set, el modo mayor o menor, la ruta y la tonalidad. Verás los acordes II, V e I juntos y el movimiento de las voces.
+
+La columna sombreada marca el traste donde cae la raíz del acorde II. Se repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El número de ese traste aparece en negrita. El modo estudio no suma intentos ni modifica el progreso.
+
+## 5. Progreso
 
 Cada pregunta suma un intento cuando pulsas **Verificar**. Salir, cambiar una selección o mirar la corrección no añade intentos. El panel del menú muestra intentos y aciertos por juego y configuración.
 
@@ -95,12 +101,12 @@ Cada pregunta suma un intento cuando pulsas **Verificar**. Salir, cambiar una se
 
 Los datos quedan en este navegador y dispositivo. Si borras los datos del sitio, se pierde ese progreso. Si el navegador no puede guardar, Drop Route lo avisa y permite seguir jugando en memoria.
 
-## 5. Actualizar y jugar sin conexión
+## 6. Actualizar y jugar sin conexión
 
 Después de una primera carga completa con conexión, la PWA guarda los recursos de la aplicación para poder recargar y jugar sin red.
 
 Cuando hay una versión nueva, el menú ofrece **Actualizar ahora**. La versión nueva no se activa mientras tienes una pregunta abierta. Si existen cambios que solo están en memoria, el aviso lo indica antes de actualizar.
 
-## 6. Límites de esta entrega
+## 7. Límites de esta entrega
 
-No incluye audio, transposición, cuentas, sincronización entre dispositivos, notificaciones, sesiones adaptativas ni una pantalla para restaurar copias del progreso. Las rutas se limitan a Drop 2, sets 1 y 2.
+No incluye audio, transposición en las respuestas, cuentas ni sincronización. Tampoco ofrece notificaciones, sesiones adaptativas o restauración del progreso. Las rutas se limitan a Drop 2 en los sets 1 y 2.

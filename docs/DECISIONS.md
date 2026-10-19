@@ -4,6 +4,11 @@
 
 Drop Route, repositorio a01653/Drop_Route, desarrollo de interfaz por Claude Code en terminal, primera etapa en C, tarjetas cortas de nuestra plantilla, gris antes de verificar y colores después, tres dificultades, arrastre y dos toques, rutas mediante formas dibujadas una candidata visible cada vez, documentación/tests/DTS como Mástil.
 
+## Aplicado en DR-012
+
+- En estudio II–V–I, el ancla es el traste de la raíz (`degree: "1"`) del voicing II. Se deriva para los tres pasos en copias de memoria y recibe la transposición común; los datos canónicos de `data/routes.json` no se modifican.
+- El render de solución sombrea la columna con el color de borde de la calidad a 75 % de opacidad y pone el número de traste en negrita. El modo neutro no revela el ancla.
+
 ## Base técnica propuesta para DR-001
 
 React, TypeScript, Vite y SVG. Vitest, ESLint y Playwright. Aplicación cliente sin backend. Elegir versiones compatibles y fijarlas en lockfile al ejecutar la tarea, sin copiar dependencias innecesarias de Mástil.

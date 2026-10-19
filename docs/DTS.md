@@ -1,7 +1,7 @@
 # Documento de Diseño Técnico del Software - Drop Route
 
-Repositorio: a01653/Drop_Route. Documento base de DR-006 con revisiones parciales de reconocimiento, versión visible, variantes C6, corrección móvil y lectura por tónica.
-Paquete: 1.0.2. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión parcial del 16/10/2026: tónica explícita, lecturas equivalentes y autoría al pie. Entrega y publicación autorizadas por el usuario el 16/10/2026.
+Repositorio: a01653/Drop_Route. Documento base de DR-006 con revisiones parciales de reconocimiento, versión visible, variantes C6, corrección móvil, lectura por tónica y anclaje de estudio II–V–I.
+Paquete: 1.0.3. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión del 19/10/2026: traste ancla de la plantilla en el modo estudio II–V–I.
 
 Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil y desde DR-005 el juego de rutas II-V-I de Drop 2; todo ello está integrado en main. DR-006 añade el progreso local y la PWA en la rama feat/progress-and-pwa, pendiente de revisión y sin integrar; sus pruebas E2E y la CI de esa fase no tienen todavía resultado registrado. Falta el cierre documental (DR-007). La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
@@ -33,7 +33,7 @@ La geometría no decide la respuesta y los componentes no duplican el catálogo.
 | `src/music` | Altura física (MIDI) e inversión por bajo real. Funciones puras. |
 | `src/session` | Menú, preguntas de reconocimiento y de ruta, respuesta, corrección por campos, banco de grados y reductor de acciones, con semilla reproducible. Sin React. |
 | `src/progress` | Contadores por juego, set y dificultad o modo y tramo; reductor de la aplicación que cuenta un intento por transición; esquema guardado, migración, reparación y copia; almacén (`createAppStore`) sobre un `KeyValueStore` mínimo; resumen. Sin React ni acceso directo a `localStorage`. |
-| `src/ui` | Menú y pantallas de juego (`game/`, con el panel de progreso), renderizador de tarjetas SVG (`card/`), pantalla de revisión (`review/`), avisos (`Notices.tsx`), adaptador de `localStorage` (`browserStorage.ts`) y registro del service worker (`pwa/`). |
+| `src/ui` | Menú y pantallas de juego (`game/`, con el panel de progreso), modo estudio (`study/`), renderizador de tarjetas SVG (`card/`), pantalla de revisión (`review/`), avisos (`Notices.tsx`), adaptador de `localStorage` (`browserStorage.ts`) y registro del service worker (`pwa/`). |
 
 La dependencia permitida es ui, progress, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music, session o progress usen React, de modo que pueden probarse sin DOM. Un test de capas de `src/progress` lo comprueba. Solo `src/ui/browserStorage.ts` toca `localStorage`.
 
@@ -171,6 +171,8 @@ Mayor Dm7-G7-Cmaj7. Menor Dm7(b5)-G7-Cm7. Comparar con la ruta exacta del materi
 
 No aplicar un optimizador que sustituya estas rutas ni afirmar mínimo universal. C6 aparece como sustitución opcional en ciertos pasos de la fuente; no se convierte automáticamente en otro acorde evaluable.
 
+En el modo estudio, `transposeRoute` deriva `anchorFret` del traste de la nota con grado `1` en el acorde II y lo asigna a copias de los tres pasos. No modifica `data/routes.json`. Al transponer, el ancla recibe el mismo desplazamiento común que las notas. La tarjeta de solución sombrea esa columna con el color del borde de la calidad y pone su número de traste en negrita; `windowForPosition` amplía el mástil si la columna queda fuera de su ventana habitual. La vista neutra no muestra el ancla.
+
 ## Preguntas y corrección
 
 Diseño acordado: fácil elige nombre con cuatro botones; medio añade inversión en un segundo desplegable; difícil añade colocar grados sobre círculos.
@@ -188,6 +190,8 @@ Implementado en DR-003 y DR-004: fácil exige solo el acorde, medio acorde e inv
 Desde 1.0.1, `voicingOf` deriva las nueve variantes de sexta mediante `src/music/sourceSixth.ts`, compartido con estudio. Se pregunta la posición con 6 y se conserva la séptima gris solo para la solución. La opción fija «Cmaj7 / C6» agrupa ambas variantes sin revelar cuál se dibuja. La clave de familia y el progreso siguen siendo `maj7`. `evaluate` compara los grados activos y `inversionFromBass` usa 0,4,7,9 en las formas C6. El banco de Difícil contiene siempre 6 y 7; no se acepta uno por el otro. Los JSON originales no cambian.
 
 La revisión 1.0.2 indica «Tónica: C» antes de responder, en los tres niveles. No marca su ubicación en el diagrama. Tras verificar, `src/music/tonicReading.ts` identifica la raíz mediante afinación y traste, sin depender de las etiquetas de grado ni del orden de las notas. Solo para las notas de sexta mayor o menor séptima explica la lectura equivalente: C6/Am7 o Cm7/E♭6, con la inversión obtenida del bajo físico respecto a la raíz alternativa. No añade respuestas equivalentes aceptadas: la corrección sigue referida a la tónica anunciada. La autoría «Creado por Jesús Quevedo Rodríguez» se muestra en un pie común después de la pantalla, sin posición fija ni superposición de controles. No cambia el catálogo, las rutas, el esquema de progreso ni la selección de preguntas.
+
+DR-012 añade al modo estudio II–V–I el mismo traste ancla de la plantilla: el traste donde cae la raíz del II se sombrea en las tres tarjetas y se desplaza al cambiar de tonalidad. Se deriva en memoria para no alterar la fuente de rutas.
 
 DR-011 añade historial a reconocimiento, igual que el test de rutas: cada intento guarda pregunta, respuesta y resultado. «Anterior» recupera el estado guardado; «Siguiente» vuelve a preguntas visitadas antes de sortear otra. «Terminar y revisar» cierra la sesión libre en la pregunta actual y lista por campo qué se acertó, qué falló y cuál era la solución, con el diagrama físico desplegable. Las preguntas no verificadas quedan identificadas como pendientes y muestran la comparación al entrar en revisión. Retroceder y revisar no vuelven a contar intentos en el progreso.
 
@@ -305,7 +309,7 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 - La puntuación detallada sigue pendiente de decisión; los contadores de DR-006 cuentan intentos y aciertos sin más.
 - El icono está aprobado. El PNG de 192 y el maskable de 512 los generó el supervisor con CairoSVG 2.9.1 y no con el Chromium del script; el 512 «any» es el aprobado.
 - La PWA solo se ha probado en Chromium. No se ha comprobado la instalación en un dispositivo real, en Safari ni en Firefox, y las pruebas de actualización usan un servidor propio y no un alojamiento real.
-- GitHub Pages publica la aplicación desde `main`. El paquete de esta entrega es 1.0.2; la versión visible procede de ese metadato y el esquema de progreso permanece en 1. El estado del despliegue se comprueba en GitHub Actions.
+- GitHub Pages publica la aplicación desde `main`. El paquete de esta entrega es 1.0.3; la versión visible procede de ese metadato y el esquema de progreso permanece en 1. El estado del despliegue se comprueba en GitHub Actions.
 - Reconocimiento, estudio y revisión muestran las nueve variantes C6 de la fuente sobre copias derivadas. El juego de rutas conserva los pasos canónicos; sus variantes opcionales se consultan en estudio.
 - Las fuentes manuscritas pesan 87 kB y se descargan al mostrar tarjetas; hasta entonces el texto usa una fuente de respaldo.
 - El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.
@@ -314,7 +318,7 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 - Solo se normalizaron las rutas Drop 2 sets 1 y 2 del HTML.
 - Los PDF tienen 21 páginas de imágenes cada uno; no se han transcrito íntegramente.
 - Cdim7 sigue como referencia. C6 se evalúa como variante de la familia mayor en reconocimiento, sin añadir una quinta opción de calidad.
-- Transposición y audio quedan para otra etapa.
+- La transposición se limita al modo estudio; todavía no se aplica a las respuestas evaluables. El audio queda para otra etapa.
 - La reconstrucción conserva contratos y datos, no recupera el commit local perdido byte a byte.
 - Hosting y licencia del código nuevo pendientes; las referencias conservan su autoría.
 

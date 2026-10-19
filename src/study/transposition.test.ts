@@ -107,6 +107,29 @@ describe('transposición para estudio', () => {
     expect(inD.notes.map((note) => note.fret)).toEqual([9, 11, 10, 10])
   })
 
+  it('marca en cada paso la tónica del ii indicada por las rutas de la plantilla', () => {
+    const expectedAnchors: Record<string, number[]> = {
+      'D2S1/major': [12, 3, 7, 10],
+      'D2S1/minor': [12, 3, 7, 10],
+      'D2S2/major': [5, 7, 12, 15],
+      'D2S2/minor': [5, 7, 12, 15],
+    }
+    for (const route of routesDocument.routes) {
+      const group = `${route.setId}/${route.mode}`
+      const routes = routesDocument.routes
+        .filter((item) => item.setId === route.setId && item.mode === route.mode)
+        .sort((a, b) => a.steps[0]!.inversion - b.steps[0]!.inversion)
+      const routeIndex = routes.findIndex((item) => item.id === route.id)
+      const anchor = expectedAnchors[group]![routeIndex]!
+      const inC = transposeRoute(route.steps, 0)
+      expect(inC.shapes.map((step) => step.anchorFret), route.id).toEqual([anchor, anchor, anchor])
+      expect(route.steps.every((step) => step.anchorFret === undefined), route.id).toBe(true)
+
+      const inD = transposeRoute(route.steps, 2)
+      expect(inD.shapes.map((step) => step.anchorFret), route.id).toEqual([anchor + inD.shift, anchor + inD.shift, anchor + inD.shift])
+    }
+  })
+
   it('describe el sentido y tamaño del movimiento', () => {
     expect(movementText(0)).toBe('se mantiene')
     expect(movementText(1)).toBe('sube 1 semitono')

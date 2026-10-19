@@ -93,6 +93,8 @@ Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni p
 
 **Rutas II-V-I:** eliges set, mayor o menor y una de las cuatro rutas. Se muestran II, V e I juntos y `Ver movimiento` detalla cuánto se desplaza cada voz en cada cuerda entre II → V y V → I. Las rutas que citan C6 en la fuente muestran también esa variante, por lo que el movimiento se calcula sobre la forma que realmente se ve.
 
+Cada tarjeta de ruta señala el mismo traste ancla que la plantilla: la raíz del acorde II. La banda sombreada y el número en negrita se desplazan al cambiar de tonalidad.
+
 La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
 
 La pantalla interna `#/revision` permite revisar las 112 tarjetas y el icono. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris.

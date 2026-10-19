@@ -1,9 +1,9 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { catalog } from '../../data'
+import { catalog, routesDocument } from '../../data'
 import type { Voicing } from '../../data'
 import { transposeStudyVoicing, usesSourceSixth } from '../../study/transposition'
-import { layoutCard } from './geometry'
+import { includeAnchorFret, layoutCard } from './geometry'
 import { FretboardCard } from './FretboardCard'
 import { positionLabel, spokenDegree, toPosition, toSolution } from './model'
 import { DEGREE_COLORS, INK, NEUTRAL_COLORS, QUALITY_COLORS, SECONDARY_COLOR, STRING_NUMBER_COLOR, degreeFunction } from './palette'
@@ -145,6 +145,36 @@ describe('vista de solución', () => {
     expect(markup).toContain('>MENOR 7<')
     expect(markup).toContain(`fill="${QUALITY_COLORS.m7.background}"`)
     expect(markup).toContain(`stroke="${QUALITY_COLORS.m7.border}"`)
+  })
+
+  it('muestra el traste ancla solo en la tarjeta de solución', () => {
+    const source = routesDocument.routes.find((route) => route.id === 'd2s2-major-i1')!.steps[0]!
+    const shape = { ...source, anchorFret: 7 }
+    const position = toPosition(shape, catalog)
+    const markup = renderToStaticMarkup(
+      <FretboardCard view="solution" position={position} solution={toSolution(shape, catalog)} />,
+    )
+    expect(markup).toContain('class="card-anchor-fret"')
+    expect(markup).toContain('data-fret="7"')
+    expect(markup).toContain(`fill="${QUALITY_COLORS.m7.border}"`)
+    expect(markup).toContain('opacity="0.75"')
+    expect(markup).toMatch(/card-fret-number[^>]*font-weight="700"[^>]*>7<\/text>/)
+    expect(markup).toContain('Traste de referencia 7.')
+    expect(renderToStaticMarkup(<FretboardCard view="neutral" position={position} />)).not.toContain('card-anchor-fret')
+  })
+
+  it('alinea las notas grises de referencia con la ventana ampliada por el ancla', () => {
+    const source = byId('d2s1-maj7-i3')
+    const shape = { ...transposeStudyVoicing(source, 0).shape, anchorFret: 1 }
+    const position = toPosition(shape, catalog)
+    const answer = toSolution(shape, catalog)
+    const window = includeAnchorFret(position.window, answer.anchorFret)
+    const expectedX = layoutCard(answer.referenceNotes ?? [], position.strings, window).dots[0]!.cx
+    const markup = renderToStaticMarkup(<FretboardCard view="solution" position={position} solution={answer} />)
+    const referenceX = Number(/<circle class="card-dot card-reference-dot"[^>]* cx="([^"]+)"/.exec(markup)![1])
+
+    expect(window.start).toBeLessThan(position.window.start)
+    expect(referenceX).toBe(expectedX)
   })
 
   it('pinta cada círculo con el color de la función de su grado en las 112 formas', () => {
