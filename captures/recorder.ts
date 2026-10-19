@@ -21,7 +21,7 @@ const MIN_REGION_HEIGHT = 120
 const PADDING = 12
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
 
-/** Un tramo de la página entre dos elementos únicos (de la parte superior del primero a la inferior del segundo), o el viewport. */
+/** Un tramo de la página: de la parte superior más alta de `from` a la inferior más baja de `to` (cada uno puede ser una lista de selectores, para las disposiciones en columnas), o el viewport. */
 export type Region = { from: string; to: string } | 'viewport'
 
 interface Entry {
@@ -113,8 +113,8 @@ export class Recorder {
       bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' })
       cssHeight = viewport.height
     } else {
-      const top = await page.locator(region.from).evaluate((element) => element.getBoundingClientRect().top + window.scrollY)
-      const bottom = await page.locator(region.to).evaluate((element) => element.getBoundingClientRect().bottom + window.scrollY)
+      const top = await page.locator(region.from).evaluateAll((elements) => Math.min(...elements.map((element) => element.getBoundingClientRect().top + window.scrollY)))
+      const bottom = await page.locator(region.to).evaluateAll((elements) => Math.max(...elements.map((element) => element.getBoundingClientRect().bottom + window.scrollY)))
       const sheet = await page.evaluate(() => ({
         height: document.documentElement.scrollHeight,
         width: document.documentElement.clientWidth,

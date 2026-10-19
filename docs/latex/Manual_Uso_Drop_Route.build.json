@@ -7,87 +7,87 @@
   "files": [
     {
       "path": "docs/manuals/USO.md",
-      "sha256": "818fdb5deaa08233b61aa1c51d1184ec8d13fe6f5d029c85ca9be76c293e8dfd",
+      "sha256": "be871ab48a9f4ff7f5653b093cfc06fad97908f2181d74822f732ed6cca98f7a",
       "role": "source"
     },
     {
       "path": "docs/latex/manual-template.tex",
-      "sha256": "dcba6b0378e28a55a8e33d853252e48e2032e1e952ecda84dbd5076dbd58cfda",
+      "sha256": "25fd0e6c1f214f86f6ee3975ac714814da22079c49c595142562e19ddfaedd00",
       "role": "template"
     },
     {
       "path": "scripts/build_manuals.py",
-      "sha256": "f208ab8909c60efda2791b53347e1e42a33a667e5925dea0fccd75f881f3c152",
+      "sha256": "92b3e804878eaef1919297f85f78e9376410f95cedea83dc04d2ea3ed482c0d4",
       "role": "generator"
     },
     {
-      "path": "docs/manuals/capturas/menu-reconocimiento-360.png",
-      "sha256": "fec07157add006e0eb32bfa5301c911e5e322f6a49a104c97c7e676509c2b01a",
+      "path": "docs/manuals/capturas/menu-reconocimiento-1280.png",
+      "sha256": "e1efdb98f1f185b6b4df3c6b6876adc28d24654460cf7aff751c32d69861a55a",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/menu-rutas-360.png",
-      "sha256": "f94a7137aaeef3550ea14ec6e6154751abaffbb9ef8f8a38fbde9da2ba2ea98e",
+      "path": "docs/manuals/capturas/menu-rutas-1280.png",
+      "sha256": "dd50b931c59301a3a6a987d8155db728d28c1496b64920c81eb48d2df2cd67eb",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/facil-pregunta-360.png",
-      "sha256": "8c9bee6cd9f154044e24c22dae53bd6637debcfdf95a6ef98f569f3c6bde7099",
+      "path": "docs/manuals/capturas/facil-pregunta-1280.png",
+      "sha256": "c22a7e9ed1b9178d35d3219da7654922b0b0d7c946a48433fd6ff4d8eac3c72f",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/facil-correccion-360.png",
-      "sha256": "9ce51488b2e1e3b8b785eefc55dd88fabcd48854f9d44e7c0f17fcb95f0baeeb",
+      "path": "docs/manuals/capturas/facil-correccion-1280.png",
+      "sha256": "4a90b9781ab8ca61acbf893f4fab0f187925f44da2bf9c9fabab202978d2ae85",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/medio-pregunta-360.png",
-      "sha256": "203278a9eb31dcbdec7ab7248c7e132b0b42fe6aa7cb93deec3b6cb028c2009e",
+      "path": "docs/manuals/capturas/medio-pregunta-1280.png",
+      "sha256": "13e2225866c407c6c8eaeb4c6342815838566c51fb29d28305e37a04a47b907d",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/medio-correccion-360.png",
-      "sha256": "6418d604d9ba2fecfdf1800de92431139a8509119e91be5974489f9b9598b394",
+      "path": "docs/manuals/capturas/medio-correccion-1280.png",
+      "sha256": "32cfb29fce48f89f34dc453e31aee434203621b38770db1bb01a5a72e3136cf5",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/dificil-pregunta-360.png",
-      "sha256": "82a2c5d6e8b48d3f959faaa3cbdd1eb4603a1aec02d0dfcf6d59ccfede292617",
+      "path": "docs/manuals/capturas/dificil-pregunta-1280.png",
+      "sha256": "e7efd4a058eeed927fe2205d94c8c61bde63876f1a054d7a819f0da03a278f4f",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/dificil-correccion-360.png",
-      "sha256": "83cf67bca547779e6b975620aba5e4db214b44810c5052b07910b4748d15c350",
+      "path": "docs/manuals/capturas/dificil-correccion-1280.png",
+      "sha256": "1f8315f431d05e64f0e718bacf73dce75f794739bb5c205c8713ec9d0ce74da3",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/ruta-pregunta-360.png",
-      "sha256": "34dbf8a37a4e2c9d2a2b00660e9b5ac9785f534de26f6b0e716587981676fbd9",
+      "path": "docs/manuals/capturas/ruta-pregunta-1280.png",
+      "sha256": "e3fdf6756ca2737395f2d75539a970d597026e964b156c8d0c16a6f5c2cba245",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/ruta-fallo-solucion-360.png",
-      "sha256": "2ad70e2d3b2a420f802cb70a0c6f735a1290daf42e32d78233eb1950893b6650",
+      "path": "docs/manuals/capturas/ruta-fallo-solucion-1280.png",
+      "sha256": "1b08a2845cb375f019ad8d7237f22a5fbe6175255d466d506fe7b1de7acb26d5",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/ruta-fallo-tu-respuesta-360.png",
-      "sha256": "4659385c5dd80066b657d5ad3a935f76ea656fbe52955cde669927d899502a88",
+      "path": "docs/manuals/capturas/ruta-fallo-tu-respuesta-1280.png",
+      "sha256": "c987196c1295e973b83f6a4fb1e92d34450ef4b451024d03274eb5e18e15d90e",
       "role": "capture"
     },
     {
-      "path": "docs/manuals/capturas/progreso-detalle-360.png",
-      "sha256": "5408ee8b9b21adeef6bdc7c73cd72616bee6304bae8d20c3b533fe0e89eaf087",
+      "path": "docs/manuals/capturas/progreso-detalle-1280.png",
+      "sha256": "0b0c6de678104845d2d04e658a5ecaad52be80c6eb3cb3fad6fcac8e613f543d",
       "role": "capture"
     },
     {
       "path": "docs/latex/Manual_Uso_Drop_Route.tex",
-      "sha256": "e24944ccdbd136e038cacf0ca69f30453e92d8e8017391ae37610cca2d4bb4a2",
+      "sha256": "f3efccd62b1d24add737f5f8eefe43c3036371b6c7f997b914eaba2543516f1f",
       "role": "latex"
     },
     {
       "path": "docs/latex/Manual_Uso_Drop_Route.pdf",
-      "sha256": "bbb5ee40452836bb850d0cad420fc8eb9f9a0596b4f10542d74f5b70836e3c4b",
+      "sha256": "dd0134d4d2a00e5a5e1e26e1bb3e5dc0b0ade7f0dffa3b3ee8ac1814fcdb79f8",
       "role": "pdf"
     }
   ]

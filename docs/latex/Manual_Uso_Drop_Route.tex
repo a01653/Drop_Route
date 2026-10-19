@@ -1,4 +1,4 @@
-% Source-SHA256: 818fdb5deaa08233b61aa1c51d1184ec8d13fe6f5d029c85ca9be76c293e8dfd
+% Source-SHA256: be871ab48a9f4ff7f5653b093cfc06fad97908f2181d74822f732ed6cca98f7a
 % !TeX program = xelatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
@@ -49,7 +49,7 @@
 \providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
 % Pandoc 3.2+ envuelve las imágenes en \pandocbounded; con versiones anteriores no existe y esta definición no cambia nada.
 \providecommand{\pandocbounded}[1]{#1}
-\usepackage{graphicx,xurl}
+\usepackage{graphicx,xurl,wrapfig}
 \usepackage[section]{placeins}
 \usepackage{amssymb,newunicodechar}
 \usepackage[colorlinks=true,linkcolor=navydeep,urlcolor=navydeep,pdftitle={Drop Route - Manual de uso},pdfauthor={Jesús Quevedo Rodríguez}]{hyperref}
@@ -110,13 +110,17 @@ rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la
 secuencia. El modo estudio sirve para consultar formas y rutas sin
 responder preguntas.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-reconocimiento-360.png}}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/menu-reconocimiento-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 1. Menú de reconocimiento.}}
+\end{figure}
 
-\emph{Figura 1. Menú de reconocimiento.}
-
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-rutas-360.png}}
-
-\emph{Figura 2. Menú de rutas II-V-I.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/menu-rutas-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 2. Menú de rutas II-V-I.}}
+\end{figure}
 
 \section{2. Reconocer voicings}\label{2-reconocer-voicings}
 
@@ -125,55 +129,69 @@ notas, pero no el nombre del acorde ni los grados de la solución.
 
 \subsection{Fácil}\label{fuxe1cil}
 
+\noindent\begin{minipage}[t]{0.38\linewidth}\vspace{0pt}
+\raggedright
 Elige entre Cmaj7 / C6, C7, Cm7 y Cm7(b5). El orden cambia entre
 preguntas. La opción mayor agrupa las formas con séptima y con sexta;
 siempre tiene el mismo nombre para no dar pistas. Cuando la plantilla
 usa C6, se pregunta esa posición con sexta y, al corregir, la séptima
 original aparece en gris como referencia. Las formas mantienen cuatro
 voces activas.
-
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-pregunta-360.png}}
-
-\emph{Figura 3. Nivel fácil antes de verificar.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.58\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth,keepaspectratio]{../manuals/capturas/facil-pregunta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 3. Nivel fácil antes de verificar.}}
+\end{minipage}
 
 Al verificar, la respuesta se bloquea. Si fallas, el acorde elegido se
 marca y la solución queda identificada también con texto y símbolos.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-correccion-360.png}}
-
-\emph{Figura 4. Corrección del nivel fácil.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/facil-correccion-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 4. Corrección del nivel fácil.}}
+\end{figure}
 
 \subsection{Medio}\label{medio}
 
 Indica el acorde y la inversión con los dos selectores. La aplicación
 comprueba ambos campos por separado.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/medio-pregunta-360.png}}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/medio-pregunta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 5. Nivel medio antes de verificar.}}
+\end{figure}
 
-\emph{Figura 5. Nivel medio antes de verificar.}
-
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/medio-correccion-360.png}}
-
-\emph{Figura 6. Corrección campo por campo.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/medio-correccion-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 6. Corrección campo por campo.}}
+\end{figure}
 
 \subsection{Difícil}\label{difuxedcil}
 
+\noindent\begin{minipage}[t]{0.38\linewidth}\vspace{0pt}
+\raggedright
 Además del acorde y la inversión, coloca los cuatro grados sobre los
 círculos de la tarjeta. El banco incluye siempre 1, 3, ♭3, 5, ♭5, 6, 7 y
 ♭7. En las variantes con sexta se coloca 6, no 7, en su círculo. Puedes
 arrastrar, usar dos toques, teclado o los controles de colocación sin
 arrastre.
-
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/dificil-pregunta-360.png}}
-
-\emph{Figura 7. Nivel difícil durante la respuesta.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.58\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth,keepaspectratio]{../manuals/capturas/dificil-pregunta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 7. Nivel difícil durante la respuesta.}}
+\end{minipage}
 
 La corrección compara acorde, inversión y cada círculo. Solo cuenta como
 acierto completo cuando todos los campos son correctos.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/dificil-correccion-360.png}}
-
-\emph{Figura 8. Corrección del nivel difícil.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/dificil-correccion-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 8. Corrección del nivel difícil.}}
+\end{figure}
 
 \section{3. Rutas II-V-I}\label{3-rutas-ii-v-i}
 
@@ -192,21 +210,27 @@ partida se mantiene visible y debajo aparece una candidata. Cambia entre
 las cuatro posiciones con el selector 1-4, el gesto lateral o el
 teclado.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-pregunta-360.png}}
-
-\emph{Figura 9. Partida, candidata y selector.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/ruta-pregunta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 9. Partida, candidata y selector.}}
+\end{figure}
 
 La verificación indica si elegiste la posición usada por esa ruta. Otra
 inversión del mismo acorde puede ser musicalmente válida y, aun así, no
 ser la posición de la secuencia estudiada.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-fallo-solucion-360.png}}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/ruta-fallo-solucion-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 10. Solución de la ruta.}}
+\end{figure}
 
-\emph{Figura 10. Solución de la ruta.}
-
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-fallo-tu-respuesta-360.png}}
-
-\emph{Figura 11. Comparación con tu respuesta.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/ruta-fallo-tu-respuesta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 11. Comparación con tu respuesta.}}
+\end{figure}
 
 \section{4. Modo estudio}\label{4-modo-estudio}
 
@@ -225,9 +249,11 @@ Cada pregunta suma un intento cuando pulsas \textbf{Verificar}. Salir,
 cambiar una selección o mirar la corrección no añade intentos. El panel
 del menú muestra intentos y aciertos por juego y configuración.
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/progreso-detalle-360.png}}
-
-\emph{Figura 12. Detalle del progreso local.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/progreso-detalle-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 12. Detalle del progreso local.}}
+\end{figure}
 
 Los datos quedan en este navegador y dispositivo. Si borras los datos
 del sitio, se pierde ese progreso. Si el navegador no puede guardar,

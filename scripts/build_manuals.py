@@ -17,6 +17,47 @@ IMAGE_RE = re.compile(r'!\[[^\]\n]*\]\((capturas/[a-z0-9-]+\.png)\)')
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def rel(path): return Path(path).resolve().relative_to(ROOT).as_posix()
 
+FIG_RE = re.compile(r'\\pandocbounded\{\\includegraphics\[[^\]]*\]\{([^}]+\.png)\}\}')
+CAPTION_RE = re.compile(r'\\emph\{Figura \d+\.[^\n]*\}')
+# Relación ancho/alto desde la que una captura es demasiado apaisada para compartir línea con texto.
+WIDE = 2.3
+# Reparto de la línea entre el texto (izquierda) y la captura (derecha), y texto mínimo y máximo que la acompaña.
+TEXT_WIDTH, FIGURE_WIDTH = '0.38', '0.58'
+MIN_TEXT, MAX_TEXT = 250, 900
+NOT_PLAIN = ('\\section', '\\subsection', '\\begin', '\\end', '\\item', '\\hypertarget', '\\pandocbounded', '\\tightlist', '\\noindent')
+
+def png_ratio(path):
+    """Ancho entre alto de un PNG referenciado desde docs/latex, leído de su cabecera IHDR."""
+    header = (DEST / path).resolve().read_bytes()[16:24]
+    return int.from_bytes(header[:4], 'big') / int.from_bytes(header[4:], 'big')
+
+def wrap_figures(latex):
+    """Cada captura comparte línea con los párrafos que la introducen: texto a la izquierda, figura a la derecha, como en un
+    libro. Es un bloque fijo (no un flotante de wrapfig, que se desborda al pie de página). Las muy anchas, o sin texto
+    suficiente a su lado, son figuras flotantes a ancho completo."""
+    head, sep, rest = latex.partition('\\begin{document}')
+    blocks = rest.split('\n\n')
+    out, i = [], 0
+    while i < len(blocks):
+        m = FIG_RE.fullmatch(blocks[i].strip()) if i + 1 < len(blocks) else None
+        caption = blocks[i + 1].strip() if m else ''
+        if not m or not CAPTION_RE.fullmatch(caption):
+            out.append(blocks[i]); i += 1; continue
+        i += 2
+        path = m.group(1)
+        graphic = '\\includegraphics[width=\\linewidth,keepaspectratio]{' + path + '}\\par\\smallskip\n{\\footnotesize ' + caption + '}'
+        text, size = [], 0
+        while out and out[-1].strip() and not out[-1].lstrip().startswith(NOT_PLAIN) and '\\begin{' not in out[-1] and size + len(out[-1]) <= MAX_TEXT:
+            size += len(out[-1]); text.insert(0, out.pop())
+        if png_ratio(path) >= WIDE or size < MIN_TEXT:
+            out.extend(text)
+            out.append('\\begin{figure}[!htbp]\n\\centering\n' + graphic.replace('width=\\linewidth', 'width=0.82\\linewidth', 1) + '\n\\end{figure}')
+            continue
+        # \vspace{0pt}: la línea base de una imagen es su borde inferior; así ambas columnas se alinean por arriba.
+        out.append('\\noindent\\begin{minipage}[t]{' + TEXT_WIDTH + '\\linewidth}\\vspace{0pt}\n\\raggedright\n' + '\n\n'.join(text) + '\n\\end{minipage}\\hfill\n'
+                   '\\begin{minipage}[t]{' + FIGURE_WIDTH + '\\linewidth}\\vspace{0pt}\\centering\n' + graphic + '\n\\end{minipage}')
+    return head + sep + '\n\n'.join(out)
+
 def run(cmd, **kwargs):
     return subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace', **kwargs)
 
@@ -43,6 +84,7 @@ def compile_doc(doc, engine):
         latex=latex.replace('{capturas/', '{../manuals/capturas/')
         latex=re.sub(r'\\includegraphics(\[[^\]]*\])?\{\.\./manuals/capturas/',
                      r'\\includegraphics[width=0.48\\linewidth,height=0.62\\textheight,keepaspectratio]{../manuals/capturas/', latex)
+        latex=wrap_figures(latex)
         latex=latex.replace('% !TeX program = lualatex','% !TeX program = '+engine)
         tex.write_text('% Source-SHA256: '+sha(source)+'\n'+latex,encoding='utf-8',newline='\n')
         build=work/'docs/latex'; build.mkdir(parents=True)

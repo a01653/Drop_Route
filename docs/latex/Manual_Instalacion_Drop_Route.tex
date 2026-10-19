@@ -49,7 +49,7 @@
 \providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
 % Pandoc 3.2+ envuelve las imágenes en \pandocbounded; con versiones anteriores no existe y esta definición no cambia nada.
 \providecommand{\pandocbounded}[1]{#1}
-\usepackage{graphicx,xurl}
+\usepackage{graphicx,xurl,wrapfig}
 \usepackage[section]{placeins}
 \usepackage{amssymb,newunicodechar}
 \usepackage[colorlinks=true,linkcolor=navydeep,urlcolor=navydeep,pdftitle={Drop Route - Manual de instalación},pdfauthor={Jesús Quevedo Rodríguez}]{hyperref}
@@ -154,9 +154,11 @@ npm run build
 npm run preview
 \end{verbatim}
 
-\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/escritorio-menu-1280.png}}
-
-\emph{Figura 1. Vista de escritorio del build.}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/escritorio-menu-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 1. Vista de escritorio del build.}}
+\end{figure}
 
 \section{3. Publicar en la subruta de GitHub
 Pages}\label{3-publicar-en-la-subruta-de-github-pages}
