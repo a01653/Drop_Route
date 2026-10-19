@@ -51,7 +51,10 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
 
   return (
     <>
-      <div className="app-version" aria-label="Versión de Drop Route">v{version}</div>
+      <div className="app-meta">
+        <span className="app-author">Creado por Jesús Quevedo Rodríguez</span>
+        <span className="app-version" aria-label="Versión de Drop Route">v{version}</span>
+      </div>
       {route !== '#/revision' && route !== '#/study' && (
         <Notices
           storage={notice}
@@ -62,7 +65,6 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
         />
       )}
       {screen}
-      <footer className="app-author">Creado por Jesús Quevedo Rodríguez</footer>
     </>
   )
 }

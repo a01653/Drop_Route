@@ -21,8 +21,10 @@ describe('menú de arranque', () => {
     expect(html).not.toContain('Versión actual')
   })
 
-  it('muestra la autoría al pie de la aplicación', () => {
-    expect(html).toContain('<footer class="app-author">Creado por Jesús Quevedo Rodríguez</footer>')
+  it('muestra la autoría junto a la versión en la parte superior', () => {
+    expect(html).toContain('<span class="app-author">Creado por Jesús Quevedo Rodríguez</span>')
+    expect(html).toContain('<span class="app-version" aria-label="Versión de Drop Route">v')
+    expect(html).not.toContain('<footer class="app-author">')
   })
 
   it('muestra el progreso sin las cifras del bloque informativo eliminado', () => {

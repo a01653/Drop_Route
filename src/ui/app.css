@@ -20,23 +20,25 @@ body {
   color: var(--tinta);
 }
 
-.app-version {
+.app-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.25rem 0.75rem;
   max-width: 78rem;
   margin: 0 auto;
   padding: 0.5rem 1rem 0;
-  text-align: right;
   color: var(--tinta-suave);
   font-size: 0.75rem;
+}
+
+.app-version {
   font-variant-numeric: tabular-nums;
 }
 
 .app-author {
-  max-width: 78rem;
-  margin: 0 auto;
-  padding: 0.5rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
-  text-align: center;
-  color: var(--tinta-suave);
-  font-size: 0.75rem;
+  text-align: right;
 }
 
 .arranque {
