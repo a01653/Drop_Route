@@ -40,4 +40,6 @@ Los tests de la base usan node:test y verifican los datos, el icono y el generad
 
 Distingue siempre lo existente de lo planificado. Actualiza los requisitos y la documentación de la misma rama cuando cambie el comportamiento documentado. La política documental está en modo `required`: no alteres DTS o manuales derivados sin regenerarlos y validarlos.
 
+Al cerrar una entrega, sincroniza también el README con el estado verificable de GitHub y sigue en manuales el estilo orientado a tareas de Compás a compás, conservando la estructura y presentación propias de Drop Route. Aplica el flujo de ramas y cierre de `AGENTS.md`.
+
 Referencia de instrucciones persistentes: https://code.claude.com/docs/en/memory
