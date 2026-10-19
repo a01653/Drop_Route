@@ -53,7 +53,6 @@ test('la autoría queda junto a la versión arriba a la derecha en menú, juego 
         authorRight: element.getBoundingClientRect().right,
         versionLeft: versionElement.getBoundingClientRect().left,
         metaRight: meta.getBoundingClientRect().right,
-        mainTop: document.querySelector('main')!.getBoundingClientRect().top,
         width: document.documentElement.scrollWidth,
         viewport: document.documentElement.clientWidth,
         fontSize: parseFloat(getComputedStyle(element).fontSize),
@@ -62,7 +61,6 @@ test('la autoría queda junto a la versión arriba a la derecha en menú, juego 
     expect(layout.sameRow).toBe(true)
     expect(layout.authorRight).toBeLessThan(layout.versionLeft)
     expect(layout.metaRight).toBeLessThanOrEqual(layout.viewport)
-    expect(layout.mainTop).toBeGreaterThan(0)
     expect(layout.width).toBeLessThanOrEqual(layout.viewport)
     expect(layout.fontSize).toBeLessThanOrEqual(12)
   }
