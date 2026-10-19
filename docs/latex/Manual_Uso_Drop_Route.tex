@@ -47,6 +47,8 @@
 \let\originaltexttt\texttt
 \renewcommand{\texttt}[1]{\originaltexttt{\seqsplit{#1}}}
 \providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+% Pandoc 3.2+ envuelve las imágenes en \pandocbounded; con versiones anteriores no existe y esta definición no cambia nada.
+\providecommand{\pandocbounded}[1]{#1}
 \usepackage{graphicx,xurl}
 \usepackage[section]{placeins}
 \usepackage{amssymb,newunicodechar}
@@ -85,8 +87,8 @@
 {\sffamily\small Repositorio: a01653/Drop\_Route\par}
 \vspace{2cm}
 \end{center}
-\nopagecolor
 \end{titlepage}
+\nopagecolor
 \restoregeometry
 \setcounter{page}{2}
 \tableofcontents
@@ -98,8 +100,7 @@ II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio
 permite transponer las formas. Guarda el progreso en el navegador del
 dispositivo; no usa cuentas ni sincroniza datos.
 
-\hypertarget{1-elegir-quuxe9-practicar}{%
-\section{1. Elegir qué practicar}\label{1-elegir-quuxe9-practicar}}
+\section{1. Elegir qué practicar}\label{1-elegir-quuxe9-practicar}
 
 Al abrir la aplicación aparece el menú. Puedes elegir \textbf{Reconocer
 voicings}, \textbf{Rutas II-V-I} o \textbf{Modo estudio}.
@@ -109,22 +110,20 @@ rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la
 secuencia. El modo estudio sirve para consultar formas y rutas sin
 responder preguntas.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-reconocimiento-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-reconocimiento-360.png}}
 
 \emph{Figura 1. Menú de reconocimiento.}
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-rutas-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/menu-rutas-360.png}}
 
 \emph{Figura 2. Menú de rutas II-V-I.}
 
-\hypertarget{2-reconocer-voicings}{%
-\section{2. Reconocer voicings}\label{2-reconocer-voicings}}
+\section{2. Reconocer voicings}\label{2-reconocer-voicings}
 
 Cada pregunta muestra una tarjeta neutra: ves la posición física de las
 notas, pero no el nombre del acorde ni los grados de la solución.
 
-\hypertarget{fuxe1cil}{%
-\subsection{Fácil}\label{fuxe1cil}}
+\subsection{Fácil}\label{fuxe1cil}
 
 Elige entre Cmaj7 / C6, C7, Cm7 y Cm7(b5). El orden cambia entre
 preguntas. La opción mayor agrupa las formas con séptima y con sexta;
@@ -133,33 +132,31 @@ usa C6, se pregunta esa posición con sexta y, al corregir, la séptima
 original aparece en gris como referencia. Las formas mantienen cuatro
 voces activas.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-pregunta-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-pregunta-360.png}}
 
 \emph{Figura 3. Nivel fácil antes de verificar.}
 
 Al verificar, la respuesta se bloquea. Si fallas, el acorde elegido se
 marca y la solución queda identificada también con texto y símbolos.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-correccion-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/facil-correccion-360.png}}
 
 \emph{Figura 4. Corrección del nivel fácil.}
 
-\hypertarget{medio}{%
-\subsection{Medio}\label{medio}}
+\subsection{Medio}\label{medio}
 
 Indica el acorde y la inversión con los dos selectores. La aplicación
 comprueba ambos campos por separado.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/medio-pregunta-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/medio-pregunta-360.png}}
 
 \emph{Figura 5. Nivel medio antes de verificar.}
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/medio-correccion-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/medio-correccion-360.png}}
 
 \emph{Figura 6. Corrección campo por campo.}
 
-\hypertarget{difuxedcil}{%
-\subsection{Difícil}\label{difuxedcil}}
+\subsection{Difícil}\label{difuxedcil}
 
 Además del acorde y la inversión, coloca los cuatro grados sobre los
 círculos de la tarjeta. El banco incluye siempre 1, 3, ♭3, 5, ♭5, 6, 7 y
@@ -167,19 +164,18 @@ círculos de la tarjeta. El banco incluye siempre 1, 3, ♭3, 5, ♭5, 6, 7 y
 arrastrar, usar dos toques, teclado o los controles de colocación sin
 arrastre.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/dificil-pregunta-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/dificil-pregunta-360.png}}
 
 \emph{Figura 7. Nivel difícil durante la respuesta.}
 
 La corrección compara acorde, inversión y cada círculo. Solo cuenta como
 acierto completo cuando todos los campos son correctos.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/dificil-correccion-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/dificil-correccion-360.png}}
 
 \emph{Figura 8. Corrección del nivel difícil.}
 
-\hypertarget{3-rutas-ii-v-i}{%
-\section{3. Rutas II-V-I}\label{3-rutas-ii-v-i}}
+\section{3. Rutas II-V-I}\label{3-rutas-ii-v-i}
 
 Las rutas disponibles son:
 
@@ -196,7 +192,7 @@ partida se mantiene visible y debajo aparece una candidata. Cambia entre
 las cuatro posiciones con el selector 1-4, el gesto lateral o el
 teclado.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-pregunta-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-pregunta-360.png}}
 
 \emph{Figura 9. Partida, candidata y selector.}
 
@@ -204,16 +200,15 @@ La verificación indica si elegiste la posición usada por esa ruta. Otra
 inversión del mismo acorde puede ser musicalmente válida y, aun así, no
 ser la posición de la secuencia estudiada.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-fallo-solucion-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-fallo-solucion-360.png}}
 
 \emph{Figura 10. Solución de la ruta.}
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-fallo-tu-respuesta-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/ruta-fallo-tu-respuesta-360.png}}
 
 \emph{Figura 11. Comparación con tu respuesta.}
 
-\hypertarget{4-modo-estudio}{%
-\section{4. Modo estudio}\label{4-modo-estudio}}
+\section{4. Modo estudio}\label{4-modo-estudio}
 
 En el menú, abre \textbf{Modo estudio} y selecciona \textbf{Rutas
 II-V-I}. Elige el set, el modo mayor o menor, la ruta y la tonalidad.
@@ -224,14 +219,13 @@ repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El
 número de ese traste aparece en negrita. El modo estudio no suma
 intentos ni modifica el progreso.
 
-\hypertarget{5-progreso}{%
-\section{5. Progreso}\label{5-progreso}}
+\section{5. Progreso}\label{5-progreso}
 
 Cada pregunta suma un intento cuando pulsas \textbf{Verificar}. Salir,
 cambiar una selección o mirar la corrección no añade intentos. El panel
 del menú muestra intentos y aciertos por juego y configuración.
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/progreso-detalle-360.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/progreso-detalle-360.png}}
 
 \emph{Figura 12. Detalle del progreso local.}
 
@@ -239,9 +233,8 @@ Los datos quedan en este navegador y dispositivo. Si borras los datos
 del sitio, se pierde ese progreso. Si el navegador no puede guardar,
 Drop Route lo avisa y permite seguir jugando en memoria.
 
-\hypertarget{6-actualizar-y-jugar-sin-conexiuxf3n}{%
 \section{6. Actualizar y jugar sin
-conexión}\label{6-actualizar-y-jugar-sin-conexiuxf3n}}
+conexión}\label{6-actualizar-y-jugar-sin-conexiuxf3n}
 
 Después de una primera carga completa con conexión, la PWA guarda los
 recursos de la aplicación para poder recargar y jugar sin red.
@@ -251,9 +244,7 @@ La versión nueva no se activa mientras tienes una pregunta abierta. Si
 existen cambios que solo están en memoria, el aviso lo indica antes de
 actualizar.
 
-\hypertarget{7-luxedmites-de-esta-entrega}{%
-\section{7. Límites de esta
-entrega}\label{7-luxedmites-de-esta-entrega}}
+\section{7. Límites de esta entrega}\label{7-luxedmites-de-esta-entrega}
 
 No incluye audio, transposición en las respuestas, cuentas ni
 sincronización. Tampoco ofrece notificaciones, sesiones adaptativas o

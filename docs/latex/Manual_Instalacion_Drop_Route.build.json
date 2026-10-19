@@ -12,7 +12,7 @@
     },
     {
       "path": "docs/latex/manual-template.tex",
-      "sha256": "738deb8fc9241ca313a4b121b46cedb4bdb72653b8aa402dc96a36063d5240e4",
+      "sha256": "dcba6b0378e28a55a8e33d853252e48e2032e1e952ecda84dbd5076dbd58cfda",
       "role": "template"
     },
     {
@@ -27,12 +27,12 @@
     },
     {
       "path": "docs/latex/Manual_Instalacion_Drop_Route.tex",
-      "sha256": "f6d450b189e14f9895e85446b9e544f9e5a459577366fc0dc1b9c0290bc0eb5e",
+      "sha256": "4f376c6cb018e2b4b4b7c288f3d31b96f8c8a58025aba556248f34e6298408a6",
       "role": "latex"
     },
     {
       "path": "docs/latex/Manual_Instalacion_Drop_Route.pdf",
-      "sha256": "8e06a4c6474eebf3696f1c9f49f47743784007ed15684cd79047295e06875dcd",
+      "sha256": "47c98a24ba4a671a039b5138275f7109ecdd7fdab4953f694b6ddcf364442495",
       "role": "pdf"
     }
   ]
