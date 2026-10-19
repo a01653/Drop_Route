@@ -49,6 +49,8 @@ $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
 \providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+% Pandoc 3.2+ envuelve las imágenes en \pandocbounded; con versiones anteriores no existe y esta definición no cambia nada.
+\providecommand{\pandocbounded}[1]{#1}
 \usepackage{graphicx,xurl}
 \usepackage[section]{placeins}
 \usepackage{amssymb,newunicodechar}
@@ -87,8 +89,8 @@ $endif$
 {\sffamily\small Repositorio: a01653/Drop\_Route\par}
 \vspace{2cm}
 \end{center}
-\nopagecolor
 \end{titlepage}
+\nopagecolor
 \restoregeometry
 \setcounter{page}{2}
 \tableofcontents

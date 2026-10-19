@@ -47,6 +47,8 @@
 \let\originaltexttt\texttt
 \renewcommand{\texttt}[1]{\originaltexttt{\seqsplit{#1}}}
 \providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+% Pandoc 3.2+ envuelve las imágenes en \pandocbounded; con versiones anteriores no existe y esta definición no cambia nada.
+\providecommand{\pandocbounded}[1]{#1}
 \usepackage{graphicx,xurl}
 \usepackage[section]{placeins}
 \usepackage{amssymb,newunicodechar}
@@ -85,8 +87,8 @@
 {\sffamily\small Repositorio: a01653/Drop\_Route\par}
 \vspace{2cm}
 \end{center}
-\nopagecolor
 \end{titlepage}
+\nopagecolor
 \restoregeometry
 \setcounter{page}{2}
 \tableofcontents
@@ -98,9 +100,8 @@ dirección prevista para GitHub Pages es
 \url{https://a01653.github.io/Drop_Route/}. Solo debe darse por activa
 después de que el despliegue de \texttt{main} termine correctamente.
 
-\hypertarget{1-usar-la-aplicaciuxf3n-publicada}{%
 \section{1. Usar la aplicación
-publicada}\label{1-usar-la-aplicaciuxf3n-publicada}}
+publicada}\label{1-usar-la-aplicaciuxf3n-publicada}
 
 Abre la dirección HTTPS y espera a que aparezca el menú. La primera
 carga completa permite que el service worker guarde los recursos
@@ -116,8 +117,7 @@ Los nombres exactos de los menús cambian según la versión del navegador.
 La instalación PWA necesita HTTPS o \texttt{localhost}; una URL HTTP de
 la red local no sirve para registrar el service worker.
 
-\hypertarget{2-probar-desde-el-cuxf3digo}{%
-\section{2. Probar desde el código}\label{2-probar-desde-el-cuxf3digo}}
+\section{2. Probar desde el código}\label{2-probar-desde-el-cuxf3digo}
 
 Requisitos para construir y servir la aplicación:
 
@@ -154,13 +154,12 @@ npm run build
 npm run preview
 \end{verbatim}
 
-\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/escritorio-menu-1280.png}
+\pandocbounded{\includegraphics[width=0.48\linewidth,height=0.62\textheight,keepaspectratio]{../manuals/capturas/escritorio-menu-1280.png}}
 
 \emph{Figura 1. Vista de escritorio del build.}
 
-\hypertarget{3-publicar-en-la-subruta-de-github-pages}{%
 \section{3. Publicar en la subruta de GitHub
-Pages}\label{3-publicar-en-la-subruta-de-github-pages}}
+Pages}\label{3-publicar-en-la-subruta-de-github-pages}
 
 GitHub Pages sirve este repositorio bajo la ruta \texttt{/Drop\_Route/}.
 El build debe conocer esa base:
@@ -178,8 +177,7 @@ npm run build
 
 El resultado queda en \texttt{dist/}.
 
-\hypertarget{4-github-pages}{%
-\section{4. GitHub Pages}\label{4-github-pages}}
+\section{4. GitHub Pages}\label{4-github-pages}
 
 El workflow \texttt{.github/workflows/deploy-pages.yml} se ejecuta al
 hacer push a \texttt{main} y también admite ejecución manual. Usa dos
@@ -194,8 +192,7 @@ Cuando el despliegue termine en verde, comprueba
 \url{https://a01653.github.io/Drop_Route/} con conexión y después una
 recarga sin conexión.
 
-\hypertarget{5-pruebas-opcionales}{%
-\section{5. Pruebas opcionales}\label{5-pruebas-opcionales}}
+\section{5. Pruebas opcionales}\label{5-pruebas-opcionales}
 
 Para las pruebas E2E y las capturas de los manuales hace falta Chromium
 de Playwright:
