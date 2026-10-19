@@ -37,8 +37,39 @@ Una versión por entrega. No incrementarla por ajustes, previews o cambios docum
 
 ## DTS y manuales
 
-`docs/DTS.md` es la fuente principal. `docs/latex/DTS_Drop_Route.tex` y su PDF son derivados. Los manuales Markdown y sus derivados están cerrados desde DR-007.
+`docs/DTS.md` es la fuente principal. `docs/latex/DTS_Drop_Route.tex` y su PDF son derivados. Los manuales Markdown y sus derivados se mantienen cuando cambie de forma material el uso, las pantallas, los flujos o las limitaciones visibles para el usuario.
 
 La política `docs/documentation-policy.json` está en `required`: `npm run docs:check` y `npm run docs:check:final` exigen que DTS y manuales derivados estén sincronizados. Si una ampliación cambia materialmente arquitectura, navegación, persistencia, build o límites descritos en el DTS, actualizar el Markdown y regenerar LaTeX/PDF en el mismo cierre documental; no modificar a mano los derivados ni rebajar la política para hacer pasar la CI.
 
 README, requisitos, órdenes de trabajo y registros de validación deben reflejar el estado real de cada entrega.
+
+## Flujo común de trabajo y cierre
+
+Estas reglas armonizan el flujo con Mástil Escalas y Compás a compás. Conserva las comprobaciones y restricciones específicas de Drop Route descritas arriba.
+
+### Rama y alcance
+
+- Antes de editar, revisa `git status` y la rama activa. Actualiza `main` con `git pull --ff-only origin main` y crea una rama `docs/`, `fix/` o `feat/` adecuada al cambio.
+- Mantén un objetivo acotado por rama y conserva cualquier cambio previo ajeno a la tarea. Ejecuta las pruebas dirigidas mientras desarrollas.
+- No mezcles una rama de documentación con cambios funcionales sin relación.
+
+### Cierre y pruebas
+
+- Para cambios de aplicación, ejecuta una sola batería final sobre el estado exacto que entregarás: `npm run validate`, `npm run lint`, `npm run build` y `npm run test:e2e`.
+- En cambios solo documentales, valida los archivos y herramientas afectados; no ejecutes pruebas de aplicación ni E2E si no cambia su comportamiento. Para cambios en fuentes de manuales o DTS, ejecuta `npm run docs:build`, `npm run docs:check:final` y revisa visualmente todos los PDF generados.
+- Si una rama combina documentación y aplicación, aplica también la batería de aplicación.
+- Registra resultados reales y pendientes en el registro de validación de la entrega. No declares pruebas que no se hayan ejecutado.
+
+### Manual, DTS y README
+
+- Mantén las fuentes Markdown de manuales y `docs/DTS.md` como fuentes editables; actualízalas cuando cambie materialmente su contenido. Regenera LaTeX/PDF con `npm run docs:build` y valida sus derivados; nunca los edites a mano.
+- Usa como referencia editorial el manual de Compás a compás: contenido organizado por tareas, pasos breves, nombres exactos de controles, ejemplos y límites explícitos, capturas explicadas y pies consistentes. Conserva la identidad visual y estructura propia de Drop Route.
+- Actualiza el DTS ante cambios relevantes de arquitectura, modelo, persistencia, navegación, construcción, despliegue, pruebas o límites.
+- Mantén el README fiel a la funcionalidad publicada, requisitos, instalación, comandos, enlaces de manual/DTS y límites conocidos. El estado de publicación o CI solo se presenta como comprobado cuando se haya verificado en GitHub; el detalle de ejecución va en validación.
+- No cambies versión solo por una actualización documental.
+
+### Publicación y entrega
+
+- No hagas commit, push, merge, release ni despliegue sin autorización expresa.
+- Tras una publicación autorizada, comprueba el SHA remoto, GitHub Actions y Pages antes de declarar el cambio publicado.
+- Resume rama, archivos modificados, documentación actualizada, pruebas ejecutadas y resultados pendientes.

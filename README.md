@@ -134,6 +134,8 @@ La aplicación está publicada en:
 
 ## Integración continua
 
+Consulta las [ejecuciones de GitHub Actions](https://github.com/a01653/Drop_Route/actions) para el estado remoto de validación y publicación. Este README describe el estado publicado; los resultados detallados de cada entrega se registran en `docs/validation/`.
+
 `.github/workflows/validate-foundation.yml` ejecuta dos trabajos. `foundation` valida datos, auditoría musical, tests de base y documentación estricta. `app` ejecuta typecheck, lint, unitarias, build, E2E y genera las capturas de los manuales como artefacto.
 
 ## Límites actuales
