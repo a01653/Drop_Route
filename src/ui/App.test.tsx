@@ -40,6 +40,10 @@ describe('menú de arranque', () => {
     expect(html).not.toContain('href="#/revision"')
   })
 
+  it('ofrece el manual en otra pestaña con una ruta relativa a la base', () => {
+    expect(html).toMatch(/<a [^>]*href="[^"]*manual\/Manual_Uso_Drop_Route\.pdf"[^>]*target="_blank"[^>]*rel="noopener"[^>]*>Manual<\/a>/)
+  })
+
   it('permite elegir juego, Drop, set con sus cuerdas y dificultad (R01)', () => {
     for (const text of ['Reconocer voicings', 'Drop 2', 'Drop 3', 'Drop 2+4', 'Fácil', 'Medio', 'Difícil']) {
       expect(html).toContain(text)

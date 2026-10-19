@@ -171,8 +171,10 @@ for (const base of ['/', '/Drop_Route/']) {
     const dist = await buildApp(base === '/' ? undefined : base);
     const files = listFiles(dist);
     assert.ok(files.includes('sw.js') && files.includes('index.html') && files.includes('manifest.webmanifest'));
-    // Nada de guías ni referencias en el build.
-    assert.ok(!files.some(path => /\.pdf$|^references\//.test(path)), files.join(', '));
+    // Ni guías ni referencias en el build; el único PDF es el manual de uso del botón «Manual», y no se precachea.
+    assert.ok(!files.some(path => /\.pdf$/.test(path) && path !== 'manual/Manual_Uso_Drop_Route.pdf'), files.join(', '));
+    assert.ok(!files.some(path => /^references\//.test(path)), files.join(', '));
+    assert.ok(files.includes('manual/Manual_Uso_Drop_Route.pdf'), 'el manual de uso se publica');
 
     const html = readFileSync(join(dist, 'index.html'), 'utf8');
     assert.ok(html.includes(`href="${base}manifest.webmanifest"`), 'manifest enlazado con la base');

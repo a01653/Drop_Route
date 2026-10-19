@@ -41,7 +41,8 @@
 
   .menu-formulario > .menu-ayuda,
   .menu-formulario > .boton-principal,
-  .menu-formulario > .menu-estudio {
+  .menu-formulario > .menu-estudio,
+  .menu-formulario > .menu-manual {
     grid-column: 1 / -1;
   }
 

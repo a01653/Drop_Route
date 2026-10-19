@@ -103,6 +103,15 @@ export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS
         <a className="boton-secundario menu-estudio" href="#/study">
           Modo estudio
         </a>
+        <a
+          className="boton-secundario menu-estudio menu-manual"
+          href={`${import.meta.env.BASE_URL}manual/Manual_Uso_Drop_Route.pdf`}
+          target="_blank"
+          rel="noopener"
+          title="Abrir el manual de uso en otra pestaña"
+        >
+          Manual
+        </a>
       </form>
 
       <ProgressPanel progress={progress} config={config} />
