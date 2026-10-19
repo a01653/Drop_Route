@@ -17,18 +17,18 @@ Son capturas de Chromium sobre el build actual servido por vite preview, jugando
 
 | Fichero | Viewport | Qué muestra |
 | --- | --- | --- |
-| `menu-reconocimiento-360.png` | móvil 360 px | Menú con «Reconocer voicings», sin progreso. |
-| `menu-rutas-360.png` | móvil 360 px | Menú con «Rutas II-V-I»: modo y tramo, sin dificultad. |
-| `facil-pregunta-360.png` | móvil 360 px | Fácil: tarjeta neutra y cuatro botones de acorde. |
-| `facil-correccion-360.png` | móvil 360 px | Fácil con error: elegido en rojo, correcto en verde, colores de la solución. |
-| `medio-pregunta-360.png` | móvil 360 px | Medio: los dos desplegables, Acorde e Inversión. |
-| `medio-correccion-360.png` | móvil 360 px | Medio con la inversión equivocada: corrección por campos. |
-| `dificil-pregunta-360.png` | móvil 360 px | Difícil antes de verificar: banco gris y dos grados colocados. |
-| `dificil-correccion-360.png` | móvil 360 px | Difícil con un solo grado equivocado: corrección por campos. |
-| `ruta-pregunta-360.png` | móvil 360 px | Ruta abierta: partida, candidata y selector 1 a 4. |
-| `ruta-fallo-solucion-360.png` | móvil 360 px | Ruta fallada: selector bloqueado y Solución. |
-| `ruta-fallo-tu-respuesta-360.png` | móvil 360 px | La misma ruta con «Tu respuesta». |
-| `progreso-detalle-360.png` | móvil 360 px | «Tu progreso» con el detalle de ambos juegos, jugado de verdad. |
+| `menu-reconocimiento-1280.png` | ordenador 1280 px | Menú con «Reconocer voicings», sin progreso. |
+| `menu-rutas-1280.png` | ordenador 1280 px | Menú con «Rutas II-V-I»: modo y tramo, sin dificultad. |
+| `facil-pregunta-1280.png` | ordenador 1280 px | Fácil: tarjeta neutra y cuatro botones de acorde. |
+| `facil-correccion-1280.png` | ordenador 1280 px | Fácil con error: elegido en rojo, correcto en verde, colores de la solución. |
+| `medio-pregunta-1280.png` | ordenador 1280 px | Medio: los dos desplegables, Acorde e Inversión. |
+| `medio-correccion-1280.png` | ordenador 1280 px | Medio con la inversión equivocada: corrección por campos. |
+| `dificil-pregunta-1280.png` | ordenador 1280 px | Difícil antes de verificar: banco gris y dos grados colocados. |
+| `dificil-correccion-1280.png` | ordenador 1280 px | Difícil con un solo grado equivocado: corrección por campos. |
+| `ruta-pregunta-1280.png` | ordenador 1280 px | Ruta abierta: partida, candidata y selector 1 a 4. |
+| `ruta-fallo-solucion-1280.png` | ordenador 1280 px | Ruta fallada: selector bloqueado y Solución. |
+| `ruta-fallo-tu-respuesta-1280.png` | ordenador 1280 px | La misma ruta con «Tu respuesta». |
+| `progreso-detalle-1280.png` | ordenador 1280 px | «Tu progreso» con el detalle de ambos juegos, jugado de verdad. |
 | `escritorio-menu-1280.png` | ordenador 1280 px | Vista general del menú con progreso. |
 
 Los identificadores y los textos de cada figura viven en `captures/figures.ts`; los manuales citan estos nombres, así que cambiarlos obliga a cambiar los manuales.
@@ -38,7 +38,7 @@ Los identificadores y los textos de cada figura viven en `captures/figures.ts`; 
 `capturas.json` lista cada figura, en el orden de la tabla, con:
 
 - `file`, `title`, `game` y `state`: fichero, título, juego y estado que debe verse, comprobado por el test antes de capturar.
-- `viewport`: tipo, ancho, alto y factor de escala (móvil 360×780 a doble densidad, ordenador 1280×800).
+- `viewport`: tipo, ancho, alto y factor de escala (ordenador 1280×800 a doble densidad).
 - `region`: viewport o tramo (selectores de inicio y fin y alto en píxeles CSS).
 - `observed`: lo que la propia interfaz declaraba al capturar (fase, título, cabecera y opciones pulsadas del menú).
 - `pixels`, `bytes` y `sha256` del fichero.

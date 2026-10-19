@@ -10,8 +10,8 @@ import type { Preview } from './site'
 
 // Capturas reales para los manuales (DR-007). Se juega por la interfaz del build servido por vite preview: las preguntas
 // se resuelven a partir de las posiciones visibles más data/catalog.json y data/routes.json, igual que en los E2E, sin
-// semillas de prueba ni soluciones inyectadas. Una sola sesión móvil (360 px) encadena los juegos para que el progreso
-// sea el que esas partidas dejaron; el ordenador (1280 px) juega la suya. Es un comando explícito: npm run docs:captures.
+// semillas de prueba ni soluciones inyectadas. Una sola sesión de ordenador (1280 px) encadena los juegos para que el progreso
+// sea el que esas partidas dejaron; otra sesión juega la vista general. Es un comando explícito: npm run docs:captures.
 
 const D2S1 = SETS[0]! // Drop 2, set 1
 const ROUTES = { set: D2S1, mode: 'Mayor', stretch: 'II → V' } as const
@@ -70,7 +70,7 @@ async function place(page: Page, degree: string, slot: number) {
 test.describe.serial('capturas del manual', () => {
   let site: Preview
   let recorder: Recorder
-  let phone: Session
+  let primary: Session
   let desktop: Session | undefined
 
   test.beforeAll(async ({ browser }) => {
@@ -78,50 +78,50 @@ test.describe.serial('capturas del manual', () => {
     site = await startPreview()
     recorder = new Recorder(CAPTURES_DIR, { name: 'chromium', version: browser.version() })
     await recorder.prepare()
-    phone = await openSession(browser, 'movil', site.origin)
+    primary = await openSession(browser, 'escritorio', site.origin)
   })
 
   // Pase lo que pase, se cierran los contextos, el preview (proceso) y el directorio temporal del build.
   test.afterAll(async () => {
-    await phone?.context.close()
+    await primary?.context.close()
     await desktop?.context.close()
     await site?.close()
   })
 
   test.afterEach(() => {
-    expect(phone.problems, 'consola de la sesión móvil').toEqual([])
+    expect(primary.problems, 'consola de la sesión principal').toEqual([])
     expect(desktop?.problems ?? [], 'consola de la sesión de ordenador').toEqual([])
   })
 
-  test('menús de reconocimiento y de rutas a 360 px', async () => {
-    const { page } = phone
+  test('menús de reconocimiento y de rutas a 1280 px', async () => {
+    const { page } = primary
     await expect(page.getByRole('button', { name: 'Reconocer voicings', exact: true })).toHaveAttribute('aria-pressed', 'true')
     await expect(page.getByRole('button', { name: 'Fácil', exact: true })).toBeVisible()
     await expect(page.locator('.progreso')).toContainText('Todavía no has verificado ninguna pregunta')
-    await recorder.shoot(page, 'menu-reconocimiento-360', { from: 'main.menu > header', to: '.menu-formulario .boton-principal' })
+    await recorder.shoot(page, 'menu-reconocimiento-1280', { from: 'main.menu > header', to: '.menu-formulario .boton-principal' })
 
     await page.getByRole('button', { name: 'Rutas II-V-I', exact: true }).click()
     await expect(page.getByRole('button', { name: 'Rutas II-V-I', exact: true })).toHaveAttribute('aria-pressed', 'true')
     await expect(page.getByRole('button', { name: 'Fácil', exact: true })).toHaveCount(0)
     await expect(page.getByRole('button', { name: /^Mayor/ })).toBeVisible()
-    await recorder.shoot(page, 'menu-rutas-360', { from: 'main.menu > header', to: '.menu-formulario .boton-principal' })
+    await recorder.shoot(page, 'menu-rutas-1280', { from: 'main.menu > header', to: '.menu-formulario .boton-principal' })
   })
 
   test('fácil: pregunta neutra y error corregido', async () => {
-    const { page } = phone
+    const { page } = primary
     await configureRecognition(page, D2S1, 'Fácil')
     await startQuestion(page)
     await expect(page.locator('.opciones-acorde button')).toHaveCount(4)
     await expect(page.locator('.opciones-acorde button[aria-pressed="true"]')).toHaveCount(0)
     await expectNeutral(page)
-    await recorder.shoot(page, 'facil-pregunta-360', { from: '.juego-cabecera', to: '.juego-respuesta' })
+    await recorder.shoot(page, 'facil-pregunta-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .juego-respuesta' })
 
     await answerRecognition(page, D2S1, 'Fácil', 'acorde-incorrecto')
     await expect(page.locator('.opciones-acorde button.ko')).toHaveCount(1)
     await expect(page.locator('.opciones-acorde button.ok')).toHaveCount(1)
     await expect(page.locator('.opciones-acorde button.ko')).toHaveAttribute('aria-pressed', 'true')
     await expectSolutionColors(page)
-    await recorder.shoot(page, 'facil-correccion-360', { from: '.juego-cabecera', to: '.resultado' })
+    await recorder.shoot(page, 'facil-correccion-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .resultado' })
 
     // Una segunda pregunta acertada, para que el progreso tenga las dos cosas.
     await nextQuestion(page, 2)
@@ -130,25 +130,25 @@ test.describe.serial('capturas del manual', () => {
   })
 
   test('medio: dos desplegables y acierto parcial', async () => {
-    const { page } = phone
+    const { page } = primary
     await configureRecognition(page, D2S1, 'Medio')
     await startQuestion(page)
     await expect(page.getByRole('combobox', { name: 'Acorde', exact: true })).toHaveValue('')
     await expect(page.getByRole('combobox', { name: 'Inversión', exact: true })).toHaveValue('')
     await expectNeutral(page)
-    await recorder.shoot(page, 'medio-pregunta-360', { from: '.juego-cabecera', to: '.juego-respuesta' })
+    await recorder.shoot(page, 'medio-pregunta-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .juego-respuesta' })
 
     await answerRecognition(page, D2S1, 'Medio', 'inversion-incorrecta')
     await expect(page.getByRole('heading', { name: 'Acierto parcial' })).toBeVisible()
     await expect(page.locator('.correccion li.ok')).toHaveCount(1)
     await expect(page.locator('.correccion li.ko')).toHaveCount(1)
     await expectSolutionColors(page)
-    await recorder.shoot(page, 'medio-correccion-360', { from: '.juego-cabecera', to: '.resultado' })
+    await recorder.shoot(page, 'medio-correccion-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .resultado' })
     await leave(page)
   })
 
   test('difícil: colocación antes de verificar y su corrección', async () => {
-    const { page } = phone
+    const { page } = primary
     await configureRecognition(page, D2S1, 'Difícil')
     await startQuestion(page)
     const voicing = await truth(page, D2S1.id)
@@ -162,7 +162,7 @@ test.describe.serial('capturas del manual', () => {
     await expect(page.locator('.ficha.colocada')).toHaveCount(2)
     await expect(page.getByRole('button', { name: 'Verificar' })).toBeDisabled()
     await expectNeutral(page)
-    await recorder.shoot(page, 'dificil-pregunta-360', { from: '.juego-cabecera', to: '.juego-respuesta' })
+    await recorder.shoot(page, 'dificil-pregunta-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .juego-respuesta' })
 
     // Un único círculo equivocado: el resto, correcto.
     const spare = BANK.find((degree) => !degrees.includes(degree))!
@@ -173,19 +173,19 @@ test.describe.serial('capturas del manual', () => {
     await expect(page.locator('.correccion li.ok')).toHaveCount(5)
     await expect(page.locator('.correccion li.ko')).toHaveCount(1)
     await expectSolutionColors(page)
-    await recorder.shoot(page, 'dificil-correccion-360', { from: '.juego-cabecera', to: '.resultado' })
+    await recorder.shoot(page, 'dificil-correccion-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .resultado' })
     await leave(page)
   })
 
   test('rutas: pregunta, fallo con Solución y con Tu respuesta', async () => {
-    const { page } = phone
+    const { page } = primary
     await configureRoutes(page, ROUTES)
     await startQuestion(page)
     await expect(page.locator('.partida svg')).toHaveCount(1)
     await expect(page.locator('.candidata svg')).toHaveCount(1)
     await expect(page.getByRole('button', { name: /^Candidata \d$/ })).toHaveCount(4)
     await expectNeutral(page, '.candidata-tarjeta')
-    await recorder.shoot(page, 'ruta-pregunta-360', { from: '.juego-cabecera', to: '.candidata' })
+    await recorder.shoot(page, 'ruta-pregunta-1280', { from: '.juego-cabecera', to: '.candidata' })
 
     await answerRoute(page, { setId: D2S1.id, mode: 'major', from: 'II', correct: false })
     await expect(page.locator('.selector button.ko')).toHaveCount(1)
@@ -193,12 +193,12 @@ test.describe.serial('capturas del manual', () => {
     for (let index = 0; index < 4; index += 1) await expect(page.getByRole('button', { name: `Candidata ${index + 1}`, exact: true })).toBeDisabled()
     await expect(page.getByRole('button', { name: 'Solución', exact: true })).toHaveAttribute('aria-pressed', 'true')
     await expectSolutionColors(page, '.comparacion')
-    await recorder.shoot(page, 'ruta-fallo-solucion-360', { from: '.juego-cabecera', to: '.comparacion' })
+    await recorder.shoot(page, 'ruta-fallo-solucion-1280', { from: '.juego-cabecera', to: '.comparacion' })
 
     await page.getByRole('button', { name: 'Tu respuesta', exact: true }).click()
     await expect(page.getByRole('button', { name: 'Tu respuesta', exact: true })).toHaveAttribute('aria-pressed', 'true')
     await expect(page.locator('.comparacion .juego-pie')).toContainText('Tu respuesta: candidata')
-    await recorder.shoot(page, 'ruta-fallo-tu-respuesta-360', { from: '.juego-cabecera', to: '.comparacion' })
+    await recorder.shoot(page, 'ruta-fallo-tu-respuesta-1280', { from: '.juego-cabecera', to: '.comparacion' })
 
     // Una segunda pregunta acertada, para que el progreso de rutas tenga las dos cosas.
     await nextQuestion(page, 2)
@@ -207,7 +207,7 @@ test.describe.serial('capturas del manual', () => {
   })
 
   test('progreso con el detalle de ambos juegos', async () => {
-    const { page } = phone
+    const { page } = primary
     // Lo visible y lo guardado coinciden con lo jugado en las pruebas anteriores, ni más ni menos.
     await expectProgress(page, {
       'recognition:D2S1:easy': [1, 2],
@@ -218,7 +218,7 @@ test.describe.serial('capturas del manual', () => {
     await page.locator('.progreso summary').click()
     await expect(page.locator('.progreso details')).toHaveAttribute('open', '')
     await expect(page.locator('.progreso details li')).toHaveCount(4)
-    await recorder.shoot(page, 'progreso-detalle-360', { from: '.progreso', to: '.progreso' })
+    await recorder.shoot(page, 'progreso-detalle-1280', { from: '.progreso', to: '.progreso' })
   })
 
   test('vista general en ordenador a 1280 px', async ({ browser }) => {

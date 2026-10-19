@@ -11,10 +11,10 @@ export interface ViewportSpec {
   deviceScaleFactor: number
 }
 
-/** Móvil a 360 px, el ancho más estrecho que admite la aplicación, a doble densidad para que el texto se lea impreso. */
+/** Ordenador a 1280 px, a doble densidad para que el texto se lea impreso: las capturas apaisadas aprovechan el ancho de la página. El móvil (360 px) se conserva como tipo, sin figuras. */
 export const VIEWPORTS: Record<ViewportKind, ViewportSpec> = {
   movil: { width: 360, height: 780, deviceScaleFactor: 2 },
-  escritorio: { width: 1280, height: 800, deviceScaleFactor: 1 },
+  escritorio: { width: 1280, height: 800, deviceScaleFactor: 2 },
 }
 
 export interface Figure {
@@ -29,87 +29,87 @@ export interface Figure {
 
 export const FIGURES: readonly Figure[] = [
   {
-    id: 'menu-reconocimiento-360',
+    id: 'menu-reconocimiento-1280',
     title: 'Menú con «Reconocer voicings»',
     game: 'menu',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Menú recién abierto, juego de reconocimiento seleccionado, sin progreso guardado.',
   },
   {
-    id: 'menu-rutas-360',
+    id: 'menu-rutas-1280',
     title: 'Menú con «Rutas II-V-I»',
     game: 'menu',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Menú con el juego de rutas seleccionado: solo Drop 2, modo y tramo, sin dificultad.',
   },
   {
-    id: 'facil-pregunta-360',
+    id: 'facil-pregunta-1280',
     title: 'Fácil: pregunta neutra',
     game: 'reconocimiento',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta abierta en fácil: tarjeta con círculos grises y cuatro botones de acorde, sin nada elegido.',
   },
   {
-    id: 'facil-correccion-360',
+    id: 'facil-correccion-1280',
     title: 'Fácil: error corregido',
     game: 'reconocimiento',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta fácil verificada con un acorde equivocado: el elegido en rojo, el correcto en verde y la tarjeta con los colores musicales.',
   },
   {
-    id: 'medio-pregunta-360',
+    id: 'medio-pregunta-1280',
     title: 'Medio: acorde e inversión',
     game: 'reconocimiento',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta abierta en medio: tarjeta neutra y los dos desplegables, Acorde e Inversión, sin elegir.',
   },
   {
-    id: 'medio-correccion-360',
+    id: 'medio-correccion-1280',
     title: 'Medio: acierto parcial',
     game: 'reconocimiento',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta medio verificada con el acorde correcto y la inversión equivocada: corrección campo por campo.',
   },
   {
-    id: 'dificil-pregunta-360',
+    id: 'dificil-pregunta-1280',
     title: 'Difícil: colocar los grados',
     game: 'reconocimiento',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta abierta en difícil: acorde e inversión elegidos, dos grados colocados sobre los círculos y el banco de fichas en gris.',
   },
   {
-    id: 'dificil-correccion-360',
+    id: 'dificil-correccion-1280',
     title: 'Difícil: corrección por campos',
     game: 'reconocimiento',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta difícil verificada con un solo grado equivocado: cinco campos correctos, uno incorrecto y la tarjeta con su solución.',
   },
   {
-    id: 'ruta-pregunta-360',
+    id: 'ruta-pregunta-1280',
     title: 'Ruta: partida y candidata',
     game: 'rutas',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Pregunta de ruta abierta: la partida visible, una candidata neutra y el selector 1 a 4 con Verificar.',
   },
   {
-    id: 'ruta-fallo-solucion-360',
+    id: 'ruta-fallo-solucion-1280',
     title: 'Ruta: no es la de nuestra ruta, Solución',
     game: 'rutas',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Ruta verificada con otra candidata: selector bloqueado con la elegida en rojo y la de la ruta en verde, y la Solución en el comparador.',
   },
   {
-    id: 'ruta-fallo-tu-respuesta-360',
+    id: 'ruta-fallo-tu-respuesta-1280',
     title: 'Ruta: no es la de nuestra ruta, Tu respuesta',
     game: 'rutas',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'La misma pregunta de ruta con «Tu respuesta» en el comparador: la candidata que se eligió.',
   },
   {
-    id: 'progreso-detalle-360',
+    id: 'progreso-detalle-1280',
     title: 'Progreso con el detalle de ambos juegos',
     game: 'progreso',
-    viewport: 'movil',
+    viewport: 'escritorio',
     state: 'Panel «Tu progreso» tras jugar de verdad reconocimiento (fácil, medio y difícil) y rutas, con «Ver todo el detalle» abierto.',
   },
   {

@@ -10,11 +10,11 @@ Al abrir la aplicación aparece el menú. Puedes elegir **Reconocer voicings**, 
 
 En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la secuencia. El modo estudio sirve para consultar formas y rutas sin responder preguntas.
 
-![Menú con Reconocer voicings elegido.](capturas/menu-reconocimiento-360.png)
+![Menú con Reconocer voicings elegido.](capturas/menu-reconocimiento-1280.png)
 
 *Figura 1. Menú de reconocimiento.*
 
-![Menú con Rutas II-V-I elegido.](capturas/menu-rutas-360.png)
+![Menú con Rutas II-V-I elegido.](capturas/menu-rutas-1280.png)
 
 *Figura 2. Menú de rutas II-V-I.*
 
@@ -26,13 +26,13 @@ Cada pregunta muestra una tarjeta neutra: ves la posición física de las notas,
 
 Elige entre Cmaj7 / C6, C7, Cm7 y Cm7(b5). El orden cambia entre preguntas. La opción mayor agrupa las formas con séptima y con sexta; siempre tiene el mismo nombre para no dar pistas. Cuando la plantilla usa C6, se pregunta esa posición con sexta y, al corregir, la séptima original aparece en gris como referencia. Las formas mantienen cuatro voces activas.
 
-![Pregunta fácil sin responder.](capturas/facil-pregunta-360.png)
+![Pregunta fácil sin responder.](capturas/facil-pregunta-1280.png)
 
 *Figura 3. Nivel fácil antes de verificar.*
 
 Al verificar, la respuesta se bloquea. Si fallas, el acorde elegido se marca y la solución queda identificada también con texto y símbolos.
 
-![Corrección de una pregunta fácil.](capturas/facil-correccion-360.png)
+![Corrección de una pregunta fácil.](capturas/facil-correccion-1280.png)
 
 *Figura 4. Corrección del nivel fácil.*
 
@@ -40,11 +40,11 @@ Al verificar, la respuesta se bloquea. Si fallas, el acorde elegido se marca y l
 
 Indica el acorde y la inversión con los dos selectores. La aplicación comprueba ambos campos por separado.
 
-![Pregunta de nivel medio.](capturas/medio-pregunta-360.png)
+![Pregunta de nivel medio.](capturas/medio-pregunta-1280.png)
 
 *Figura 5. Nivel medio antes de verificar.*
 
-![Corrección del nivel medio.](capturas/medio-correccion-360.png)
+![Corrección del nivel medio.](capturas/medio-correccion-1280.png)
 
 *Figura 6. Corrección campo por campo.*
 
@@ -52,13 +52,13 @@ Indica el acorde y la inversión con los dos selectores. La aplicación comprueb
 
 Además del acorde y la inversión, coloca los cuatro grados sobre los círculos de la tarjeta. El banco incluye siempre 1, 3, ♭3, 5, ♭5, 6, 7 y ♭7. En las variantes con sexta se coloca 6, no 7, en su círculo. Puedes arrastrar, usar dos toques, teclado o los controles de colocación sin arrastre.
 
-![Pregunta difícil con grados colocados.](capturas/dificil-pregunta-360.png)
+![Pregunta difícil con grados colocados.](capturas/dificil-pregunta-1280.png)
 
 *Figura 7. Nivel difícil durante la respuesta.*
 
 La corrección compara acorde, inversión y cada círculo. Solo cuenta como acierto completo cuando todos los campos son correctos.
 
-![Corrección del nivel difícil.](capturas/dificil-correccion-360.png)
+![Corrección del nivel difícil.](capturas/dificil-correccion-1280.png)
 
 *Figura 8. Corrección del nivel difícil.*
 
@@ -71,17 +71,17 @@ Las rutas disponibles son:
 
 Elige el tramo **II → V**, **V → I** o **II → V → I**. La partida se mantiene visible y debajo aparece una candidata. Cambia entre las cuatro posiciones con el selector 1-4, el gesto lateral o el teclado.
 
-![Pregunta de una ruta II-V-I.](capturas/ruta-pregunta-360.png)
+![Pregunta de una ruta II-V-I.](capturas/ruta-pregunta-1280.png)
 
 *Figura 9. Partida, candidata y selector.*
 
 La verificación indica si elegiste la posición usada por esa ruta. Otra inversión del mismo acorde puede ser musicalmente válida y, aun así, no ser la posición de la secuencia estudiada.
 
-![Solución de una ruta fallada.](capturas/ruta-fallo-solucion-360.png)
+![Solución de una ruta fallada.](capturas/ruta-fallo-solucion-1280.png)
 
 *Figura 10. Solución de la ruta.*
 
-![Respuesta elegida en la misma ruta.](capturas/ruta-fallo-tu-respuesta-360.png)
+![Respuesta elegida en la misma ruta.](capturas/ruta-fallo-tu-respuesta-1280.png)
 
 *Figura 11. Comparación con tu respuesta.*
 
@@ -95,7 +95,7 @@ La columna sombreada marca el traste donde cae la raíz del acorde II. Se repite
 
 Cada pregunta suma un intento cuando pulsas **Verificar**. Salir, cambiar una selección o mirar la corrección no añade intentos. El panel del menú muestra intentos y aciertos por juego y configuración.
 
-![Detalle del progreso guardado.](capturas/progreso-detalle-360.png)
+![Detalle del progreso guardado.](capturas/progreso-detalle-1280.png)
 
 *Figura 12. Detalle del progreso local.*
 

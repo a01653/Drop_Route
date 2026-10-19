@@ -21,23 +21,23 @@ export const CAPTURE_MANIFEST = CAPTURE_DIR + '/capturas.json';
 export const CAPTURE_COMMAND = 'npm run docs:captures';
 // Contrato de captures/figures.ts: mismos identificadores y mismo orden.
 export const CAPTURE_IDS = [
-  'menu-reconocimiento-360',
-  'menu-rutas-360',
-  'facil-pregunta-360',
-  'facil-correccion-360',
-  'medio-pregunta-360',
-  'medio-correccion-360',
-  'dificil-pregunta-360',
-  'dificil-correccion-360',
-  'ruta-pregunta-360',
-  'ruta-fallo-solucion-360',
-  'ruta-fallo-tu-respuesta-360',
-  'progreso-detalle-360',
+  'menu-reconocimiento-1280',
+  'menu-rutas-1280',
+  'facil-pregunta-1280',
+  'facil-correccion-1280',
+  'medio-pregunta-1280',
+  'medio-correccion-1280',
+  'dificil-pregunta-1280',
+  'dificil-correccion-1280',
+  'ruta-pregunta-1280',
+  'ruta-fallo-solucion-1280',
+  'ruta-fallo-tu-respuesta-1280',
+  'progreso-detalle-1280',
   'escritorio-menu-1280',
 ];
 export const CAPTURE_VIEWPORTS = {
   movil: {width: 360, height: 780, deviceScaleFactor: 2},
-  escritorio: {width: 1280, height: 800, deviceScaleFactor: 1},
+  escritorio: {width: 1280, height: 800, deviceScaleFactor: 2},
 };
 
 const SHA_RE = /^[a-f0-9]{64}$/;
