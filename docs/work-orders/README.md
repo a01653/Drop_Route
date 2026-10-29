@@ -16,6 +16,7 @@ Cada tarea se pide por separado. Las reglas permanentes están en CLAUDE.md y AG
 | [DR-010](DR-010.md) | Tónica explícita, lecturas equivalentes y autoría al pie. | Implementada y validada; commit, merge, push y publicación autorizados el 16/10/2026. |
 | [DR-011](DR-011.md) | Navegación y revisión del test de reconocimiento. | En desarrollo. |
 | [DR-012](DR-012.md) | Traste ancla de la plantilla en estudio II–V–I. | En desarrollo. |
+| [DR-013](DR-013.md) | Patrones de escala: datos, estudio, reconocer y ordenar. | Completada (1.1.0); commit, fusión y publicación autorizados el 29/10/2026. |
 
 DR-009 ya está terminada; no es una tarea pendiente. Sus evidencias están en la [validación inicial](../validation/2026-10-15-dr-009-c6-desktop-layout.md) y en la [corrección de C6 y séptima gris](../validation/2026-10-15-dr-009-c6-review.md).
 

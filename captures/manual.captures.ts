@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import type { Browser, BrowserContext, Page } from '@playwright/test'
 import { BANK, SPOKEN, answerRecognition, answerRoute, configureRecognition, configureRoutes, expectProgress, leave, nextQuestion, startQuestion } from '../e2e/play'
+import { LETTERS, SPOKEN_SCALE, TARGETS, chooseScaleGame, degreeOf, identify, notePositions, orderCards, scaleNamed, tonicOf } from '../e2e/scales-play'
 import { MUSICAL_COLORS, SETS, truth } from '../e2e/support'
 import { VIEWPORTS } from './figures'
 import type { ViewportKind } from './figures'
@@ -72,6 +73,7 @@ test.describe.serial('capturas del manual', () => {
   let recorder: Recorder
   let primary: Session
   let desktop: Session | undefined
+  let scaleSession: Session | undefined
 
   test.beforeAll(async ({ browser }) => {
     test.setTimeout(420_000)
@@ -85,12 +87,14 @@ test.describe.serial('capturas del manual', () => {
   test.afterAll(async () => {
     await primary?.context.close()
     await desktop?.context.close()
+    await scaleSession?.context.close()
     await site?.close()
   })
 
   test.afterEach(() => {
     expect(primary.problems, 'consola de la sesión principal').toEqual([])
     expect(desktop?.problems ?? [], 'consola de la sesión de ordenador').toEqual([])
+    expect(scaleSession?.problems ?? [], 'consola de la sesión de escalas').toEqual([])
   })
 
   test('menús de reconocimiento y de rutas a 1280 px', async () => {
@@ -235,6 +239,81 @@ test.describe.serial('capturas del manual', () => {
     await page.getByRole('button', { name: 'Reconocer voicings', exact: true }).click()
     await expectProgress(page, { 'recognition:D2S1:easy': [1, 1], 'routes:D2S1:major:ii-v': [1, 1] })
     await recorder.shoot(page, 'escritorio-menu-1280', 'viewport')
+  })
+
+  test('patrones de escala: menú, estudio, Medio, Difícil y ordenar', async ({ browser }) => {
+    scaleSession = await openSession(browser, 'escritorio', site.origin)
+    const { page } = scaleSession
+    await chooseScaleGame(page, 'Reconocer patrones', 'Pentatónica menor', 'E')
+    await page.getByRole('button', { name: 'Medio', exact: true }).click()
+    await expect(page.getByRole('button', { name: 'Set 1', exact: false })).toHaveCount(0)
+    await expect(page.getByLabel('Tonalidad')).toHaveValue('4')
+    await recorder.shoot(page, 'menu-escalas-1280', { from: 'main.menu > header', to: '.menu-formulario .boton-principal' })
+
+    // Medio: patrón elegido y dos de las tónicas marcadas, sin verificar.
+    await startQuestion(page)
+    const minor = scaleNamed('Pentatónica menor')
+    const tonic = await tonicOf(page)
+    let notes = await notePositions(page)
+    let pattern = identify(minor, notes.map((note) => ({ string: note.string, column: note.fret })))
+    await page.getByRole('button', { name: new RegExp(`^Patrón ${pattern.number}`) }).click()
+    const tonics = notes.filter((note) => degreeOf(minor, tonic, note.string, note.fret) === '1')
+    for (const note of tonics.slice(0, 2)) await note.button.click()
+    await expect(page.locator('button[data-nota][aria-pressed="true"]')).toHaveCount(2)
+    await expectNeutral(page)
+    await recorder.shoot(page, 'patron-medio-pregunta-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .juego-respuesta' })
+    await leave(page)
+
+    // Difícil: todo bien salvo una quinta marcada como tercera y una séptima sin marcar.
+    await chooseScaleGame(page, 'Reconocer patrones', 'Pentatónica menor', 'E')
+    await page.getByRole('button', { name: 'Difícil', exact: true }).click()
+    await startQuestion(page)
+    notes = await notePositions(page)
+    pattern = identify(minor, notes.map((note) => ({ string: note.string, column: note.fret })))
+    await page.getByRole('button', { name: new RegExp(`^Patrón ${pattern.number}`) }).click()
+    const degreeAt = (note: (typeof notes)[number]) => degreeOf(minor, tonic, note.string, note.fret)
+    const wrongFifth = notes.find((note) => degreeAt(note) === '5')!
+    const skippedSeventh = notes.find((note) => degreeAt(note) === 'b7')!
+    for (const degree of TARGETS['minor-pentatonic']!) {
+      await page.getByRole('button', { name: `Grado ${SPOKEN_SCALE[degree]}`, exact: true }).click()
+      for (const note of notes) if (degreeAt(note) === degree && note !== wrongFifth && note !== skippedSeventh) await note.button.click()
+    }
+    await page.getByRole('button', { name: `Grado ${SPOKEN_SCALE.b3}`, exact: true }).click()
+    await wrongFifth.button.click()
+    await page.getByRole('button', { name: 'Verificar' }).click()
+    await expect(page.getByRole('heading', { name: 'Acierto parcial' })).toBeVisible()
+    await expect(page.locator('.tus-marcas .revision-ko')).toHaveCount(1)
+    await expect(page.locator('.tus-marcas .revision-falta')).toHaveCount(1)
+    await expectSolutionColors(page)
+    await recorder.shoot(page, 'patron-dificil-correccion-1280', { from: '.juego-cabecera', to: '.juego-tarjeta, .resultado' })
+    await leave(page)
+
+    // Ordenar: dos tarjetas colocadas y después el orden con los dos primeros puestos intercambiados.
+    await chooseScaleGame(page, 'Ordenar patrones', 'Pentatónica mayor', 'G')
+    await startQuestion(page)
+    const major = scaleNamed('Pentatónica mayor')
+    const { ordered } = await orderCards(page, major, await tonicOf(page))
+    await expect(page.locator('.orden-tarjetas .card-fret-number')).toHaveCount(0)
+    const sequence = [ordered[1]!, ordered[0]!, ...ordered.slice(2)]
+    for (const item of sequence.slice(0, 2)) await page.getByRole('button', { name: new RegExp(`^Tarjeta ${LETTERS[item.index]}`) }).click()
+    await expectNeutral(page, '.orden-tarjetas')
+    await recorder.shoot(page, 'orden-pregunta-1280', { from: '.juego-cabecera', to: '.juego-respuesta' })
+    for (const item of sequence.slice(2)) await page.getByRole('button', { name: new RegExp(`^Tarjeta ${LETTERS[item.index]}`) }).click()
+    await page.getByRole('button', { name: 'Verificar' }).click()
+    await expect(page.getByRole('heading', { name: '3 de 5 puestos correctos' })).toBeVisible()
+    await expectSolutionColors(page, '.orden-solucion')
+    await recorder.shoot(page, 'orden-correccion-1280', { from: '.juego-cabecera', to: '.resultado' })
+    await leave(page)
+
+    // Estudio: los cinco patrones de la pentatónica menor en E, de grave a agudo.
+    await page.getByRole('link', { name: 'Modo estudio' }).click()
+    await page.getByRole('button', { name: 'Patrones de escala' }).click()
+    await page.getByRole('button', { name: 'Pentatónica menor' }).click()
+    await page.getByLabel('Tonalidad').selectOption({ label: 'E' })
+    await page.getByRole('button', { name: 'De grave a agudo' }).click()
+    await expect(page.locator('.study-scale-pattern svg')).toHaveCount(5)
+    await expect(page.getByText('De grave a agudo en E: 1 – 2 – 3 – 4 – 5.')).toBeVisible()
+    await recorder.shoot(page, 'estudio-escalas-1280', { from: '.study-header', to: '.study-scales' })
   })
 
   test('manifiesto con todas las figuras del contrato', async () => {

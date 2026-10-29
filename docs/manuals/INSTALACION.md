@@ -1,6 +1,6 @@
 # Drop Route: manual de instalación
 
-Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
+Autor: Jesús Quevedo Rodríguez. Versión 1.1.0.
 
 La aplicación se puede abrir en el navegador o instalar como PWA. La dirección prevista para GitHub Pages es <https://a01653.github.io/Drop_Route/>. Solo debe darse por activa después de que el despliegue de `main` termine correctamente.
 
@@ -20,12 +20,10 @@ Requisitos para construir y servir la aplicación:
 - npm.
 - Git.
 
-Clona la rama y carga las dependencias:
+Clona el repositorio y carga las dependencias:
 
 ```bash
-git clone --branch feat/progress-and-pwa \
-  https://github.com/a01653/Drop_Route.git \
-  Drop_Route
+git clone https://github.com/a01653/Drop_Route.git Drop_Route
 cd Drop_Route
 npm ci --ignore-scripts
 ```

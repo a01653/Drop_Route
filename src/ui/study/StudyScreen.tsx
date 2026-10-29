@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react'
-import { catalog, routesDocument } from '../../data'
-import type { ChordShape, DropFamily, Inversion, QualityKey, SetId } from '../../data'
+import { catalog, routesDocument, scalesDocument } from '../../data'
+import type { ChordShape, DropFamily, Inversion, QualityKey, ScaleId, SetId } from '../../data'
+import { SCALE_TARGET_DEGREES, neckOrder, patternsInKey } from '../../music/scalePatterns'
 import { DROP_LABELS } from '../../session'
 import {
   TONALITIES,
   movementText,
+  noteName,
   totalVoiceMovement,
   transposeRoute,
   transposeStudyVoicing,
@@ -12,13 +14,82 @@ import {
 } from '../../study/transposition'
 import { FretboardCard } from '../card/FretboardCard'
 import { toPosition, toSolution } from '../card/model'
+import { ScalePatternCard } from '../card/ScalePatternCard'
+import { scaleColumns } from '../card/scaleLayout'
 import { OptionGroup } from '../game/OptionGroup'
 import './study.css'
 
 const STUDY_KINDS = [
   { id: 'voicings', label: 'Voicings' },
   { id: 'routes', label: 'Rutas II-V-I' },
+  { id: 'scales', label: 'Patrones de escala' },
 ] as const
+
+const SCALE_ORDERS = [
+  { id: 'number', label: 'Por número' },
+  { id: 'neck', label: 'De grave a agudo' },
+] as const
+
+const MINOR_SCALES: readonly ScaleId[] = ['minor-pentatonic', 'natural-minor']
+
+function ScalePatterns({ scaleId, tonicPc, order }: { scaleId: ScaleId; tonicPc: number; order: 'number' | 'neck' }) {
+  const scale = scalesDocument.scales.find((item) => item.id === scaleId) ?? scalesDocument.scales[0]!
+  const placed = patternsInKey(scale, tonicPc, scalesDocument.tonicPc)
+  const shown = order === 'neck' ? neckOrder(placed) : placed
+  const minor = MINOR_SCALES.includes(scale.id)
+  const targets = SCALE_TARGET_DEGREES[scale.id]
+  const key = noteName(tonicPc)
+  const source = scalesDocument.sources.find((item) => item.id === scale.source)
+  // Mismas columnas y mismo hueco de cuerdas al aire en las cinco tarjetas, para que se dibujen a la misma escala.
+  const layout = {
+    columns: Math.max(...placed.map((pattern) => scaleColumns(pattern.notes))),
+    reserveOpen: placed.some((pattern) => pattern.lowFret === 0),
+  }
+  return (
+    <section className="study-route study-scales" aria-labelledby="study-scales-title">
+      <div>
+        <h2 id="study-scales-title">
+          {scale.name} de {key}
+        </h2>
+        <p className="study-note">
+          {order === 'neck'
+            ? `De grave a agudo en ${key}: ${neckOrder(placed).map((pattern) => pattern.number).join(' – ')}.`
+            : 'Numeración: 1 = forma E, 2 = D, 3 = C, 4 = A y 5 = G, subiendo por el mástil.'}
+        </p>
+      </div>
+      <div className="study-scale-grid">
+        {shown.map((pattern) => (
+          <article key={pattern.id} className="study-scale-pattern">
+            <ScalePatternCard
+              view="solution"
+              notes={pattern.notes}
+              name={`Patrón ${pattern.number}`}
+              family={`FORMA ${pattern.caged}`}
+              targets={targets}
+              minor={minor}
+              label={`${scale.name} de ${key}, patrón ${pattern.number}, forma ${pattern.caged}`}
+              layout={layout}
+            />
+            <p className="juego-pie">
+              Patrón {pattern.number} · forma {pattern.caged} · trastes {pattern.lowFret}–{pattern.highFret}
+            </p>
+          </article>
+        ))}
+      </div>
+      <p className="study-note">
+        Tónica en rojo, {targets[1] === 'b3' ? 'tercera menor' : 'tercera'} en azul, quinta en verde y{' '}
+        {targets[3] === '6' ? 'sexta' : targets[3] === 'b7' ? 'séptima menor' : 'séptima'} en amarillo; el resto de notas de la
+        escala, en blanco.
+      </p>
+      {source && (
+        <p className="study-note">
+          Digitaciones transcritas en C de <a href={source.url}>{source.publisher}</a>. En otras tonalidades se desplaza el
+          patrón entero, sin cambiar la digitación.
+        </p>
+      )}
+    </section>
+  )
+}
 
 type StudyKind = (typeof STUDY_KINDS)[number]['id']
 
@@ -71,6 +142,8 @@ export function StudyScreen() {
   const [routeMode, setRouteMode] = useState<'major' | 'minor'>('major')
   const [routeIndex, setRouteIndex] = useState(0)
   const [showMovement, setShowMovement] = useState(true)
+  const [scaleId, setScaleId] = useState<ScaleId>('major')
+  const [scaleOrder, setScaleOrder] = useState<'number' | 'neck'>('number')
 
   const voicingSets = useMemo(() => catalog.sets.filter((set) => set.drop === drop), [drop])
   const voicing = useMemo(
@@ -125,7 +198,22 @@ export function StudyScreen() {
             </label>
           </section>
 
-          {kind === 'voicings' ? (
+          {kind === 'scales' ? (
+            <>
+              <OptionGroup
+                legend="Escala"
+                value={scaleId}
+                onChange={setScaleId}
+                options={scalesDocument.scales.map((item) => ({ id: item.id, label: item.name }))}
+              />
+              <OptionGroup
+                legend="Orden"
+                value={scaleOrder}
+                onChange={setScaleOrder}
+                options={SCALE_ORDERS.map((item) => ({ id: item.id, label: item.label }))}
+              />
+            </>
+          ) : kind === 'voicings' ? (
             <>
               <OptionGroup
                 legend="Drop"
@@ -193,7 +281,9 @@ export function StudyScreen() {
         </aside>
 
         <div className="study-content">
-          {kind === 'voicings' ? (
+          {kind === 'scales' ? (
+            <ScalePatterns scaleId={scaleId} tonicPc={tonicPc} order={scaleOrder} />
+          ) : kind === 'voicings' ? (
             <section className="study-card" aria-labelledby="study-voicing-title">
               <h2 id="study-voicing-title">Forma</h2>
               {transposedVoicing ? (

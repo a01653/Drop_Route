@@ -1,4 +1,4 @@
-// Tipos de data/catalog.json y data/routes.json. Los JSON son la única
+// Tipos de data/catalog.json, data/routes.json y data/scales.json. Los JSON son la única
 // definición de datos; aquí solo se describe su forma.
 
 export type StringNumber = 1 | 2 | 3 | 4 | 5 | 6
@@ -88,4 +88,55 @@ export interface RoutesDocument {
   sourceSha256: string
   sourceDocumentVersion: string
   routes: Route[]
+}
+
+// Tipos de data/scales.json: cinco patrones por escala, transcritos en C de la fuente citada.
+export type ScaleId = 'major' | 'major-pentatonic' | 'minor-pentatonic' | 'natural-minor'
+export type ScaleDegree = '1' | '2' | 'b3' | '3' | '4' | '5' | 'b6' | '6' | 'b7' | '7'
+export type PatternNumber = 1 | 2 | 3 | 4 | 5
+
+export interface ScaleNote {
+  string: StringNumber
+  fret: number
+  degree: ScaleDegree
+}
+
+export interface ScalePattern {
+  id: string
+  /** Convención acordada: 1=E, 2=D, 3=C, 4=A y 5=G (en las menores, Em…Gm). */
+  number: PatternNumber
+  caged: string
+  /** Traste más grave que indica la fuente para esta posición en C. */
+  sourcePosition: number
+  sourceDiagram: { url: string; sha256: string; sizeBytes: number }
+  /** Cuerdas de la 6 a la 1 y, en cada cuerda, trastes ascendentes. */
+  notes: ScaleNote[]
+}
+
+export interface ScaleDefinition {
+  id: ScaleId
+  name: string
+  source: string
+  /** Semitonos desde la tónica. */
+  formula: number[]
+  degrees: ScaleDegree[]
+  patterns: ScalePattern[]
+}
+
+export interface ScaleSource {
+  id: string
+  title: string
+  url: string
+  publisher: string
+  consultedAt: string
+}
+
+export interface ScalesDocument {
+  schemaVersion: number
+  tonic: string
+  tonicPc: number
+  tuning: Record<StringNumber, number>
+  numbering: string
+  sources: ScaleSource[]
+  scales: ScaleDefinition[]
 }

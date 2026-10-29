@@ -23,7 +23,7 @@
         "kind": "tramo",
         "from": "main.menu > header",
         "to": ".menu-formulario .boton-principal",
-        "cssHeight": 448
+        "cssHeight": 504
       },
       "observed": {
         "fase": "menu",
@@ -32,10 +32,10 @@
       },
       "pixels": {
         "width": 2560,
-        "height": 896
+        "height": 1008
       },
-      "bytes": 106367,
-      "sha256": "e1efdb98f1f185b6b4df3c6b6876adc28d24654460cf7aff751c32d69861a55a"
+      "bytes": 119427,
+      "sha256": "83b7e0f1ab67e24ea77332f8b10203991d888abf05dd4f054b09c083024984af"
     },
     {
       "id": "menu-rutas-1280",
@@ -53,7 +53,7 @@
         "kind": "tramo",
         "from": "main.menu > header",
         "to": ".menu-formulario .boton-principal",
-        "cssHeight": 582
+        "cssHeight": 638
       },
       "observed": {
         "fase": "menu",
@@ -62,10 +62,10 @@
       },
       "pixels": {
         "width": 2560,
-        "height": 1164
+        "height": 1276
       },
-      "bytes": 127856,
-      "sha256": "dd50b931c59301a3a6a987d8155db728d28c1496b64920c81eb48d2df2cd67eb"
+      "bytes": 141121,
+      "sha256": "54291b35083ff94dfe3f6c6882aa7a479494e1b0a699055f7bd75f98c8d9a1cc"
     },
     {
       "id": "facil-pregunta-1280",
@@ -94,8 +94,8 @@
         "width": 2560,
         "height": 1352
       },
-      "bytes": 102434,
-      "sha256": "c22a7e9ed1b9178d35d3219da7654922b0b0d7c946a48433fd6ff4d8eac3c72f"
+      "bytes": 102354,
+      "sha256": "410286c478dce380a8882b4bdc612b2a7695f0e150931dd9f5b21a1615890538"
     },
     {
       "id": "facil-correccion-1280",
@@ -113,7 +113,7 @@
         "kind": "tramo",
         "from": ".juego-cabecera",
         "to": ".juego-tarjeta, .resultado",
-        "cssHeight": 711
+        "cssHeight": 726
       },
       "observed": {
         "fase": "verificada",
@@ -122,10 +122,10 @@
       },
       "pixels": {
         "width": 2560,
-        "height": 1422
+        "height": 1452
       },
-      "bytes": 144633,
-      "sha256": "4a90b9781ab8ca61acbf893f4fab0f187925f44da2bf9c9fabab202978d2ae85"
+      "bytes": 158353,
+      "sha256": "a20777b44f41294b88d37c184b9768edb6c2c6cdc9d1a5d9089fee42e2cbd65c"
     },
     {
       "id": "medio-pregunta-1280",
@@ -154,8 +154,8 @@
         "width": 2560,
         "height": 1352
       },
-      "bytes": 111642,
-      "sha256": "13e2225866c407c6c8eaeb4c6342815838566c51fb29d28305e37a04a47b907d"
+      "bytes": 113030,
+      "sha256": "c5fb9f66b9523415c432c30f09a99702865e9e5b18f9567a0a11aab3112ad742"
     },
     {
       "id": "medio-correccion-1280",
@@ -184,8 +184,8 @@
         "width": 2560,
         "height": 1478
       },
-      "bytes": 162055,
-      "sha256": "32cfb29fce48f89f34dc453e31aee434203621b38770db1bb01a5a72e3136cf5"
+      "bytes": 171548,
+      "sha256": "f63fb0deda5dc631cf78bc773e6aa102e44963018254b3c5914d76670cb83a8f"
     },
     {
       "id": "dificil-pregunta-1280",
@@ -274,8 +274,8 @@
         "width": 2560,
         "height": 1466
       },
-      "bytes": 141849,
-      "sha256": "e3fdf6756ca2737395f2d75539a970d597026e964b156c8d0c16a6f5c2cba245"
+      "bytes": 140564,
+      "sha256": "2403221403c4d9c6defdd2b0e3d1f87f96250612fdc482df301941ff3221f7fb"
     },
     {
       "id": "ruta-fallo-solucion-1280",
@@ -304,8 +304,8 @@
         "width": 2560,
         "height": 2160
       },
-      "bytes": 199797,
-      "sha256": "1b08a2845cb375f019ad8d7237f22a5fbe6175255d466d506fe7b1de7acb26d5"
+      "bytes": 195677,
+      "sha256": "12ee128e051422186c9a192498f0b90fd2094bbf219943747223f0c1cd47e962"
     },
     {
       "id": "ruta-fallo-tu-respuesta-1280",
@@ -334,8 +334,8 @@
         "width": 2560,
         "height": 2160
       },
-      "bytes": 197922,
-      "sha256": "c987196c1295e973b83f6a4fb1e92d34450ef4b451024d03274eb5e18e15d90e"
+      "bytes": 196784,
+      "sha256": "e59042729d355bd1f8cbc30cb6b2691abd3a7e6911b9e257131b2f22ed70e4ed"
     },
     {
       "id": "progreso-detalle-1280",
@@ -353,7 +353,7 @@
         "kind": "tramo",
         "from": ".progreso",
         "to": ".progreso",
-        "cssHeight": 570
+        "cssHeight": 687
       },
       "observed": {
         "fase": "menu",
@@ -362,10 +362,10 @@
       },
       "pixels": {
         "width": 2560,
-        "height": 1140
+        "height": 1374
       },
-      "bytes": 185839,
-      "sha256": "0b0c6de678104845d2d04e658a5ecaad52be80c6eb3cb3fad6fcac8e613f543d"
+      "bytes": 218072,
+      "sha256": "02349e64bf4033c5792adb8d0f3a33d0b28762a1750204b75160c321ed1fc22b"
     },
     {
       "id": "escritorio-menu-1280",
@@ -391,8 +391,186 @@
         "width": 2560,
         "height": 1600
       },
-      "bytes": 166426,
-      "sha256": "b13d9aca9ecc91b88efadf22902e03b31df0d4a92cd549ce6d87ce1ec4c14589"
+      "bytes": 199182,
+      "sha256": "898c09a259343befbdb343c01ac83ea89c82fdb4224c6b1c3804dc9270873460"
+    },
+    {
+      "id": "menu-escalas-1280",
+      "file": "menu-escalas-1280.png",
+      "title": "Menú con «Reconocer patrones»",
+      "game": "menu",
+      "state": "Menú con el juego de patrones: escala, tonalidad y dificultad, sin Drop ni set.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": "main.menu > header",
+        "to": ".menu-formulario .boton-principal",
+        "cssHeight": 492
+      },
+      "observed": {
+        "fase": "menu",
+        "titulo": "Drop Route",
+        "pulsados": "Reconocer patrones | Pentatónica menor | Medio"
+      },
+      "pixels": {
+        "width": 2560,
+        "height": 984
+      },
+      "bytes": 109629,
+      "sha256": "208ee5bde4b9e61aa868f8365fe3f181c2fa1511fe71c8aefbe8f7c319d4aad0"
+    },
+    {
+      "id": "estudio-escalas-1280",
+      "file": "estudio-escalas-1280.png",
+      "title": "Estudio de patrones de escala",
+      "game": "estudio",
+      "state": "Modo estudio con «Patrones de escala»: los cinco patrones de una escala en una tonalidad, ordenados de grave a agudo.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".study-header",
+        "to": ".study-scales",
+        "cssHeight": 1084
+      },
+      "observed": {
+        "titulo": "Modo estudio"
+      },
+      "pixels": {
+        "width": 2560,
+        "height": 2168
+      },
+      "bytes": 339144,
+      "sha256": "b0103795b4ad2834df6862ef0227999298a574627d3395f7370acc111fc29c85"
+    },
+    {
+      "id": "patron-medio-pregunta-1280",
+      "file": "patron-medio-pregunta-1280.png",
+      "title": "Patrones, Medio: marcar las tónicas",
+      "game": "escalas",
+      "state": "Pregunta de patrones en Medio: tarjeta neutra con trastes, patrón elegido y algunas tónicas marcadas.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".juego-tarjeta, .juego-respuesta",
+        "cssHeight": 676
+      },
+      "observed": {
+        "fase": "escala",
+        "titulo": "Pregunta 1",
+        "cabecera": "Pentatónica menor · MedioTónica: E"
+      },
+      "pixels": {
+        "width": 2560,
+        "height": 1352
+      },
+      "bytes": 169194,
+      "sha256": "cf6574966d1dbd8059184c9f6945e5521bcfd405a7a4d233eb67f8c50c13ddac"
+    },
+    {
+      "id": "patron-dificil-correccion-1280",
+      "file": "patron-dificil-correccion-1280.png",
+      "title": "Patrones, Difícil: corrección por grados",
+      "game": "escalas",
+      "state": "Pregunta de patrones en Difícil verificada con una marca equivocada y otra sin poner: solución en color, corrección por grado y tus marcas con aros.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".juego-tarjeta, .resultado",
+        "cssHeight": 1253
+      },
+      "observed": {
+        "fase": "escala-verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Pentatónica menor · DifícilTónica: E"
+      },
+      "pixels": {
+        "width": 2560,
+        "height": 2506
+      },
+      "bytes": 318399,
+      "sha256": "1ecd9037b0b66bb38c4a728da21c22f4fab59c8fa51c792cbb98ef2caa7a6bf3"
+    },
+    {
+      "id": "orden-pregunta-1280",
+      "file": "orden-pregunta-1280.png",
+      "title": "Ordenar patrones: tarjetas sin trastes",
+      "game": "escalas",
+      "state": "Pregunta de ordenar: cinco tarjetas neutras sin trastes ni cejuelo, dos ya colocadas.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".juego-respuesta",
+        "cssHeight": 654
+      },
+      "observed": {
+        "fase": "orden",
+        "titulo": "Pregunta 1",
+        "cabecera": "Ordenar · Pentatónica mayorTónica: G"
+      },
+      "pixels": {
+        "width": 2560,
+        "height": 1308
+      },
+      "bytes": 132396,
+      "sha256": "c48f735a6a3556481361c2c99824aa30bfd3cf73d8491f12b2c0df6931e002be"
+    },
+    {
+      "id": "orden-correccion-1280",
+      "file": "orden-correccion-1280.png",
+      "title": "Ordenar patrones: corrección",
+      "game": "escalas",
+      "state": "Orden verificado con dos puestos intercambiados: corrección puesto a puesto y el orden correcto en color y con trastes.",
+      "viewport": {
+        "kind": "escritorio",
+        "width": 1280,
+        "height": 800,
+        "deviceScaleFactor": 2
+      },
+      "region": {
+        "kind": "tramo",
+        "from": ".juego-cabecera",
+        "to": ".resultado",
+        "cssHeight": 1026
+      },
+      "observed": {
+        "fase": "orden-verificada",
+        "titulo": "Pregunta 1",
+        "cabecera": "Ordenar · Pentatónica mayorTónica: G"
+      },
+      "pixels": {
+        "width": 2560,
+        "height": 2052
+      },
+      "bytes": 327903,
+      "sha256": "3ed949a06cf31dd3ae6a9f529eef50b9e6b97fb45dd8392227449533b3fa7c51"
     }
   ]
 }

@@ -1,8 +1,9 @@
 import { routesDocument } from '../data'
-import type { Catalog, RoutesDocument } from '../data/types'
+import type { Catalog, PatternNumber, RoutesDocument, ScaleDegree } from '../data/types'
 import { choose, configure, exit, finishTest, moveDegree, next, previous, selectCandidate, start, verify } from '.'
 import type { SessionState } from '.'
 import type { DegreeAction } from './degrees'
+import { chooseScalePattern, markScaleNote, pickOrderCard, resetOrder } from './scaleSession'
 
 type ConfigureChange = Parameters<typeof configure>[2]
 type ChooseChange = Parameters<typeof choose>[1]
@@ -17,6 +18,10 @@ export type SessionAction =
   | { type: 'choose'; change: ChooseChange }
   | { type: 'degree'; action: DegreeAction }
   | { type: 'candidate'; index: number }
+  | { type: 'scale-pattern'; pattern: PatternNumber | null }
+  | { type: 'scale-mark'; index: number; degree: ScaleDegree | null }
+  | { type: 'order-pick'; card: number }
+  | { type: 'order-reset' }
   | { type: 'verify' }
   | { type: 'next'; seed: number }
   | { type: 'previous' }
@@ -40,6 +45,14 @@ export function reduceSession(
       return moveDegree(state, action.action)
     case 'candidate':
       return selectCandidate(state, action.index)
+    case 'scale-pattern':
+      return state.phase === 'escala' ? chooseScalePattern(state, action.pattern) : state
+    case 'scale-mark':
+      return state.phase === 'escala' ? markScaleNote(state, action.index, action.degree) : state
+    case 'order-pick':
+      return state.phase === 'orden' ? pickOrderCard(state, action.card) : state
+    case 'order-reset':
+      return state.phase === 'orden' ? resetOrder(state) : state
     case 'verify':
       return verify(catalog, state, routes)
     case 'next':

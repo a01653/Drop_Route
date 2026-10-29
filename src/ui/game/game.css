@@ -718,3 +718,153 @@ h2:focus-visible {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+
+/* Juegos de escalas (DR-013) */
+.menu-tonalidad label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 18rem;
+}
+
+.menu-tonalidad label > span {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.menu-tonalidad select {
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--tinta-suave);
+  border-radius: 0.625rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+}
+
+.opciones-patron button {
+  flex: 1 1 5.5rem;
+}
+
+.tablero-escala .destino-ficha {
+  font-size: 3.6cqw;
+}
+
+/* Nota marcada: blanca con aro de tinta, para no confundirla con la ficha «en la mano» del otro tablero. */
+.tablero-escala .destino[aria-pressed='true'] .destino-ficha {
+  border: 2px solid var(--tinta);
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.opciones-patron button.ok small,
+.opciones-patron button.ko small {
+  color: #ffffff;
+}
+
+.tablero-escala span.destino {
+  cursor: default;
+}
+
+.destino.revision-ok .destino-ficha {
+  border: 2px solid #166534;
+  background: #e8f6ee;
+  box-shadow: 0 0 0 2px #166534;
+}
+
+.destino.revision-ko .destino-ficha {
+  border: 2px solid #b91c1c;
+  background: #fdecec;
+  box-shadow: 0 0 0 2px #b91c1c;
+}
+
+.destino.revision-falta .destino-ficha {
+  border: 2px dashed #b91c1c;
+  background: #ffffff;
+  color: #b91c1c;
+}
+
+.ficha-borrar {
+  font-size: 1rem;
+}
+
+.tus-marcas h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+}
+
+.orden-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+}
+
+.orden-tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 48px;
+  padding: 0.5rem;
+  border: 2px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  font: inherit;
+  cursor: pointer;
+}
+
+.orden-tarjeta[aria-pressed='true'] {
+  border-color: var(--tinta);
+  box-shadow: 0 0 0 2px var(--tinta);
+}
+
+.orden-tarjeta.ok {
+  border-color: #166534;
+  box-shadow: 0 0 0 2px #166534;
+}
+
+.orden-tarjeta.ko {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 2px #b91c1c;
+}
+
+.orden-tarjeta:disabled {
+  cursor: default;
+}
+
+.orden-letra,
+.orden-puesto {
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.orden-letra {
+  align-self: flex-start;
+}
+
+.orden-puesto {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+}
+
+.orden-actual {
+  margin: 0;
+  font-weight: 700;
+}
+
+.orden-solucion {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

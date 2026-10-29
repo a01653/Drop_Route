@@ -1,5 +1,5 @@
-% Source-SHA256: 651226d448cd0b1e6b8514af719a93c45104d04e3f7c075d7a70ea8e10ade52d
-% !TeX program = xelatex
+% Source-SHA256: fd5e63fc666333bd186e9099944e40e7def716d20791cefd61f96fed92ca98a3
+% !TeX program = lualatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
 \usepackage{newunicodechar}
@@ -31,7 +31,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[C]{\small\sffamily\color{softgray}Drop Route --- Diseño Técnico del Software}
-\fancyfoot[L]{\small\sffamily\color{softgray}Revisión parcial 1.0.2 · 16/10/2026}
+\fancyfoot[L]{\small\sffamily\color{softgray}Revisión parcial 1.1.0 · 29/10/2026}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
@@ -56,7 +56,7 @@
 \fill[navybg] (current page.south west) rectangle (current page.north east);
 \node[anchor=north,text width=16cm,align=center] at ([yshift=-3.3cm]current page.north) {\sffamily\bfseries\fontsize{16}{19}\selectfont\color{amber}DROP ROUTE};
 \node[anchor=north,text width=16cm,align=center] at ([yshift=-5cm]current page.north) {\sffamily\bfseries\fontsize{30}{38}\selectfont\color{white}Documento de Diseño\\Técnico del Software};
-\node[anchor=north,text width=14cm,align=center] at ([yshift=-9.2cm]current page.north) {\sffamily\fontsize{14}{20}\selectfont\color{lightblue}Voicings de guitarra y rutas II--V--I\\Base de desarrollo para Claude Code};
+\node[anchor=north,text width=14cm,align=center] at ([yshift=-9.2cm]current page.north) {\sffamily\fontsize{14}{20}\selectfont\color{lightblue}Voicings, rutas II--V--I y patrones de escala\\Base de desarrollo para Claude Code};
 \begin{scope}[shift={([xshift=2.4cm,yshift=7.7cm]current page.south west)}]
 \foreach \y in {0,0.5,1,1.5,2,2.5} {\draw[white,opacity=0.28,line width=0.7pt] (0,\y)--(16,\y);}
 \foreach \x in {0,2.5,5,7.5,10,12.5,15} {\draw[lightblue,opacity=0.25] (\x,0)--(\x,2.5);}
@@ -65,19 +65,20 @@
 \fill[white] (8.75,2) circle (0.2);
 \fill[lightblue] (8.75,2.5) circle (0.2);
 \end{scope}
-\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión parcial:} versión 1.0.2 y lectura por tónica · 16/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} aplicación de estudio y práctica};
+\node[anchor=south west,text width=16cm,align=left] at ([xshift=2.4cm,yshift=2cm]current page.south west) {\sffamily\fontsize{11}{17}\selectfont\color{white}\textcolor{amber}{Autor del proyecto:} Jesús Quevedo Rodríguez\\\textcolor{amber}{Revisión parcial:} versión 1.1.0 y patrones de escala · 29/10/2026\\\textcolor{amber}{Repositorio:} a01653/Drop\_Route\\\textcolor{amber}{Estado:} aplicación de estudio y práctica};
 \end{tikzpicture}
 \end{titlepage}
 \restoregeometry
 \tableofcontents
 \newpage
 \Needspace{4cm}
-\hypertarget{objetivo-y-alcance}{%
-\section{Objetivo y alcance}\label{objetivo-y-alcance}}
+\section{Objetivo y alcance}\label{objetivo-y-alcance}
 
 Drop Route servirá para memorizar voicings, inversiones y grados y
 practicar rutas II-V-I concretas. Ordenador y móvil. Primera etapa en C,
-con la apariencia de nuestras tarjetas.
+con la apariencia de nuestras tarjetas. Desde DR-013 incluye los cinco
+patrones de cuatro escalas, en estudio y en dos juegos con tonalidad
+elegible.
 
 Se preparan fuentes e instrucciones para que Claude Code implemente cada
 etapa mediante órdenes de trabajo. No necesita acceder al historial de
@@ -90,11 +91,11 @@ DR-007. Los derivados existentes son la última edición generada y pueden
 quedar pendientes respecto a este Markdown.
 
 \Needspace{4cm}
-\hypertarget{arquitectura-general}{%
-\section{Arquitectura general}\label{arquitectura-general}}
+\section{Arquitectura general}\label{arquitectura-general}
 
 Aplicación cliente, sin backend.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Capa & Responsabilidad \\
@@ -102,7 +103,8 @@ Capa & Responsabilidad \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Datos & Posiciones y rutas procedentes de la plantilla. \\
+Datos & Posiciones y rutas procedentes de la plantilla; patrones de
+escala transcritos de una fuente publicada. \\
 Núcleo musical & Alturas físicas, grados, inversiones y solución de
 ruta. \\
 Sesión & Pregunta, selección, evaluación y transición. \\
@@ -111,11 +113,13 @@ migración y reparación. \\
 Presentación & Tarjeta SVG, selectores, fichas, resultados, avisos y
 registro del service worker. \\
 \end{longtable}
+}
 
 La geometría no decide la respuesta y los componentes no duplican el
 catálogo. Están implementados la extracción y el núcleo de auditoría de
 la base y, en \texttt{src/}, cinco capas:
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Capa & Contenido \\
@@ -123,26 +127,30 @@ Capa & Contenido \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\texttt{src/data} & Tipos y acceso a \texttt{data/catalog.json} y
-\texttt{data/routes.json}, que siguen siendo la única definición de
-datos. \\
-\texttt{src/music} & Altura física (MIDI) e inversión por bajo real.
-Funciones puras. \\
-\texttt{src/session} & Menú, preguntas de reconocimiento y de ruta,
-respuesta, corrección por campos, banco de grados y reductor de
-acciones, con semilla reproducible. Sin React. \\
+\texttt{src/data} & Tipos y acceso a \texttt{data/catalog.json},
+\texttt{data/routes.json} y \texttt{data/scales.json}, que siguen siendo
+la única definición de datos. \\
+\texttt{src/music} & Altura física (MIDI), inversión por bajo real y, en
+\texttt{scalePatterns.ts}, patrones de escala colocados en una tonalidad
+y su orden de grave a agudo. Funciones puras. \\
+\texttt{src/session} & Menú, preguntas de reconocimiento, de ruta y de
+los dos juegos de escalas (\texttt{scales.ts}, \texttt{scaleOrder.ts} y
+\texttt{scaleSession.ts}), respuesta, corrección por campos, banco de
+grados y reductor de acciones, con semilla reproducible. Sin React. \\
 \texttt{src/progress} & Contadores por juego, set y dificultad o modo y
 tramo; reductor de la aplicación que cuenta un intento por transición;
 esquema guardado, migración, reparación y copia; almacén
 (\texttt{createAppStore}) sobre un \texttt{KeyValueStore} mínimo;
 resumen. Sin React ni acceso directo a \texttt{localStorage}. \\
 \texttt{src/ui} & Menú y pantallas de juego (\texttt{game/}, con el
-panel de progreso), modo estudio (\texttt{study/}), renderizador de
-tarjetas SVG (\texttt{card/}), pantalla de revisión (\texttt{review/}),
-avisos (\texttt{Notices.tsx}), adaptador de \texttt{localStorage}
-(\texttt{browserStorage.ts}) y registro del service worker
-(\texttt{pwa/}). \\
+panel de progreso y las pantallas de patrones y de ordenar), modo
+estudio (\texttt{study/}), renderizador de tarjetas SVG (\texttt{card/},
+con la tarjeta de patrón de seis cuerdas), pantalla de revisión
+(\texttt{review/}), avisos (\texttt{Notices.tsx}), adaptador de
+\texttt{localStorage} (\texttt{browserStorage.ts}) y registro del
+service worker (\texttt{pwa/}). \\
 \end{longtable}
+}
 
 La dependencia permitida es ui, progress, session, music, data. ESLint
 rechaza que una capa importe otra superior y que data, music, session o
@@ -151,9 +159,8 @@ capas de \texttt{src/progress} lo comprueba. Solo
 \texttt{src/ui/browserStorage.ts} toca \texttt{localStorage}.
 
 \Needspace{4cm}
-\hypertarget{tecnologuxedas-y-dependencias}{%
 \section{Tecnologías y
-dependencias}\label{tecnologuxedas-y-dependencias}}
+dependencias}\label{tecnologuxedas-y-dependencias}
 
 Node.js 22.13 o superior (campo engines; la CI usa Node 24 según .nvmrc)
 ejecuta tests, auditorías y herramientas. Python 3.10 o superior extrae
@@ -168,6 +175,7 @@ DR-001 fijó estas versiones en el lockfile de npm. Instalación:
 \texttt{npm\ ci\ -\/-ignore-scripts}. No se copiaron dependencias
 innecesarias de Mástil.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Paquete & Versión & Nota \\
@@ -190,6 +198,7 @@ eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals & 7.1.1,
 @types/node, @types/react, @types/react-dom & 24.19.2, 19.3.0, 19.3.0 &
 Tipos. \\
 \end{longtable}
+}
 
 Vite 8 y Vitest 5 exigen Node 22.12 y ESLint 10, 22.13; de ahí el mínimo
 de engines. Playwright necesita descargar el navegador con
@@ -202,9 +211,9 @@ documentación de Mástil, con equivalentes si faltan TeX Gyre. Idioma
 español y sin partición de palabras al final de línea.
 
 \Needspace{4cm}
-\hypertarget{estructura-actual}{%
-\section{Estructura actual}\label{estructura-actual}}
+\section{Estructura actual}\label{estructura-actual}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Ruta & Contenido \\
@@ -216,9 +225,13 @@ Ruta & Contenido \\
 trabajo. \\
 \texttt{data/catalog.json} & Sets, fórmulas, afinación y 124 formas. \\
 \texttt{data/routes.json} & Dieciséis rutas II-V-I completas. \\
+\texttt{data/scales.json} & Veinte patrones de escala en C (cuatro
+escalas por cinco formas), con la URL y el SHA-256 del diagrama fuente
+de cada uno. \\
 references/ & Tres fuentes originales y sus hashes. \\
-scripts/ & Extracción, auditoría, generación documental y lanzador de
-Python. \\
+scripts/ & Extracción, auditoría (también de los patrones de escala, en
+\texttt{scripts/lib/scale-validation.mjs}), generación documental y
+lanzador de Python. \\
 tests/ & Pruebas con node:test, conservadas aparte: las de la base
 musical, el utillaje, la política documental y el icono. \\
 \texttt{src/} & Capas \texttt{data}, \texttt{music}, \texttt{session},
@@ -246,6 +259,7 @@ reconstrucción, con sus cifras de entonces. No se actualiza. \\
 .github/workflows/ & Validación de la base y trabajo de aplicación,
 preparados para GitHub. \\
 \end{longtable}
+}
 
 \texttt{npm\ run\ build} genera \texttt{dist/}, que Git ignora. El build
 solo incluye lo que importa \texttt{src/} y lo de \texttt{public/}: ni
@@ -254,9 +268,9 @@ las referencias ni la plantilla HTML. Al terminar, el plugin escribe
 para publicar bajo una subruta, véase «Construcción y publicación».
 
 \Needspace{4cm}
-\hypertarget{componentes-previstos}{%
-\section{Componentes previstos}\label{componentes-previstos}}
+\section{Componentes previstos}\label{componentes-previstos}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Componente & Responsabilidad \\
@@ -271,6 +285,7 @@ Grados & Cuatro destinos, arrastre, dos toques y teclado. \\
 Rutas & Partida fija y una candidata visible. \\
 Corrección & Resultado por campos y avance explícito. \\
 \end{longtable}
+}
 
 De esta tabla existen la Configuración (el menú), la Tarjeta (neutra y
 de solución), la Respuesta (cuatro botones o dos desplegables), los
@@ -299,8 +314,7 @@ Compartir el renderizador conserva proporciones entre juegos. El icono
 se creó en DR-002 y está aprobado.
 
 \Needspace{4cm}
-\hypertarget{estado-y-persistencia}{%
-\section{Estado y persistencia}\label{estado-y-persistencia}}
+\section{Estado y persistencia}\label{estado-y-persistencia}
 
 Modelo: configuración, pregunta, pregunta verificada y regreso al menú.
 Cada pregunta identifica datos y guarda sus opciones y orden.
@@ -340,8 +354,7 @@ incluida la de estudio. Importa únicamente \texttt{version} de
 restaurar el antiguo bloque informativo. La etiqueta se introdujo en
 1.0.0; la corrección del desplazamiento en móvil corresponde a 1.0.1.
 
-\hypertarget{progreso-local-dr-006}{%
-\subsection{Progreso local (DR-006)}\label{progreso-local-dr-006}}
+\subsection{Progreso local (DR-006)}\label{progreso-local-dr-006}
 
 \texttt{reduceApp} (\texttt{src/progress/counting.ts}) llama al reductor
 de la sesión y, si el estado cambia, decide en la misma transición pura
@@ -371,17 +384,26 @@ el documento completo tras cada acción que cambie la configuración o los
 contadores. Al abrir se vuelve siempre al menú: una pregunta abierta no
 se reanuda, solo se conserva la configuración.
 
-El esquema vigente es el 1. Es independiente de la versión del paquete:
-cambiar la versión de la aplicación no cambia el esquema, y cambiar el
-formato exige subir el esquema y añadir una migración. La cadena de
-migraciones (\texttt{MIGRATIONS}) convierte cada versión n en la n + 1.
-El esquema 0 es un fixture de prueba
+El esquema vigente es el 2 desde la 1.1.0 (DR-013). Es independiente de
+la versión del paquete: cambiar la versión de la aplicación no cambia el
+esquema, y cambiar el formato exige subir el esquema y añadir una
+migración. La cadena de migraciones (\texttt{MIGRATIONS}) convierte cada
+versión n en la n + 1. El esquema 0 es un fixture de prueba
 (\texttt{src/progress/fixtures/schema-0.json}): un formato inventado,
 con \texttt{counters} y pares \texttt{{[}intentos,\ aciertos{]}}, que no
 corresponde a ninguna versión pública, porque Drop Route no había
 publicado ningún guardado. Existe para ejercitar la cadena con un caso
-real antes de que haga falta una migración verdadera.
+real antes de que haga falta una migración verdadera. La migración 1 → 2
+es la primera real: añade a la configuración la escala y la tonalidad de
+los juegos de escalas con sus valores por defecto (mayor y C), de modo
+que un documento correcto del esquema 1 no se lee como reparado, y
+conserva antes el original en \texttt{drop-route:state:v1}. Los
+contadores no cambian; los de escalas son claves nuevas:
+\texttt{scale-patterns:\textless{}escala\textgreater{}:\textless{}dificultad\textgreater{}}
+y \texttt{scale-order:\textless{}escala\textgreater{}}. La tonalidad no
+separa contadores.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Situación al abrir & Qué hace & Aviso \\
@@ -413,6 +435,7 @@ Escritura que falla (cuota llena o bloqueo posterior) & Sigue en memoria
 y reintenta con el siguiente cambio; si vuelve a escribir, el aviso
 desaparece. & «No se ha podido guardar». \\
 \end{longtable}
+}
 
 Las dos copias son un único hueco cada una: una copia posterior
 sustituye a la anterior. La interfaz no permite recuperarlas; quedan en
@@ -421,13 +444,12 @@ que hay en la página no está guardado: no disponible, escritura fallida
 y las sesiones que no escriben para proteger un dato anterior. En ese
 caso recargar lo pierde, y la interfaz lo dice.
 
-El panel «Tu progreso» del menú resume los contadores (totales por
-juego, los de la configuración elegida y el detalle plegado). No hay
-puntuación, rachas ni clasificaciones.
+El panel «Tu progreso» del menú resume los contadores (totales de los
+cuatro juegos, los de la configuración elegida y el detalle plegado). No
+hay puntuación, rachas ni clasificaciones.
 
 \Needspace{4cm}
-\hypertarget{modelo-musical}{%
-\section{Modelo musical}\label{modelo-musical}}
+\section{Modelo musical}\label{modelo-musical}
 
 Afinación estándar EADGBE. MIDI al aire, cuerdas 6 a 1:
 40,45,50,55,59,64. Altura real igual a MIDI al aire más traste.
@@ -443,9 +465,8 @@ séptima como °7. El acorde es simétrico y no se evalúa sin fijar raíz y
 contexto.
 
 \Needspace{4cm}
-\hypertarget{catuxe1logo-y-construcciuxf3n-de-voicings}{%
 \section{Catálogo y construcción de
-voicings}\label{catuxe1logo-y-construcciuxf3n-de-voicings}}
+voicings}\label{catuxe1logo-y-construcciuxf3n-de-voicings}
 
 No se generan posiciones nuevas. Drop 2 tiene tres sets; Drop 3 y Drop
 2+4, dos cada uno. Cuatro calidades y cuatro inversiones dan 112
@@ -460,13 +481,13 @@ Mantener ventana corta de las tarjetas. Algunas formas abarcan cinco
 trastes: no recortar para imponer una ventana de tres.
 
 \Needspace{4cm}
-\hypertarget{rutas-y-conducciuxf3n-de-voces}{%
 \section{Rutas y conducción de
-voces}\label{rutas-y-conducciuxf3n-de-voces}}
+voces}\label{rutas-y-conducciuxf3n-de-voces}
 
 Normalizadas solo Drop 2 sets 1 y 2, mayor y menor, cuatro inversiones
 iniciales: dieciséis rutas.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.333333\linewidth-1.333333\tabcolsep\relax}@{}}
 \toprule\noalign{}
 II & V & I \\
@@ -479,6 +500,7 @@ Fundamental & 2ª & Fundamental \\
 2ª & Fundamental & 2ª \\
 3ª & 1ª & 3ª \\
 \end{longtable}
+}
 
 Mayor Dm7-G7-Cmaj7. Menor Dm7(b5)-G7-Cm7. Comparar con la ruta exacta
 del material. Otra inversión de G7 puede ser musicalmente válida y no
@@ -498,8 +520,91 @@ calidad y pone su número de traste en negrita;
 su ventana habitual. La vista neutra no muestra el ancla.
 
 \Needspace{4cm}
-\hypertarget{preguntas-y-correcciuxf3n}{%
-\section{Preguntas y corrección}\label{preguntas-y-correcciuxf3n}}
+\section{Patrones de escala (DR-013)}\label{patrones-de-escala-dr-013}
+
+\textbf{Datos.} \texttt{data/scales.json} contiene la mayor, la
+pentatónica mayor, la pentatónica menor y la menor natural, con cinco
+patrones cada una, en C. Se transcribieron de los diagramas de
+onlineguitarbooks.com (consulta del 29/10/2026), con una sola fuente
+para no mezclar digitaciones. Cada patrón guarda la URL y el SHA-256 del
+diagrama y la posición que indica la página (su traste más grave). Los
+diagramas no se copian al repositorio. Numeración acordada con el
+usuario: 1 = forma E, 2 = D, 3 = C, 4 = A y 5 = G, subiendo por el
+mástil; las menores usan la forma de su propio acorde menor
+(Em\ldots Gm).
+
+\textbf{Validación.} \texttt{scripts/lib/scale-validation.mjs} recalcula
+cada nota desde afinación y traste, sin fiarse de las etiquetas, y
+comprueba:
+
+\begin{itemize}
+\tightlist
+\item
+  grados y distancia exacta entre notas consecutivas, sin huecos ni
+  repeticiones;
+\item
+  dos notas por cuerda en las pentatónicas y dos o tres en las de siete
+  notas;
+\item
+  la posición de la fuente y la tónica en las cuerdas de cada forma
+  CAGED;
+\item
+  que la sucesión E-D-C-A-G recorra una octava y que cada caja
+  pentatónica enlace con la siguiente;
+\item
+  que cada pentatónica esté contenida en la forma homónima de su escala
+  de siete notas.
+\end{itemize}
+
+Lo ejecutan \texttt{npm\ run\ audit:music} y
+\texttt{tests/scale-patterns.test.mjs}, con oráculos y mutaciones
+deliberadas.
+
+\textbf{Tonalidad.} \texttt{patternInKey} desplaza todas las notas la
+misma cantidad hasta que el traste más grave queda entre 0 y 11; las
+cuerdas al aire se dibujan a la izquierda del cejuelo. El orden de grave
+a agudo es el del traste más grave en esa tonalidad: en las 48
+combinaciones de escala y tonalidad es una rotación de 1-2-3-4-5 sin
+empates. Se usa la forma movible de la fuente; la digitación en posición
+abierta de algunas tonalidades no se incluye. Los juegos de voicings y
+rutas siguen en C.
+
+\textbf{Tarjeta.} \texttt{ScalePatternCard} y \texttt{scaleLayout.ts}
+dibujan seis cuerdas, varias notas por cuerda y, si hace falta, el hueco
+de cuerdas al aire, con las proporciones, fuentes y colores de las
+tarjetas de voicings. En la solución, 1, 3, 5 y 7 (♭3, ♭7 o 6 según la
+escala) llevan los colores de grado y el resto de notas va en blanco. La
+vista neutra solo recibe posiciones. Las tarjetas que se comparan
+comparten columnas y hueco para verse a la misma escala. Sin trastes, no
+hay números ni cejuelo y el nombre accesible usa columnas relativas.
+
+\textbf{Juegos.} El menú pide escala y tonalidad (una de doce o
+«Aleatoria») en lugar de Drop y set, que se conservan para volver a
+reconocimiento. Cambia de juego en las fases nuevas \texttt{escala},
+\texttt{escala-verificada}, \texttt{escala-resumen}, \texttt{orden},
+\texttt{orden-verificada} y \texttt{orden-resumen}, con el mismo
+historial que reconocimiento.
+
+\begin{itemize}
+\tightlist
+\item
+  Reconocer patrones sortea sin repetir dentro de la ronda: cinco
+  patrones en una tonalidad o sesenta combinaciones con tonalidad
+  aleatoria. Fácil pide el patrón; Medio, además, todas las tónicas;
+  Difícil, todas las notas de los grados pedidos, con un banco fijo de
+  siete (1, ♭3, 3, 5, 6, ♭7 y 7). Para verificar hacen falta el patrón
+  y, en Medio y Difícil, una marca. Cada nota se compara con su grado:
+  si es de los pedidos debe llevar esa marca y, si no, ninguna. La
+  corrección da un campo por grado con las notas que faltan y las que
+  sobran, y un aro de acierto, error o falta sobre cada nota.
+\item
+  Ordenar patrones baraja las cinco tarjetas sin dejarlas ordenadas. Se
+  tocan de grave a agudo; tocar una colocada la quita. Se corrige puesto
+  a puesto y la solución se muestra en color y con trastes.
+\end{itemize}
+
+\Needspace{4cm}
+\section{Preguntas y corrección}\label{preguntas-y-correcciuxf3n}
 
 Diseño acordado: fácil elige nombre con cuatro botones; medio añade
 inversión en un segundo desplegable; difícil añade colocar grados sobre
@@ -599,8 +704,7 @@ comparación al entrar en revisión. Retroceder y revisar no vuelven a
 contar intentos en el progreso.
 
 \Needspace{4cm}
-\hypertarget{muxf3vil-y-accesibilidad}{%
-\section{Móvil y accesibilidad}\label{muxf3vil-y-accesibilidad}}
+\section{Móvil y accesibilidad}\label{muxf3vil-y-accesibilidad}
 
 Al verificar reconocimiento o rutas, \texttt{useGameFocus} conserva el
 foco accesible en el título del resultado y desplaza la página solo lo
@@ -631,8 +735,7 @@ solaparse); las rutas se miden igual a esos tres anchos, también con el
 selector bloqueado tras verificar.
 
 \Needspace{4cm}
-\hypertarget{offline-e-instalaciuxf3n}{%
-\section{Offline e instalación}\label{offline-e-instalaciuxf3n}}
+\section{Offline e instalación}\label{offline-e-instalaciuxf3n}
 
 DR-006 añade una PWA instalable con caché de recursos propios y recarga
 sin conexión tras una primera carga completa. No añade dependencias: el
@@ -713,8 +816,7 @@ Chromium. Las pruebas usan Chromium de Playwright, y una de ellas sirve
 dos builds con un servidor propio para comprobar la actualización.
 
 \Needspace{4cm}
-\hypertarget{documentaciuxf3n-y-claude}{%
-\section{Documentación y Claude}\label{documentaciuxf3n-y-claude}}
+\section{Documentación y Claude}\label{documentaciuxf3n-y-claude}
 
 \texttt{CLAUDE.md} importa \texttt{AGENTS.md} y dirige al contrato y a
 la orden solicitada. Las reglas permanentes están versionadas. Las
@@ -732,8 +834,7 @@ usuario autorizó la publicación de la base completa en el repositorio
 público, incluidos los originales.
 
 \Needspace{4cm}
-\hypertarget{flujo-de-datos}{%
-\section{Flujo de datos}\label{flujo-de-datos}}
+\section{Flujo de datos}\label{flujo-de-datos}
 
 Previsto: configuración selecciona registros; generador crea pregunta
 estable; tarjeta dibuja geometría; el usuario compone respuesta;
@@ -747,9 +848,7 @@ consumen el catálogo sin duplicar posiciones. ESLint hace cumplir esta
 separación y Vitest se ejecuta en el entorno \texttt{node}, sin DOM.
 
 \Needspace{4cm}
-\hypertarget{pruebas-y-resultados-reales}{%
-\section{Pruebas y resultados
-reales}\label{pruebas-y-resultados-reales}}
+\section{Pruebas y resultados reales}\label{pruebas-y-resultados-reales}
 
 La reconstrucción ejecutó 24 tests con node:test: todos pasan, sin
 omitidos. Verifican catálogo completo, rutas, hashes de fuentes y
@@ -879,6 +978,28 @@ DR-006 añade pruebas en tres niveles; las cifras observadas están en
   almacenamiento lleno y bloqueado).
 \end{itemize}
 
+DR-013 añade pruebas en tres niveles; las cifras están en
+\href{validation/2026-10-29-dr-013-scale-patterns.md}{su registro}.
+
+\begin{itemize}
+\tightlist
+\item
+  node:test: la validación de los 20 patrones de escala, con tres
+  oráculos y nueve mutaciones deliberadas.
+\item
+  Vitest: las doce tonalidades de las cuatro escalas, el orden de grave
+  a agudo y la tarjeta. En la sesión, la rotación, las respuestas
+  completas, la corrección de marcas y del orden, el historial y la
+  configuración. En el progreso, el conteo, los contadores, la migración
+  1 → 2 y el almacén. En las pantallas, la neutralidad, la corrección y
+  que al ordenar no se revelen los trastes.
+\item
+  Playwright: \texttt{scales.spec.ts} (estudio, los tres niveles de
+  patrones, ordenar y 360/390/430 px) y la migración 1 → 2 en
+  \texttt{progress.spec.ts}. Deducen la respuesta de las posiciones
+  dibujadas y de \texttt{data/scales.json}.
+\end{itemize}
+
 Controles negativos de DR-006 observados por el supervisor: eliminar el
 hash de la plantilla del worker del cálculo de la versión hizo fallar 1
 test, y eliminar el ámbito del nombre de la caché hizo fallar 2; los
@@ -896,9 +1017,8 @@ ejecutaran. Esas pruebas fueron manuales y no forman parte de la suite.
 Los resultados concretos de DR-001 están en su registro de validación.
 
 \Needspace{4cm}
-\hypertarget{construcciuxf3n-y-publicaciuxf3n}{%
 \section{Construcción y
-publicación}\label{construcciuxf3n-y-publicaciuxf3n}}
+publicación}\label{construcciuxf3n-y-publicaciuxf3n}
 
 npm run docs:build regenera LaTeX/PDF desde el Markdown. Guarda hashes
 del Markdown, derivados, plantilla y generador para detectar
@@ -946,6 +1066,7 @@ de verdad con \texttt{/} y con \texttt{/Drop\_Route/} y comprueba el
 worker resultante. No existe todavía un flujo de despliegue ni se ha
 elegido el alojamiento.
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{\dimexpr0.290000\linewidth-1.000000\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr0.710000\linewidth-1.000000\tabcolsep\relax}@{}}
 \toprule\noalign{}
 Comando & Función \\
@@ -967,6 +1088,7 @@ generado. \\
 de la PWA desde sus SVG (Chromium). \texttt{-\/-\ -\/-solo-pwa} rehace
 solo el 192 y el maskable. \\
 \end{longtable}
+}
 
 Playwright genera el build y lo sirve con vite preview al ejecutar los
 E2E. Nunca reutiliza un servidor existente: con el puerto 4173 ocupado,
@@ -991,8 +1113,7 @@ autorización explícita del usuario para publicar la base completa. Las
 futuras publicaciones siguen requiriendo una orden que las cubra.
 
 \Needspace{4cm}
-\hypertarget{limitaciones-actuales}{%
-\section{Limitaciones actuales}\label{limitaciones-actuales}}
+\section{Limitaciones actuales}\label{limitaciones-actuales}
 
 \begin{itemize}
 \tightlist
@@ -1031,9 +1152,9 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
   real.
 \item
   GitHub Pages publica la aplicación desde \texttt{main}. El paquete de
-  esta entrega es 1.0.3; la versión visible procede de ese metadato y el
-  esquema de progreso permanece en 1. El estado del despliegue se
-  comprueba en GitHub Actions.
+  esta entrega es 1.1.0; la versión visible procede de ese metadato y el
+  esquema de progreso pasa al 2, con migración desde el 1. El estado del
+  despliegue se comprueba en GitHub Actions.
 \item
   Reconocimiento, estudio y revisión muestran las nueve variantes C6 de
   la fuente sobre copias derivadas. El juego de rutas conserva los pasos
@@ -1062,8 +1183,14 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
   Cdim7 sigue como referencia. C6 se evalúa como variante de la familia
   mayor en reconocimiento, sin añadir una quinta opción de calidad.
 \item
-  La transposición se limita al modo estudio; todavía no se aplica a las
-  respuestas evaluables. El audio queda para otra etapa.
+  La transposición de voicings y rutas se limita al modo estudio; solo
+  los juegos de escalas eligen tonalidad. El audio queda para otra
+  etapa.
+\item
+  Los patrones de escala son las cinco formas movibles de una única
+  fuente, sin posición abierta, 3NPS ni otros modos. En Medio y Difícil,
+  el área táctil de cada nota es su celda (unos 20 px de alto), como en
+  el tablero de grados; los botones y el banco miden 48 px o más.
 \item
   La reconstrucción conserva contratos y datos, no recupera el commit
   local perdido byte a byte.
@@ -1073,24 +1200,23 @@ futuras publicaciones siguen requiriendo una orden que las cubra.
 \end{itemize}
 
 \Needspace{4cm}
-\hypertarget{evoluciuxf3n}{%
-\section{Evolución}\label{evoluciuxf3n}}
+\section{Evolución}\label{evoluciuxf3n}
 
 DR-001 configuró las herramientas; DR-002 creó tarjetas e icono; DR-003
 y DR-004, el reconocimiento; DR-005, las rutas. Las cinco están
 integradas en main. DR-006, progreso y PWA, está implementada en
 feat/progress-and-pwa y pendiente de revisión. DR-007, cierre documental
 y pruebas, está pendiente: en ella se regenerarán LaTeX y PDF y se
-escribirán los manuales.
+escribirán los manuales. DR-013 añade los patrones de escala (datos,
+estudio y dos juegos) y el esquema 2 del progreso.
 
 Convertir lo planificado en descripción de implementación solo después
 de inspeccionar y probar el código. No extender una tarea a mejoras no
 pedidas.
 
 \Needspace{4cm}
-\hypertarget{apuxe9ndice-evidencia-y-luxedmites}{%
 \section{Apéndice: evidencia y
-límites}\label{apuxe9ndice-evidencia-y-luxedmites}}
+límites}\label{apuxe9ndice-evidencia-y-luxedmites}
 
 Verificados: mismas tres referencias, SHA-256, extracción, notas
 físicas, fórmulas, grados, inversiones, rutas y 24 tests ejecutados

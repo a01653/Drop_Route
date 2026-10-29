@@ -179,3 +179,25 @@
     padding-inline: 2rem;
   }
 }
+
+@media (min-width: 960px) {
+  /* Ordenar patrones: las cinco tarjetas necesitan todo el ancho; la corrección va debajo. */
+  .juego.juego-orden {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'header'
+      'title'
+      'answer'
+      'result';
+  }
+
+  .juego-orden .fretboard-card {
+    max-width: none;
+  }
+
+  /* Los botones de las notas se colocan en porcentajes del tablero: debe medir lo mismo que su tarjeta. */
+  .juego .tablero-escala {
+    max-width: 44rem;
+    margin-inline: auto;
+  }
+}

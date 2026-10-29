@@ -4,7 +4,7 @@ Propietario: Jesús Quevedo Rodríguez. Diseño acordado el 12/10/2026; base rec
 
 ## Alcance
 
-Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y móvil. Primera etapa de los juegos evaluables en C. Ventana corta del mástil con apariencia de las láminas, no un mástil de doce trastes.
+Estudiar posiciones, inversiones, grados y rutas II-V-I concretas y, desde DR-013, los cinco patrones de cuatro escalas. Ordenador y móvil. Los juegos de voicings y rutas siguen en C; los de escalas permiten elegir tonalidad. Ventana corta del mástil con apariencia de las láminas, no un mástil de doce trastes.
 
 | ID | Comportamiento |
 | --- | --- |
@@ -38,6 +38,11 @@ Estudiar posiciones, inversiones, grados y rutas II-V-I concretas. Ordenador y m
 | R28 | Mostrar «Creado por Jesús Quevedo Rodríguez» en pequeño al pie, después del contenido y sin superponer controles. |
 | R29 | En reconocimiento, volver a preguntas anteriores y avanzar conservando respuestas y resultados. Terminar el test en cualquier pregunta y revisar respuestas, errores y solución física, incluidas las preguntas sin verificar. |
 | R30 | En estudio de rutas II–V–I, señalar en los tres voicings la columna del traste raíz del acorde II, como en la plantilla; desplazar el anclaje junto con la ruta al transponer. |
+| R31 | Patrones de escala de `data/scales.json`: mayor, pentatónica mayor, pentatónica menor y menor natural, cinco patrones cada una, transcritos en C de una fuente publicada y validados por distancias. Numeración 1=E, 2=D, 3=C, 4=A y 5=G (Em…Gm en las menores); se muestran número y forma CAGED. |
+| R32 | Estudio de patrones: escala, tonalidad (12) y orden por número o de grave a agudo. Cada patrón se desplaza entero a su posición más grave sin trastes negativos; colores en 1, 3, 5 y 7 (6 en la pentatónica mayor) y el resto de notas en blanco. |
+| R33 | «Reconocer patrones»: escala, tonalidad fija o aleatoria y dificultad. Fácil, el patrón entre cinco botones; Medio, además, marcar todas las tónicas; Difícil, marcar todas las notas 1, 3, 5 y 7 (♭3/♭7 en las menores y 6 en la pentatónica mayor) con un banco fijo de siete grados. Pregunta neutra con trastes visibles y tónica anunciada; corrección por campos, con aros de acierto, error y falta sobre las marcas. |
+| R34 | «Ordenar patrones»: los cinco patrones barajados, neutros y sin trastes ni cejuelo, también en su nombre accesible; se tocan de grave a agudo y se corrige puesto a puesto contra el orden de esa tonalidad, con la solución en color y con trastes. |
+| R35 | Los dos juegos de escalas tienen Anterior, Siguiente, Terminar y revisar y cuentan en el progreso por escala y dificultad (patrones) o por escala (ordenar). La configuración de escalas se guarda en el esquema 2, con migración desde el 1 y copia del original. |
 
 ## Datos de rutas
 
@@ -47,10 +52,10 @@ Mayor: Dm7-G7-Cmaj7. Menor: Dm7(b5)-G7-Cm7. La respuesta pertenece a nuestra sec
 
 ## Estado
 
-DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio. DR-009 corrige la fidelidad de la variante C6 de la fuente y añade una distribución específica para escritorio sin cambiar el flujo móvil. DR-011 trabaja la navegación y revisión del test de reconocimiento. DR-012 incorpora el anclaje visual de la plantilla a las rutas II–V–I en estudio.
+DR-001 a DR-007 están integradas en `main`: juego de reconocimiento, rutas II-V-I, progreso local, PWA, documentación y despliegue en GitHub Pages. DR-008 añade el modo estudio, la visualización del movimiento de voces y la transposición del material de estudio. DR-009 corrige la fidelidad de la variante C6 de la fuente y añade una distribución específica para escritorio sin cambiar el flujo móvil. DR-011 trabaja la navegación y revisión del test de reconocimiento. DR-012 incorpora el anclaje visual de la plantilla a las rutas II–V–I en estudio. DR-013 (versión 1.1.0) añade los patrones de escala: datos, estudio y dos juegos (R31 a R35).
 
-Los juegos evaluables permanecen en C en esta entrega. El modo estudio no modifica los contadores de progreso.
+Los juegos de voicings y rutas permanecen en C. Los de escalas permiten elegir tonalidad por decisión del usuario del 29/10/2026. El modo estudio no modifica los contadores de progreso.
 
 ## Ampliaciones posteriores
 
-Siguen fuera del alcance actual: audio, metrónomo, repaso adaptativo, sesiones cerradas de preguntas, cuentas, backend, sincronización entre dispositivos, notificaciones, puntuación avanzada, rachas y clasificaciones. También queda como posible ampliación futura llevar la transposición a los juegos evaluables.
+Siguen fuera del alcance actual: audio, metrónomo, repaso adaptativo, sesiones cerradas de preguntas, cuentas, backend, sincronización entre dispositivos, notificaciones, puntuación avanzada, rachas y clasificaciones. También queda como posible ampliación futura llevar la transposición a los juegos de voicings y rutas, y otras escalas, modos o digitaciones (3NPS) en los juegos de escalas.

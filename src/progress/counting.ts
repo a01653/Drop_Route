@@ -7,7 +7,10 @@ import type { Bucket, ProgressData } from './types'
 
 export interface Attempt {
   readonly bucket: Bucket
-  /** Acierto completo: todos los campos del nivel en reconocimiento, la candidata exacta en rutas. */
+  /**
+   * Acierto completo: todos los campos del nivel en reconocimiento y patrones, la candidata exacta en rutas y
+   * los cinco puestos al ordenar.
+   */
   readonly correct: boolean
 }
 
@@ -33,6 +36,15 @@ export function attemptOf(before: SessionState, after: SessionState): Attempt | 
       },
       correct: after.result.correct,
     }
+  }
+  if (before.phase === 'escala' && after.phase === 'escala-verificada') {
+    return {
+      bucket: { game: 'scale-patterns', scaleId: after.question.scaleId, difficulty: after.question.difficulty },
+      correct: after.result.allCorrect,
+    }
+  }
+  if (before.phase === 'orden' && after.phase === 'orden-verificada') {
+    return { bucket: { game: 'scale-order', scaleId: after.question.scaleId }, correct: after.result.allCorrect }
   }
   return null
 }

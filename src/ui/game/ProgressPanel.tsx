@@ -32,6 +32,14 @@ export function ProgressPanel({ progress, config }: ProgressPanelProps) {
               <dt>Rutas II-V-I</dt>
               <dd>{formatCounter(summary.routes)}</dd>
             </div>
+            <div>
+              <dt>Reconocer patrones</dt>
+              <dd>{formatCounter(summary.scalePatterns)}</dd>
+            </div>
+            <div>
+              <dt>Ordenar patrones</dt>
+              <dd>{formatCounter(summary.scaleOrder)}</dd>
+            </div>
           </dl>
           <h3>Con lo que has elegido</h3>
           <ul className="progreso-lista">
@@ -54,8 +62,9 @@ export function ProgressPanel({ progress, config }: ProgressPanelProps) {
             </ul>
           </details>
           <p className="progreso-nota">
-            Cada pregunta verificada cuenta un intento. Es un acierto solo si aciertas todo lo que pide el nivel o, en
-            rutas, si eliges la candidata de nuestra ruta. Estos datos no salen de este dispositivo.
+            Cada pregunta verificada cuenta un intento. Es un acierto solo si aciertas todo lo que pide el nivel; en
+            rutas, si eliges la candidata de nuestra ruta, y al ordenar, si aciertas los cinco puestos. Estos datos no
+            salen de este dispositivo.
           </p>
         </>
       )}

@@ -34,6 +34,12 @@ export const CAPTURE_IDS = [
   'ruta-fallo-tu-respuesta-1280',
   'progreso-detalle-1280',
   'escritorio-menu-1280',
+  'menu-escalas-1280',
+  'estudio-escalas-1280',
+  'patron-medio-pregunta-1280',
+  'patron-dificil-correccion-1280',
+  'orden-pregunta-1280',
+  'orden-correccion-1280',
 ];
 export const CAPTURE_VIEWPORTS = {
   movil: {width: 360, height: 780, deviceScaleFactor: 2},

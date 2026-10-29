@@ -1,14 +1,14 @@
 # Drop Route: manual de uso
 
-Autor: Jesús Quevedo Rodríguez. Versión 1.0.3.
+Autor: Jesús Quevedo Rodríguez. Versión 1.1.0.
 
-Drop Route es un juego para estudiar voicings de guitarra y recorridos II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio permite transponer las formas. Guarda el progreso en el navegador del dispositivo; no usa cuentas ni sincroniza datos.
+Drop Route es un juego para estudiar voicings de guitarra, recorridos II-V-I y patrones de escala. Las preguntas de voicings y rutas trabajan en Do (C), sin audio; las de escalas se juegan en la tonalidad que elijas y el modo estudio permite transponer las formas. Guarda el progreso en el navegador del dispositivo; no usa cuentas ni sincroniza datos.
 
 ## 1. Elegir qué practicar
 
-Al abrir la aplicación aparece el menú. Puedes elegir **Reconocer voicings**, **Rutas II-V-I** o **Modo estudio**.
+Al abrir la aplicación aparece el menú. Puedes elegir **Reconocer voicings**, **Rutas II-V-I**, **Reconocer patrones**, **Ordenar patrones** o **Modo estudio**.
 
-En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la secuencia. El modo estudio sirve para consultar formas y rutas sin responder preguntas.
+En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la secuencia. En los dos juegos de escalas eliges la escala y la tonalidad, en lugar de Drop y set. El modo estudio sirve para consultar formas, rutas y patrones sin responder preguntas.
 
 ![Menú con Reconocer voicings elegido.](capturas/menu-reconocimiento-1280.png)
 
@@ -85,28 +85,92 @@ La verificación indica si elegiste la posición usada por esa ruta. Otra invers
 
 *Figura 11. Comparación con tu respuesta.*
 
-## 4. Modo estudio
+## 4. Patrones de escala
 
-En el menú, abre **Modo estudio** y selecciona **Rutas II-V-I**. Elige el set, el modo mayor o menor, la ruta y la tonalidad. Verás los acordes II, V e I juntos y el movimiento de las voces.
+Hay cuatro escalas: **Mayor**, **Pentatónica mayor**, **Pentatónica menor** y **Menor natural**, con cinco patrones cada una. Se numeran subiendo por el mástil y llevan también el nombre de su forma CAGED:
 
-La columna sombreada marca el traste donde cae la raíz del acorde II. Se repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El número de ese traste aparece en negrita. El modo estudio no suma intentos ni modifica el progreso.
+- Patrón 1 = forma E, 2 = D, 3 = C, 4 = A y 5 = G.
+- En las escalas menores, la forma es la de su propio acorde menor: Em, Dm, Cm, Am y Gm.
 
-## 5. Progreso
+En el menú eliges la escala y la **Tonalidad**: una de las doce o **Aleatoria**, que cambia en cada pregunta. Cada patrón se coloca entero en su posición más grave de esa tonalidad.
 
-Cada pregunta suma un intento cuando pulsas **Verificar**. Salir, cambiar una selección o mirar la corrección no añade intentos. El panel del menú muestra intentos y aciertos por juego y configuración.
+![Menú con Reconocer patrones elegido.](capturas/menu-escalas-1280.png)
+
+*Figura 12. Menú de los juegos de escalas.*
+
+### Reconocer patrones
+
+La tarjeta muestra el patrón con círculos grises y los números de traste; arriba se indica la tónica.
+
+1. **Fácil:** toca el botón del patrón (por ejemplo, **Patrón 2 · forma D**).
+2. **Medio:** elige el patrón y toca todas las notas que sean tónica. Vuelve a tocar una nota para quitar la marca.
+3. **Difícil:** elige el patrón y marca todas las tónicas, terceras, quintas y séptimas. En las escalas menores son ♭3 y ♭7; en la pentatónica mayor, que no tiene séptima, se marca la sexta (6). Elige un grado en **Grado que marcas** y toca las notas que lo llevan; **Borrar** quita marcas.
+
+Las demás notas del patrón se dejan sin marcar.
+
+![Pregunta de patrones en Medio con tónicas marcadas.](capturas/patron-medio-pregunta-1280.png)
+
+*Figura 13. Medio: patrón elegido y tónicas marcadas.*
+
+Al verificar, la tarjeta recupera los colores: tónica en rojo, tercera en azul, quinta en verde, y séptima o sexta en amarillo. La corrección dice qué notas faltaban y cuáles sobraban en cada grado. En **Tus marcas**, cada nota lleva un aro:
+
+- verde, si está bien marcada;
+- rojo, si la marca es errónea;
+- discontinuo, si faltaba marcarla.
+
+![Corrección de patrones en Difícil.](capturas/patron-dificil-correccion-1280.png)
+
+*Figura 14. Difícil: corrección y aros sobre tus marcas.*
+
+### Ordenar patrones
+
+Aparecen los cinco patrones barajados, con las letras A a E y sin números de traste ni cejuelo. Tócalos de grave a agudo, empezando por el que queda más cerca del cejuelo. Tocar de nuevo una tarjeta la quita del orden, y **Borrar orden** empieza de cero.
+
+El orden depende de la tonalidad. Por ejemplo, en Do mayor es 3-4-5-1-2 y en Mi mayor, 2-3-4-5-1.
+
+![Pregunta de ordenar con dos tarjetas colocadas.](capturas/orden-pregunta-1280.png)
+
+*Figura 15. Ordenar: tarjetas sin trastes.*
+
+Al verificar se corrige cada puesto y se muestra el orden correcto, con colores y trastes.
+
+![Corrección de ordenar patrones.](capturas/orden-correccion-1280.png)
+
+*Figura 16. Ordenar: corrección y orden correcto.*
+
+Los dos juegos tienen **Anterior**, **Siguiente** y **Terminar y revisar**, como el reconocimiento de voicings.
+
+## 5. Modo estudio
+
+En el menú, abre **Modo estudio**. Elige qué estudiar y la tonalidad. El modo estudio no suma intentos ni modifica el progreso.
+
+**Rutas II-V-I:** elige el set, el modo mayor o menor y la ruta. Verás los acordes II, V e I juntos y el movimiento de las voces. La columna sombreada marca el traste donde cae la raíz del acorde II. Se repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El número de ese traste aparece en negrita.
+
+**Patrones de escala:** elige la escala y el orden, **Por número** o **De grave a agudo**. Verás los cinco patrones con su número, su forma CAGED y los trastes que ocupan. Las cuerdas al aire aparecen a la izquierda del cejuelo.
+
+![Estudio de los patrones de una escala.](capturas/estudio-escalas-1280.png)
+
+*Figura 17. Estudio de patrones de escala.*
+
+## 6. Progreso
+
+Cada pregunta suma un intento cuando pulsas **Verificar**. Salir, cambiar una selección o mirar la corrección no añade intentos. El panel del menú muestra intentos y aciertos de cada juego y de la configuración elegida. Los patrones cuentan por escala y dificultad, y al ordenar, por escala.
 
 ![Detalle del progreso guardado.](capturas/progreso-detalle-1280.png)
 
-*Figura 12. Detalle del progreso local.*
+*Figura 18. Detalle del progreso local.*
 
-Los datos quedan en este navegador y dispositivo. Si borras los datos del sitio, se pierde ese progreso. Si el navegador no puede guardar, Drop Route lo avisa y permite seguir jugando en memoria.
+Los datos quedan en este navegador y dispositivo. Si borras los datos del sitio, se pierde ese progreso. Si el navegador no puede guardar, Drop Route lo avisa y permite seguir jugando en memoria. Al actualizar desde una versión anterior, el progreso se conserva.
 
-## 6. Actualizar y jugar sin conexión
+## 7. Actualizar y jugar sin conexión
 
 Después de una primera carga completa con conexión, la PWA guarda los recursos de la aplicación para poder recargar y jugar sin red.
 
 Cuando hay una versión nueva, el menú ofrece **Actualizar ahora**. La versión nueva no se activa mientras tienes una pregunta abierta. Si existen cambios que solo están en memoria, el aviso lo indica antes de actualizar.
 
-## 7. Límites de esta entrega
+## 8. Límites de esta entrega
 
-No incluye audio, transposición en las respuestas, cuentas ni sincronización. Tampoco ofrece notificaciones, sesiones adaptativas o restauración del progreso. Las rutas se limitan a Drop 2 en los sets 1 y 2.
+- No incluye audio, cuentas, sincronización, notificaciones, sesiones adaptativas ni restauración del progreso.
+- Las preguntas de voicings y rutas siguen en C. Las rutas se limitan a Drop 2 en los sets 1 y 2.
+- Los patrones de escala son las cinco formas movibles de la fuente: no incluyen digitaciones en posición abierta ni de tres notas por cuerda.
+- En Medio y Difícil, el área que se puede tocar en cada nota es su celda del diagrama, más pequeña que los botones.

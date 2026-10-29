@@ -8,10 +8,12 @@ TEMPLATE = DEST / 'manual-template.tex'
 GENERATOR = Path(__file__).resolve()
 DOCS = [
     dict(key='uso', name='Manual_Uso_Drop_Route', title='Manual de uso', source='docs/manuals/USO.md',
-         cover='Manual de uso', subtitle='Reconocer voicings y continuar rutas II--V--I'),
+         cover='Manual de uso', subtitle='Voicings, rutas II--V--I y patrones de escala'),
     dict(key='instalacion', name='Manual_Instalacion_Drop_Route', title='Manual de instalación', source='docs/manuals/INSTALACION.md',
          cover='Manual de instalación', subtitle='Abrir, instalar y publicar la aplicación'),
 ]
+# La versión impresa en portada y pies sale del paquete, no se escribe a mano en la plantilla.
+VERSION = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))['version']
 IMAGE_RE = re.compile(r'!\[[^\]\n]*\]\((capturas/[a-z0-9-]+\.png)\)')
 
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -77,7 +79,7 @@ def compile_doc(doc, engine):
         cmd=['pandoc',str(md),'--from=gfm','--to=latex','--standalone','--no-highlight',
              '--shift-heading-level-by=-1','--template='+str(TEMPLATE),'--output='+str(tex),
              '--variable=covertitle:'+doc['cover'],'--variable=coversubtitle:'+doc['subtitle'],
-             '--variable=headtitle:'+doc['title']]
+             '--variable=headtitle:'+doc['title'],'--variable=version:'+VERSION]
         r=run(cmd,cwd=ROOT)
         if r.returncode: raise SystemExit(r.stderr[-4000:])
         latex=tex.read_text(encoding='utf-8')
