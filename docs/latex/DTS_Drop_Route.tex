@@ -4,6 +4,11 @@
 \usepackage{fontspec}
 \usepackage{newunicodechar}
 \newunicodechar{♭}{\ensuremath{\flat}}
+% TeX Gyre Pagella no tiene ✗ (U+2717): sin esto se imprimía un cuadro vacío. Las dos marcas salen de Zapf Dingbats
+% (pifont) para que el par ✓/✗ tenga el mismo dibujo.
+\usepackage{pifont}
+\newunicodechar{✗}{\ding{55}}
+\newunicodechar{✓}{\ding{51}}
 \IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
 \IfFontExistsTF{TeX Gyre Heros}{\setsansfont{TeX Gyre Heros}}{\setsansfont{Nimbus Sans}}
 \IfFontExistsTF{TeX Gyre Cursor}{\setmonofont{TeX Gyre Cursor}[Scale=0.88]}{\setmonofont{Nimbus Mono PS}[Scale=0.88]}

@@ -26,7 +26,7 @@ Paquete: 1.1.0. Esquema de progreso: 2.
   - un pie de figura demasiado largo, que Pandoc partía y dejaba la captura sin maquetar;
   - la portada del DTS, que seguía en la revisión 1.0.2;
   - el clonado del manual de instalación, que apuntaba a la rama histórica `feat/progress-and-pwa`.
-- Ya estaba antes de esta entrega y no se ha cambiado: en el apartado «Preguntas y corrección» del PDF del DTS, el símbolo ✗ se imprime como un cuadro.
+- Ya estaba antes de esta entrega: en el apartado «Preguntas y corrección» del PDF del DTS, el símbolo ✗ se imprimía como un cuadro. Se corrigió después, en `fix/dts-cross-glyph` (véase «Corrección posterior»).
 
 ## Batería final
 
@@ -44,3 +44,15 @@ La CI de GitHub y el despliegue de Pages se comprueban tras el push y se indican
 ## Aprobación y publicación
 
 El usuario aprobó el funcionamiento («todo ok») y autorizó commit, fusión y publicación el 29/10/2026.
+
+## Corrección posterior: ✗ en el PDF del DTS
+
+Rama `fix/dts-cross-glyph`, 29/10/2026, a petición del usuario.
+
+- Causa: TeX Gyre Pagella no tiene ✗ (U+2717). LuaLaTeX lo registraba como «Missing character», pero la compilación terminaba bien y el PDF mostraba un cuadro vacío.
+- Arreglo: `docs/latex/dts-template.tex` dibuja ✗ y ✓ con Zapf Dingbats (`pifont`, `\ding{55}` y `\ding{51}`), para que las dos marcas tengan el mismo estilo.
+- Regresión: `scripts/build_dts.py` falla ahora si el registro de LaTeX contiene «Missing character», igual que el generador de los manuales. Control negativo: con la plantilla anterior, `npm run docs:build` falla, lista las dos ✗ y no sustituye los derivados.
+- `npm run docs:build`: «DTS generado; sin Overfull hbox ni caracteres sin glifo». Los PDF de los manuales no cambian de contenido; se conservan los publicados.
+- `npm run docs:check:final` y `npm run docs:check` correctos; `npm run test:base` 103 de 103; `git diff --check` correcto.
+- Revisión visual: la página 10 del DTS, la única con ✓ y ✗, muestra ambas marcas. El documento sigue teniendo 19 páginas. Es un cambio solo documental: no se ejecutan pruebas de aplicación ni E2E y no cambia la versión.
+- El usuario autorizó commit, fusión en `main` y publicación el 29/10/2026. La CI y el despliegue de Pages se comprueban tras el push.
