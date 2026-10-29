@@ -9,19 +9,19 @@
     },
     {
       "path": "docs/latex/DTS_Drop_Route.tex",
-      "sha256": "5b7f7721597e08ac5bc48e7af01e3da4f0abf8efd1369f27cd5e34e21f442195"
+      "sha256": "76505cc763a42429ce75f7bbbab9f2a9234e7ac725ec6075c5f477773cf67305"
     },
     {
       "path": "docs/latex/DTS_Drop_Route.pdf",
-      "sha256": "ce0da4081e12554e7fd08f406ea574e5767a68d19c8900f379f336ce4b295af0"
+      "sha256": "9d7406ae2df7ef608a04d93176bbb4f9d9ee6d1f5393b2c1cf1a29746c42ac53"
     },
     {
       "path": "docs/latex/dts-template.tex",
-      "sha256": "77fb2a78d16af39cb32249baee996c23b40a2341b7eb2d856a026ccbd3e0fac3"
+      "sha256": "a9a2876803433f8034b1110e9e286a381abc77020c3742519c58d549a95be3de"
     },
     {
       "path": "scripts/build_dts.py",
-      "sha256": "463defb80f057c57d03467dc20da1beb1cf72cd74ec604da1da88bb0f3c2ab52"
+      "sha256": "e0da3b997c9244c43424905d708d5b6b595126af2ab5766d68ca1d1b3800f80e"
     }
   ]
 }

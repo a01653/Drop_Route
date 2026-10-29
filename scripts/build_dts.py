@@ -60,13 +60,18 @@ def main():
             for i,line in enumerate(lines):
                 if "Overfull \\hbox" in line: print("\n".join(lines[i:i+5]))
             raise SystemExit("Hay desbordes; revisar antes de entregar")
+        # Un carácter sin glifo en la fuente se imprime como un cuadro vacío sin que la compilación falle.
+        missing = [line for line in log.splitlines() if line.startswith("Missing character")]
+        if missing:
+            print("\n".join(missing))
+            raise SystemExit("Hay caracteres sin glifo en la fuente; revisar antes de entregar")
         for ext in [".tex",".pdf"]:
             shutil.copyfile(temp/(NAME+ext),DEST/(NAME+ext))
     files = [MD,DEST/(NAME+".tex"),DEST/(NAME+".pdf"),TEMPLATE,Path(__file__).resolve()]
     manifest = {"source":"docs/DTS.md","command":"npm run docs:build","engine":args.engine,
                 "files":[{"path":p.relative_to(ROOT).as_posix(),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
     (DEST/(NAME+".build.json")).write_text(json.dumps(manifest,indent=2)+"\n",newline="\n")
-    print("DTS generado; sin Overfull hbox")
+    print("DTS generado; sin Overfull hbox ni caracteres sin glifo")
 
 
 if __name__ == "__main__":
