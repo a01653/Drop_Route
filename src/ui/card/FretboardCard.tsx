@@ -38,7 +38,8 @@ function Flat({ x, baseline, color }: { x: number; baseline: number; color: stri
   )
 }
 
-function DegreeLabel({ degree, cx, cy, color }: { degree: Degree; cx: number; cy: number; color: string }) {
+/** Rótulo de grado con el bemol dibujado. Admite también los grados de escala (2, 4, b6). */
+export function DegreeLabel({ degree, cx, cy, color }: { degree: string; cx: number; cy: number; color: string }) {
   const flats = degree.startsWith('bb') ? 2 : degree.startsWith('b') ? 1 : 0
   const digit = degree.slice(flats)
   const baseline = cy + 4.5

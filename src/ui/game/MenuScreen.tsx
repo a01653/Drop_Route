@@ -1,7 +1,7 @@
 import { catalog } from '../../data'
 import { EMPTY_PROGRESS } from '../../progress'
 import type { ProgressData } from '../../progress'
-import { DIFFICULTIES, DROP_LABELS, GAMES, ROUTE_MODES, ROUTE_STRETCHES, dropFamilies, setsOfDrop } from '../../session'
+import { DIFFICULTIES, DROP_LABELS, GAMES, KEY_NAMES, ROUTE_MODES, ROUTE_STRETCHES, SCALES, dropFamilies, isScaleGame, setsOfDrop } from '../../session'
 import type { Difficulty, MenuState, SessionAction } from '../../session'
 import { OptionGroup } from './OptionGroup'
 import { ProgressPanel } from './ProgressPanel'
@@ -11,6 +11,15 @@ const DIFFICULTY_HELP: Record<Difficulty, string> = {
   medium: 'Eliges el acorde y la inversión con dos desplegables.',
   hard: 'Además colocas los grados sobre los cuatro círculos.',
 }
+
+const SCALE_DIFFICULTY_HELP: Record<Difficulty, string> = {
+  easy: 'Eliges el patrón entre cinco botones.',
+  medium: 'Eliges el patrón y marcas todas las tónicas.',
+  hard: 'Eliges el patrón y marcas todas las tónicas, terceras, quintas y séptimas (sextas en la pentatónica mayor).',
+}
+
+const ORDER_HELP =
+  'Ordenas los cinco patrones de grave a agudo en la tonalidad elegida. Las tarjetas no muestran los trastes.'
 
 const ROUTES_HELP =
   'Partes de un acorde de nuestra ruta y eliges, entre cuatro candidatas, la posición que la continúa. Solo Drop 2, sets 1 y 2.'
@@ -24,17 +33,21 @@ interface MenuScreenProps {
   progress?: ProgressData
 }
 
-/** Menú de arranque (R01): juego, Drop, set con sus cuerdas y dificultad o, en rutas, modo y tramo. */
+/**
+ * Menú de arranque (R01): juego, Drop, set con sus cuerdas y dificultad o, en rutas, modo y tramo. Los juegos
+ * de escalas piden escala y tonalidad en lugar de Drop y set.
+ */
 export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS }: MenuScreenProps) {
   const { config } = state
   const routes = config.game === 'routes'
+  const scales = isScaleGame(config.game)
   const sets = setsOfDrop(catalog, config.drop, config.game)
 
   return (
     <main className="arranque menu" data-phase={state.phase}>
       <header>
         <h1>Drop Route</h1>
-        <p className="lema">Estudia voicings de guitarra y rutas II-V-I.</p>
+        <p className="lema">Estudia voicings de guitarra, rutas II-V-I y patrones de escala.</p>
       </header>
 
       <form
@@ -51,25 +64,59 @@ export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS
           options={GAMES.map(({ id, label }) => ({ id, label }))}
         />
 
-        <OptionGroup
-          legend="Drop"
-          value={config.drop}
-          onChange={(drop) => dispatch({ type: 'configure', change: { drop } })}
-          options={dropFamilies(catalog, config.game).map((drop) => ({ id: drop, label: DROP_LABELS[drop] }))}
-        />
+        {scales ? (
+          <>
+            <OptionGroup
+              legend="Escala"
+              value={config.scaleId}
+              onChange={(scaleId) => dispatch({ type: 'configure', change: { scaleId } })}
+              options={SCALES.map(({ id, label }) => ({ id, label }))}
+            />
+            <section className="menu-tonalidad">
+              <label>
+                <span>Tonalidad</span>
+                <select
+                  value={String(config.scaleKey)}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    dispatch({ type: 'configure', change: { scaleKey: value === 'random' ? 'random' : Number(value) } })
+                  }}
+                >
+                  {KEY_NAMES.map((name, pc) => (
+                    <option key={pc} value={pc}>
+                      {name}
+                    </option>
+                  ))}
+                  <option value="random">Aleatoria (una en cada pregunta)</option>
+                </select>
+              </label>
+            </section>
+          </>
+        ) : (
+          <>
+            <OptionGroup
+              legend="Drop"
+              value={config.drop}
+              onChange={(drop) => dispatch({ type: 'configure', change: { drop } })}
+              options={dropFamilies(catalog, config.game).map((drop) => ({ id: drop, label: DROP_LABELS[drop] }))}
+            />
 
-        <OptionGroup
-          legend="Set de cuerdas"
-          value={config.setId}
-          onChange={(setId) => dispatch({ type: 'configure', change: { setId } })}
-          options={sets.map((set) => ({
-            id: set.id,
-            label: `Set ${set.number}`,
-            detail: `cuerdas ${set.strings.join('-')}`,
-          }))}
-        />
+            <OptionGroup
+              legend="Set de cuerdas"
+              value={config.setId}
+              onChange={(setId) => dispatch({ type: 'configure', change: { setId } })}
+              options={sets.map((set) => ({
+                id: set.id,
+                label: `Set ${set.number}`,
+                detail: `cuerdas ${set.strings.join('-')}`,
+              }))}
+            />
+          </>
+        )}
 
-        {routes ? (
+        {config.game === 'scale-order' ? (
+          <p className="menu-ayuda">{ORDER_HELP}</p>
+        ) : routes ? (
           <>
             <OptionGroup
               legend="Modo"
@@ -93,7 +140,7 @@ export function MenuScreen({ state, dispatch, newSeed, progress = EMPTY_PROGRESS
               onChange={(difficulty) => dispatch({ type: 'configure', change: { difficulty } })}
               options={DIFFICULTIES.map(({ id, label }) => ({ id, label }))}
             />
-            <p className="menu-ayuda">{DIFFICULTY_HELP[config.difficulty]}</p>
+            <p className="menu-ayuda">{(scales ? SCALE_DIFFICULTY_HELP : DIFFICULTY_HELP)[config.difficulty]}</p>
           </>
         )}
 

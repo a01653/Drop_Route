@@ -30,6 +30,12 @@ Son capturas de Chromium sobre el build actual servido por vite preview, jugando
 | `ruta-fallo-tu-respuesta-1280.png` | ordenador 1280 px | La misma ruta con «Tu respuesta». |
 | `progreso-detalle-1280.png` | ordenador 1280 px | «Tu progreso» con el detalle de ambos juegos, jugado de verdad. |
 | `escritorio-menu-1280.png` | ordenador 1280 px | Vista general del menú con progreso. |
+| `menu-escalas-1280.png` | ordenador 1280 px | Menú con «Reconocer patrones»: escala, tonalidad y dificultad. |
+| `estudio-escalas-1280.png` | ordenador 1280 px | Estudio de los cinco patrones de una escala, de grave a agudo. |
+| `patron-medio-pregunta-1280.png` | ordenador 1280 px | Patrones en Medio: tónicas marcadas sobre la tarjeta neutra. |
+| `patron-dificil-correccion-1280.png` | ordenador 1280 px | Patrones en Difícil verificado: corrección por grado y aros sobre tus marcas. |
+| `orden-pregunta-1280.png` | ordenador 1280 px | Ordenar: tarjetas sin trastes, dos colocadas. |
+| `orden-correccion-1280.png` | ordenador 1280 px | Ordenar verificado con dos puestos intercambiados y el orden correcto. |
 
 Los identificadores y los textos de cada figura viven en `captures/figures.ts`; los manuales citan estos nombres, así que cambiarlos obliga a cambiar los manuales.
 

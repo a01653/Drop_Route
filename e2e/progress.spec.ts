@@ -295,8 +295,11 @@ test('almacenamiento lleno: se avisa de que no se guarda, el juego sigue y al re
 
 // Un contador con más aciertos que intentos y otro de un set que no existe no son válidos; los otros sí.
 const REPAIRED = JSON.stringify({
-  schemaVersion: 1,
-  config: { game: 'recognition', drop: 'drop2+4', setId: 'D24S1', difficulty: 'hard', routeMode: 'major', stretch: 'ii-v' },
+  schemaVersion: 2,
+  config: {
+    game: 'recognition', drop: 'drop2+4', setId: 'D24S1', difficulty: 'hard', routeMode: 'major', stretch: 'ii-v',
+    scaleId: 'major', scaleKey: 0,
+  },
   progress: {
     'recognition:D2S1:easy': { attempts: 10, correct: 7 },
     'recognition:D24S1:hard': { attempts: 2, correct: 5 },
@@ -385,7 +388,7 @@ test('migración del esquema 0: se conserva el progreso y la configuración, que
   await expectProgress(page, MIGRATED)
   expect(await stored(page, 'drop-route:state:v0')).toBe(SCHEMA_0)
   const doc = JSON.parse((await stored(page, STORAGE_KEY))!) as { schemaVersion: number }
-  expect(doc.schemaVersion).toBe(1)
+  expect(doc.schemaVersion).toBe(2)
   await pressed(page, 'Rutas II-V-I')
   await pressed(page, /^Set 2\b/)
   await pressed(page, /^Menor\b/)
@@ -402,6 +405,32 @@ test('migración del esquema 0: se conserva el progreso y la configuración, que
   await expectProgress(page, played)
   expect(await storedCounters(page)).toEqual(played)
   expect(await stored(page, 'drop-route:state:v0')).toBe(SCHEMA_0)
+  expect(errors).toEqual([])
+})
+
+// Esquema 1: el formato publicado hasta la 1.0.3. La 2 añade la escala y la tonalidad de los juegos de escalas.
+const SCHEMA_1 = JSON.stringify({
+  schemaVersion: 1,
+  config: { game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'medium', routeMode: 'minor', stretch: 'both' },
+  progress: { 'recognition:D2S1:easy': { attempts: 10, correct: 7 }, 'routes:D2S2:minor:v-i': { attempts: 2, correct: 2 } },
+})
+
+test('migración del esquema 1 al 2: sin aviso, con copia del original y con los juegos de escalas disponibles', async ({ page }) => {
+  const errors = pageErrors(page)
+  await controlStorage(page, { items: { [STORAGE_KEY]: SCHEMA_1 } })
+  await page.goto('/')
+  await expect(page.locator('.avisos')).toHaveCount(0)
+  await expectProgress(page, { 'recognition:D2S1:easy': [7, 10], 'routes:D2S2:minor:v-i': [2, 2] })
+  expect(await stored(page, 'drop-route:state:v1')).toBe(SCHEMA_1)
+  const doc = JSON.parse((await stored(page, STORAGE_KEY))!) as { schemaVersion: number; config: Record<string, unknown> }
+  expect(doc).toMatchObject({ schemaVersion: 2, config: { game: 'routes', setId: 'D2S2', scaleId: 'major', scaleKey: 0 } })
+  await pressed(page, 'Rutas II-V-I')
+  await page.getByRole('button', { name: 'Ordenar patrones', exact: true }).click()
+  await expect(page.getByLabel('Tonalidad')).toHaveValue('0')
+  await page.reload()
+  await expect(page.locator('.avisos')).toHaveCount(0)
+  await pressed(page, 'Ordenar patrones')
+  expect(await stored(page, 'drop-route:state:v1')).toBe(SCHEMA_1)
   expect(errors).toEqual([])
 })
 

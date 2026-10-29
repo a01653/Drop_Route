@@ -3,7 +3,7 @@ import { catalog, routesDocument } from '../data'
 import { inversionFromBass } from '../music/pitch'
 import { defaultConfig, voicingOf } from '../session'
 import type { ConfigChange, QuestionState, RouteQuestionState } from '../session'
-import { DAMAGED_COPY_KEY, STORAGE_KEY, createAppStore, migratedCopyKey, parseDocument, serialize } from '.'
+import { DAMAGED_COPY_KEY, SCHEMA_VERSION, STORAGE_KEY, createAppStore, migratedCopyKey, parseDocument, serialize } from '.'
 import type { AppStore } from '.'
 import schema0 from './fixtures/schema-0.json'
 import { createMemoryStorage } from './memory-storage'
@@ -97,7 +97,10 @@ describe('configuración y progreso se conservan al recargar', () => {
     const second = open(storage)
     expect(second.getSnapshot().session).toEqual({
       phase: 'menu',
-      config: { game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'easy', routeMode: 'minor', stretch: 'both' },
+      config: {
+        game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'easy', routeMode: 'minor', stretch: 'both',
+        scaleId: 'major', scaleKey: 0,
+      },
     })
     expect(second.getSnapshot().notice).toBeNull()
   })
@@ -174,7 +177,7 @@ describe('datos dañados, reparados y de una versión futura', () => {
     expect(storage.data.get(DAMAGED_COPY_KEY)).toBe('{"schemaVersion":1,')
     expect(storage.data.get(STORAGE_KEY)).toBe('{"schemaVersion":1,')
     configure(store, { difficulty: 'medium' })
-    expect(stored(storage)).toMatchObject({ schemaVersion: 1, config: { difficulty: 'medium' }, progress: {} })
+    expect(stored(storage)).toMatchObject({ schemaVersion: SCHEMA_VERSION, config: { difficulty: 'medium' }, progress: {} })
     expect(storage.data.get(DAMAGED_COPY_KEY)).toBe('{"schemaVersion":1,')
   })
 
@@ -213,7 +216,7 @@ describe('datos dañados, reparados y de una versión futura', () => {
 
   it('reparado: conserva los contadores válidos, descarta los inválidos y guarda una copia del original', () => {
     const raw = JSON.stringify({
-      schemaVersion: 1,
+      schemaVersion: SCHEMA_VERSION,
       config: { ...defaultConfig(catalog), difficulty: 'hard' },
       progress: { ...GOOD, 'recognition:D2S1:hard': { attempts: 1, correct: 9 }, 'routes:D2S2:minor:ii-v': { attempts: 4, correct: 1 } },
     })
@@ -229,7 +232,7 @@ describe('datos dañados, reparados y de una versión futura', () => {
   })
 
   it('reparado y sin poder copiar el original: no se reescribe, se conservan los contadores válidos en memoria y se avisa', () => {
-    const raw = JSON.stringify({ schemaVersion: 1, config: defaultConfig(catalog), progress: { ...GOOD, 'recognition:D2S1:hard': { attempts: -3, correct: 0 } } })
+    const raw = JSON.stringify({ schemaVersion: SCHEMA_VERSION, config: defaultConfig(catalog), progress: { ...GOOD, 'recognition:D2S1:hard': { attempts: -3, correct: 0 } } })
     const storage = createMemoryStorage({ [STORAGE_KEY]: raw })
     storage.failSet = (key) => key === DAMAGED_COPY_KEY
     const store = open(storage)
@@ -244,7 +247,7 @@ describe('datos dañados, reparados y de una versión futura', () => {
   })
 
   it('un contador válido no se pierde por haber otros inválidos al volver a abrir', () => {
-    const storage = createMemoryStorage({ [STORAGE_KEY]: JSON.stringify({ schemaVersion: 1, config: defaultConfig(catalog), progress: { ...GOOD, 'recognition:D2S1:medium': 'mal' } }) })
+    const storage = createMemoryStorage({ [STORAGE_KEY]: JSON.stringify({ schemaVersion: SCHEMA_VERSION, config: defaultConfig(catalog), progress: { ...GOOD, 'recognition:D2S1:medium': 'mal' } }) })
     const first = open(storage)
     playRecognition(first)
     expect(open(storage).getSnapshot().progress).toEqual({ 'recognition:D2S1:easy': { attempts: 4, correct: 3 } })
@@ -262,7 +265,7 @@ describe('migración del esquema 0 (documento de prueba)', () => {
     expect(store.getSnapshot().progress['routes:D2S2:minor:ii-v']).toEqual({ attempts: 5, correct: 3 })
     expect(store.getSnapshot().session.config).toMatchObject({ game: 'routes', drop: 'drop2', setId: 'D2S2' })
     expect(storage.data.get(migratedCopyKey(0))).toBe(raw)
-    expect(stored(storage).schemaVersion).toBe(1)
+    expect(stored(storage).schemaVersion).toBe(SCHEMA_VERSION)
     expect(stored(storage).progress).toEqual(store.getSnapshot().progress)
     // Al volver a abrir ya es del esquema actual: no se migra ni se copia otra vez.
     const writes = storage.writes.length
@@ -294,6 +297,48 @@ describe('migración del esquema 0 (documento de prueba)', () => {
   })
 })
 
+describe('migración del esquema 1 al 2 (juegos de escalas)', () => {
+  const v1 = {
+    schemaVersion: 1,
+    config: { game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'hard', routeMode: 'minor', stretch: 'v-i' },
+    progress: { 'recognition:D2S1:easy': { attempts: 3, correct: 2 }, 'routes:D2S2:minor:v-i': { attempts: 2, correct: 1 } },
+  }
+  const raw = JSON.stringify(v1)
+
+  it('conserva configuración y contadores, guarda el original y añade escala y tonalidad por defecto sin avisar', () => {
+    const storage = createMemoryStorage({ [STORAGE_KEY]: raw })
+    const store = open(storage)
+    expect(store.getSnapshot().notice).toBeNull()
+    expect(store.getSnapshot().progress).toEqual(v1.progress)
+    expect(store.getSnapshot().session.config).toEqual({ ...v1.config, scaleId: 'major', scaleKey: 0 })
+    expect(storage.data.get(migratedCopyKey(1))).toBe(raw)
+    expect(stored(storage)).toEqual({ schemaVersion: 2, config: { ...v1.config, scaleId: 'major', scaleKey: 0 }, progress: v1.progress })
+  })
+
+  it('sin poder conservar el original no se reescribe y se avisa', () => {
+    const storage = createMemoryStorage({ [STORAGE_KEY]: raw })
+    storage.failSet = (key) => key === migratedCopyKey(1)
+    const store = open(storage)
+    expect(store.getSnapshot().notice).toBe('migration-uncopied')
+    expect(storage.data.get(STORAGE_KEY)).toBe(raw)
+    expect(storage.writes).toEqual([])
+  })
+
+  it('los contadores de escalas se guardan y vuelven al abrir', () => {
+    const storage = createMemoryStorage()
+    const first = open(storage)
+    configure(first, { game: 'scale-order', scaleId: 'minor-pentatonic', scaleKey: 4 })
+    first.dispatch({ type: 'start', seed: 3 })
+    for (let card = 0; card < 5; card += 1) first.dispatch({ type: 'order-pick', card })
+    first.dispatch({ type: 'verify' })
+    const counter = first.getSnapshot().progress['scale-order:minor-pentatonic']
+    expect(counter?.attempts).toBe(1)
+    const second = open(storage)
+    expect(second.getSnapshot().progress['scale-order:minor-pentatonic']).toEqual(counter)
+    expect(second.getSnapshot().session.config).toMatchObject({ game: 'scale-order', scaleId: 'minor-pentatonic', scaleKey: 4 })
+  })
+})
+
 describe('suscripción', () => {
   it('avisa de cada cambio, no avisa si nada cambia y permite darse de baja', () => {
     const store = open(createMemoryStorage())
@@ -314,6 +359,6 @@ describe('suscripción', () => {
 
   it('serialize y la configuración por defecto no dependen del almacén', () => {
     const config = defaultConfig(catalog)
-    expect(JSON.parse(serialize(config, {}))).toEqual({ schemaVersion: 1, config, progress: {} })
+    expect(JSON.parse(serialize(config, {}))).toEqual({ schemaVersion: SCHEMA_VERSION, config, progress: {} })
   })
 })

@@ -96,8 +96,22 @@ describe('validación de contadores: se descarta lo inválido y se conserva lo v
 
 describe('validación de la configuración', () => {
   it('una configuración válida se conserva tal cual', () => {
-    const config = { game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'hard', routeMode: 'minor', stretch: 'v-i' } as const
+    const config = {
+      game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'hard', routeMode: 'minor', stretch: 'v-i',
+      scaleId: 'natural-minor', scaleKey: 'random',
+    } as const
     expect(sanitizeConfig(config, catalog, routesDocument)).toEqual({ config, repaired: false })
+  })
+
+  it('los juegos de escalas conservan escala y tonalidad, y una tonalidad imposible se repara', () => {
+    const config = { ...defaultConfig(catalog), game: 'scale-order', scaleId: 'minor-pentatonic', scaleKey: 4 } as const
+    expect(sanitizeConfig(config, catalog, routesDocument)).toEqual({ config, repaired: false })
+    for (const scaleKey of [12, -1, 1.5, '4', null]) {
+      const result = sanitizeConfig({ ...config, scaleKey }, catalog, routesDocument)
+      expect(result.repaired).toBe(true)
+      expect(result.config.scaleKey).toBe(0)
+    }
+    expect(sanitizeConfig({ ...config, scaleId: 'dórica' }, catalog, routesDocument)).toMatchObject({ repaired: true, config: { scaleId: 'major' } })
   })
 
   it('un campo desconocido vuelve a su valor por defecto y se avisa', () => {
@@ -135,7 +149,7 @@ describe('validación de la configuración', () => {
 
   it('un Drop ausente se deduce del set y no cuenta como corrección', () => {
     const { config, repaired } = sanitizeConfig(
-      { game: 'recognition', setId: 'D24S2', difficulty: 'medium', routeMode: 'minor', stretch: 'both' },
+      { game: 'recognition', setId: 'D24S2', difficulty: 'medium', routeMode: 'minor', stretch: 'both', scaleId: 'major', scaleKey: 0 },
       catalog,
       routesDocument,
     )
@@ -167,7 +181,10 @@ describe('migración desde el esquema 0 (documento de prueba, no una versión pu
     const result = loaded(parse(text))
     expect(result.migratedFrom).toBe(0)
     expect(result.repaired).toBe(false)
-    expect(result.config).toEqual({ game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'medium', routeMode: 'minor', stretch: 'both' })
+    expect(result.config).toEqual({
+      game: 'routes', drop: 'drop2', setId: 'D2S2', difficulty: 'medium', routeMode: 'minor', stretch: 'both',
+      scaleId: 'major', scaleKey: 0,
+    })
     expect(result.progress).toEqual({
       'recognition:D2S1:easy': { attempts: 10, correct: 7 },
       'recognition:D24S1:hard': { attempts: 4, correct: 1 },

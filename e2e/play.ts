@@ -181,7 +181,7 @@ export async function storedCounters(page: Page): Promise<Expected> {
   const raw = await stored(page, STORAGE_KEY)
   if (raw === null) return {}
   const doc = JSON.parse(raw) as { schemaVersion: number; progress: Record<string, { attempts: number; correct: number }> }
-  expect(doc.schemaVersion).toBe(1)
+  expect(doc.schemaVersion).toBe(2)
   return Object.fromEntries(Object.entries(doc.progress).map(([key, counter]): [string, [number, number]] => [key, [counter.correct, counter.attempts]]))
 }
 

@@ -3,7 +3,7 @@
 // ejecución y la ejecución falla si falta alguna o sobra otra.
 
 export type ViewportKind = 'movil' | 'escritorio'
-export type FigureGame = 'menu' | 'reconocimiento' | 'rutas' | 'progreso'
+export type FigureGame = 'menu' | 'reconocimiento' | 'rutas' | 'progreso' | 'escalas' | 'estudio'
 
 export interface ViewportSpec {
   width: number
@@ -118,5 +118,47 @@ export const FIGURES: readonly Figure[] = [
     game: 'menu',
     viewport: 'escritorio',
     state: 'Menú a 1280 px de ancho con el progreso de una pregunta verificada en cada juego.',
+  },
+  {
+    id: 'menu-escalas-1280',
+    title: 'Menú con «Reconocer patrones»',
+    game: 'menu',
+    viewport: 'escritorio',
+    state: 'Menú con el juego de patrones: escala, tonalidad y dificultad, sin Drop ni set.',
+  },
+  {
+    id: 'estudio-escalas-1280',
+    title: 'Estudio de patrones de escala',
+    game: 'estudio',
+    viewport: 'escritorio',
+    state: 'Modo estudio con «Patrones de escala»: los cinco patrones de una escala en una tonalidad, ordenados de grave a agudo.',
+  },
+  {
+    id: 'patron-medio-pregunta-1280',
+    title: 'Patrones, Medio: marcar las tónicas',
+    game: 'escalas',
+    viewport: 'escritorio',
+    state: 'Pregunta de patrones en Medio: tarjeta neutra con trastes, patrón elegido y algunas tónicas marcadas.',
+  },
+  {
+    id: 'patron-dificil-correccion-1280',
+    title: 'Patrones, Difícil: corrección por grados',
+    game: 'escalas',
+    viewport: 'escritorio',
+    state: 'Pregunta de patrones en Difícil verificada con una marca equivocada y otra sin poner: solución en color, corrección por grado y tus marcas con aros.',
+  },
+  {
+    id: 'orden-pregunta-1280',
+    title: 'Ordenar patrones: tarjetas sin trastes',
+    game: 'escalas',
+    viewport: 'escritorio',
+    state: 'Pregunta de ordenar: cinco tarjetas neutras sin trastes ni cejuelo, dos ya colocadas.',
+  },
+  {
+    id: 'orden-correccion-1280',
+    title: 'Ordenar patrones: corrección',
+    game: 'escalas',
+    viewport: 'escritorio',
+    state: 'Orden verificado con dos puestos intercambiados: corrección puesto a puesto y el orden correcto en color y con trastes.',
   },
 ]

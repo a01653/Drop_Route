@@ -1,5 +1,5 @@
-% Source-SHA256: be871ab48a9f4ff7f5653b093cfc06fad97908f2181d74822f732ed6cca98f7a
-% !TeX program = xelatex
+% Source-SHA256: a1abd84f2adab7e4384ce8bb9541667901dccfefaf7c6382ef2a0985cd5690eb
+% !TeX program = lualatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
 \IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
@@ -33,7 +33,7 @@
 \fancyhf{}
 \fancyhead[L]{\small\sffamily\color{softgray}Drop Route}
 \fancyhead[R]{\small\sffamily\color{softgray}Manual de uso}
-\fancyfoot[L]{\small\sffamily\color{softgray}Versión 1.0.1}
+\fancyfoot[L]{\small\sffamily\color{softgray}Versión 1.1.0}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
@@ -80,10 +80,10 @@
 \vspace{1.4cm}
 {\sffamily\bfseries\fontsize{30}{38}\selectfont Manual de uso\par}
 \vspace{0.8cm}
-{\sffamily\fontsize{14}{20}\selectfont\color{lightblue} Reconocer voicings y continuar rutas II--V--I\par}
+{\sffamily\fontsize{14}{20}\selectfont\color{lightblue} Voicings, rutas II--V--I y patrones de escala\par}
 \vfill
 {\sffamily\small Autor del proyecto: Jesús Quevedo Rodríguez\par}
-{\sffamily\small Versión 1.0.1\par}
+{\sffamily\small Versión 1.1.0\par}
 {\sffamily\small Repositorio: a01653/Drop\_Route\par}
 \vspace{2cm}
 \end{center}
@@ -93,22 +93,26 @@
 \setcounter{page}{2}
 \tableofcontents
 \newpage
-Autor: Jesús Quevedo Rodríguez. Versión 1.0.3.
+Autor: Jesús Quevedo Rodríguez. Versión 1.1.0.
 
-Drop Route es un juego para estudiar voicings de guitarra y recorridos
-II-V-I. Las preguntas trabajan en Do (C), sin audio; el modo estudio
-permite transponer las formas. Guarda el progreso en el navegador del
-dispositivo; no usa cuentas ni sincroniza datos.
+Drop Route es un juego para estudiar voicings de guitarra, recorridos
+II-V-I y patrones de escala. Las preguntas de voicings y rutas trabajan
+en Do (C), sin audio; las de escalas se juegan en la tonalidad que
+elijas y el modo estudio permite transponer las formas. Guarda el
+progreso en el navegador del dispositivo; no usa cuentas ni sincroniza
+datos.
 
 \section{1. Elegir qué practicar}\label{1-elegir-quuxe9-practicar}
 
 Al abrir la aplicación aparece el menú. Puedes elegir \textbf{Reconocer
-voicings}, \textbf{Rutas II-V-I} o \textbf{Modo estudio}.
+voicings}, \textbf{Rutas II-V-I}, \textbf{Reconocer patrones},
+\textbf{Ordenar patrones} o \textbf{Modo estudio}.
 
 En reconocimiento seleccionas Drop, set de cuerdas y dificultad. En
 rutas se usa Drop 2 y eliges set, modo mayor o menor y tramo de la
-secuencia. El modo estudio sirve para consultar formas y rutas sin
-responder preguntas.
+secuencia. En los dos juegos de escalas eliges la escala y la tonalidad,
+en lugar de Drop y set. El modo estudio sirve para consultar formas,
+rutas y patrones sin responder preguntas.
 
 \begin{figure}[!htbp]
 \centering
@@ -232,35 +236,157 @@ ser la posición de la secuencia estudiada.
 {\footnotesize \emph{Figura 11. Comparación con tu respuesta.}}
 \end{figure}
 
-\section{4. Modo estudio}\label{4-modo-estudio}
+\section{4. Patrones de escala}\label{4-patrones-de-escala}
 
-En el menú, abre \textbf{Modo estudio} y selecciona \textbf{Rutas
-II-V-I}. Elige el set, el modo mayor o menor, la ruta y la tonalidad.
-Verás los acordes II, V e I juntos y el movimiento de las voces.
+Hay cuatro escalas: \textbf{Mayor}, \textbf{Pentatónica mayor},
+\textbf{Pentatónica menor} y \textbf{Menor natural}, con cinco patrones
+cada una. Se numeran subiendo por el mástil y llevan también el nombre
+de su forma CAGED:
 
-La columna sombreada marca el traste donde cae la raíz del acorde II. Se
-repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El
-número de ese traste aparece en negrita. El modo estudio no suma
-intentos ni modifica el progreso.
+\begin{itemize}
+\tightlist
+\item
+  Patrón 1 = forma E, 2 = D, 3 = C, 4 = A y 5 = G.
+\item
+  En las escalas menores, la forma es la de su propio acorde menor: Em,
+  Dm, Cm, Am y Gm.
+\end{itemize}
 
-\section{5. Progreso}\label{5-progreso}
-
-Cada pregunta suma un intento cuando pulsas \textbf{Verificar}. Salir,
-cambiar una selección o mirar la corrección no añade intentos. El panel
-del menú muestra intentos y aciertos por juego y configuración.
+En el menú eliges la escala y la \textbf{Tonalidad}: una de las doce o
+\textbf{Aleatoria}, que cambia en cada pregunta. Cada patrón se coloca
+entero en su posición más grave de esa tonalidad.
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/progreso-detalle-1280.png}\par\smallskip
-{\footnotesize \emph{Figura 12. Detalle del progreso local.}}
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/menu-escalas-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 12. Menú de los juegos de escalas.}}
 \end{figure}
+
+\subsection{Reconocer patrones}\label{reconocer-patrones}
+
+La tarjeta muestra el patrón con círculos grises y los números de
+traste; arriba se indica la tónica.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Fácil:} toca el botón del patrón (por ejemplo, \textbf{Patrón
+  2 · forma D}).
+\item
+  \textbf{Medio:} elige el patrón y toca todas las notas que sean
+  tónica. Vuelve a tocar una nota para quitar la marca.
+\item
+  \textbf{Difícil:} elige el patrón y marca todas las tónicas, terceras,
+  quintas y séptimas. En las escalas menores son ♭3 y ♭7; en la
+  pentatónica mayor, que no tiene séptima, se marca la sexta (6). Elige
+  un grado en \textbf{Grado que marcas} y toca las notas que lo llevan;
+  \textbf{Borrar} quita marcas.
+\end{enumerate}
+
+Las demás notas del patrón se dejan sin marcar.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/patron-medio-pregunta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 13. Medio: patrón elegido y tónicas marcadas.}}
+\end{figure}
+
+Al verificar, la tarjeta recupera los colores: tónica en rojo, tercera
+en azul, quinta en verde, y séptima o sexta en amarillo. La corrección
+dice qué notas faltaban y cuáles sobraban en cada grado. En \textbf{Tus
+marcas}, cada nota lleva un aro:
+
+\begin{itemize}
+\tightlist
+\item
+  verde, si está bien marcada;
+\item
+  rojo, si la marca es errónea;
+\item
+  discontinuo, si faltaba marcarla.
+\end{itemize}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/patron-dificil-correccion-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 14. Difícil: corrección y aros sobre tus marcas.}}
+\end{figure}
+
+\subsection{Ordenar patrones}\label{ordenar-patrones}
+
+\noindent\begin{minipage}[t]{0.38\linewidth}\vspace{0pt}
+\raggedright
+Aparecen los cinco patrones barajados, con las letras A a E y sin
+números de traste ni cejuelo. Tócalos de grave a agudo, empezando por el
+que queda más cerca del cejuelo. Tocar de nuevo una tarjeta la quita del
+orden, y \textbf{Borrar orden} empieza de cero.
+
+El orden depende de la tonalidad. Por ejemplo, en Do mayor es 3-4-5-1-2
+y en Mi mayor, 2-3-4-5-1.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.58\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth,keepaspectratio]{../manuals/capturas/orden-pregunta-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 15. Ordenar: tarjetas sin trastes.}}
+\end{minipage}
+
+Al verificar se corrige cada puesto y se muestra el orden correcto, con
+colores y trastes.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth,keepaspectratio]{../manuals/capturas/orden-correccion-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 16. Ordenar: corrección y orden correcto.}}
+\end{figure}
+
+Los dos juegos tienen \textbf{Anterior}, \textbf{Siguiente} y
+\textbf{Terminar y revisar}, como el reconocimiento de voicings.
+
+\section{5. Modo estudio}\label{5-modo-estudio}
+
+\noindent\begin{minipage}[t]{0.38\linewidth}\vspace{0pt}
+\raggedright
+En el menú, abre \textbf{Modo estudio}. Elige qué estudiar y la
+tonalidad. El modo estudio no suma intentos ni modifica el progreso.
+
+\textbf{Rutas II-V-I:} elige el set, el modo mayor o menor y la ruta.
+Verás los acordes II, V e I juntos y el movimiento de las voces. La
+columna sombreada marca el traste donde cae la raíz del acorde II. Se
+repite en las tres tarjetas y se desplaza al cambiar de tonalidad. El
+número de ese traste aparece en negrita.
+
+\textbf{Patrones de escala:} elige la escala y el orden, \textbf{Por
+número} o \textbf{De grave a agudo}. Verás los cinco patrones con su
+número, su forma CAGED y los trastes que ocupan. Las cuerdas al aire
+aparecen a la izquierda del cejuelo.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.58\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth,keepaspectratio]{../manuals/capturas/estudio-escalas-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 17. Estudio de patrones de escala.}}
+\end{minipage}
+
+\section{6. Progreso}\label{6-progreso}
+
+\noindent\begin{minipage}[t]{0.38\linewidth}\vspace{0pt}
+\raggedright
+Cada pregunta suma un intento cuando pulsas \textbf{Verificar}. Salir,
+cambiar una selección o mirar la corrección no añade intentos. El panel
+del menú muestra intentos y aciertos de cada juego y de la configuración
+elegida. Los patrones cuentan por escala y dificultad, y al ordenar, por
+escala.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.58\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth,keepaspectratio]{../manuals/capturas/progreso-detalle-1280.png}\par\smallskip
+{\footnotesize \emph{Figura 18. Detalle del progreso local.}}
+\end{minipage}
 
 Los datos quedan en este navegador y dispositivo. Si borras los datos
 del sitio, se pierde ese progreso. Si el navegador no puede guardar,
-Drop Route lo avisa y permite seguir jugando en memoria.
+Drop Route lo avisa y permite seguir jugando en memoria. Al actualizar
+desde una versión anterior, el progreso se conserva.
 
-\section{6. Actualizar y jugar sin
-conexión}\label{6-actualizar-y-jugar-sin-conexiuxf3n}
+\section{7. Actualizar y jugar sin
+conexión}\label{7-actualizar-y-jugar-sin-conexiuxf3n}
 
 Después de una primera carga completa con conexión, la PWA guarda los
 recursos de la aplicación para poder recargar y jugar sin red.
@@ -270,10 +396,21 @@ La versión nueva no se activa mientras tienes una pregunta abierta. Si
 existen cambios que solo están en memoria, el aviso lo indica antes de
 actualizar.
 
-\section{7. Límites de esta entrega}\label{7-luxedmites-de-esta-entrega}
+\section{8. Límites de esta entrega}\label{8-luxedmites-de-esta-entrega}
 
-No incluye audio, transposición en las respuestas, cuentas ni
-sincronización. Tampoco ofrece notificaciones, sesiones adaptativas o
-restauración del progreso. Las rutas se limitan a Drop 2 en los sets 1 y
-2.
+\begin{itemize}
+\tightlist
+\item
+  No incluye audio, cuentas, sincronización, notificaciones, sesiones
+  adaptativas ni restauración del progreso.
+\item
+  Las preguntas de voicings y rutas siguen en C. Las rutas se limitan a
+  Drop 2 en los sets 1 y 2.
+\item
+  Los patrones de escala son las cinco formas movibles de la fuente: no
+  incluyen digitaciones en posición abierta ni de tres notas por cuerda.
+\item
+  En Medio y Difícil, el área que se puede tocar en cada nota es su
+  celda del diagrama, más pequeña que los botones.
+\end{itemize}
 \end{document}

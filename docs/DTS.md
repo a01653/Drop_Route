@@ -1,13 +1,13 @@
 # Documento de Diseño Técnico del Software - Drop Route
 
-Repositorio: a01653/Drop_Route. Documento base de DR-006 con revisiones parciales de reconocimiento, versión visible, variantes C6, corrección móvil, lectura por tónica y anclaje de estudio II–V–I.
-Paquete: 1.0.3. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión del 19/10/2026: traste ancla de la plantilla en el modo estudio II–V–I.
+Repositorio: a01653/Drop_Route. Documento base de DR-006 con revisiones parciales de reconocimiento, versión visible, variantes C6, corrección móvil, lectura por tónica, anclaje de estudio II–V–I y patrones de escala.
+Paquete: 1.1.0. Autor del proyecto: Jesús Quevedo Rodríguez. Revisión del 29/10/2026: patrones de escala, con estudio y dos juegos (DR-013).
 
 Este DTS distingue lo existente y el diseño previsto. Existen los datos, scripts, tests y documentos de la base y, desde DR-001, la base técnica de la aplicación y, desde DR-002, el renderizador de tarjetas SVG, el icono (aprobado) y una pantalla de revisión de ambos. Desde DR-003 y DR-004 existe el juego de reconocimiento en fácil, medio y difícil y desde DR-005 el juego de rutas II-V-I de Drop 2; todo ello está integrado en main. DR-006 añade el progreso local y la PWA en la rama feat/progress-and-pwa, pendiente de revisión y sin integrar; sus pruebas E2E y la CI de esa fase no tienen todavía resultado registrado. Falta el cierre documental (DR-007). La primera base quedó sin publicar y su copia temporal se perdió. La reconstrucción vuelve a validar los datos desde las referencias originales.
 
 ## Objetivo y alcance
 
-Drop Route servirá para memorizar voicings, inversiones y grados y practicar rutas II-V-I concretas. Ordenador y móvil. Primera etapa en C, con la apariencia de nuestras tarjetas.
+Drop Route servirá para memorizar voicings, inversiones y grados y practicar rutas II-V-I concretas. Ordenador y móvil. Primera etapa en C, con la apariencia de nuestras tarjetas. Desde DR-013 incluye los cinco patrones de cuatro escalas, en estudio y en dos juegos con tonalidad elegible.
 
 Se preparan fuentes e instrucciones para que Claude Code implemente cada etapa mediante órdenes de trabajo. No necesita acceder al historial de esta conversación ni recibir las plantillas de nuevo.
 
@@ -19,7 +19,7 @@ Aplicación cliente, sin backend.
 
 | Capa | Responsabilidad |
 | --- | --- |
-| Datos | Posiciones y rutas procedentes de la plantilla. |
+| Datos | Posiciones y rutas procedentes de la plantilla; patrones de escala transcritos de una fuente publicada. |
 | Núcleo musical | Alturas físicas, grados, inversiones y solución de ruta. |
 | Sesión | Pregunta, selección, evaluación y transición. |
 | Progreso | Contadores, configuración guardada, esquema versionado, migración y reparación. |
@@ -29,11 +29,11 @@ La geometría no decide la respuesta y los componentes no duplican el catálogo.
 
 | Capa | Contenido |
 | --- | --- |
-| `src/data` | Tipos y acceso a `data/catalog.json` y `data/routes.json`, que siguen siendo la única definición de datos. |
-| `src/music` | Altura física (MIDI) e inversión por bajo real. Funciones puras. |
-| `src/session` | Menú, preguntas de reconocimiento y de ruta, respuesta, corrección por campos, banco de grados y reductor de acciones, con semilla reproducible. Sin React. |
+| `src/data` | Tipos y acceso a `data/catalog.json`, `data/routes.json` y `data/scales.json`, que siguen siendo la única definición de datos. |
+| `src/music` | Altura física (MIDI), inversión por bajo real y, en `scalePatterns.ts`, patrones de escala colocados en una tonalidad y su orden de grave a agudo. Funciones puras. |
+| `src/session` | Menú, preguntas de reconocimiento, de ruta y de los dos juegos de escalas (`scales.ts`, `scaleOrder.ts` y `scaleSession.ts`), respuesta, corrección por campos, banco de grados y reductor de acciones, con semilla reproducible. Sin React. |
 | `src/progress` | Contadores por juego, set y dificultad o modo y tramo; reductor de la aplicación que cuenta un intento por transición; esquema guardado, migración, reparación y copia; almacén (`createAppStore`) sobre un `KeyValueStore` mínimo; resumen. Sin React ni acceso directo a `localStorage`. |
-| `src/ui` | Menú y pantallas de juego (`game/`, con el panel de progreso), modo estudio (`study/`), renderizador de tarjetas SVG (`card/`), pantalla de revisión (`review/`), avisos (`Notices.tsx`), adaptador de `localStorage` (`browserStorage.ts`) y registro del service worker (`pwa/`). |
+| `src/ui` | Menú y pantallas de juego (`game/`, con el panel de progreso y las pantallas de patrones y de ordenar), modo estudio (`study/`), renderizador de tarjetas SVG (`card/`, con la tarjeta de patrón de seis cuerdas), pantalla de revisión (`review/`), avisos (`Notices.tsx`), adaptador de `localStorage` (`browserStorage.ts`) y registro del service worker (`pwa/`). |
 
 La dependencia permitida es ui, progress, session, music, data. ESLint rechaza que una capa importe otra superior y que data, music, session o progress usen React, de modo que pueden probarse sin DOM. Un test de capas de `src/progress` lo comprueba. Solo `src/ui/browserStorage.ts` toca `localStorage`.
 
@@ -66,8 +66,9 @@ Pandoc y LuaLaTeX completo o XeLaTeX generan este documento. El estilo utiliza l
 | `CLAUDE.md` / `AGENTS.md` | Reglas permanentes y flujo de trabajo. |
 | `data/catalog.json` | Sets, fórmulas, afinación y 124 formas. |
 | `data/routes.json` | Dieciséis rutas II-V-I completas. |
+| `data/scales.json` | Veinte patrones de escala en C (cuatro escalas por cinco formas), con la URL y el SHA-256 del diagrama fuente de cada uno. |
 | references/ | Tres fuentes originales y sus hashes. |
-| scripts/ | Extracción, auditoría, generación documental y lanzador de Python. |
+| scripts/ | Extracción, auditoría (también de los patrones de escala, en `scripts/lib/scale-validation.mjs`), generación documental y lanzador de Python. |
 | tests/ | Pruebas con node:test, conservadas aparte: las de la base musical, el utillaje, la política documental y el icono. |
 | `src/` | Capas `data`, `music`, `session`, `progress` y `ui`, `main.tsx` y los tests Vitest junto a cada capa. |
 | `e2e/` | Playwright: humo, tarjetas, juegos, comparación con la plantilla, progreso, sin conexión y actualización de la PWA. |
@@ -121,7 +122,7 @@ Cada contador cuenta por separado: reconocimiento por set y dificultad (`recogni
 
 El documento guardado es un único texto JSON en `localStorage` bajo `drop-route:state`: `schemaVersion`, la configuración del menú (juego, Drop, set, dificultad, modo y tramo) y los contadores `{ attempts, correct }`. El orden es fijo, de modo que dos estados iguales dan el mismo texto y no se vuelve a escribir si no hay nada nuevo. `createAppStore` lee una sola vez al abrir y escribe el documento completo tras cada acción que cambie la configuración o los contadores. Al abrir se vuelve siempre al menú: una pregunta abierta no se reanuda, solo se conserva la configuración.
 
-El esquema vigente es el 1. Es independiente de la versión del paquete: cambiar la versión de la aplicación no cambia el esquema, y cambiar el formato exige subir el esquema y añadir una migración. La cadena de migraciones (`MIGRATIONS`) convierte cada versión n en la n + 1. El esquema 0 es un fixture de prueba (`src/progress/fixtures/schema-0.json`): un formato inventado, con `counters` y pares `[intentos, aciertos]`, que no corresponde a ninguna versión pública, porque Drop Route no había publicado ningún guardado. Existe para ejercitar la cadena con un caso real antes de que haga falta una migración verdadera.
+El esquema vigente es el 2 desde la 1.1.0 (DR-013). Es independiente de la versión del paquete: cambiar la versión de la aplicación no cambia el esquema, y cambiar el formato exige subir el esquema y añadir una migración. La cadena de migraciones (`MIGRATIONS`) convierte cada versión n en la n + 1. El esquema 0 es un fixture de prueba (`src/progress/fixtures/schema-0.json`): un formato inventado, con `counters` y pares `[intentos, aciertos]`, que no corresponde a ninguna versión pública, porque Drop Route no había publicado ningún guardado. Existe para ejercitar la cadena con un caso real antes de que haga falta una migración verdadera. La migración 1 → 2 es la primera real: añade a la configuración la escala y la tonalidad de los juegos de escalas con sus valores por defecto (mayor y C), de modo que un documento correcto del esquema 1 no se lee como reparado, y conserva antes el original en `drop-route:state:v1`. Los contadores no cambian; los de escalas son claves nuevas: `scale-patterns:<escala>:<dificultad>` y `scale-order:<escala>`. La tonalidad no separa contadores.
 
 | Situación al abrir | Qué hace | Aviso |
 | --- | --- | --- |
@@ -136,7 +137,7 @@ El esquema vigente es el 1. Es independiente de la versión del paquete: cambiar
 
 Las dos copias son un único hueco cada una: una copia posterior sustituye a la anterior. La interfaz no permite recuperarlas; quedan en el almacenamiento del navegador. Un aviso es «solo en memoria» cuando lo que hay en la página no está guardado: no disponible, escritura fallida y las sesiones que no escriben para proteger un dato anterior. En ese caso recargar lo pierde, y la interfaz lo dice.
 
-El panel «Tu progreso» del menú resume los contadores (totales por juego, los de la configuración elegida y el detalle plegado). No hay puntuación, rachas ni clasificaciones.
+El panel «Tu progreso» del menú resume los contadores (totales de los cuatro juegos, los de la configuración elegida y el detalle plegado). No hay puntuación, rachas ni clasificaciones.
 
 ## Modelo musical
 
@@ -172,6 +173,29 @@ Mayor Dm7-G7-Cmaj7. Menor Dm7(b5)-G7-Cm7. Comparar con la ruta exacta del materi
 No aplicar un optimizador que sustituya estas rutas ni afirmar mínimo universal. C6 aparece como sustitución opcional en ciertos pasos de la fuente; no se convierte automáticamente en otro acorde evaluable.
 
 En el modo estudio, `transposeRoute` deriva `anchorFret` del traste de la nota con grado `1` en el acorde II y lo asigna a copias de los tres pasos. No modifica `data/routes.json`. Al transponer, el ancla recibe el mismo desplazamiento común que las notas. La tarjeta de solución sombrea esa columna con el color del borde de la calidad y pone su número de traste en negrita; `windowForPosition` amplía el mástil si la columna queda fuera de su ventana habitual. La vista neutra no muestra el ancla.
+
+## Patrones de escala (DR-013)
+
+**Datos.** `data/scales.json` contiene la mayor, la pentatónica mayor, la pentatónica menor y la menor natural, con cinco patrones cada una, en C. Se transcribieron de los diagramas de onlineguitarbooks.com (consulta del 29/10/2026), con una sola fuente para no mezclar digitaciones. Cada patrón guarda la URL y el SHA-256 del diagrama y la posición que indica la página (su traste más grave). Los diagramas no se copian al repositorio. Numeración acordada con el usuario: 1 = forma E, 2 = D, 3 = C, 4 = A y 5 = G, subiendo por el mástil; las menores usan la forma de su propio acorde menor (Em…Gm).
+
+**Validación.** `scripts/lib/scale-validation.mjs` recalcula cada nota desde afinación y traste, sin fiarse de las etiquetas, y comprueba:
+
+- grados y distancia exacta entre notas consecutivas, sin huecos ni repeticiones;
+- dos notas por cuerda en las pentatónicas y dos o tres en las de siete notas;
+- la posición de la fuente y la tónica en las cuerdas de cada forma CAGED;
+- que la sucesión E-D-C-A-G recorra una octava y que cada caja pentatónica enlace con la siguiente;
+- que cada pentatónica esté contenida en la forma homónima de su escala de siete notas.
+
+Lo ejecutan `npm run audit:music` y `tests/scale-patterns.test.mjs`, con oráculos y mutaciones deliberadas.
+
+**Tonalidad.** `patternInKey` desplaza todas las notas la misma cantidad hasta que el traste más grave queda entre 0 y 11; las cuerdas al aire se dibujan a la izquierda del cejuelo. El orden de grave a agudo es el del traste más grave en esa tonalidad: en las 48 combinaciones de escala y tonalidad es una rotación de 1-2-3-4-5 sin empates. Se usa la forma movible de la fuente; la digitación en posición abierta de algunas tonalidades no se incluye. Los juegos de voicings y rutas siguen en C.
+
+**Tarjeta.** `ScalePatternCard` y `scaleLayout.ts` dibujan seis cuerdas, varias notas por cuerda y, si hace falta, el hueco de cuerdas al aire, con las proporciones, fuentes y colores de las tarjetas de voicings. En la solución, 1, 3, 5 y 7 (♭3, ♭7 o 6 según la escala) llevan los colores de grado y el resto de notas va en blanco. La vista neutra solo recibe posiciones. Las tarjetas que se comparan comparten columnas y hueco para verse a la misma escala. Sin trastes, no hay números ni cejuelo y el nombre accesible usa columnas relativas.
+
+**Juegos.** El menú pide escala y tonalidad (una de doce o «Aleatoria») en lugar de Drop y set, que se conservan para volver a reconocimiento. Cambia de juego en las fases nuevas `escala`, `escala-verificada`, `escala-resumen`, `orden`, `orden-verificada` y `orden-resumen`, con el mismo historial que reconocimiento.
+
+- Reconocer patrones sortea sin repetir dentro de la ronda: cinco patrones en una tonalidad o sesenta combinaciones con tonalidad aleatoria. Fácil pide el patrón; Medio, además, todas las tónicas; Difícil, todas las notas de los grados pedidos, con un banco fijo de siete (1, ♭3, 3, 5, 6, ♭7 y 7). Para verificar hacen falta el patrón y, en Medio y Difícil, una marca. Cada nota se compara con su grado: si es de los pedidos debe llevar esa marca y, si no, ninguna. La corrección da un campo por grado con las notas que faltan y las que sobran, y un aro de acierto, error o falta sobre cada nota.
+- Ordenar patrones baraja las cinco tarjetas sin dejarlas ordenadas. Se tocan de grave a agudo; tocar una colocada la quita. Se corrige puesto a puesto y la solución se muestra en color y con trastes.
 
 ## Preguntas y corrección
 
@@ -266,6 +290,12 @@ DR-006 añade pruebas en tres niveles; las cifras observadas están en [su regis
 - node:test sin navegador: el generador (base de publicación, qué se precachea, versión por contenido y por plantilla, nombre de caché), el worker con un arnés que simula Cache API y red, un `npm run build` real con base `/` y `/Drop_Route/`, y los iconos de la PWA (maskable opaco con el dibujo dentro de la zona segura, 192 con los cuatro círculos y `public/icons/` idéntico a las exportaciones).
 - Playwright, con Chromium real y sin mocks de service worker ni caché: `progress.spec.ts` (contadores, recarga y los casos de almacenamiento, incluidos copia fallida y migración), `offline.spec.ts` (primera carga, recarga y juego sin conexión, tarjetas, fuentes, manifest e iconos desde el worker) y `pwa-update.spec.ts` (dos builds A y B en un servidor propio: B en espera con una pregunta abierta, oferta solo en el menú, una única recarga, progreso conservado, cachés ajenas y de otra base intactas, almacenamiento lleno y bloqueado).
 
+DR-013 añade pruebas en tres niveles; las cifras están en [su registro](validation/2026-10-29-dr-013-scale-patterns.md).
+
+- node:test: la validación de los 20 patrones de escala, con tres oráculos y nueve mutaciones deliberadas.
+- Vitest: las doce tonalidades de las cuatro escalas, el orden de grave a agudo y la tarjeta. En la sesión, la rotación, las respuestas completas, la corrección de marcas y del orden, el historial y la configuración. En el progreso, el conteo, los contadores, la migración 1 → 2 y el almacén. En las pantallas, la neutralidad, la corrección y que al ordenar no se revelen los trastes.
+- Playwright: `scales.spec.ts` (estudio, los tres niveles de patrones, ordenar y 360/390/430 px) y la migración 1 → 2 en `progress.spec.ts`. Deducen la respuesta de las posiciones dibujadas y de `data/scales.json`.
+
 Controles negativos de DR-006 observados por el supervisor: eliminar el hash de la plantilla del worker del cálculo de la versión hizo fallar 1 test, y eliminar el ámbito del nombre de la caché hizo fallar 2; los ficheros se restauraron byte a byte. Los E2E nuevos no tienen todavía resultado registrado.
 
 Los controles principales de fases anteriores se probaron con mutaciones deliberadas: círculos desplazados 3 px, un dígito de color cambiado y círculos del icono encogidos. Cada una hizo fallar el test correspondiente.
@@ -309,7 +339,7 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 - La puntuación detallada sigue pendiente de decisión; los contadores de DR-006 cuentan intentos y aciertos sin más.
 - El icono está aprobado. El PNG de 192 y el maskable de 512 los generó el supervisor con CairoSVG 2.9.1 y no con el Chromium del script; el 512 «any» es el aprobado.
 - La PWA solo se ha probado en Chromium. No se ha comprobado la instalación en un dispositivo real, en Safari ni en Firefox, y las pruebas de actualización usan un servidor propio y no un alojamiento real.
-- GitHub Pages publica la aplicación desde `main`. El paquete de esta entrega es 1.0.3; la versión visible procede de ese metadato y el esquema de progreso permanece en 1. El estado del despliegue se comprueba en GitHub Actions.
+- GitHub Pages publica la aplicación desde `main`. El paquete de esta entrega es 1.1.0; la versión visible procede de ese metadato y el esquema de progreso pasa al 2, con migración desde el 1. El estado del despliegue se comprueba en GitHub Actions.
 - Reconocimiento, estudio y revisión muestran las nueve variantes C6 de la fuente sobre copias derivadas. El juego de rutas conserva los pasos canónicos; sus variantes opcionales se consultan en estudio.
 - Las fuentes manuscritas pesan 87 kB y se descargan al mostrar tarjetas; hasta entonces el texto usa una fuente de respaldo.
 - El LaTeX y el PDF del DTS son la última edición generada, hecha durante DR-001 antes del calendario documental. Están pendientes respecto a este Markdown hasta DR-007 y no deben presentarse como documentación actualizada.
@@ -318,13 +348,14 @@ El primer push fue bloqueado por revisión automática debido al repositorio pú
 - Solo se normalizaron las rutas Drop 2 sets 1 y 2 del HTML.
 - Los PDF tienen 21 páginas de imágenes cada uno; no se han transcrito íntegramente.
 - Cdim7 sigue como referencia. C6 se evalúa como variante de la familia mayor en reconocimiento, sin añadir una quinta opción de calidad.
-- La transposición se limita al modo estudio; todavía no se aplica a las respuestas evaluables. El audio queda para otra etapa.
+- La transposición de voicings y rutas se limita al modo estudio; solo los juegos de escalas eligen tonalidad. El audio queda para otra etapa.
+- Los patrones de escala son las cinco formas movibles de una única fuente, sin posición abierta, 3NPS ni otros modos. En Medio y Difícil, el área táctil de cada nota es su celda (unos 20 px de alto), como en el tablero de grados; los botones y el banco miden 48 px o más.
 - La reconstrucción conserva contratos y datos, no recupera el commit local perdido byte a byte.
 - Hosting y licencia del código nuevo pendientes; las referencias conservan su autoría.
 
 ## Evolución
 
-DR-001 configuró las herramientas; DR-002 creó tarjetas e icono; DR-003 y DR-004, el reconocimiento; DR-005, las rutas. Las cinco están integradas en main. DR-006, progreso y PWA, está implementada en feat/progress-and-pwa y pendiente de revisión. DR-007, cierre documental y pruebas, está pendiente: en ella se regenerarán LaTeX y PDF y se escribirán los manuales.
+DR-001 configuró las herramientas; DR-002 creó tarjetas e icono; DR-003 y DR-004, el reconocimiento; DR-005, las rutas. Las cinco están integradas en main. DR-006, progreso y PWA, está implementada en feat/progress-and-pwa y pendiente de revisión. DR-007, cierre documental y pruebas, está pendiente: en ella se regenerarán LaTeX y PDF y se escribirán los manuales. DR-013 añade los patrones de escala (datos, estudio y dos juegos) y el esquema 2 del progreso.
 
 Convertir lo planificado en descripción de implementación solo después de inspeccionar y probar el código. No extender una tarea a mejoras no pedidas.
 

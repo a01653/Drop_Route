@@ -7,6 +7,8 @@ import './desktop.css'
 import { MenuScreen } from './game/MenuScreen'
 import { RecognitionScreen, RecognitionSummaryScreen } from './game/RecognitionScreen'
 import { RouteScreen, RouteSummaryScreen } from './game/RouteScreen'
+import { ScaleOrderScreen, ScaleOrderSummaryScreen } from './game/ScaleOrderScreen'
+import { ScalePatternScreen, ScaleSummaryScreen } from './game/ScalePatternScreen'
 import { Notices } from './Notices'
 import { NO_UPDATES } from './pwa/update'
 import type { UpdateController } from './pwa/update'
@@ -45,6 +47,14 @@ export function App({ store: provided, pwa = NO_UPDATES }: AppProps) {
       <RecognitionSummaryScreen state={session} dispatch={dispatch} />
     ) : session.phase === 'ruta' || session.phase === 'ruta-verificada' ? (
       <RouteScreen state={session} dispatch={dispatch} newSeed={newSeed} />
+    ) : session.phase === 'escala' || session.phase === 'escala-verificada' ? (
+      <ScalePatternScreen state={session} dispatch={dispatch} newSeed={newSeed} />
+    ) : session.phase === 'escala-resumen' ? (
+      <ScaleSummaryScreen state={session} dispatch={dispatch} />
+    ) : session.phase === 'orden' || session.phase === 'orden-verificada' ? (
+      <ScaleOrderScreen state={session} dispatch={dispatch} newSeed={newSeed} />
+    ) : session.phase === 'orden-resumen' ? (
+      <ScaleOrderSummaryScreen state={session} dispatch={dispatch} />
     ) : (
       <RecognitionScreen state={session} dispatch={dispatch} newSeed={newSeed} />
     )

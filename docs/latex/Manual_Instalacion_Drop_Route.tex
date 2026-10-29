@@ -1,5 +1,5 @@
-% Source-SHA256: ff7dff146bb0cd31d4850b07872d354b96674decb8270d0627243b3ed88ed199
-% !TeX program = xelatex
+% Source-SHA256: cc2279a549f916466a8c2998206ec799ff902f69ae877d4291574b23b6ec9f3f
+% !TeX program = lualatex
 \documentclass[a4paper,11pt]{article}
 \usepackage{fontspec}
 \IfFontExistsTF{TeX Gyre Pagella}{\setmainfont{TeX Gyre Pagella}}{\setmainfont{P052}}
@@ -33,7 +33,7 @@
 \fancyhf{}
 \fancyhead[L]{\small\sffamily\color{softgray}Drop Route}
 \fancyhead[R]{\small\sffamily\color{softgray}Manual de instalación}
-\fancyfoot[L]{\small\sffamily\color{softgray}Versión 1.0.1}
+\fancyfoot[L]{\small\sffamily\color{softgray}Versión 1.1.0}
 \fancyfoot[R]{\small\sffamily\color{softgray}\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{array,longtable,booktabs,calc}
@@ -83,7 +83,7 @@
 {\sffamily\fontsize{14}{20}\selectfont\color{lightblue} Abrir, instalar y publicar la aplicación\par}
 \vfill
 {\sffamily\small Autor del proyecto: Jesús Quevedo Rodríguez\par}
-{\sffamily\small Versión 1.0.1\par}
+{\sffamily\small Versión 1.1.0\par}
 {\sffamily\small Repositorio: a01653/Drop\_Route\par}
 \vspace{2cm}
 \end{center}
@@ -93,7 +93,7 @@
 \setcounter{page}{2}
 \tableofcontents
 \newpage
-Autor: Jesús Quevedo Rodríguez. Versión 1.0.1.
+Autor: Jesús Quevedo Rodríguez. Versión 1.1.0.
 
 La aplicación se puede abrir en el navegador o instalar como PWA. La
 dirección prevista para GitHub Pages es
@@ -131,12 +131,10 @@ Requisitos para construir y servir la aplicación:
   Git.
 \end{itemize}
 
-Clona la rama y carga las dependencias:
+Clona el repositorio y carga las dependencias:
 
 \begin{verbatim}
-git clone --branch feat/progress-and-pwa \
-  https://github.com/a01653/Drop_Route.git \
-  Drop_Route
+git clone https://github.com/a01653/Drop_Route.git Drop_Route
 cd Drop_Route
 npm ci --ignore-scripts
 \end{verbatim}

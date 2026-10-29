@@ -1,6 +1,6 @@
 # Drop Route
 
-Juego de estudio de voicings de guitarra y rutas II-V-I para móvil y ordenador.
+Juego de estudio de voicings de guitarra, rutas II-V-I y patrones de escala para móvil y ordenador.
 
 ## Abrir en el móvil
 
@@ -13,10 +13,11 @@ La versión móvil está publicada como **PWA instalable** en [Drop Route](https
 - Instrucciones de desarrollo en [CLAUDE.md](CLAUDE.md) y [AGENTS.md](AGENTS.md).
 - [Requisitos](docs/PROJECT.md), [apariencia](docs/VISUAL.md), [contrato musical](docs/MUSIC.md) y [decisiones](docs/DECISIONS.md).
 - Plantilla HTML y dos guías PDF originales en [references](references/README.md).
-- 112 posiciones evaluables, 12 disminuidas de referencia y 16 rutas completas.
+- 112 posiciones evaluables, 12 disminuidas de referencia, 16 rutas completas y 20 patrones de escala (`data/scales.json`).
 - Aplicación React, TypeScript y Vite en `src/`, separada en datos, música, sesión, progreso e interfaz.
 - Reconocimiento de voicings en fácil, medio y difícil, y rutas II-V-I de Drop 2.
-- Modo estudio sin examen para consultar voicings y rutas, transponerlos a las 12 tonalidades y ver la conducción de voces.
+- Patrones de escala: reconocerlos en fácil, medio y difícil y ordenarlos de grave a agudo, en la tonalidad elegida.
+- Modo estudio sin examen para consultar voicings, rutas y patrones de escala, transponerlos a las 12 tonalidades y ver la conducción de voces.
 - Variante C6 de la fuente reproducida en estudio, revisión y preguntas de reconocimiento sobre copias derivadas: sexta activa y séptima gris de referencia al revelar la solución.
 - Diseño responsive: flujo compacto en móvil y distribución horizontal en escritorio para menú, juego, rutas y estudio.
 - Progreso local por dispositivo y PWA con actualización controlada y recarga sin conexión.
@@ -83,7 +84,17 @@ Cada pregunta indica **Tónica: C**. La inversión y los grados se interpretan r
 
 En rutas II-V-I se usa Drop 2, sets 1 y 2. Puedes practicar II → V, V → I o la secuencia completa, en mayor o menor. La partida permanece visible y eliges una de cuatro posiciones candidatas. Durante el test puedes volver a preguntas anteriores con tu selección y resultado conservados, y terminarlo para revisar cada respuesta junto a la posición que corresponde a la ruta, incluidas las que quedaron pendientes.
 
-Los juegos evaluables se practican en C.
+Los juegos de voicings y rutas se practican en C.
+
+### Patrones de escala
+
+Escalas: mayor, pentatónica mayor, pentatónica menor y menor natural, con cinco patrones cada una. Se numeran subiendo por el mástil: 1 = forma E, 2 = D, 3 = C, 4 = A y 5 = G (Em, Dm, Cm, Am y Gm en las menores). En el menú eliges escala y tonalidad, una de las doce o «Aleatoria», que cambia en cada pregunta.
+
+En **Reconocer patrones** el patrón aparece neutro, con los trastes visibles y la tónica anunciada. Fácil pide el patrón; Medio, además, marcar todas las tónicas; Difícil, marcar todas las notas 1, 3, 5 y 7 (♭3 y ♭7 en las menores; 6 en la pentatónica mayor) con un banco fijo de grados. La corrección indica, campo por campo, qué marcas faltan o sobran.
+
+En **Ordenar patrones** aparecen los cinco patrones barajados, sin trastes ni cejuelo, y se tocan de grave a agudo. El orden depende de la tonalidad: en Do mayor es 3-4-5-1-2 y en Mi mayor 2-3-4-5-1.
+
+Las digitaciones se transcribieron en C de onlineguitarbooks.com y se validan con una prueba de distancias (`npm run audit:music`). En otras tonalidades se desplaza el patrón entero a su posición más grave.
 
 ## Modo estudio
 
@@ -95,6 +106,8 @@ Desde el menú principal se abre `#/study`. No hay preguntas, verificación ni p
 
 Cada tarjeta de ruta señala el mismo traste ancla que la plantilla: la raíz del acorde II. La banda sombreada y el número en negrita se desplazan al cambiar de tonalidad.
 
+**Patrones de escala:** eliges escala, tonalidad y orden (por número o de grave a agudo) y ves los cinco patrones con su número, forma CAGED y trastes. Tónica, tercera, quinta y séptima (sexta en la pentatónica mayor) llevan los colores de las tarjetas; el resto de notas va en blanco.
+
 La transposición usa el desplazamiento cromático más corto que no produzca trastes negativos. Si hace falta se coloca la forma una octava más arriba. En una ruta completa se aplica el mismo desplazamiento a los tres acordes para conservar la conducción de voces de la fuente.
 
 La pantalla interna `#/revision` permite revisar las 112 tarjetas y el icono. En su vista de solución aparecen también las nueve variantes C6 de la fuente, con la sexta dorada y la séptima gris.
@@ -105,9 +118,9 @@ En móvil se mantiene el flujo vertical y los controles táctiles existentes. En
 
 ## Progreso y PWA
 
-Cada pregunta verificada suma un intento. En reconocimiento se cuenta por set y dificultad; en rutas, por set, modo y tramo. Solo hay acierto cuando la respuesta completa coincide con la solución del ejercicio. El modo estudio no suma intentos ni aciertos.
+Cada pregunta verificada suma un intento. En reconocimiento se cuenta por set y dificultad; en rutas, por set, modo y tramo; en patrones, por escala y dificultad, y al ordenar, por escala. Solo hay acierto cuando la respuesta completa coincide con la solución del ejercicio. El modo estudio no suma intentos ni aciertos.
 
-La configuración y los contadores se guardan en `localStorage` en el navegador y dispositivo actuales. No hay cuentas ni sincronización. Si el almacenamiento falla, la aplicación lo avisa y permite continuar en memoria.
+La configuración y los contadores se guardan en `localStorage` en el navegador y dispositivo actuales. Desde la 1.1.0 el documento usa el esquema 2; lo guardado con el esquema 1 se convierte al abrir, conservando antes una copia del original. No hay cuentas ni sincronización. Si el almacenamiento falla, la aplicación lo avisa y permite continuar en memoria.
 
 El build genera un service worker con precaché de los recursos de la aplicación. Una versión nueva queda esperando hasta que el usuario acepta actualizar desde el menú. Si otra pestaña ya la activó, «Actualizar ahora» recarga con esa versión aunque ya no haya un worker en espera. Las otras pestañas no se recargan automáticamente. La actualización no borra el progreso guardado.
 
@@ -140,4 +153,4 @@ Consulta las [ejecuciones de GitHub Actions](https://github.com/a01653/Drop_Rout
 
 ## Límites actuales
 
-No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. La transposición se limita al modo estudio; los juegos evaluables permanecen en C. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.
+No hay audio, metrónomo, cuentas, backend, sincronización entre dispositivos ni notificaciones. Los juegos de voicings y rutas permanecen en C; solo los de escalas eligen tonalidad. Los patrones de escala son las cinco formas movibles de la fuente: no incluyen digitaciones en posición abierta ni 3NPS. En Medio y Difícil, el área táctil de cada nota es la celda del diagrama, de unos 20 px de alto. Las rutas evaluables y de estudio se limitan a Drop 2, sets 1 y 2. La instalación PWA y el comportamiento en dispositivos físicos, Safari y Firefox no están cubiertos por la batería actual de Chromium.

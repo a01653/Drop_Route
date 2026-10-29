@@ -1,5 +1,5 @@
 import type { Catalog, DropFamily, RoutesDocument } from '../data/types'
-import { DIFFICULTIES, GAMES, ROUTE_MODES, ROUTE_STRETCHES, defaultConfig, updateConfig } from '../session'
+import { DIFFICULTIES, GAMES, ROUTE_MODES, ROUTE_STRETCHES, SCALES, defaultConfig, isScaleKey, updateConfig } from '../session'
 import type { GameConfig } from '../session'
 import { bucketIndex } from './buckets'
 import { SCHEMA_VERSION } from './types'
@@ -29,7 +29,7 @@ export type ParseResult =
  * de modo que dos estados iguales dan el mismo texto y se puede detectar que no hay nada nuevo que escribir.
  */
 export function serialize(config: GameConfig, progress: ProgressData): string {
-  const { game, drop, setId, difficulty, routeMode, stretch } = config
+  const { game, drop, setId, difficulty, routeMode, stretch, scaleId, scaleKey } = config
   const sorted = Object.fromEntries(
     Object.entries(progress)
       .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
@@ -37,7 +37,7 @@ export function serialize(config: GameConfig, progress: ProgressData): string {
   )
   return JSON.stringify({
     schemaVersion: SCHEMA_VERSION,
-    config: { game, drop, setId, difficulty, routeMode, stretch },
+    config: { game, drop, setId, difficulty, routeMode, stretch, scaleId, scaleKey },
     progress: sorted,
   })
 }
@@ -61,8 +61,18 @@ const migrateFrom0: Migration = (doc) => {
   return { schemaVersion: 1, config: doc.config, progress }
 }
 
+/**
+ * Esquema 1 -> 2 (DR-013). La configuración gana la escala y la tonalidad de los juegos de escalas; se rellenan
+ * con sus valores por defecto para que un documento correcto del esquema 1 no se lea como reparado. Los
+ * contadores no cambian: los de escalas son claves nuevas.
+ */
+const migrateFrom1: Migration = (doc) => {
+  const config = isRecord(doc.config) ? { scaleId: 'major', scaleKey: 0, ...doc.config } : doc.config
+  return { ...doc, schemaVersion: 2, config }
+}
+
 /** Una migración por versión anterior: MIGRATIONS[n] convierte un documento de la versión n en uno de la n + 1. */
-export const MIGRATIONS: Readonly<Record<number, Migration>> = { 0: migrateFrom0 }
+export const MIGRATIONS: Readonly<Record<number, Migration>> = { 0: migrateFrom0, 1: migrateFrom1 }
 
 const idOf = <T extends string>(value: unknown, options: readonly { id: T }[]): T | null =>
   typeof value === 'string' ? (options.find((option) => option.id === value)?.id ?? null) : null
@@ -91,13 +101,15 @@ export function sanitizeConfig(
   const difficulty = pick(idOf(source.difficulty, DIFFICULTIES), defaults.difficulty)
   const routeMode = pick(idOf(source.routeMode, ROUTE_MODES), defaults.routeMode)
   const stretch = pick(idOf(source.stretch, ROUTE_STRETCHES), defaults.stretch)
+  const scaleId = pick(idOf(source.scaleId, SCALES), defaults.scaleId)
+  const scaleKey = pick(isScaleKey(source.scaleKey) ? source.scaleKey : null, defaults.scaleKey)
   const set = typeof source.setId === 'string' ? catalog.sets.find((item) => item.id === source.setId) : undefined
   const setId = pick(set?.id ?? null, defaults.setId)
   const drops = new Set<DropFamily>(catalog.sets.map((item) => item.drop))
   const wantedDrop = source.drop === undefined && set ? set.drop : source.drop
   const drop = pick(typeof wantedDrop === 'string' && drops.has(wantedDrop as DropFamily) ? (wantedDrop as DropFamily) : null, set?.drop ?? defaults.drop)
 
-  const config = updateConfig(catalog, defaults, { game, drop, setId, difficulty, routeMode, stretch }, routes)
+  const config = updateConfig(catalog, defaults, { game, drop, setId, difficulty, routeMode, stretch, scaleId, scaleKey }, routes)
   const coherent = config.game === game && config.drop === drop && config.setId === setId
   return { config, repaired: repaired || !coherent }
 }

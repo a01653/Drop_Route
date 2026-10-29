@@ -32,6 +32,8 @@ describe('menú (R01)', () => {
       difficulty: 'easy',
       routeMode: 'major',
       stretch: 'ii-v',
+      scaleId: 'major',
+      scaleKey: 0,
     })
   })
 

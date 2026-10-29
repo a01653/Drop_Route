@@ -155,3 +155,13 @@
     transform: rotate(90deg);
   }
 }
+
+.study-scale-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 1.25rem;
+}
+
+.study-scale-pattern {
+  min-width: 0;
+}

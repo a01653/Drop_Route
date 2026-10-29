@@ -2,7 +2,7 @@
 // inmutable, sin React ni DOM, para probarlas con fixtures y semillas.
 import { routesDocument } from '../data'
 import type { Catalog, Inversion, QualityKey, RoutesDocument } from '../data/types'
-import { defaultConfig, updateConfig } from './config'
+import { defaultConfig, isScaleGame, updateConfig } from './config'
 import type { ConfigChange, GameConfig } from './config'
 import { applyDegreeAction } from './degrees'
 import type { DegreeAction, Held } from './degrees'
@@ -11,6 +11,8 @@ import type { RecognitionAnswer, RecognitionQuestion, RecognitionResult } from '
 import { createRng } from './rng'
 import { createRouteQuestion, evaluateRoute } from './routes'
 import type { RouteQuestion, RouteResult } from './routes'
+import { finishScaleGame, nextScaleGame, previousScaleGame, startScaleGame, verifyScaleGame } from './scaleSession'
+import type { OrderQuestionState, OrderSummaryState, OrderVerifiedState, ScaleGameState, ScaleQuestionState, ScaleSummaryState, ScaleVerifiedState } from './scaleSession'
 
 export interface MenuState {
   readonly phase: 'menu'
@@ -89,7 +91,25 @@ export interface RouteSummaryState {
   readonly attempts: readonly RouteAttempt[]
 }
 
-export type SessionState = MenuState | QuestionState | VerifiedState | RecognitionSummaryState | RouteQuestionState | RouteVerifiedState | RouteSummaryState
+export type SessionState =
+  | MenuState
+  | QuestionState
+  | VerifiedState
+  | RecognitionSummaryState
+  | RouteQuestionState
+  | RouteVerifiedState
+  | RouteSummaryState
+  | ScaleQuestionState
+  | ScaleVerifiedState
+  | ScaleSummaryState
+  | OrderQuestionState
+  | OrderVerifiedState
+  | OrderSummaryState
+
+/** Pregunta abierta o verificada de uno de los dos juegos de escalas. */
+export function isScaleGameState(state: SessionState): state is ScaleGameState {
+  return state.phase === 'escala' || state.phase === 'escala-verificada' || state.phase === 'orden' || state.phase === 'orden-verificada'
+}
 export type SessionPhase = SessionState['phase']
 
 export function createSession(catalog: Catalog): MenuState {
@@ -114,6 +134,7 @@ export function start(
   routes: RoutesDocument = routesDocument,
 ): SessionState {
   if (state.phase !== 'menu') return state
+  if (isScaleGame(state.config.game)) return startScaleGame(state.config, seed)
   const rng = createRng(seed)
   if (state.config.game === 'routes') {
     const question = createRouteQuestion(state.config, rng, routes)
@@ -204,16 +225,19 @@ export function finishRecognitionTest(state: SessionState): SessionState {
 
 /** Despacha el retroceso al juego activo. */
 export function previous(state: SessionState): SessionState {
+  if (isScaleGameState(state)) return previousScaleGame(state)
   return state.phase === 'ruta' || state.phase === 'ruta-verificada' ? previousRoute(state) : previousRecognition(state)
 }
 
 /** Termina y resume el juego activo. */
 export function finishTest(state: SessionState): SessionState {
+  if (isScaleGameState(state)) return finishScaleGame(state)
   return state.phase === 'ruta' || state.phase === 'ruta-verificada' ? finishRouteTest(state) : finishRecognitionTest(state)
 }
 
 /** Verifica una respuesta completa. Incompleta, o ya verificada, no cambia nada. */
 export function verify(catalog: Catalog, state: SessionState, routes: RoutesDocument = routesDocument): SessionState {
+  if (isScaleGameState(state)) return verifyScaleGame(state)
   if (state.phase === 'ruta') {
     const result = evaluateRoute(catalog, routes, state.question, state.selected)
     const attempts = state.attempts.map((attempt, position) => position === state.position ? { ...attempt, result } : attempt)
@@ -250,6 +274,7 @@ export function next(
   seed: number,
   routes: RoutesDocument = routesDocument,
 ): SessionState {
+  if (isScaleGameState(state)) return nextScaleGame(state, seed)
   if (state.phase === 'ruta-verificada') {
     if (state.position < state.attempts.length - 1) {
       const position = state.position + 1
@@ -289,3 +314,6 @@ export * from './degrees'
 export * from './recognition'
 export * from './rng'
 export * from './routes'
+export * from './scaleOrder'
+export * from './scaleSession'
+export * from './scales'

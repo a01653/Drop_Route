@@ -9,6 +9,33 @@ Drop Route, repositorio a01653/Drop_Route, desarrollo de interfaz por Claude Cod
 - En estudio II–V–I, el ancla es el traste de la raíz (`degree: "1"`) del voicing II. Se deriva para los tres pasos en copias de memoria y recibe la transposición común; los datos canónicos de `data/routes.json` no se modifican.
 - El render de solución sombrea la columna con el color de borde de la calidad a 75 % de opacidad y pone el número de traste en negrita. El modo neutro no revela el ancla.
 
+## DR-013: patrones de escala (1.1.0)
+
+Decisiones del usuario del 29/10/2026, recogidas en `docs/work-orders/DR-013.md`:
+
+- Los juegos de escalas van en Drop Route y siguen su modelo: pregunta neutra, verificación única, corrección por campos, historial, revisión y progreso.
+- Escalas: mayor, pentatónica mayor, pentatónica menor y menor natural. Numeración 1=E, 2=D, 3=C, 4=A y 5=G; las menores usan la forma de su propio acorde menor (Em…Gm).
+- Fácil, el patrón; Medio, además, todas las tónicas; Difícil, todas las notas 1, 3, 5 y 7, con 6 donde falta la séptima (pentatónica mayor).
+- Ordenar patrones es otro juego: de grave a agudo, que depende de la tonalidad, y con los trastes ocultos.
+- La tonalidad se elige en los dos juegos y en el estudio. Es una excepción, solo para escalas, a mantener los juegos evaluables en C.
+- Los datos se buscan en una fuente publicada y se guardan en un JSON permanente con una prueba de distancias que forma parte del cierre.
+
+Decisiones de implementación:
+
+- Fuente única: onlineguitarbooks.com (C mayor, C pentatónica mayor, C pentatónica menor y C eólico), consultada el 29/10/2026. Los 20 diagramas se leyeron uno a uno; cada patrón guarda la URL y el SHA-256 del diagrama y la «posición» que indica la página. Los diagramas no se copian al repositorio público. Se contrastó con guitarlessons.com el dedo y traste de inicio de cada forma de la escala mayor.
+- En la forma E de las escalas mayores la tónica de la 6.ª cuerda cae bajo el dedo medio, no bajo el índice, como se dijo al proponer la numeración; la convención elegida no cambia.
+- `scripts/lib/scale-validation.mjs` recalcula cada nota desde afinación y traste y comprueba grados, distancias entre notas consecutivas, notas por cuerda, posición de la fuente, tónica en las cuerdas de cada forma CAGED, sucesión E-D-C-A-G en una octava, enlace entre cajas pentatónicas y que cada pentatónica esté contenida en la forma homónima de su escala de siete notas. Está en `npm run audit:music` y en `tests/scale-patterns.test.mjs`.
+- Tonalidad: desplazamiento común de todas las notas hasta el traste más grave entre 0 y 11. Las cuerdas al aire se dibujan a la izquierda del cejuelo. Es la forma movible de la fuente: la posición abierta de algunas tonalidades (por ejemplo, E mayor con la forma E) es otra digitación y no se incluye.
+- Orden de grave a agudo: por el traste más grave del patrón en esa tonalidad. Una prueba comprueba en las 48 combinaciones de escala y tonalidad que es siempre una rotación de 1-2-3-4-5 sin empates.
+- Tonalidad «Aleatoria (una en cada pregunta)» en los dos juegos: con una tonalidad fija, el juego de ordenar repetiría siempre la misma respuesta. La propuso Claude y el usuario la aprobó en la revisión funcional del 29/10/2026.
+- Banco de Difícil fijo en las cuatro escalas: 1, ♭3, 3, 5, 6, ♭7 y 7. Un grado del banco que no se pide en esa escala solo aparece en la corrección si se usó, y como error.
+- Medio y Difícil exigen el patrón y al menos una marca para verificar. Cada nota se compara con el grado que tiene: si es uno de los pedidos debe llevar esa marca y, si no, ninguna.
+- Ordenar: se tocan las tarjetas en orden y tocar una ya colocada la quita. Las tarjetas nunca salen ya ordenadas. Su nombre accesible usa columnas relativas y no trastes, para no revelar el orden.
+- Progreso: esquema 2. La migración 1 → 2 rellena escala y tonalidad por defecto, de modo que un documento correcto del esquema 1 no se lee como reparado, y conserva el original en `drop-route:state:v1` como cualquier migración. Contadores `scale-patterns:<escala>:<dificultad>` y `scale-order:<escala>`; la tonalidad no separa contadores.
+- Cambiar a un juego de escalas conserva el Drop y el set de reconocimiento para volver a ellos.
+- Cierre: versión 1.1.0. La versión de portada y pies de los manuales sale de `package.json` en lugar de estar escrita en la plantilla, que seguía en 1.0.1. Se actualizaron también la portada del DTS y el clonado del manual de instalación, que apuntaba a una rama histórica.
+- El usuario aprobó el funcionamiento y autorizó commit, fusión y publicación el 29/10/2026.
+
 ## Base técnica propuesta para DR-001
 
 React, TypeScript, Vite y SVG. Vitest, ESLint y Playwright. Aplicación cliente sin backend. Elegir versiones compatibles y fijarlas en lockfile al ejecutar la tarea, sin copiar dependencias innecesarias de Mástil.
@@ -113,7 +140,7 @@ Solicitado por el usuario al aclarar que la navegación anterior y la revisión 
 
 ## Pendiente
 
-Puntuación detallada; estudio, repaso y audio; transposición; C6/dim7 evaluables; alojamiento y flujo de despliegue; licencia del código nuevo; si la interfaz debe permitir recuperar las copias de seguridad del progreso. Las referencias conservan su autoría. El icono ya está aprobado.
+Puntuación detallada; repaso y audio; transposición en los juegos de voicings y rutas; C6/dim7 evaluables; alojamiento y flujo de despliegue; licencia del código nuevo; si la interfaz debe permitir recuperar las copias de seguridad del progreso. Las referencias conservan su autoría. El icono ya está aprobado.
 
 El 13/10/2026 el usuario autorizó la publicación de la base completa en el repositorio público, incluyendo la plantilla HTML y las dos guías originales. Esta orden cubre la entrega inicial, no implementaciones o publicaciones futuras.
 

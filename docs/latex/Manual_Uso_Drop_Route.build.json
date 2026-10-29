@@ -3,51 +3,51 @@
   "title": "Manual de uso",
   "source": "docs/manuals/USO.md",
   "command": "npm run docs:build",
-  "engine": "xelatex",
+  "engine": "lualatex",
   "files": [
     {
       "path": "docs/manuals/USO.md",
-      "sha256": "be871ab48a9f4ff7f5653b093cfc06fad97908f2181d74822f732ed6cca98f7a",
+      "sha256": "a1abd84f2adab7e4384ce8bb9541667901dccfefaf7c6382ef2a0985cd5690eb",
       "role": "source"
     },
     {
       "path": "docs/latex/manual-template.tex",
-      "sha256": "25fd0e6c1f214f86f6ee3975ac714814da22079c49c595142562e19ddfaedd00",
+      "sha256": "cb84fa9fa209a0f953c73f86cd1b2934b2298ccb52dc19eab2441a2ce4c9b9f6",
       "role": "template"
     },
     {
       "path": "scripts/build_manuals.py",
-      "sha256": "92b3e804878eaef1919297f85f78e9376410f95cedea83dc04d2ea3ed482c0d4",
+      "sha256": "f7271f9a4510bf2493faa6ce14e963ddf7f6753a34294f71e11e9abfbdbf3341",
       "role": "generator"
     },
     {
       "path": "docs/manuals/capturas/menu-reconocimiento-1280.png",
-      "sha256": "e1efdb98f1f185b6b4df3c6b6876adc28d24654460cf7aff751c32d69861a55a",
+      "sha256": "83b7e0f1ab67e24ea77332f8b10203991d888abf05dd4f054b09c083024984af",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/menu-rutas-1280.png",
-      "sha256": "dd50b931c59301a3a6a987d8155db728d28c1496b64920c81eb48d2df2cd67eb",
+      "sha256": "54291b35083ff94dfe3f6c6882aa7a479494e1b0a699055f7bd75f98c8d9a1cc",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/facil-pregunta-1280.png",
-      "sha256": "c22a7e9ed1b9178d35d3219da7654922b0b0d7c946a48433fd6ff4d8eac3c72f",
+      "sha256": "410286c478dce380a8882b4bdc612b2a7695f0e150931dd9f5b21a1615890538",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/facil-correccion-1280.png",
-      "sha256": "4a90b9781ab8ca61acbf893f4fab0f187925f44da2bf9c9fabab202978d2ae85",
+      "sha256": "a20777b44f41294b88d37c184b9768edb6c2c6cdc9d1a5d9089fee42e2cbd65c",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/medio-pregunta-1280.png",
-      "sha256": "13e2225866c407c6c8eaeb4c6342815838566c51fb29d28305e37a04a47b907d",
+      "sha256": "c5fb9f66b9523415c432c30f09a99702865e9e5b18f9567a0a11aab3112ad742",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/medio-correccion-1280.png",
-      "sha256": "32cfb29fce48f89f34dc453e31aee434203621b38770db1bb01a5a72e3136cf5",
+      "sha256": "f63fb0deda5dc631cf78bc773e6aa102e44963018254b3c5914d76670cb83a8f",
       "role": "capture"
     },
     {
@@ -62,32 +62,62 @@
     },
     {
       "path": "docs/manuals/capturas/ruta-pregunta-1280.png",
-      "sha256": "e3fdf6756ca2737395f2d75539a970d597026e964b156c8d0c16a6f5c2cba245",
+      "sha256": "2403221403c4d9c6defdd2b0e3d1f87f96250612fdc482df301941ff3221f7fb",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/ruta-fallo-solucion-1280.png",
-      "sha256": "1b08a2845cb375f019ad8d7237f22a5fbe6175255d466d506fe7b1de7acb26d5",
+      "sha256": "12ee128e051422186c9a192498f0b90fd2094bbf219943747223f0c1cd47e962",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/ruta-fallo-tu-respuesta-1280.png",
-      "sha256": "c987196c1295e973b83f6a4fb1e92d34450ef4b451024d03274eb5e18e15d90e",
+      "sha256": "e59042729d355bd1f8cbc30cb6b2691abd3a7e6911b9e257131b2f22ed70e4ed",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/menu-escalas-1280.png",
+      "sha256": "208ee5bde4b9e61aa868f8365fe3f181c2fa1511fe71c8aefbe8f7c319d4aad0",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/patron-medio-pregunta-1280.png",
+      "sha256": "cf6574966d1dbd8059184c9f6945e5521bcfd405a7a4d233eb67f8c50c13ddac",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/patron-dificil-correccion-1280.png",
+      "sha256": "1ecd9037b0b66bb38c4a728da21c22f4fab59c8fa51c792cbb98ef2caa7a6bf3",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/orden-pregunta-1280.png",
+      "sha256": "c48f735a6a3556481361c2c99824aa30bfd3cf73d8491f12b2c0df6931e002be",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/orden-correccion-1280.png",
+      "sha256": "3ed949a06cf31dd3ae6a9f529eef50b9e6b97fb45dd8392227449533b3fa7c51",
+      "role": "capture"
+    },
+    {
+      "path": "docs/manuals/capturas/estudio-escalas-1280.png",
+      "sha256": "b0103795b4ad2834df6862ef0227999298a574627d3395f7370acc111fc29c85",
       "role": "capture"
     },
     {
       "path": "docs/manuals/capturas/progreso-detalle-1280.png",
-      "sha256": "0b0c6de678104845d2d04e658a5ecaad52be80c6eb3cb3fad6fcac8e613f543d",
+      "sha256": "02349e64bf4033c5792adb8d0f3a33d0b28762a1750204b75160c321ed1fc22b",
       "role": "capture"
     },
     {
       "path": "docs/latex/Manual_Uso_Drop_Route.tex",
-      "sha256": "f3efccd62b1d24add737f5f8eefe43c3036371b6c7f997b914eaba2543516f1f",
+      "sha256": "a71d424198a3a0d1473f9aa35ca42d2b64ca3f007c2021fd8f485a87d4772f86",
       "role": "latex"
     },
     {
       "path": "docs/latex/Manual_Uso_Drop_Route.pdf",
-      "sha256": "dd0134d4d2a00e5a5e1e26e1bb3e5dc0b0ade7f0dffa3b3ee8ac1814fcdb79f8",
+      "sha256": "b47f5ac0a4863945e8c4fe1cd00a0d5de3ee0285bd853612e562c7aef447e323",
       "role": "pdf"
     }
   ]

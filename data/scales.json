@@ -1,0 +1,1858 @@
+{
+  "schemaVersion": 1,
+  "tonic": "C",
+  "tonicPc": 0,
+  "tuning": {
+    "1": 64,
+    "2": 59,
+    "3": 55,
+    "4": 50,
+    "5": 45,
+    "6": 40
+  },
+  "numbering": "Patrón 1 = forma E, con la tónica en la 6.ª cuerda; se numera subiendo por el mástil: 1=E, 2=D, 3=C, 4=A, 5=G. Las escalas menores usan la forma de su propio acorde menor (Em, Dm, Cm, Am, Gm).",
+  "sources": [
+    {
+      "id": "ogb-c-major",
+      "title": "C Major Scale (C Ionian) on the Guitar – 5 CAGED Positions, Tabs and Theory",
+      "url": "https://onlineguitarbooks.com/?p=15445",
+      "publisher": "onlineguitarbooks.com",
+      "consultedAt": "2026-10-29"
+    },
+    {
+      "id": "ogb-c-major-pentatonic",
+      "title": "C Major Pentatonic Scale on the Guitar – 5 CAGED Positions, Tabs and Theory",
+      "url": "https://onlineguitarbooks.com/?p=15423",
+      "publisher": "onlineguitarbooks.com",
+      "consultedAt": "2026-10-29"
+    },
+    {
+      "id": "ogb-c-minor-pentatonic",
+      "title": "C Minor Pentatonic Scale on the Guitar – 5 CAGED Positions, Tabs and Theory",
+      "url": "https://onlineguitarbooks.com/c-minor-pentatonic-scale/",
+      "publisher": "onlineguitarbooks.com",
+      "consultedAt": "2026-10-29"
+    },
+    {
+      "id": "ogb-c-aeolian",
+      "title": "C Aeolian Mode on the Guitar – 5 CAGED Positions, Tabs and Theory",
+      "url": "https://onlineguitarbooks.com/c-aeolian-mode/",
+      "publisher": "onlineguitarbooks.com",
+      "consultedAt": "2026-10-29"
+    }
+  ],
+  "scales": [
+    {
+      "id": "major",
+      "name": "Mayor",
+      "source": "ogb-c-major",
+      "formula": [
+        0,
+        2,
+        4,
+        5,
+        7,
+        9,
+        11
+      ],
+      "degrees": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "patterns": [
+        {
+          "id": "major-p1",
+          "number": 1,
+          "caged": "E",
+          "sourcePosition": 7,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/01/MajScalesFrets_KeyC_7thPosition.jpg",
+            "sha256": "0c9c435118c83010d1d8e5ad348dcc4c1a78f4a5f045d8bc9a6ccea87a64ea29",
+            "sizeBytes": 13935
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 7,
+              "degree": "7"
+            },
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 6,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 5,
+              "fret": 7,
+              "degree": "3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 7,
+              "degree": "6"
+            },
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "7"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "2"
+            },
+            {
+              "string": 3,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "4"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 10,
+              "degree": "6"
+            },
+            {
+              "string": 1,
+              "fret": 7,
+              "degree": "7"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "2"
+            }
+          ]
+        },
+        {
+          "id": "major-p2",
+          "number": 2,
+          "caged": "D",
+          "sourcePosition": 8,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/01/MajScalesFrets_KeyC_8thPosition.jpg",
+            "sha256": "ccc591e5606257395584783b82fa5355b1a567a648a7ea25f9eadaac586ea1bd",
+            "sizeBytes": 16683
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 6,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 6,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 12,
+              "degree": "6"
+            },
+            {
+              "string": 4,
+              "fret": 9,
+              "degree": "7"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "2"
+            },
+            {
+              "string": 3,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "4"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 10,
+              "degree": "6"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "7"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 1,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "4"
+            }
+          ]
+        },
+        {
+          "id": "major-p3",
+          "number": 3,
+          "caged": "C",
+          "sourcePosition": 12,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/01/MajScalesFrets_KeyC_12thPosition2.jpg",
+            "sha256": "cde334391cedd2fe3c3f345a43175bed95dddcc4881afe4ea5b26f692d3a7a5b",
+            "sizeBytes": 13985
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 6,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 6,
+              "fret": 15,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 12,
+              "degree": "6"
+            },
+            {
+              "string": 5,
+              "fret": 14,
+              "degree": "7"
+            },
+            {
+              "string": 5,
+              "fret": 15,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "2"
+            },
+            {
+              "string": 4,
+              "fret": 14,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "4"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 14,
+              "degree": "6"
+            },
+            {
+              "string": 2,
+              "fret": 12,
+              "degree": "7"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "2"
+            },
+            {
+              "string": 1,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 1,
+              "fret": 15,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "id": "major-p4",
+          "number": 4,
+          "caged": "A",
+          "sourcePosition": 1,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/01/MajScalesFrets_KeyC_1stPosition.jpg",
+            "sha256": "bdf7a06aac1a1402449412726a180580b527f0b612d80f29206c6aa2b0c1c140",
+            "sizeBytes": 15758
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 1,
+              "degree": "4"
+            },
+            {
+              "string": 6,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 6,
+              "fret": 5,
+              "degree": "6"
+            },
+            {
+              "string": 5,
+              "fret": 2,
+              "degree": "7"
+            },
+            {
+              "string": 5,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "2"
+            },
+            {
+              "string": 4,
+              "fret": 2,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "4"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 2,
+              "degree": "6"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "2"
+            },
+            {
+              "string": 2,
+              "fret": 5,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 1,
+              "degree": "4"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 5,
+              "degree": "6"
+            }
+          ]
+        },
+        {
+          "id": "major-p5",
+          "number": 5,
+          "caged": "G",
+          "sourcePosition": 4,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/01/MajScalesFrets_KeyC_4thPosition1.jpg",
+            "sha256": "9218fd4f8fb23105b919a4aab5665ed0b0ff6533a0959c26964d2799bb486172",
+            "sizeBytes": 15601
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 5,
+              "degree": "6"
+            },
+            {
+              "string": 6,
+              "fret": 7,
+              "degree": "7"
+            },
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "2"
+            },
+            {
+              "string": 5,
+              "fret": 7,
+              "degree": "3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 7,
+              "degree": "6"
+            },
+            {
+              "string": 3,
+              "fret": 4,
+              "degree": "7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "2"
+            },
+            {
+              "string": 2,
+              "fret": 5,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "4"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 5,
+              "degree": "6"
+            },
+            {
+              "string": 1,
+              "fret": 7,
+              "degree": "7"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "major-pentatonic",
+      "name": "Pentatónica mayor",
+      "source": "ogb-c-major-pentatonic",
+      "formula": [
+        0,
+        2,
+        4,
+        7,
+        9
+      ],
+      "degrees": [
+        "1",
+        "2",
+        "3",
+        "5",
+        "6"
+      ],
+      "patterns": [
+        {
+          "id": "major-pentatonic-p1",
+          "number": 1,
+          "caged": "E",
+          "sourcePosition": 7,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MajPentFrets_KeyC_7thPosition.jpg",
+            "sha256": "5805db7af9a93c9bf5bef24e8a5a94fcf9da7aedc2d7347a871ed42b30d9db8a",
+            "sizeBytes": 11385
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 6,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 5,
+              "fret": 7,
+              "degree": "3"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 7,
+              "degree": "6"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "2"
+            },
+            {
+              "string": 3,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 10,
+              "degree": "6"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "2"
+            }
+          ]
+        },
+        {
+          "id": "major-pentatonic-p2",
+          "number": 2,
+          "caged": "D",
+          "sourcePosition": 9,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MajPentFrets_KeyC_9thPosition.jpg",
+            "sha256": "fb45782f95f6c67269368db0261fb1636ccf190a63e05ca6c6512f9444bc8627",
+            "sizeBytes": 13274
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 6,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 12,
+              "degree": "6"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "2"
+            },
+            {
+              "string": 3,
+              "fret": 9,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 10,
+              "degree": "6"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 1,
+              "fret": 12,
+              "degree": "3"
+            }
+          ]
+        },
+        {
+          "id": "major-pentatonic-p3",
+          "number": 3,
+          "caged": "C",
+          "sourcePosition": 12,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MajPentFrets_KeyC_12thPosition.jpg",
+            "sha256": "db02a987554e9033309162e11e37753cc37a2b3c30dbe83f4376fe344ccdb7e7",
+            "sizeBytes": 11453
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 6,
+              "fret": 15,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 12,
+              "degree": "6"
+            },
+            {
+              "string": 5,
+              "fret": 15,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "2"
+            },
+            {
+              "string": 4,
+              "fret": 14,
+              "degree": "3"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 14,
+              "degree": "6"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "2"
+            },
+            {
+              "string": 1,
+              "fret": 12,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 15,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "id": "major-pentatonic-p4",
+          "number": 4,
+          "caged": "A",
+          "sourcePosition": 2,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MajPentFrets_KeyC_2ndPosition.jpg",
+            "sha256": "c532afef8914abb27a334e4defd2e90586ad40e5b2fee87d5b4a4a296ae3ee06",
+            "sizeBytes": 12728
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 6,
+              "fret": 5,
+              "degree": "6"
+            },
+            {
+              "string": 5,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "2"
+            },
+            {
+              "string": 4,
+              "fret": 2,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 2,
+              "degree": "6"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "2"
+            },
+            {
+              "string": 2,
+              "fret": 5,
+              "degree": "3"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 5,
+              "degree": "6"
+            }
+          ]
+        },
+        {
+          "id": "major-pentatonic-p5",
+          "number": 5,
+          "caged": "G",
+          "sourcePosition": 5,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MajPentFrets_KeyC_5thPosition.jpg",
+            "sha256": "dcf106bc56c56eb9e0a1fb0db9618a39d58d60fc4d18b6fc889df6bdd9f9506e",
+            "sizeBytes": 11680
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 5,
+              "degree": "6"
+            },
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "2"
+            },
+            {
+              "string": 5,
+              "fret": 7,
+              "degree": "3"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 7,
+              "degree": "6"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "2"
+            },
+            {
+              "string": 2,
+              "fret": 5,
+              "degree": "3"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 5,
+              "degree": "6"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "minor-pentatonic",
+      "name": "Pentatónica menor",
+      "source": "ogb-c-minor-pentatonic",
+      "formula": [
+        0,
+        3,
+        5,
+        7,
+        10
+      ],
+      "degrees": [
+        "1",
+        "b3",
+        "4",
+        "5",
+        "b7"
+      ],
+      "patterns": [
+        {
+          "id": "minor-pentatonic-p1",
+          "number": 1,
+          "caged": "Em",
+          "sourcePosition": 8,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MinorPentatonicScaleFrets_C_8thPosition.jpg",
+            "sha256": "390bf2973316769e28ea926ca6793b48bdda06b70e6e9dd33d291af3bad5dde4",
+            "sizeBytes": 12882
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 6,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "4"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 11,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 11,
+              "degree": "b3"
+            }
+          ]
+        },
+        {
+          "id": "minor-pentatonic-p2",
+          "number": 2,
+          "caged": "Dm",
+          "sourcePosition": 10,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MinorPentatonicScaleFrets_C_10thPosition.jpg",
+            "sha256": "92bdf74970156f5d6e1975d8fd5cececb66c00767d0de21869fa4dd49430fe61",
+            "sizeBytes": 12787
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 6,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 13,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "4"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 11,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "4"
+            }
+          ]
+        },
+        {
+          "id": "minor-pentatonic-p3",
+          "number": 3,
+          "caged": "Cm",
+          "sourcePosition": 12,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MinorPentatonicScaleFrets_C_12thPosition.jpg",
+            "sha256": "ce17fe611dd86231efd6ca50b10e6aa6aacff1445d1b8d5cc5388212715864e2",
+            "sizeBytes": 14224
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 6,
+              "fret": 15,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 5,
+              "fret": 15,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 13,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "4"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 15,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 16,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 1,
+              "fret": 15,
+              "degree": "5"
+            }
+          ]
+        },
+        {
+          "id": "minor-pentatonic-p4",
+          "number": 4,
+          "caged": "Am",
+          "sourcePosition": 3,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MinorPentatonicScaleFrets_C_3rdPosition.jpg",
+            "sha256": "7f4ca500e7c4e7530400879db8eab7a1175d444d08361fd31c5cc7544689e656",
+            "sizeBytes": 10783
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 6,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 5,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "4"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 3,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 4,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "4"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 6,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "id": "minor-pentatonic-p5",
+          "number": 5,
+          "caged": "Gm",
+          "sourcePosition": 5,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2012/01/MinorPentatonicScaleFrets_C_5thPosition.jpg",
+            "sha256": "3af727c351471e60d3b4140474273706f5e1e1517fcc80e05035489fa25b2103",
+            "sizeBytes": 11358
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "4"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "natural-minor",
+      "name": "Menor natural",
+      "source": "ogb-c-aeolian",
+      "formula": [
+        0,
+        2,
+        3,
+        5,
+        7,
+        8,
+        10
+      ],
+      "degrees": [
+        "1",
+        "2",
+        "b3",
+        "4",
+        "5",
+        "b6",
+        "b7"
+      ],
+      "patterns": [
+        {
+          "id": "natural-minor-p1",
+          "number": 1,
+          "caged": "Em",
+          "sourcePosition": 7,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/10/AeolianScaleFrets_C_7thPosition.jpg",
+            "sha256": "472c0a54d2316acc2ec95597eac2e66d9ce872c3333ac72eb388d5c0417da3f8",
+            "sizeBytes": 14180
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 6,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 6,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 11,
+              "degree": "b6"
+            },
+            {
+              "string": 4,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "2"
+            },
+            {
+              "string": 3,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "4"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 2,
+              "fret": 9,
+              "degree": "b6"
+            },
+            {
+              "string": 2,
+              "fret": 11,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 1,
+              "fret": 11,
+              "degree": "b3"
+            }
+          ]
+        },
+        {
+          "id": "natural-minor-p2",
+          "number": 2,
+          "caged": "Dm",
+          "sourcePosition": 10,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/10/AeolianScaleFrets_C_10thPosition.jpg",
+            "sha256": "bacd4502e175f8571835cdeeab0d0627f0ce2046dba2ba1040ac1da6c56961fc",
+            "sizeBytes": 12974
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 6,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 6,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 5,
+              "fret": 10,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 11,
+              "degree": "b6"
+            },
+            {
+              "string": 5,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 4,
+              "fret": 10,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "2"
+            },
+            {
+              "string": 4,
+              "fret": 13,
+              "degree": "b3"
+            },
+            {
+              "string": 3,
+              "fret": 10,
+              "degree": "4"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 13,
+              "degree": "b6"
+            },
+            {
+              "string": 2,
+              "fret": 11,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 1,
+              "fret": 10,
+              "degree": "2"
+            },
+            {
+              "string": 1,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "4"
+            }
+          ]
+        },
+        {
+          "id": "natural-minor-p3",
+          "number": 3,
+          "caged": "Cm",
+          "sourcePosition": 11,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/10/AeolianScaleFrets_C_11thPosition.jpg",
+            "sha256": "50f3db955ba657774b87997a2de43383e8c23ef9446241e8dd15385719c08961",
+            "sizeBytes": 16883
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 11,
+              "degree": "b3"
+            },
+            {
+              "string": 6,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 6,
+              "fret": 15,
+              "degree": "5"
+            },
+            {
+              "string": 5,
+              "fret": 11,
+              "degree": "b6"
+            },
+            {
+              "string": 5,
+              "fret": 13,
+              "degree": "b7"
+            },
+            {
+              "string": 5,
+              "fret": 15,
+              "degree": "1"
+            },
+            {
+              "string": 4,
+              "fret": 12,
+              "degree": "2"
+            },
+            {
+              "string": 4,
+              "fret": 13,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 15,
+              "degree": "4"
+            },
+            {
+              "string": 3,
+              "fret": 12,
+              "degree": "5"
+            },
+            {
+              "string": 3,
+              "fret": 13,
+              "degree": "b6"
+            },
+            {
+              "string": 3,
+              "fret": 15,
+              "degree": "b7"
+            },
+            {
+              "string": 2,
+              "fret": 13,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 15,
+              "degree": "2"
+            },
+            {
+              "string": 2,
+              "fret": 16,
+              "degree": "b3"
+            },
+            {
+              "string": 1,
+              "fret": 13,
+              "degree": "4"
+            },
+            {
+              "string": 1,
+              "fret": 15,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 16,
+              "degree": "b6"
+            }
+          ]
+        },
+        {
+          "id": "natural-minor-p4",
+          "number": 4,
+          "caged": "Am",
+          "sourcePosition": 3,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/10/AeolianScaleFrets_C_3rdPosition.jpg",
+            "sha256": "d1bcae5bc566423e0909da251c2d46d8726f2ad88b34d27954d3bd8a4e5466f7",
+            "sizeBytes": 13124
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 6,
+              "fret": 4,
+              "degree": "b6"
+            },
+            {
+              "string": 6,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 5,
+              "fret": 3,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "2"
+            },
+            {
+              "string": 5,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 4,
+              "fret": 3,
+              "degree": "4"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 6,
+              "degree": "b6"
+            },
+            {
+              "string": 3,
+              "fret": 3,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 2,
+              "fret": 3,
+              "degree": "2"
+            },
+            {
+              "string": 2,
+              "fret": 4,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "4"
+            },
+            {
+              "string": 1,
+              "fret": 3,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 4,
+              "degree": "b6"
+            },
+            {
+              "string": 1,
+              "fret": 6,
+              "degree": "b7"
+            }
+          ]
+        },
+        {
+          "id": "natural-minor-p5",
+          "number": 5,
+          "caged": "Gm",
+          "sourcePosition": 4,
+          "sourceDiagram": {
+            "url": "https://onlineguitarbooks.com/wp-content/uploads/2011/10/AeolianScaleFrets_C_4thPosition.jpg",
+            "sha256": "b76dae6e2a039c5b964e7ce633b323d30f9ec98518e0795064e124077499a83c",
+            "sizeBytes": 14695
+          },
+          "notes": [
+            {
+              "string": 6,
+              "fret": 4,
+              "degree": "b6"
+            },
+            {
+              "string": 6,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 6,
+              "fret": 8,
+              "degree": "1"
+            },
+            {
+              "string": 5,
+              "fret": 5,
+              "degree": "2"
+            },
+            {
+              "string": 5,
+              "fret": 6,
+              "degree": "b3"
+            },
+            {
+              "string": 5,
+              "fret": 8,
+              "degree": "4"
+            },
+            {
+              "string": 4,
+              "fret": 5,
+              "degree": "5"
+            },
+            {
+              "string": 4,
+              "fret": 6,
+              "degree": "b6"
+            },
+            {
+              "string": 4,
+              "fret": 8,
+              "degree": "b7"
+            },
+            {
+              "string": 3,
+              "fret": 5,
+              "degree": "1"
+            },
+            {
+              "string": 3,
+              "fret": 7,
+              "degree": "2"
+            },
+            {
+              "string": 3,
+              "fret": 8,
+              "degree": "b3"
+            },
+            {
+              "string": 2,
+              "fret": 6,
+              "degree": "4"
+            },
+            {
+              "string": 2,
+              "fret": 8,
+              "degree": "5"
+            },
+            {
+              "string": 1,
+              "fret": 4,
+              "degree": "b6"
+            },
+            {
+              "string": 1,
+              "fret": 6,
+              "degree": "b7"
+            },
+            {
+              "string": 1,
+              "fret": 8,
+              "degree": "1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

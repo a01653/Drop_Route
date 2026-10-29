@@ -3,36 +3,36 @@
   "title": "Manual de instalación",
   "source": "docs/manuals/INSTALACION.md",
   "command": "npm run docs:build",
-  "engine": "xelatex",
+  "engine": "lualatex",
   "files": [
     {
       "path": "docs/manuals/INSTALACION.md",
-      "sha256": "ff7dff146bb0cd31d4850b07872d354b96674decb8270d0627243b3ed88ed199",
+      "sha256": "cc2279a549f916466a8c2998206ec799ff902f69ae877d4291574b23b6ec9f3f",
       "role": "source"
     },
     {
       "path": "docs/latex/manual-template.tex",
-      "sha256": "25fd0e6c1f214f86f6ee3975ac714814da22079c49c595142562e19ddfaedd00",
+      "sha256": "cb84fa9fa209a0f953c73f86cd1b2934b2298ccb52dc19eab2441a2ce4c9b9f6",
       "role": "template"
     },
     {
       "path": "scripts/build_manuals.py",
-      "sha256": "92b3e804878eaef1919297f85f78e9376410f95cedea83dc04d2ea3ed482c0d4",
+      "sha256": "f7271f9a4510bf2493faa6ce14e963ddf7f6753a34294f71e11e9abfbdbf3341",
       "role": "generator"
     },
     {
       "path": "docs/manuals/capturas/escritorio-menu-1280.png",
-      "sha256": "b13d9aca9ecc91b88efadf22902e03b31df0d4a92cd549ce6d87ce1ec4c14589",
+      "sha256": "898c09a259343befbdb343c01ac83ea89c82fdb4224c6b1c3804dc9270873460",
       "role": "capture"
     },
     {
       "path": "docs/latex/Manual_Instalacion_Drop_Route.tex",
-      "sha256": "e47490eb1bf795e99da63d280f39f2e19aee8bf7d68a231c39cdddf52541f237",
+      "sha256": "ed39ff02c36b95d8e0854fbda91b5e347eb073a149e345b0857771322904209b",
       "role": "latex"
     },
     {
       "path": "docs/latex/Manual_Instalacion_Drop_Route.pdf",
-      "sha256": "86417aafc1ec1f2e348727aff957e848834db9d09f3c8e17fdc8549d18d134a8",
+      "sha256": "daadf27c6debaa1634532584d24a6c1bed7f95c13394b04a3da666247fcac1f7",
       "role": "pdf"
     }
   ]
